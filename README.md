@@ -43,7 +43,8 @@ build/                         ← 전부 자동 생성. 직접 고치지 마세
   logo.svg    logo.ts    logo/*.svg
 preview.html                   ← 토큰·아이콘 렌더링 확인용
 components.html                ← 컴포넌트 렌더링 확인용
-home.html                      ← 서비스 홈 화면 (GNB + KV)
+index.html                     ← 서비스 홈 화면 (GNB + KV)
+guide.html                     ← 문서 진입 페이지
 ```
 
 ```bash
@@ -665,7 +666,7 @@ large 에서 로고와 액션만 흐름에서 빼내 절대 배치합니다 — 
 
 ### KV (홈 키비주얼)
 
-배경 영상 위에 흰 텍스트와 CTA 가 올라가는 홈 최상단 영역입니다. [home.html](home.html) 에서
+배경 영상 위에 흰 텍스트와 CTA 가 올라가는 홈 최상단 영역입니다. [index.html](index.html) 에서
 GNB 와 함께 조립한 결과를 볼 수 있습니다.
 
 폭은 `.container` 규칙을 씁니다. `~1600` 까지는 Figma 의 KV 폭(400·920·976·1200)이 컨테이너
