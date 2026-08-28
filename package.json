@@ -5,10 +5,11 @@
   "type": "module",
   "description": "디자인 시스템 토큰",
   "scripts": {
-    "build": "npm run build:tokens && npm run build:icons && npm run build:logo",
+    "build": "npm run build:tokens && npm run build:icons && npm run build:logo && npm run stamp",
     "build:tokens": "node scripts/build-tokens.mjs",
     "build:icons": "node scripts/build-icons.mjs",
     "build:logo": "node scripts/build-logo.mjs",
-    "preview": "node scripts/serve.mjs"
+    "preview": "node scripts/serve.mjs",
+    "stamp": "node scripts/stamp-assets.mjs"
   }
 }

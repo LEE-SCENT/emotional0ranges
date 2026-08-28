@@ -67,6 +67,10 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-150);
+  /* 메뉴 텍스트와 같은 이유로 아이콘도 fg 로 올립니다. ghost·blur 둘 다
+     기본값이 seriousGray 700 이라 GNB 안에서만 재지정합니다. */
+  --_button-ghost-fg: var(--_gnb-fg);
+  --_button-blur-fg: var(--_gnb-fg);
 }
 
 /* small 에서는 segmentedControl 과 메뉴가 접힙니다. */
