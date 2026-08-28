@@ -149,14 +149,8 @@
   border-end-end-radius: var(--_product-card-rounded);
 }
 
-/* 모서리가 바뀌는 순간이 툭 끊기지 않게 합니다. */
-.product-card__media {
-  transition: border-radius var(--_duration-base) var(--_easing-standard);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .product-card__media { transition: none; }
-}
+/* 모서리에는 전환을 걸지 않습니다. 스크롤 중 양 끝이 바뀔 때마다 반지름이
+   함께 움직이면 카드가 꿈틀거리는 것처럼 보입니다. */
 
 /* JS 가 없으면 첫·마지막 카드가 양 끝을 맡습니다. 스크롤은 손으로 할 수 있습니다. */
 .product-card-group:not(.is-ready) > .product-card:first-child .product-card__media {
