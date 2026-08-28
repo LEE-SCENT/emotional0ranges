@@ -115,13 +115,13 @@
 }
 
 /* ---- 카드 그룹 ---------------------------------------------------------
-   간격이 2px 뿐이라 거의 이어진 띠로 보입니다. 모서리는 카드가 아니라 레일에
-   줍니다 — 카드마다 주면 스크롤 중 보이는 경계가 카드 경계와 어긋나 둥근 모서리가
-   띠 한가운데 떠 보입니다. 레일을 둥근 창으로 만들면 카드는 그 아래로 지나가고,
-   창의 네 모서리는 스크롤 위치와 무관하게 언제나 둥글게 남습니다.
+   간격이 2px 뿐이라 거의 이어진 띠로 보입니다. 모서리는 카드가 아니라 레일의
+   네 귀퉁이에 줍니다 — 카드마다 주면 스크롤 중 보이는 경계가 카드 경계와 어긋나
+   둥근 모서리가 띠 한가운데 떠 보입니다.
 
-   레일 전체를 자르지만 아래쪽 가격 텍스트는 깎이지 않습니다. 줄높이가 남긴
-   여백 덕에 12px 곡선이 글리프에 닿지 않습니다.
+   레일에 border-radius 를 걸 수는 없습니다. 그러면 레일 박스의 바닥, 즉 가격
+   텍스트 아래가 둥글어져서 정작 이미지 하단은 각진 채로 남습니다. 대신 이미지
+   높이만큼만 덮는 귀퉁이 조각을 얹습니다.
 */
 
 .product-card-group {
@@ -135,12 +135,50 @@
   scroll-snap-type: x proximity;
   scrollbar-width: none;
   overscroll-behavior-x: contain;
-  /* 레일 자체가 둥근 창입니다. 카드는 그 아래로 지나가고, 창의 네 모서리는
-     스크롤 위치와 무관하게 항상 둥글게 남습니다. */
-  border-radius: var(--_product-card-rounded);
 }
 
 .product-card-group::-webkit-scrollbar { display: none; }
 
 .product-card-group > .product-card { scroll-snap-align: start; }
 
+
+/* 이미지 영역의 네 귀퉁이를 배경색으로 덮어 둥글게 보이게 합니다.
+   레일 위에 얹는 방식이라 스크롤 위치와 무관하게 항상 같은 자리에 있습니다.
+   레일이 단색 배경 위에 놓인다는 전제이며, 지금은 --colors-bg 입니다. */
+.product-card-rail {
+  position: relative;
+  /* 이미지 높이는 레일의 "폭"에서 되짚어야 합니다. block-size 의 100% 는 높이를
+     기준으로 풀리므로, 폭을 가리키는 컨테이너 쿼리 단위(cqw)를 씁니다. */
+  container-type: inline-size;
+  --rail-corner: var(--_product-card-rounded);
+  --rail-media-h: calc((100cqw - 2 * var(--spacing-50)) / 3 / var(--_product-card-image-ratio));
+}
+
+.product-card-rail::before,
+.product-card-rail::after {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  z-index: 1;
+  inline-size: var(--rail-corner);
+  block-size: var(--rail-media-h);
+  pointer-events: none;
+}
+
+.product-card-rail::before {
+  inset-inline-start: 0;
+  background:
+    radial-gradient(circle var(--rail-corner) at right top,
+      transparent calc(100% - 1px), var(--colors-bg)) left top / 100% var(--rail-corner) no-repeat,
+    radial-gradient(circle var(--rail-corner) at right bottom,
+      transparent calc(100% - 1px), var(--colors-bg)) left bottom / 100% var(--rail-corner) no-repeat;
+}
+
+.product-card-rail::after {
+  inset-inline-end: 0;
+  background:
+    radial-gradient(circle var(--rail-corner) at left top,
+      transparent calc(100% - 1px), var(--colors-bg)) right top / 100% var(--rail-corner) no-repeat,
+    radial-gradient(circle var(--rail-corner) at left bottom,
+      transparent calc(100% - 1px), var(--colors-bg)) right bottom / 100% var(--rail-corner) no-repeat;
+}
