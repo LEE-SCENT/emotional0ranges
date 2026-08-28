@@ -16,6 +16,8 @@
 
 .notice {
   box-sizing: border-box;
+  /* 앞 섹션과의 간격. Figma 기준 카드 섹션 하단 1062 → Notice 상단 1110. */
+  margin-block-start: var(--spacing-1200);
   padding: var(--spacing-800) var(--spacing-600);
   background: var(--_notice-bg);
   font-family: var(--_font-family-pretendard);

@@ -65,4 +65,6 @@
   inline-size: 100%;
   max-inline-size: var(--container-max-width-md);
   margin-inline: auto;
+  /* 앞 섹션과의 간격. Figma 기준 KV 하단 590 → 섹션 상단 622. */
+  margin-block-start: var(--spacing-800);
 }
