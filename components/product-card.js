@@ -2,8 +2,13 @@
  * 상품 카드 캐러셀.
  *
  * 스크롤 자체는 CSS(scroll-snap)가 합니다. 이 스크립트가 하는 일은 둘뿐입니다.
- *   1. sectionTitle 의 이동 버튼을 스크롤에 연결 — 끝에 닿으면 반대편으로 넘어갑니다
- *   2. 지금 보이는 양 끝 카드에 is-edge-start / is-edge-end 를 붙이기
+ *   1. 목록을 한 벌 복제해 레일을 잇고, 이동 버튼을 스크롤에 연결
+ *   2. 멈췄을 때 양 끝 카드에 is-edge-start / is-edge-end 를 붙이기
+ *
+ * 복제하는 이유는 방향 때문입니다. 복제 없이 끝에서 처음으로 돌아가려면 레일을
+ * 왼쪽으로 되감아야 하는데, 마지막 다음은 1번이 오른쪽에서 이어져 나와야 합니다.
+ * 같은 목록이 한 벌 더 붙어 있으면 계속 오른쪽으로 밀다가, 한 바퀴를 넘어선 순간
+ * 스크롤 위치만 한 바퀴만큼 조용히 되돌리면 됩니다 — 내용이 같아 티가 나지 않습니다.
  *
  * 2번이 없으면 둥근 모서리가 DOM 상 첫·마지막 카드에 묶여, 캐러셀이 넘어가도
  * 화면 가운데 카드가 둥글게 남습니다.
@@ -69,13 +74,18 @@ function scrollDuration(el) {
 }
 
 /**
- * 지금 화면의 양 끝에 오는 카드를 정합니다.
+ * 멈춰 있을 때 양 끝에 오는 카드에 모서리를 줍니다.
  *
- * "뷰포트 경계를 넘어선 첫 카드" 같은 조건으로 고르면, 스크롤이 시작되는 순간
- * 조건이 만족돼 아직 띠 한가운데 있는 카드에 모서리가 붙었다 떨어집니다.
- * 그래서 스크롤 위치를 카드 한 칸으로 나눠 반올림합니다 — 한 칸 이동에 정확히
- * 한 번, 절반을 지날 때만 바뀝니다.
+ * 움직이는 동안에는 모서리를 아예 걷어냅니다(clearEdges). 레일이 미끄러지는 중에는
+ * 보이는 경계가 카드 경계와 어긋나서, 어느 카드를 고르든 둥근 모서리가 띠 한가운데
+ * 떠 보이기 때문입니다. 잘린 레일은 각진 게 맞고, 멈춰야 양 끝이 둥글어집니다.
  */
+function clearEdges(track) {
+  for (const card of track.querySelectorAll('.product-card')) {
+    card.classList.remove('is-edge-start', 'is-edge-end')
+  }
+}
+
 function updateEdges(track) {
   const cards = [...track.querySelectorAll('.product-card')]
   if (!cards.length) return
@@ -84,15 +94,27 @@ function updateEdges(track) {
   const step = cards[0].offsetWidth + gap
   if (!step) return
 
-  const first = Math.round(track.scrollLeft / step)
+  const first = Math.min(Math.round(track.scrollLeft / step), cards.length - 1)
   const perView = Math.max(1, Math.round((track.clientWidth + gap) / step))
-  const startIndex = Math.min(first, cards.length - 1)
-  const endIndex = Math.min(startIndex + perView - 1, cards.length - 1)
+  const last = Math.min(first + perView - 1, cards.length - 1)
 
   cards.forEach((card, i) => {
-    card.classList.toggle('is-edge-start', i === startIndex)
-    card.classList.toggle('is-edge-end', i === endIndex)
+    card.classList.toggle('is-edge-start', i === first)
+    card.classList.toggle('is-edge-end', i === last)
   })
+}
+
+/** 목록을 한 벌 복제합니다. 복제본은 보조기기와 탭 이동에서 감춥니다. */
+function cloneList(track) {
+  const originals = [...track.querySelectorAll('.product-card')]
+  for (const card of originals) {
+    const clone = card.cloneNode(true)
+    clone.dataset.clone = '1'
+    clone.setAttribute('aria-hidden', 'true')
+    for (const f of clone.querySelectorAll('a, button, input')) f.tabIndex = -1
+    track.append(clone)
+  }
+  return originals.length
 }
 
 export function initProductCarousel(scope = document) {
@@ -100,36 +122,55 @@ export function initProductCarousel(scope = document) {
     const track = section.querySelector('.product-card-group')
     if (!track || track.dataset.carouselReady) continue
     track.dataset.carouselReady = '1'
+    const originalCount = cloneList(track)
 
     const [prev, next] = section.querySelectorAll('.section-title__nav .btn')
-    const sync = () => updateEdges(track)
+    // 손으로 스크롤할 때도 멈춘 뒤에 모서리를 붙입니다.
+    let settleTimer
+    const settle = () => {
+      clearTimeout(settleTimer)
+      settleTimer = setTimeout(() => updateEdges(track), 120)
+    }
+    const onScroll = () => { clearEdges(track); settle() }
     const step = () => {
       const card = track.querySelector('.product-card')
       const gap = parseFloat(getComputedStyle(track).columnGap) || 0
       return card ? card.offsetWidth + gap : track.clientWidth
     }
 
+    /** 목록 한 바퀴의 길이. 이만큼 넘어가면 조용히 되돌립니다. */
+    const lapWidth = () => originalCount * step()
+
+    /** 한 바퀴를 넘어섰으면 위치만 되돌립니다. 내용이 같아 화면은 그대로입니다. */
+    const normalize = () => {
+      const lap = lapWidth()
+      if (!lap) return
+      if (track.scrollLeft >= lap - EDGE_TOLERANCE) track.scrollLeft -= lap
+      else if (track.scrollLeft < -EDGE_TOLERANCE) track.scrollLeft += lap
+    }
+
     const move = (dir) => {
-      const max = track.scrollWidth - track.clientWidth
-      const next = track.scrollLeft + dir * step()
-      // 끝에서 막지 않고 반대편으로 넘어갑니다. 첫 상품에서 왼쪽을 누르면
-      // 마지막 상품이 나옵니다.
-      const to =
-        next < -EDGE_TOLERANCE ? max
-        : next > max + EDGE_TOLERANCE ? 0
-        : Math.max(0, Math.min(max, next))
-      // scroll 이벤트에만 기대지 않고 이동 중에도 직접 동기화합니다.
-      // 탭이 숨겨져 있으면 scroll 이벤트가 발생하지 않아 상태가 멈춰버립니다.
-      animateScrollTo(track, to, scrollDuration(track), () => sync())
+      // 왼쪽으로 갈 자리가 없으면 한 바퀴 뒤로 순간이동해 둡니다. 그래야
+      // 화면은 계속 왼쪽으로 미끄러지면서 마지막 상품이 나옵니다.
+      if (dir < 0 && track.scrollLeft < step() - EDGE_TOLERANCE) {
+        track.scrollLeft += lapWidth()
+      }
+      clearEdges(track)
+      // 도착한 뒤에만 모서리를 다시 줍니다. scroll 이벤트에 기대지 않는 이유는
+      // 탭이 숨겨져 있으면 그 이벤트가 발생하지 않기 때문입니다.
+      animateScrollTo(track, track.scrollLeft + dir * step(), scrollDuration(track), () => {
+        normalize()
+        settle()
+      })
     }
     prev?.addEventListener('click', () => move(-1))
     next?.addEventListener('click', () => move(1))
 
-    track.addEventListener('scroll', sync, { passive: true })
-    new ResizeObserver(sync).observe(track)
-    document.fonts?.ready.then(sync)
+    track.addEventListener('scroll', onScroll, { passive: true })
+    new ResizeObserver(() => updateEdges(track)).observe(track)
+    document.fonts?.ready.then(() => updateEdges(track))
 
     track.classList.add('is-ready')
-    sync()
+    updateEdges(track)
   }
 }
