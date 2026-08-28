@@ -74,6 +74,15 @@
       },
       "body": {
         "$description": "본문과 UI 텍스트. 같은 크기 안에서 semibold/medium/regular 로 강조 단계를 나눕니다.",
+        "xl-semibold": {
+          "$value": {
+            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontSize": "{primitive.fontSize.500}",
+            "fontWeight": "{primitive.fontWeight.semibold-600}",
+            "lineHeight": "{primitive.lineHeight.140}",
+            "letterSpacing": "{primitive.letterSpacing.0}"
+          }
+        },
         "l-semibold": {
           "$value": {
             "fontFamily": "{primitive.fontFamily.pretendard}",

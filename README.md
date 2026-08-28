@@ -102,12 +102,17 @@ Figma 텍스트 스타일과 1:1 대응합니다. 실제 화면 작업에서는 
 | `heading-m-semibold` | 28 | 130% | 600 | 0 |
 | `heading-s-semibold` | 24 | 140% | 600 | 0 |
 | `heading-xs-semibold` | 20 | 140% | 600 | 0 |
+| `body-xl-semibold` | 20 | 140% | 600 | 0 |
 | `body-l-{semibold,medium,regular}` | 16 | 150% | 600/500/400 | 0 |
 | `body-m-{semibold,medium,regular}` | 14 | 140% | 600/500/400 | 0 |
 | `body-s-{semibold,medium,regular}` | 12 | 130% | 600/500/400 | 0 |
 | `body-xs-{semibold,medium,regular}` | 10 | 130% | 600/500/400 | 0 |
 
-`body` 는 크기별로 semibold / medium / regular 3단을 모두 갖습니다 (총 18개).
+`body` 는 크기별로 semibold / medium / regular 3단을 갖습니다. 다만 `xl` 만 semibold 하나뿐입니다.
+
+`body-xl-semibold` 와 `heading-xs-semibold` 는 값이 완전히 같습니다(20 / 140% / 600 / 0).
+역할이 달라 이름이 둘인 것이며, 나중에 본문 강조와 소제목의 크기를 따로 조정하게 되면
+semantic 레이어에서 한쪽만 바꿀 수 있습니다 — `border` 와 `divider` 가 같은 이유로 나뉘어 있는 것과 같습니다.
 
 ### letter-spacing 은 em 으로 변환됩니다
 
