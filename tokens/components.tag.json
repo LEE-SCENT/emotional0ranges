@@ -2,18 +2,38 @@
   "components": {
     "tag": {
       "$description": "이미지 위에 얹는 짧은 라벨. 배경이 비쳐야 해서 alpha 색과 backdrop-blur 를 씁니다.",
-      "bg":          { "$type": "color", "$value": "{primitive.colors.whiteAlpha.85}" },
-      "fg":          { "$type": "color", "$value": "{semantic.colors.fg}" },
-      "bgAccentPri": { "$type": "color", "$value": "{primitive.colors.twistOrange.alpha500.85}", "$description": "잔여 좌석처럼 눈에 띄어야 하는 라벨." },
-      "bgAccentSec": { "$type": "color", "$value": "{primitive.colors.seriousGray.alpha900.25}", "$description": "마감처럼 힘을 뺀 라벨." },
-      "fgAccent":    { "$type": "color", "$value": "{semantic.colors.fg-contrast}", "$description": "accentPri 용. 브랜드 색 위 흰 글자." },
-      "fgAccentSec": {
+      "bg": {
         "$type": "color",
-        "$value": "{primitive.colors.seriousGray.300}",
-        "$description": "accentSec 용. 마감처럼 힘을 뺀 상태라 흰색보다 한 단계 죽입니다. ⚠️ Figma 는 팔레트에 없는 #EEE 를 쓰고 있어 가장 가까운 seriousGray 300(#E7E5E4)으로 대체했습니다."
+        "$value": "{primitive.colors.whiteAlpha.85}"
       },
-      "rounded":     { "$type": "dimension", "$value": "{primitive.rounded.m}" },
-      "blurRadius":  { "$type": "dimension", "$value": "12px", "$description": "⚠️ Figma 에 변수로 없습니다. backdrop-blur 값에서 읽었습니다." }
+      "fg": {
+        "$type": "color",
+        "$value": "{semantic.colors.fg}"
+      },
+      "bgAccentPri": {
+        "$type": "color",
+        "$value": "{primitive.colors.twistOrange.alpha500.85}",
+        "$description": "잔여 좌석처럼 눈에 띄어야 하는 라벨."
+      },
+      "bgAccentSec": {
+        "$type": "color",
+        "$value": "{primitive.colors.seriousGray.alpha900.25}",
+        "$description": "마감처럼 힘을 뺀 라벨."
+      },
+      "fgAccent": {
+        "$type": "color",
+        "$value": "{semantic.colors.fg-contrast}",
+        "$description": "accentPri·accentSec 공통. 강조 배경 위 흰 글자."
+      },
+      "rounded": {
+        "$type": "dimension",
+        "$value": "{primitive.rounded.m}"
+      },
+      "blurRadius": {
+        "$type": "dimension",
+        "$value": "12px",
+        "$description": "⚠️ Figma 에 변수로 없습니다. backdrop-blur 값에서 읽었습니다."
+      }
     }
   }
 }

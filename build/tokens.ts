@@ -440,7 +440,6 @@ export const components = {
     "bgAccentPri": "#F75D15D9",
     "bgAccentSec": "#27262540",
     "fgAccent": "#FFFFFF",
-    "fgAccentSec": "#E7E5E4",
     "rounded": "8px",
     "blurRadius": "12px"
   },

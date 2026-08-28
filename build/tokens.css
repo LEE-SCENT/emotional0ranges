@@ -191,7 +191,6 @@
   --_tag-bg-accent-pri: var(--_colors-twist-orange-alpha500-85);
   --_tag-bg-accent-sec: var(--_colors-serious-gray-alpha900-25);
   --_tag-fg-accent: var(--colors-fg-contrast);
-  --_tag-fg-accent-sec: var(--_colors-serious-gray-300);
   --_tag-rounded: var(--_rounded-m);
   --_tag-blur-radius: 12px;
   --_tooltip-fg: var(--_colors-white);
