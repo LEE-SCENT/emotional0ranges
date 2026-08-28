@@ -22,6 +22,7 @@ function animateScrollTo(el, to, ms, onFrame = () => {}) {
   const from = el.scrollLeft
   const distance = to - from
   if (!distance) return
+
   // 애니메이션을 그릴 수 없거나 그릴 이유가 없으면 바로 옮깁니다.
   // 탭이 숨겨져 있으면 requestAnimationFrame 이 멈춰 있어, 이 분기가 없으면
   // 스크롤이 영영 목적지에 닿지 않습니다.
@@ -34,6 +35,13 @@ function animateScrollTo(el, to, ms, onFrame = () => {}) {
     onFrame()
     return
   }
+
+  // 매 프레임 scrollLeft 를 옮기는 동안 scroll-snap 이 켜져 있으면 브라우저가
+  // 프레임마다 스냅 지점으로 당겨 애니메이션과 싸웁니다. 손으로 스크롤할 때만
+  // 필요한 기능이라 그리는 동안은 꺼둡니다.
+  const snap = el.style.scrollSnapType
+  el.style.scrollSnapType = 'none'
+
   const start = performance.now()
   // --_easing-standard 와 같은 곡선: 빠르게 출발해 부드럽게 멈춥니다.
   const ease = (t) => 1 - Math.pow(1 - t, 3)
@@ -41,7 +49,11 @@ function animateScrollTo(el, to, ms, onFrame = () => {}) {
     const t = Math.min(1, (now - start) / ms)
     el.scrollLeft = from + distance * ease(t)
     onFrame()
-    if (t < 1) requestAnimationFrame(step)
+    if (t < 1) {
+      requestAnimationFrame(step)
+    } else {
+      el.style.scrollSnapType = snap
+    }
   }
   requestAnimationFrame(step)
 }
