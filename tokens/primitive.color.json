@@ -8,6 +8,10 @@
 
       "whiteAlpha": {
         "$description": "Figma 경로는 colors/white/alpha/* 이지만, DTCG 에서 토큰(white)은 자식을 가질 수 없어 형제 그룹으로 뒀습니다. CSS 변수명(--colors-white-alpha-15)은 Figma 경로와 동일합니다.",
+        "85": {
+          "$value": "#FFFFFFD9",
+          "$description": "white 를 85% 로. 85% → D9 (85.1%). 어두운 배경 위 거의 불투명한 밝은 면."
+        },
         "15": {
           "$value": "#FFFFFF26",
           "$description": "white 를 15% 로. 15% = 0.15×255 = 38.25 이므로 8자리 hex 에서는 26(14.9%) 으로 반올림됩니다. 어두운 배경·이미지 위에 올리는 밝은 오버레이."
@@ -25,7 +29,12 @@
         "600": { "$value": "#EC5711" },
         "700": { "$value": "#DF500B" },
         "800": { "$value": "#D14807" },
-        "900": { "$value": "#B83C00" }
+        "900": { "$value": "#B83C00" },
+
+        "alpha500": {
+          "$description": "브랜드 주조색(500)의 반투명 버전.",
+          "85": { "$value": "#F75D15D9", "$description": "85% → D9 (85.1%)" }
+        }
       },
 
       "seriousGray": {
@@ -41,20 +50,12 @@
         "800": { "$value": "#494746" },
         "900": { "$value": "#272625" },
 
-        "alpha": {
-          "$description": "같은 톤의 반투명 버전. hover/press 오버레이나 딤 레이어처럼 아래 배경이 비쳐야 하는 곳에 씁니다. 8자리 hex 의 마지막 두 자리가 알파입니다.",
-          "900": {
-            "4": {
-              "$value": "#2726250A",
-              "$description": "seriousGray 900 을 4% 로. 0.04×255 = 10.2 이므로 8자리 hex 에서는 0A(3.92%) 로 반올림됩니다."
-            },
-            "8": {
-              "$value": "#27262514",
-              "$description": "seriousGray 900 을 8% 로. 0.08×255 = 20.4 이므로 8자리 hex 에서는 14(7.84%) 로 반올림됩니다."
-            }
-          }
-        }
-      },
+        "alpha900": {
+          "$description": "seriousGray 900 의 반투명 버전. 8자리 hex 의 마지막 두 자리가 알파이며, 퍼센트를 255 스케일로 옮기며 반올림됩니다.",
+          "4":  { "$value": "#2726250A", "$description": "4% → 0A (3.92%)" },
+          "8":  { "$value": "#27262514", "$description": "8% → 14 (7.84%)" },
+          "85": { "$value": "#272625D9", "$description": "85% → D9 (85.1%)" }
+        }      },
 
       "casualNeutral": {
         "$description": "따뜻한 톤의 중립색.",

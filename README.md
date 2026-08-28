@@ -190,16 +190,19 @@ semantic 이 참조하는 팔레트입니다. 화면 작업에서 직접 쓰지 
 
 | 토큰 | 값 | CSS 변수 |
 | --- | --- | --- |
-| `seriousGray.alpha.900.4` | `#2726250A` — 900을 4% | `--_colors-serious-gray-alpha-900-4` |
-| `seriousGray.alpha.900.8` | `#27262514` — 900을 8% | `--_colors-serious-gray-alpha-900-8` |
+| `seriousGray.alpha900.4` | `#2726250A` — 900을 4% | `--_colors-serious-gray-alpha900-4` |
+| `seriousGray.alpha900.8` | `#27262514` — 900을 8% | `--_colors-serious-gray-alpha900-8` |
+| `seriousGray.alpha900.85` | `#272625D9` — 900을 85% | `--_colors-serious-gray-alpha900-85` |
+| `twistOrange.alpha500.85` | `#F75D15D9` — 500을 85% | `--_colors-twist-orange-alpha500-85` |
 | `whiteAlpha.15` | `#FFFFFF26` — white를 15% | `--_colors-white-alpha-15` |
+| `whiteAlpha.85` | `#FFFFFFD9` — white를 85% | `--_colors-white-alpha-85` |
 
 불투명 색과 달리 **아래 배경이 비쳐야 하는 곳**에 씁니다 — hover/press 오버레이, 딤 레이어처럼
 같은 위젯이 어떤 배경 위에 놓이든 자연스럽게 어두워지거나 밝아져야 하는 경우입니다.
-`900/8` 은 semantic `bg-transparent` 로 공개돼 있습니다.
+`alpha900/8` 은 semantic `bg-transparent` 로 공개돼 있습니다.
 
 8자리 hex 의 마지막 두 자리가 알파입니다. 퍼센트를 255 스케일로 바꾸면서 약간 반올림됩니다 —
-4% → `0A`(3.92%), 8% → `14`(7.84%), 15% → `26`(14.9%). Figma가 8자리 hex 로 export 할 때와
+4% → `0A`(3.92%), 8% → `14`(7.84%), 15% → `26`(14.9%), 85% → `D9`(85.1%). Figma가 8자리 hex 로 export 할 때와
 같은 값이라 왕복해도 어긋나지 않습니다.
 
 `whiteAlpha` 만 그룹 이름이 Figma 경로(`colors/white/alpha/15`)와 다릅니다. DTCG 에서 토큰은 자식을

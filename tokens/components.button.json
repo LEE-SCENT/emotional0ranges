@@ -29,7 +29,7 @@
         "$type": "color",
         "$description": "이미지·영상 위에 올리는 반투명 버튼. 배경이 비쳐야 하므로 alpha 토큰을 씁니다.",
         "fg":    { "$value": "{primitive.colors.seriousGray.700}" },
-        "bg":    { "$value": "{primitive.colors.seriousGray.alpha.900.4}" },
+        "bg":    { "$value": "{primitive.colors.seriousGray.alpha900.4}" },
         "fg-on": { "$value": "{primitive.colors.white}" },
         "bg-on": { "$value": "{primitive.colors.whiteAlpha.15}" }
       },

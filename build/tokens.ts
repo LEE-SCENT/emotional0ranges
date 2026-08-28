@@ -8,7 +8,8 @@ export const primitive = {
     "black": "#000000",
     "white": "#FFFFFF",
     "whiteAlpha": {
-      "15": "#FFFFFF26"
+      "15": "#FFFFFF26",
+      "85": "#FFFFFFD9"
     },
     "twistOrange": {
       "50": "#FAE9E6",
@@ -20,7 +21,10 @@ export const primitive = {
       "600": "#EC5711",
       "700": "#DF500B",
       "800": "#D14807",
-      "900": "#B83C00"
+      "900": "#B83C00",
+      "alpha500": {
+        "85": "#F75D15D9"
+      }
     },
     "seriousGray": {
       "50": "#FDFBFA",
@@ -33,11 +37,10 @@ export const primitive = {
       "700": "#686666",
       "800": "#494746",
       "900": "#272625",
-      "alpha": {
-        "900": {
-          "4": "#2726250A",
-          "8": "#27262514"
-        }
+      "alpha900": {
+        "4": "#2726250A",
+        "8": "#27262514",
+        "85": "#272625D9"
       }
     },
     "casualNeutral": {

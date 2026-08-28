@@ -9,6 +9,7 @@
   --_colors-black: #000000;
   --_colors-white: #FFFFFF;
   --_colors-white-alpha-15: #FFFFFF26;
+  --_colors-white-alpha-85: #FFFFFFD9;
   --_colors-twist-orange-50: #FAE9E6;
   --_colors-twist-orange-100: #FDCCBA;
   --_colors-twist-orange-200: #FBAC8D;
@@ -19,6 +20,7 @@
   --_colors-twist-orange-700: #DF500B;
   --_colors-twist-orange-800: #D14807;
   --_colors-twist-orange-900: #B83C00;
+  --_colors-twist-orange-alpha500-85: #F75D15D9;
   --_colors-serious-gray-50: #FDFBFA;
   --_colors-serious-gray-100: #F8F6F5;
   --_colors-serious-gray-200: #F3F1F0;
@@ -29,8 +31,9 @@
   --_colors-serious-gray-700: #686666;
   --_colors-serious-gray-800: #494746;
   --_colors-serious-gray-900: #272625;
-  --_colors-serious-gray-alpha-900-4: #2726250A;
-  --_colors-serious-gray-alpha-900-8: #27262514;
+  --_colors-serious-gray-alpha900-4: #2726250A;
+  --_colors-serious-gray-alpha900-8: #27262514;
+  --_colors-serious-gray-alpha900-85: #272625D9;
   --_colors-casual-neutral-50: #EBE6E2;
   --_colors-casual-neutral-100: #CBC0B9;
   --_colors-casual-neutral-200: #A8978D;
@@ -80,7 +83,7 @@
   --colors-bg: var(--_colors-white);
   --colors-bg-low: var(--_colors-serious-gray-100);
   --colors-bg-disabled: var(--_colors-serious-gray-50);
-  --colors-bg-transparent: var(--_colors-serious-gray-alpha-900-8);
+  --colors-bg-transparent: var(--_colors-serious-gray-alpha900-8);
   --colors-bg-brand: var(--_colors-twist-orange-500);
   --colors-bg-contrast: var(--_colors-black);
   --colors-bg-critical: var(--_colors-accent-red-50);
@@ -145,7 +148,7 @@
   --_button-ghost-fg: var(--_colors-serious-gray-700);
   --_button-ghost-fg-on: var(--_colors-white);
   --_button-blur-fg: var(--_colors-serious-gray-700);
-  --_button-blur-bg: var(--_colors-serious-gray-alpha-900-4);
+  --_button-blur-bg: var(--_colors-serious-gray-alpha900-4);
   --_button-blur-fg-on: var(--_colors-white);
   --_button-blur-bg-on: var(--_colors-white-alpha-15);
   --_button-rounded: var(--_rounded-full);
@@ -160,12 +163,12 @@
   --_gnb-max-content-width: 1200px;
   --_kv-rounded-base: var(--_rounded-l);
   --_kv-rounded-md: var(--_rounded-2xl);
-  --_kv-scrim: var(--_colors-serious-gray-alpha-900-8);
+  --_kv-scrim: var(--_colors-serious-gray-alpha900-8);
   --_kv-min-height-base: 548px;
   --_kv-min-height-sm: 616px;
   --_kv-min-height-md: 518px;
   --_segmented-control-bg: var(--_colors-white);
-  --_segmented-control-border: var(--_colors-serious-gray-alpha-900-8);
+  --_segmented-control-border: var(--_colors-serious-gray-alpha900-8);
   --_segmented-control-rounded: var(--_rounded-full);
   --_segmented-control-border-width: 1px;
   --_segmented-control-transition-duration: var(--_duration-base);

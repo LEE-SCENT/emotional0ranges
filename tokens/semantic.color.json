@@ -7,7 +7,7 @@
       "bg":             { "$value": "{primitive.colors.white}" },
       "bg-low":         { "$value": "{primitive.colors.seriousGray.100}" },
       "bg-disabled":    { "$value": "{primitive.colors.seriousGray.50}" },
-      "bg-transparent": { "$value": "{primitive.colors.seriousGray.alpha.900.8}" },
+      "bg-transparent": { "$value": "{primitive.colors.seriousGray.alpha900.8}" },
       "bg-brand":       { "$value": "{primitive.colors.twistOrange.500}" },
       "bg-contrast":    { "$value": "{primitive.colors.black}" },
       "bg-critical":    { "$value": "{primitive.colors.accentRed.50}" },
