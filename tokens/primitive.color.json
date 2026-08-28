@@ -54,7 +54,7 @@
           "$description": "seriousGray 900 의 반투명 버전. 8자리 hex 의 마지막 두 자리가 알파이며, 퍼센트를 255 스케일로 옮기며 반올림됩니다.",
           "4":  { "$value": "#2726250A", "$description": "4% → 0A (3.92%)" },
           "8":  { "$value": "#27262514", "$description": "8% → 14 (7.84%)" },
-          "85": { "$value": "#272625D9", "$description": "85% → D9 (85.1%)" }
+          "25": { "$value": "#27262540", "$description": "25% → 40 (25.1%)" }
         }      },
 
       "casualNeutral": {

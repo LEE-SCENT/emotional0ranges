@@ -192,7 +192,7 @@ semantic 이 참조하는 팔레트입니다. 화면 작업에서 직접 쓰지 
 | --- | --- | --- |
 | `seriousGray.alpha900.4` | `#2726250A` — 900을 4% | `--_colors-serious-gray-alpha900-4` |
 | `seriousGray.alpha900.8` | `#27262514` — 900을 8% | `--_colors-serious-gray-alpha900-8` |
-| `seriousGray.alpha900.85` | `#272625D9` — 900을 85% | `--_colors-serious-gray-alpha900-85` |
+| `seriousGray.alpha900.25` | `#27262540` — 900을 25% | `--_colors-serious-gray-alpha900-25` |
 | `twistOrange.alpha500.85` | `#F75D15D9` — 500을 85% | `--_colors-twist-orange-alpha500-85` |
 | `whiteAlpha.15` | `#FFFFFF26` — white를 15% | `--_colors-white-alpha-15` |
 | `whiteAlpha.85` | `#FFFFFFD9` — white를 85% | `--_colors-white-alpha-85` |
@@ -202,7 +202,7 @@ semantic 이 참조하는 팔레트입니다. 화면 작업에서 직접 쓰지 
 `alpha900/8` 은 semantic `bg-transparent` 로 공개돼 있습니다.
 
 8자리 hex 의 마지막 두 자리가 알파입니다. 퍼센트를 255 스케일로 바꾸면서 약간 반올림됩니다 —
-4% → `0A`(3.92%), 8% → `14`(7.84%), 15% → `26`(14.9%), 85% → `D9`(85.1%). Figma가 8자리 hex 로 export 할 때와
+4% → `0A`(3.92%), 8% → `14`(7.84%), 15% → `26`(14.9%), 25% → `40`(25.1%), 85% → `D9`(85.1%). Figma가 8자리 hex 로 export 할 때와
 같은 값이라 왕복해도 어긋나지 않습니다.
 
 `whiteAlpha` 만 그룹 이름이 Figma 경로(`colors/white/alpha/15`)와 다릅니다. DTCG 에서 토큰은 자식을
