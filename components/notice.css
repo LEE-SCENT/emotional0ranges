@@ -60,9 +60,9 @@
 
 .notice__lead {
   color: var(--colors-fg-lower);
-  font-size: var(--typography-body-l-regular-font-size);
-  font-weight: var(--typography-body-l-regular-font-weight);
-  line-height: var(--typography-body-l-regular-line-height);
+  font-size: var(--typography-body-m-regular-font-size);
+  font-weight: var(--typography-body-m-regular-font-weight);
+  line-height: var(--typography-body-m-regular-line-height);
 }
 
 /* 헤더가 1열, 항목 셋이 나머지 2열을 나눠 씁니다. */
@@ -80,7 +80,14 @@
   min-inline-size: 0;
   display: flex;
   flex-direction: column;
+  /* 아이콘과 텍스트 사이만 띄웁니다. */
   gap: var(--spacing-300);
+}
+
+/* 제목과 설명은 붙어 있습니다 — 줄높이만으로 간격이 잡힙니다. */
+.notice__item-text {
+  display: flex;
+  flex-direction: column;
 }
 
 .notice__item svg {

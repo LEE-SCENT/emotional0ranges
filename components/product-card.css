@@ -110,26 +110,60 @@
 }
 
 /* ---- 카드 그룹 ---------------------------------------------------------
-   간격이 2px 뿐이라 거의 이어진 띠로 보입니다. 그래서 모서리도 그룹의
-   바깥쪽에만 둥글게 주고 안쪽은 각지게 둡니다.
+   간격이 2px 뿐이라 거의 이어진 띠로 보입니다. 그래서 모서리도 띠의 양 끝에만
+   둥글게 줍니다.
+
+   양 끝 판정을 :first-child / :last-child 로 하면 DOM 순서에 묶여, 캐러셀이
+   넘어가도 둥근 모서리가 원래 첫 카드에 남습니다. 그래서 지금 화면에 보이는
+   양 끝 카드에 product-card.js 가 is-edge-start / is-edge-end 를 붙입니다.
 */
 
 .product-card-group {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: 1fr;
+  /* 세 장이 딱 맞게 들어가고 나머지는 넘칩니다. */
+  grid-auto-columns: calc((100% - 2 * var(--spacing-50)) / 3);
   gap: var(--spacing-50);
   align-items: start;
+  overflow-x: auto;
+  /* mandatory 는 부드러운 스크롤과 맞물려 위치를 되돌려버립니다. 카드 폭이
+     (100% - 4px) / 3 = 398.67 로 소수점이라 스냅 지점이 딱 떨어지지 않기 때문입니다.
+     proximity 는 가까울 때만 붙어 버튼 이동을 방해하지 않습니다. */
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  /* 둥근 모서리가 스크롤 컨테이너에 잘리지 않도록 여백 없이 둡니다. */
+  overscroll-behavior-x: contain;
 }
 
-.product-card-group > .product-card:first-child .product-card__media {
+.product-card-group::-webkit-scrollbar { display: none; }
+
+.product-card-group > .product-card { scroll-snap-align: start; }
+
+.product-card-group > .product-card.is-edge-start .product-card__media {
   border-start-start-radius: var(--_product-card-rounded);
   border-end-start-radius: var(--_product-card-rounded);
 }
 
-.product-card-group > .product-card:last-child .product-card__media {
+.product-card-group > .product-card.is-edge-end .product-card__media {
   border-start-end-radius: var(--_product-card-rounded);
   border-end-end-radius: var(--_product-card-rounded);
 }
 
-/* 카드가 하나뿐이면 네 모서리가 모두 둥글어집니다 — 위 두 규칙이 함께 걸립니다. */
+/* 모서리가 바뀌는 순간이 툭 끊기지 않게 합니다. */
+.product-card__media {
+  transition: border-radius var(--_duration-base) var(--_easing-standard);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-card__media { transition: none; }
+}
+
+/* JS 가 없으면 첫·마지막 카드가 양 끝을 맡습니다. 스크롤은 손으로 할 수 있습니다. */
+.product-card-group:not(.is-ready) > .product-card:first-child .product-card__media {
+  border-start-start-radius: var(--_product-card-rounded);
+  border-end-start-radius: var(--_product-card-rounded);
+}
+.product-card-group:not(.is-ready) > .product-card:last-child .product-card__media {
+  border-start-end-radius: var(--_product-card-rounded);
+  border-end-end-radius: var(--_product-card-rounded);
+}

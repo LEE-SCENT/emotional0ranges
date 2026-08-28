@@ -3,18 +3,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>감정적인 오렌지들</title>
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
-<link rel="stylesheet" href="./build/tokens.css?v=7f5a3afd">
+<link rel="stylesheet" href="./build/tokens.css?v=619e9892">
 <link rel="stylesheet" href="./components/container.css?v=35013892">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=f74b9b87">
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
 <link rel="stylesheet" href="./components/segmented-control.css?v=6f478c07">
-<link rel="stylesheet" href="./components/gnb.css?v=a7b1e561">
-<link rel="stylesheet" href="./components/kv.css?v=b76111dd">
+<link rel="stylesheet" href="./components/gnb.css?v=e239c5da">
+<link rel="stylesheet" href="./components/kv.css?v=018ae87a">
 <link rel="stylesheet" href="./components/tag.css?v=b860fce1">
-<link rel="stylesheet" href="./components/product-card.css?v=046a6dc1">
-<link rel="stylesheet" href="./components/section-title.css?v=aee83971">
-<link rel="stylesheet" href="./components/notice.css?v=5e24dc92">
+<link rel="stylesheet" href="./components/product-card.css?v=08387df5">
+<link rel="stylesheet" href="./components/section-title.css?v=f24dbc53">
+<link rel="stylesheet" href="./components/notice.css?v=023ca316">
 <style>
   body { margin: 0; background: var(--colors-bg); color: var(--colors-fg); }
   /* 화면에는 안 보이지만 스크린리더는 읽는 텍스트 */
@@ -145,6 +145,45 @@
             <p class="product-card__price"><b>할인가</b> 38,000원~</p>
           </div>
         </article>
+        <article class="product-card">
+          <div class="product-card__media">
+            <img src="./images/meetup-sample.jpg" alt="">
+            <div class="product-card__tags">
+              <span class="tag">8월 25일 (화) 저녁 7시</span>
+            </div>
+          </div>
+          <div class="product-card__info">
+            <h3 class="product-card__title">와인 클래스 소개팅</h3>
+            <p class="product-card__desc">서울 강남구 외 1개 지역 · 일정 2개</p>
+            <p class="product-card__price"><b>할인가</b> 45,000원~</p>
+          </div>
+        </article>
+        <article class="product-card">
+          <div class="product-card__media">
+            <img src="./images/meetup-sample.jpg" alt="">
+            <div class="product-card__tags">
+              <span class="tag">8월 25일 (화) 저녁 7시</span><span class="tag tag--accent-pri">여성 1자리 남음</span>
+            </div>
+          </div>
+          <div class="product-card__info">
+            <h3 class="product-card__title">주말 브런치 모임</h3>
+            <p class="product-card__desc">부산 해운대구 · 일정 3개</p>
+            <p class="product-card__price"><b>할인가</b> 29,000원~</p>
+          </div>
+        </article>
+        <article class="product-card">
+          <div class="product-card__media">
+            <img src="./images/meetup-sample.jpg" alt="">
+            <div class="product-card__tags">
+              <span class="tag">8월 25일 (화) 저녁 7시</span>
+            </div>
+          </div>
+          <div class="product-card__info">
+            <h3 class="product-card__title">취향 기반 로테이션</h3>
+            <p class="product-card__desc">서울 성동구 외 2개 지역 · 일정 4개</p>
+            <p class="product-card__price"><b>할인가</b> 36,000원~</p>
+          </div>
+        </article>
     </div>
   </section>
 </main>
@@ -158,18 +197,24 @@
     <ul class="notice__items">
         <li class="notice__item">
           <svg aria-hidden="true"><use href="#icon-idCardFilled"></use></svg>
-          <p class="notice__item-title">확인된 프로필</p>
-          <p class="notice__item-desc">서비스 이용에 필요한 인증과 프로필 정보를 확인해요</p>
+          <div class="notice__item-text">
+            <p class="notice__item-title">확인된 프로필</p>
+            <p class="notice__item-desc">서비스 이용에 필요한 인증과 프로필 정보를 확인해요</p>
+          </div>
         </li>
         <li class="notice__item">
           <svg aria-hidden="true"><use href="#icon-hostFilled"></use></svg>
-          <p class="notice__item-title">호스트가 함께하는 모임</p>
-          <p class="notice__item-desc">처음 참여해도 편하게 대화할 수 있도록 진행해요</p>
+          <div class="notice__item-text">
+            <p class="notice__item-title">호스트가 함께하는 모임</p>
+            <p class="notice__item-desc">처음 참여해도 편하게 대화할 수 있도록 진행해요</p>
+          </div>
         </li>
         <li class="notice__item">
           <svg aria-hidden="true"><use href="#icon-verifiedUserFilled"></use></svg>
-          <p class="notice__item-title">신중한 연락처 교환</p>
-          <p class="notice__item-desc">현장에서 선택한 상대와 필요한 정보만 교환해요</p>
+          <div class="notice__item-text">
+            <p class="notice__item-title">신중한 연락처 교환</p>
+            <p class="notice__item-desc">현장에서 선택한 상대와 필요한 정보만 교환해요</p>
+          </div>
         </li>
     </ul>
   </div>
@@ -179,8 +224,10 @@
 <script type="module">
   document.getElementById('sprite').innerHTML =
     await (await fetch('./build/icons.svg')).text() + await (await fetch('./build/logo.svg')).text()
-  const { initSegmentedControls } = await import('./components/segmented-control.js')
+  const { initSegmentedControls } = await import('./components/segmented-control.js?v=5ba79c04')
   initSegmentedControls()
-  const { initKvVideo } = await import('./components/kv.js')
+  const { initKvVideo } = await import('./components/kv.js?v=d2d085a7')
   initKvVideo()
+  const { initProductCarousel } = await import('./components/product-card.js?v=1e6ab5b0')
+  initProductCarousel()
 </script>

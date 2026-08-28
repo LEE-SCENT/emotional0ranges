@@ -387,7 +387,8 @@ export const components = {
   },
   "gnb": {
     "fg": "#000000",
-    "maxContentWidth": "1200px"
+    "maxContentWidth": "1200px",
+    "maxWidth": "1920px"
   },
   "kv": {
     "rounded": {

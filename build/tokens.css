@@ -161,6 +161,7 @@
   --_footer-sns-icon-size: calc(var(--_dimension) * 5);
   --_gnb-fg: var(--colors-fg);
   --_gnb-max-content-width: 1200px;
+  --_gnb-max-width: 1920px;
   --_kv-rounded-base: var(--_rounded-l);
   --_kv-rounded-md: var(--_rounded-2xl);
   --_kv-scrim: var(--_colors-serious-gray-alpha900-8);

@@ -11,6 +11,11 @@
         "$type": "dimension",
         "$value": "1200px",
         "$description": "가장 넓은 티어에서 가운데 콘텐츠가 넓어지지 않도록 잡는 한계. 로고와 액션은 이 폭 밖 화면 가장자리에 붙습니다."
+      },
+      "maxWidth": {
+        "$type": "dimension",
+        "$value": "1920px",
+        "$description": "GNB 자체의 한계 폭. 이보다 넓은 화면에서는 가운데 정렬됩니다."
       }
     }
   }

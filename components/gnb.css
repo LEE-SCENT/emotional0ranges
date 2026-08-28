@@ -24,6 +24,9 @@
   justify-content: center;
   box-sizing: border-box;
   inline-size: 100%;
+  /* 초광폭 화면에서 로고와 액션이 끝없이 벌어지지 않도록 잡습니다. */
+  max-inline-size: var(--_gnb-max-width);
+  margin-inline: auto;
   /* small: 좌우가 비대칭입니다 (왼쪽 20, 오른쪽 12) */
   padding: var(--spacing-300) var(--spacing-300) var(--spacing-300) var(--spacing-500);
   background: var(--colors-bg);

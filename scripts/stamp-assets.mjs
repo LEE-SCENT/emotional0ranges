@@ -17,6 +17,8 @@ import { fileURLToPath } from 'node:url'
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const LINK = /(href|src)="\.\/((?:build|components|fonts)\/[^"?]+\.(?:css|js))(?:\?v=[^"]*)?"/g
+/** 동적 import 는 속성이 아니라 코드 안에 있어 따로 잡아야 합니다. 놓치면 JS 만 옛 버전이 남습니다. */
+const DYNAMIC_IMPORT = /import\('\.\/((?:build|components)\/[^'?]+\.js)(?:\?v=[^']*)?'\)/g
 
 const hash = (path) =>
   createHash('sha256').update(readFileSync(path)).digest('hex').slice(0, 8)
@@ -25,12 +27,15 @@ let stamped = 0
 for (const file of readdirSync(ROOT).filter((f) => f.endsWith('.html'))) {
   const abs = resolve(ROOT, file)
   const before = readFileSync(abs, 'utf8')
-  const after = before.replace(LINK, (whole, attr, path) => {
+  const stamp = (path) => {
     const target = resolve(ROOT, path)
     if (!existsSync(target)) throw new Error(`${file} 가 없는 파일을 참조합니다: ${path}`)
     stamped++
-    return `${attr}="./${path}?v=${hash(target)}"`
-  })
+    return hash(target)
+  }
+  const after = before
+    .replace(LINK, (_, attr, path) => `${attr}="./${path}?v=${stamp(path)}"`)
+    .replace(DYNAMIC_IMPORT, (_, path) => `import('./${path}?v=${stamp(path)}')`)
   if (after !== before) writeFileSync(abs, after)
 }
 console.log(`에셋 링크 ${stamped}개에 내용 해시를 붙였습니다`)

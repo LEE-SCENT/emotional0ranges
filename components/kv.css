@@ -167,8 +167,7 @@
     flex-direction: row;
     align-items: center;
     max-inline-size: none;
-    /* 961~1600 은 40, 1601~ 은 120 입니다. 아래 티어에서 화살표가 안쪽으로 밀리면
-       가운데 텍스트가 좁아집니다. */
+    /* 티어와 무관하게 40 입니다. 더 들어가면 가운데 텍스트가 좁아집니다. */
     padding: 0 var(--spacing-1000);
   }
 
@@ -207,11 +206,6 @@
   .kv:focus-within .kv__nav {
     opacity: 1;
   }
-}
-
-/* ---- 1601~ ------------------------------------------------------------- */
-@media (min-width: 1601px) {
-  .kv__content { padding-inline: var(--spacing-3000); }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -27,7 +27,7 @@
   min-inline-size: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-50);
+  gap: var(--spacing-150);
 }
 
 .section-title__heading,
@@ -45,9 +45,9 @@
 
 .section-title__desc {
   color: var(--_section-title-fg-description);
-  font-size: var(--typography-body-l-regular-font-size);
-  font-weight: var(--typography-body-l-regular-font-weight);
-  line-height: var(--typography-body-l-regular-line-height);
+  font-size: var(--typography-body-m-regular-font-size);
+  font-weight: var(--typography-body-m-regular-font-weight);
+  line-height: var(--typography-body-m-regular-line-height);
 }
 
 .section-title__nav { flex: none; }
@@ -59,7 +59,7 @@
 .product-card-section {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-400);
+  gap: var(--spacing-500);
   /* 컨테이너가 --wide 로 1600 까지 넓어져도 카드 섹션은 1200 에서 멈춥니다.
      넓은 폭은 KV 만의 것이고, 카드가 그만큼 늘어나면 이미지가 과하게 커집니다. */
   inline-size: 100%;
