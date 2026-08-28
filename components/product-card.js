@@ -46,35 +46,41 @@ function animateScrollTo(el, to, ms, onFrame = () => {}) {
   requestAnimationFrame(step)
 }
 
-/** 모션 토큰에서 전환 시간을 읽습니다. 없으면 240ms. */
+/**
+ * 미끄러지는 시간. 카드 한 장이 눈에 보이게 이동해야 해서 기본값(240ms)보다
+ * 긴 --_duration-slow 를 씁니다.
+ */
 function scrollDuration(el) {
-  const raw = getComputedStyle(el).getPropertyValue('--_duration-base').trim()
+  const raw = getComputedStyle(el).getPropertyValue('--_duration-slow').trim()
   const ms = parseFloat(raw)
-  return Number.isFinite(ms) ? (raw.endsWith('ms') ? ms : ms * 1000) : 240
+  return Number.isFinite(ms) ? (raw.endsWith('ms') ? ms : ms * 1000) : 400
 }
 
+/**
+ * 지금 화면의 양 끝에 오는 카드를 정합니다.
+ *
+ * "뷰포트 경계를 넘어선 첫 카드" 같은 조건으로 고르면, 스크롤이 시작되는 순간
+ * 조건이 만족돼 아직 띠 한가운데 있는 카드에 모서리가 붙었다 떨어집니다.
+ * 그래서 스크롤 위치를 카드 한 칸으로 나눠 반올림합니다 — 한 칸 이동에 정확히
+ * 한 번, 절반을 지날 때만 바뀝니다.
+ */
 function updateEdges(track) {
   const cards = [...track.querySelectorAll('.product-card')]
   if (!cards.length) return
-  // offsetLeft 는 위치가 잡힌 조상 기준이라 트랙 기준이 아닙니다. 트랙의 rect 와
-  // 비교해야 스크롤 상태와 무관하게 "지금 보이는 양 끝" 을 정확히 집습니다.
-  const view = track.getBoundingClientRect()
 
-  let start = cards[0]
-  let end = cards[cards.length - 1]
-  for (const card of cards) {
-    const r = card.getBoundingClientRect()
-    if (r.left >= view.left - EDGE_TOLERANCE) { start = card; break }
-  }
-  for (const card of cards) {
-    const r = card.getBoundingClientRect()
-    if (r.right <= view.right + EDGE_TOLERANCE) end = card
-  }
+  const gap = parseFloat(getComputedStyle(track).columnGap) || 0
+  const step = cards[0].offsetWidth + gap
+  if (!step) return
 
-  for (const card of cards) {
-    card.classList.toggle('is-edge-start', card === start)
-    card.classList.toggle('is-edge-end', card === end)
-  }
+  const first = Math.round(track.scrollLeft / step)
+  const perView = Math.max(1, Math.round((track.clientWidth + gap) / step))
+  const startIndex = Math.min(first, cards.length - 1)
+  const endIndex = Math.min(startIndex + perView - 1, cards.length - 1)
+
+  cards.forEach((card, i) => {
+    card.classList.toggle('is-edge-start', i === startIndex)
+    card.classList.toggle('is-edge-end', i === endIndex)
+  })
 }
 
 export function initProductCarousel(scope = document) {
