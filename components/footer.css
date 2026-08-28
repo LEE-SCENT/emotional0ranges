@@ -1,0 +1,132 @@
+/**
+ * Footer — 저작권·정책 링크·사업자 정보·SNS.
+ *
+ *   <footer class="footer">
+ *     <div class="footer__info">
+ *       <p class="footer__links"> <span>…</span> <a>…</a> </p>
+ *       <p class="footer__meta">  <span>…</span> … </p>
+ *     </div>
+ *     <ul class="footer__sns"> <li><a><img …></a></li> </ul>
+ *   </footer>
+ *
+ * 가운뎃점 구분자는 마크업이 아니라 ::before 로 넣습니다. Figma 에서는 `·` 가 개별
+ * 텍스트 노드라 줄바꿈 시 점만 남을 수 있는데, ::before 는 항상 뒤따르는 항목에
+ * 붙어 다녀 그 문제가 생기지 않습니다.
+ */
+
+.footer {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-600);
+  padding-block: var(--spacing-500) var(--spacing-1200);
+  border-block-start: 1px solid var(--colors-border);
+  font-family: var(--_font-family-pretendard);
+}
+
+.footer__info {
+  flex: 1 0 0;
+  min-inline-size: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-300);
+}
+
+.footer__links,
+.footer__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 0;
+  font-feature-settings: 'lnum' 1, 'tnum' 1;
+}
+
+.footer__links {
+  gap: var(--spacing-100);
+  color: var(--colors-fg);
+  font-size: var(--typography-body-s-regular-font-size);
+  font-weight: var(--typography-body-s-regular-font-weight);
+  line-height: var(--typography-body-s-regular-line-height);
+  letter-spacing: var(--typography-body-s-regular-letter-spacing);
+}
+
+.footer__meta {
+  gap: var(--spacing-50);
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-xs-regular-font-size);
+  font-weight: var(--typography-body-xs-regular-font-weight);
+  line-height: var(--typography-body-xs-regular-line-height);
+  letter-spacing: var(--typography-body-xs-regular-letter-spacing);
+}
+
+.footer__links > * + *::before,
+.footer__meta > * + *::before {
+  content: '·';
+  /* 점 뒤 여백. 점 앞 여백은 flex gap 이 담당합니다. */
+  padding-inline-end: var(--spacing-100);
+}
+
+.footer__links a {
+  color: inherit;
+  text-decoration: none;
+}
+.footer__links a:hover { text-decoration: underline; }
+
+/* 강조되는 링크만 semibold 입니다 (Figma: 개인정보 처리방침). */
+.footer__links .is-strong {
+  font-weight: var(--typography-body-s-semibold-font-weight);
+}
+
+/* ---- SNS --------------------------------------------------------------- */
+
+.footer__sns {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-500);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.footer__sns a {
+  /* flex 로 가운데 정렬합니다. 아래에서 일부 아이콘을 줄이는데, block + margin:auto 는
+     가로만 가운데로 보내고 세로는 그대로 위에 붙어버립니다. */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--_footer-sns-icon-size);
+  block-size: var(--_footer-sns-icon-size);
+}
+
+.footer__sns img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  /* 박스는 20×20 로 고정하되 원본 비율은 지킵니다. 소스가 정사각형이 아닌 로고가
+     섞여 있어 fill(기본값)로 두면 브랜드 마크가 눌립니다. */
+  object-fit: contain;
+  /* 디자인대로 세 아이콘 모두 흑백입니다. 원본 PNG 는 브랜드 색이 그대로 들어있어
+     여기서 걷어냅니다 — 색 있는 원본을 유지해야 나중에 컬러가 필요할 때 되돌릴 수 있습니다. */
+  filter: grayscale(1);
+}
+
+/* ---- 개별 보정 ----------------------------------------------------------
+   원본 PNG 마다 글리프 여백이 다르게 구워져 있어, 같은 박스에 넣으면 크기가
+   제각각으로 보입니다. 잉크 영역이 캔버스에서 차지하는 비율:
+     instagram 89% · naverBlog 100% · somoim 74%
+   ⚠️ 근본 해결은 여백을 맞춘 에셋으로 다시 내보내는 것입니다.
+*/
+
+/* 인스타그램은 Figma 에서 80% 크기 + 35% 투명도입니다. 원본이 진한 아웃라인이라
+   투명도를 낮춰야 나머지 둘과 비슷한 무게로 보입니다 — 의도된 보정입니다. */
+.footer__sns .is-instagram img {
+  inline-size: 80%;
+  block-size: 80%;
+  opacity: 0.35;
+}
+
+/* naverBlog 는 글리프가 캔버스 네 변에 붙어 있어 혼자 30% 커 보입니다. */
+.footer__sns .is-naver-blog img {
+  inline-size: 75%;
+  block-size: 75%;
+}

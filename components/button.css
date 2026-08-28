@@ -1,0 +1,137 @@
+/**
+ * Button — type × size × iconOnly × isOn.
+ *
+ *   <button class="btn btn--filled btn--m">
+ *     <span class="btn__label">Button</span>
+ *     <svg class="btn__icon" aria-hidden="true"><use href="#icon-chevronRight"/></svg>
+ *   </button>
+ *
+ * type   : --filled | --outlined | --ghost | --blur
+ * size   : --small (32px) | --medium (40px) | --large (48px)
+ * state  : .is-on  — 반전 상태. 각 type 의 -on 토큰으로 갈아끼웁니다.
+ * 변형   : --icon-only  — 레이블 없이 아이콘만. 좌우 패딩이 줄어 정사각에 가까워집니다.
+ *
+ * 클래스 이름은 Figma variant 를 그대로 따릅니다. 내부 토큰만 축약형(iconSize/s·m·l)입니다.
+ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-50);
+  box-sizing: border-box;
+  border: 0;
+  margin: 0;
+  border-radius: var(--_button-rounded);
+  background: transparent;
+  font-family: var(--_font-family-pretendard);
+  cursor: pointer;
+  /* iconOnly 의 badge 를 얹기 위한 기준점 */
+  position: relative;
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  color: var(--colors-fg-disabled);
+  background: var(--colors-bg-disabled);
+  box-shadow: none;
+}
+
+.btn__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  /* 숫자 폭을 고정해 레이블이 바뀌어도 버튼이 흔들리지 않게 한다 (Figma 의 lnum/tnum). */
+  font-feature-settings: 'lnum' 1, 'tnum' 1;
+}
+
+.btn__icon {
+  flex: none;
+  display: block;
+  color: currentColor;
+}
+
+/* ---- size ---------------------------------------------------------------
+   높이는 padding + 줄높이(또는 아이콘)로 결정됩니다 — 고정 height 를 주지 않습니다.
+     small  : 8+8   + 12×130% ≈ 32
+     medium : 8+8   + 16×150% = 40
+     large  : 12+12 + 16×150% = 48
+*/
+
+.btn--small {
+  padding: var(--spacing-200) var(--spacing-300);
+  font-size: var(--typography-body-s-medium-font-size);
+  font-weight: var(--typography-body-s-medium-font-weight);
+  line-height: var(--typography-body-s-medium-line-height);
+  letter-spacing: var(--typography-body-s-medium-letter-spacing);
+}
+/* 텍스트 버튼의 small 은 16px(iconSize/xs)입니다. 20px(iconSize/s)은 iconOnly 전용입니다. */
+.btn--small .btn__icon { inline-size: var(--_button-icon-size-xs); block-size: var(--_button-icon-size-xs); }
+
+.btn--medium {
+  padding: var(--spacing-200) var(--spacing-400);
+  font-size: var(--typography-body-l-medium-font-size);
+  font-weight: var(--typography-body-l-medium-font-weight);
+  line-height: var(--typography-body-l-medium-line-height);
+  letter-spacing: var(--typography-body-l-medium-letter-spacing);
+}
+.btn--medium .btn__icon { inline-size: var(--_button-icon-size-m); block-size: var(--_button-icon-size-m); }
+
+.btn--large {
+  padding: var(--spacing-300) var(--spacing-600);
+  font-size: var(--typography-body-l-medium-font-size);
+  font-weight: var(--typography-body-l-medium-font-weight);
+  line-height: var(--typography-body-l-medium-line-height);
+  letter-spacing: var(--typography-body-l-medium-letter-spacing);
+}
+/* 텍스트 버튼은 large 도 24px 를 씁니다. 28px(iconSize/l)은 iconOnly 전용입니다. */
+.btn--large .btn__icon { inline-size: var(--_button-icon-size-m); block-size: var(--_button-icon-size-m); }
+
+/* iconOnly 는 패딩이 다릅니다.
+     small  : 8/12  -> 6/12   (44×32)
+     medium : 그대로          (56×40)
+     large  : 12/24 -> 10/16  (60×48)
+   아이콘도 텍스트 버튼과 달라, small 은 16 -> 20, large 는 24 -> 28 입니다. */
+.btn--icon-only.btn--small { padding: var(--spacing-150) var(--spacing-300); }
+.btn--icon-only.btn--small .btn__icon {
+  inline-size: var(--_button-icon-size-s);
+  block-size: var(--_button-icon-size-s);
+}
+.btn--icon-only.btn--medium { padding: var(--spacing-200) var(--spacing-400); }
+.btn--icon-only.btn--large { padding: var(--spacing-250) var(--spacing-400); }
+.btn--icon-only.btn--large .btn__icon {
+  inline-size: var(--_button-icon-size-l);
+  block-size: var(--_button-icon-size-l);
+}
+
+/* ---- type ---------------------------------------------------------------
+   outlined 의 테두리는 inset box-shadow 로 그립니다. Figma 의 stroke 가 안쪽 정렬이라
+   높이에 영향을 주지 않기 때문 — border 를 쓰면 40px 이 42px 이 됩니다.
+*/
+
+.btn--filled            { background: var(--_button-filled-bg);  color: var(--_button-filled-fg); }
+.btn--filled.is-on      { background: var(--_button-filled-bg-on); color: var(--_button-filled-fg-on); }
+
+.btn--outlined          { color: var(--_button-outlined-fg);
+                          box-shadow: inset 0 0 0 var(--_button-border-width) var(--_button-outlined-border); }
+.btn--outlined.is-on    { color: var(--_button-outlined-fg-on);
+                          box-shadow: inset 0 0 0 var(--_button-border-width) var(--_button-outlined-border-on); }
+
+.btn--ghost             { color: var(--_button-ghost-fg); }
+.btn--ghost.is-on       { color: var(--_button-ghost-fg-on); }
+
+.btn--blur              { background: var(--_button-blur-bg);  color: var(--_button-blur-fg);
+                          backdrop-filter: blur(var(--_button-blur-radius)); }
+.btn--blur.is-on        { background: var(--_button-blur-bg-on); color: var(--_button-blur-fg-on); }
+
+/* ---- badge --------------------------------------------------------------
+   iconOnly 버튼의 우측 상단에 알림 점을 얹습니다. .badge 를 그대로 재사용하고
+   위치만 여기서 잡습니다.
+*/
+
+.btn__badge {
+  position: absolute;
+  inset-block-start: var(--spacing-200);
+  inset-inline-end: var(--spacing-200);
+}
+.btn--large .btn__badge { inset-block-start: var(--spacing-250); }

@@ -1,0 +1,414 @@
+/* 자동 생성 파일입니다. 직접 수정하지 말고 tokens/*.json 을 고친 뒤 `node scripts/build-tokens.mjs` 를 실행하세요. */
+/*
+ * `--_` 로 시작하는 변수는 디자인 시스템 내부용입니다. 화면 작업에서 직접 쓰지 마세요.
+ * 공개 토큰은 접두사가 없습니다 — --bg, --fg-low, --spacing-400, --typography-*.
+ */
+
+:root {
+  /* ---- primitive (내부용) ---- */
+  --_colors-black: #000000;
+  --_colors-white: #FFFFFF;
+  --_colors-white-alpha-15: #FFFFFF26;
+  --_colors-twist-orange-50: #FAE9E6;
+  --_colors-twist-orange-100: #FDCCBA;
+  --_colors-twist-orange-200: #FBAC8D;
+  --_colors-twist-orange-300: #FA8C60;
+  --_colors-twist-orange-400: #F8733C;
+  --_colors-twist-orange-500: #F75D15;
+  --_colors-twist-orange-600: #EC5711;
+  --_colors-twist-orange-700: #DF500B;
+  --_colors-twist-orange-800: #D14807;
+  --_colors-twist-orange-900: #B83C00;
+  --_colors-serious-gray-50: #FDFBFA;
+  --_colors-serious-gray-100: #F8F6F5;
+  --_colors-serious-gray-200: #F3F1F0;
+  --_colors-serious-gray-300: #E7E5E4;
+  --_colors-serious-gray-400: #C5C3C2;
+  --_colors-serious-gray-500: #A6A4A3;
+  --_colors-serious-gray-600: #7D7B7A;
+  --_colors-serious-gray-700: #686666;
+  --_colors-serious-gray-800: #494746;
+  --_colors-serious-gray-900: #272625;
+  --_colors-serious-gray-alpha-900-4: #2726250A;
+  --_colors-serious-gray-alpha-900-8: #27262514;
+  --_colors-casual-neutral-50: #EBE6E2;
+  --_colors-casual-neutral-100: #CBC0B9;
+  --_colors-casual-neutral-200: #A8978D;
+  --_colors-accent-red-50: #FFEBEF;
+  --_colors-accent-red-500: #FF383C;
+  --_colors-accent-green-50: #E5F7E8;
+  --_colors-accent-green-400: #34C759;
+  --_colors-accent-green-500: #00BC37;
+  --_dimension: 4px;
+  --_duration-fast: 120ms;
+  --_duration-base: 240ms;
+  --_duration-slow: 400ms;
+  --_easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --_easing-decelerate: cubic-bezier(0, 0, 0, 1);
+  --_easing-accelerate: cubic-bezier(0.3, 0, 1, 1);
+  --_rounded-xs: 4px;
+  --_rounded-s: 6px;
+  --_rounded-m: 8px;
+  --_rounded-l: 12px;
+  --_rounded-xl: 16px;
+  --_rounded-2xl: 20px;
+  --_rounded-full: 9999px;
+  --_font-family-pretendard: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+  --_font-size-100: 10px;
+  --_font-size-150: 12px;
+  --_font-size-250: 14px;
+  --_font-size-350: 16px;
+  --_font-size-500: 20px;
+  --_font-size-700: 24px;
+  --_font-size-750: 28px;
+  --_font-size-800: 32px;
+  --_font-size-900: 36px;
+  --_font-size-1050: 44px;
+  --_font-size-1150: 52px;
+  --_font-weight-regular-400: 400;
+  --_font-weight-medium-500: 500;
+  --_font-weight-semibold-600: 600;
+  --_line-height-110: 110%;
+  --_line-height-130: 130%;
+  --_line-height-140: 140%;
+  --_line-height-150: 150%;
+  --_letter-spacing-0: 0em;
+  --_letter-spacing-n2: -0.02em;
+  --_letter-spacing-n3: -0.03em;
+
+  /* ---- semantic ---- */
+  --colors-bg: var(--_colors-white);
+  --colors-bg-low: var(--_colors-serious-gray-100);
+  --colors-bg-disabled: var(--_colors-serious-gray-50);
+  --colors-bg-transparent: var(--_colors-serious-gray-alpha-900-8);
+  --colors-bg-brand: var(--_colors-twist-orange-500);
+  --colors-bg-contrast: var(--_colors-black);
+  --colors-bg-critical: var(--_colors-accent-red-50);
+  --colors-fg: var(--_colors-black);
+  --colors-fg-low: var(--_colors-serious-gray-700);
+  --colors-fg-lower: var(--_colors-serious-gray-600);
+  --colors-fg-lowest: var(--_colors-serious-gray-500);
+  --colors-fg-disabled: var(--_colors-serious-gray-400);
+  --colors-fg-brand: var(--_colors-twist-orange-500);
+  --colors-fg-contrast: var(--_colors-white);
+  --colors-fg-success: var(--_colors-accent-green-400);
+  --colors-fg-critical: var(--_colors-accent-red-500);
+  --colors-border: var(--_colors-serious-gray-300);
+  --colors-divider: var(--_colors-serious-gray-300);
+  --breakpoint-sm: 441px;
+  --breakpoint-md: 961px;
+  --breakpoint-lg: 1601px;
+  --container-gutter-base: calc(var(--_dimension) * 5);
+  --container-gutter-md: calc(var(--_dimension) * 6);
+  --container-max-width-md: 1200px;
+  --container-max-width-lg: 1440px;
+  --container-max-width-wide: 1600px;
+  --spacing-50: calc(var(--_dimension) * 0.5);
+  --spacing-100: var(--_dimension);
+  --spacing-150: calc(var(--_dimension) * 1.5);
+  --spacing-200: calc(var(--_dimension) * 2);
+  --spacing-250: calc(var(--_dimension) * 2.5);
+  --spacing-300: calc(var(--_dimension) * 3);
+  --spacing-400: calc(var(--_dimension) * 4);
+  --spacing-500: calc(var(--_dimension) * 5);
+  --spacing-600: calc(var(--_dimension) * 6);
+  --spacing-700: calc(var(--_dimension) * 7);
+  --spacing-800: calc(var(--_dimension) * 8);
+  --spacing-900: calc(var(--_dimension) * 9);
+  --spacing-1000: calc(var(--_dimension) * 10);
+  --spacing-1200: calc(var(--_dimension) * 12);
+  --spacing-1500: calc(var(--_dimension) * 15);
+  --spacing-1800: calc(var(--_dimension) * 18);
+  --spacing-2000: calc(var(--_dimension) * 20);
+  --spacing-2200: calc(var(--_dimension) * 22);
+  --spacing-2400: calc(var(--_dimension) * 24);
+  --spacing-3000: calc(var(--_dimension) * 30);
+  --spacing-3200: calc(var(--_dimension) * 32);
+  --spacing-4000: calc(var(--_dimension) * 40);
+  --spacing-4500: calc(var(--_dimension) * 45);
+
+  /* ---- components (내부용) ---- */
+  --_badge-bg: var(--_colors-twist-orange-500);
+  --_badge-border: var(--_colors-white);
+  --_badge-size-m: calc(var(--_dimension) * 2);
+  --_badge-size-l: calc(var(--_dimension) * 2.5);
+  --_badge-border-width-m: 1px;
+  --_badge-border-width-l: 2px;
+  --_button-filled-fg: var(--_colors-white);
+  --_button-filled-bg: var(--_colors-black);
+  --_button-filled-fg-on: var(--colors-fg);
+  --_button-filled-bg-on: var(--_colors-white);
+  --_button-outlined-fg: var(--_colors-serious-gray-900);
+  --_button-outlined-border: var(--_colors-serious-gray-300);
+  --_button-outlined-fg-on: var(--_colors-white);
+  --_button-outlined-border-on: var(--_colors-serious-gray-300);
+  --_button-ghost-fg: var(--_colors-serious-gray-700);
+  --_button-ghost-fg-on: var(--_colors-white);
+  --_button-blur-fg: var(--_colors-serious-gray-700);
+  --_button-blur-bg: var(--_colors-serious-gray-alpha-900-4);
+  --_button-blur-fg-on: var(--_colors-white);
+  --_button-blur-bg-on: var(--_colors-white-alpha-15);
+  --_button-rounded: var(--_rounded-full);
+  --_button-icon-size-xs: calc(var(--_dimension) * 4);
+  --_button-icon-size-s: calc(var(--_dimension) * 5);
+  --_button-icon-size-m: calc(var(--_dimension) * 6);
+  --_button-icon-size-l: calc(var(--_dimension) * 7);
+  --_button-border-width: 1px;
+  --_button-blur-radius: 7.5px;
+  --_footer-sns-icon-size: calc(var(--_dimension) * 5);
+  --_gnb-fg: var(--colors-fg);
+  --_gnb-max-content-width: 1200px;
+  --_kv-rounded-base: var(--_rounded-l);
+  --_kv-rounded-md: var(--_rounded-2xl);
+  --_kv-scrim: var(--_colors-serious-gray-alpha-900-8);
+  --_kv-min-height-base: 548px;
+  --_kv-min-height-sm: 616px;
+  --_kv-min-height-md: 518px;
+  --_segmented-control-bg: var(--_colors-white);
+  --_segmented-control-border: var(--_colors-serious-gray-alpha-900-8);
+  --_segmented-control-rounded: var(--_rounded-full);
+  --_segmented-control-border-width: 1px;
+  --_segmented-control-transition-duration: var(--_duration-base);
+  --_segmented-control-transition-easing: var(--_easing-standard);
+  --_segmented-control-item-fg: var(--_colors-serious-gray-800);
+  --_segmented-control-item-fg-active: var(--_colors-white);
+  --_segmented-control-item-bg-active: var(--_colors-twist-orange-500);
+  --_segmented-control-item-rounded: var(--_rounded-full);
+  --_tooltip-fg: var(--_colors-white);
+  --_tooltip-bg: var(--_colors-serious-gray-900);
+  --_tooltip-rounded: var(--_rounded-m);
+  --_tooltip-arrow-width: 13px;
+  --_tooltip-arrow-height: 6px;
+
+  /* ---- semantic typography composite (공개) ---- */
+  --typography-display-xl-semibold-font-family: var(--_font-family-pretendard);
+  --typography-display-xl-semibold-font-size: var(--_font-size-1150);
+  --typography-display-xl-semibold-font-weight: var(--_font-weight-semibold-600);
+  --typography-display-xl-semibold-line-height: var(--_line-height-130);
+  --typography-display-xl-semibold-letter-spacing: var(--_letter-spacing-n2);
+  --typography-display-m-semibold-font-family: var(--_font-family-pretendard);
+  --typography-display-m-semibold-font-size: var(--_font-size-1050);
+  --typography-display-m-semibold-font-weight: var(--_font-weight-semibold-600);
+  --typography-display-m-semibold-line-height: var(--_line-height-130);
+  --typography-display-m-semibold-letter-spacing: var(--_letter-spacing-n2);
+  --typography-display-s-semibold-font-family: var(--_font-family-pretendard);
+  --typography-display-s-semibold-font-size: var(--_font-size-800);
+  --typography-display-s-semibold-font-weight: var(--_font-weight-semibold-600);
+  --typography-display-s-semibold-line-height: var(--_line-height-130);
+  --typography-display-s-semibold-letter-spacing: var(--_letter-spacing-n2);
+  --typography-heading-l-semibold-font-family: var(--_font-family-pretendard);
+  --typography-heading-l-semibold-font-size: var(--_font-size-900);
+  --typography-heading-l-semibold-font-weight: var(--_font-weight-semibold-600);
+  --typography-heading-l-semibold-line-height: var(--_line-height-110);
+  --typography-heading-l-semibold-letter-spacing: var(--_letter-spacing-0);
+  --typography-heading-m-semibold-font-family: var(--_font-family-pretendard);
+  --typography-heading-m-semibold-font-size: var(--_font-size-750);
+  --typography-heading-m-semibold-font-weight: var(--_font-weight-semibold-600);
+  --typography-heading-m-semibold-line-height: var(--_line-height-130);
+  --typography-heading-m-semibold-letter-spacing: var(--_letter-spacing-0);
+  --typography-heading-s-semibold-font-family: var(--_font-family-pretendard);
+  --typography-heading-s-semibold-font-size: var(--_font-size-700);
+  --typography-heading-s-semibold-font-weight: var(--_font-weight-semibold-600);
+  --typography-heading-s-semibold-line-height: var(--_line-height-140);
+  --typography-heading-s-semibold-letter-spacing: var(--_letter-spacing-0);
+  --typography-heading-xs-semibold-font-family: var(--_font-family-pretendard);
+  --typography-heading-xs-semibold-font-size: var(--_font-size-500);
+  --typography-heading-xs-semibold-font-weight: var(--_font-weight-semibold-600);
+  --typography-heading-xs-semibold-line-height: var(--_line-height-140);
+  --typography-heading-xs-semibold-letter-spacing: var(--_letter-spacing-0);
+  --typography-body-l-semibold-font-family: var(--_font-family-pretendard);
+  --typography-body-l-semibold-font-size: var(--_font-size-350);
+  --typography-body-l-semibold-font-weight: var(--_font-weight-semibold-600);
+  --typography-body-l-semibold-line-height: var(--_line-height-150);
+  --typography-body-l-semibold-letter-spacing: var(--_letter-spacing-0);
+  --typography-body-l-medium-font-family: var(--_font-family-pretendard);
+  --typography-body-l-medium-font-size: var(--_font-size-350);
+  --typography-body-l-medium-font-weight: var(--_font-weight-medium-500);
+  --typography-body-l-medium-line-height: var(--_line-height-150);
+  --typography-body-l-medium-letter-spacing: var(--_letter-spacing-0);
+  --typography-body-l-regular-font-family: var(--_font-family-pretendard);
+  --typography-body-l-regular-font-size: var(--_font-size-350);
+  --typography-body-l-regular-font-weight: var(--_font-weight-regular-400);
+  --typography-body-l-regular-line-height: var(--_line-height-150);
+  --typography-body-l-regular-letter-spacing: var(--_letter-spacing-0);
+  --typography-body-m-semibold-font-family: var(--_font-family-pretendard);
+  --typography-body-m-semibold-font-size: var(--_font-size-250);
+  --typography-body-m-semibold-font-weight: var(--_font-weight-semibold-600);
+  --typography-body-m-semibold-line-height: var(--_line-height-140);
+  --typography-body-m-semibold-letter-spacing: var(--_letter-spacing-0);
+  --typography-body-m-medium-font-family: var(--_font-family-pretendard);
+  --typography-body-m-medium-font-size: var(--_font-size-250);
+  --typography-body-m-medium-font-weight: var(--_font-weight-medium-500);
+  --typography-body-m-medium-line-height: var(--_line-height-140);
+  --typography-body-m-medium-letter-spacing: var(--_letter-spacing-0);
+  --typography-body-m-regular-font-family: var(--_font-family-pretendard);
+  --typography-body-m-regular-font-size: var(--_font-size-250);
+  --typography-body-m-regular-font-weight: var(--_font-weight-regular-400);
+  --typography-body-m-regular-line-height: var(--_line-height-140);
+  --typography-body-m-regular-letter-spacing: var(--_letter-spacing-0);
+  --typography-body-s-semibold-font-family: var(--_font-family-pretendard);
+  --typography-body-s-semibold-font-size: var(--_font-size-150);
+  --typography-body-s-semibold-font-weight: var(--_font-weight-semibold-600);
+  --typography-body-s-semibold-line-height: var(--_line-height-130);
+  --typography-body-s-semibold-letter-spacing: var(--_letter-spacing-0);
+  --typography-body-s-medium-font-family: var(--_font-family-pretendard);
+  --typography-body-s-medium-font-size: var(--_font-size-150);
+  --typography-body-s-medium-font-weight: var(--_font-weight-medium-500);
+  --typography-body-s-medium-line-height: var(--_line-height-130);
+  --typography-body-s-medium-letter-spacing: var(--_letter-spacing-0);
+  --typography-body-s-regular-font-family: var(--_font-family-pretendard);
+  --typography-body-s-regular-font-size: var(--_font-size-150);
+  --typography-body-s-regular-font-weight: var(--_font-weight-regular-400);
+  --typography-body-s-regular-line-height: var(--_line-height-130);
+  --typography-body-s-regular-letter-spacing: var(--_letter-spacing-0);
+  --typography-body-xs-semibold-font-family: var(--_font-family-pretendard);
+  --typography-body-xs-semibold-font-size: var(--_font-size-100);
+  --typography-body-xs-semibold-font-weight: var(--_font-weight-semibold-600);
+  --typography-body-xs-semibold-line-height: var(--_line-height-130);
+  --typography-body-xs-semibold-letter-spacing: var(--_letter-spacing-0);
+  --typography-body-xs-medium-font-family: var(--_font-family-pretendard);
+  --typography-body-xs-medium-font-size: var(--_font-size-100);
+  --typography-body-xs-medium-font-weight: var(--_font-weight-medium-500);
+  --typography-body-xs-medium-line-height: var(--_line-height-130);
+  --typography-body-xs-medium-letter-spacing: var(--_letter-spacing-0);
+  --typography-body-xs-regular-font-family: var(--_font-family-pretendard);
+  --typography-body-xs-regular-font-size: var(--_font-size-100);
+  --typography-body-xs-regular-font-weight: var(--_font-weight-regular-400);
+  --typography-body-xs-regular-line-height: var(--_line-height-130);
+  --typography-body-xs-regular-letter-spacing: var(--_letter-spacing-0);
+}
+
+/* ---- 유틸리티 클래스 ---- */
+.typography-display-xl-semibold {
+  font-family: var(--typography-display-xl-semibold-font-family);
+  font-size: var(--typography-display-xl-semibold-font-size);
+  font-weight: var(--typography-display-xl-semibold-font-weight);
+  line-height: var(--typography-display-xl-semibold-line-height);
+  letter-spacing: var(--typography-display-xl-semibold-letter-spacing);
+}
+.typography-display-m-semibold {
+  font-family: var(--typography-display-m-semibold-font-family);
+  font-size: var(--typography-display-m-semibold-font-size);
+  font-weight: var(--typography-display-m-semibold-font-weight);
+  line-height: var(--typography-display-m-semibold-line-height);
+  letter-spacing: var(--typography-display-m-semibold-letter-spacing);
+}
+.typography-display-s-semibold {
+  font-family: var(--typography-display-s-semibold-font-family);
+  font-size: var(--typography-display-s-semibold-font-size);
+  font-weight: var(--typography-display-s-semibold-font-weight);
+  line-height: var(--typography-display-s-semibold-line-height);
+  letter-spacing: var(--typography-display-s-semibold-letter-spacing);
+}
+.typography-heading-l-semibold {
+  font-family: var(--typography-heading-l-semibold-font-family);
+  font-size: var(--typography-heading-l-semibold-font-size);
+  font-weight: var(--typography-heading-l-semibold-font-weight);
+  line-height: var(--typography-heading-l-semibold-line-height);
+  letter-spacing: var(--typography-heading-l-semibold-letter-spacing);
+}
+.typography-heading-m-semibold {
+  font-family: var(--typography-heading-m-semibold-font-family);
+  font-size: var(--typography-heading-m-semibold-font-size);
+  font-weight: var(--typography-heading-m-semibold-font-weight);
+  line-height: var(--typography-heading-m-semibold-line-height);
+  letter-spacing: var(--typography-heading-m-semibold-letter-spacing);
+}
+.typography-heading-s-semibold {
+  font-family: var(--typography-heading-s-semibold-font-family);
+  font-size: var(--typography-heading-s-semibold-font-size);
+  font-weight: var(--typography-heading-s-semibold-font-weight);
+  line-height: var(--typography-heading-s-semibold-line-height);
+  letter-spacing: var(--typography-heading-s-semibold-letter-spacing);
+}
+.typography-heading-xs-semibold {
+  font-family: var(--typography-heading-xs-semibold-font-family);
+  font-size: var(--typography-heading-xs-semibold-font-size);
+  font-weight: var(--typography-heading-xs-semibold-font-weight);
+  line-height: var(--typography-heading-xs-semibold-line-height);
+  letter-spacing: var(--typography-heading-xs-semibold-letter-spacing);
+}
+.typography-body-l-semibold {
+  font-family: var(--typography-body-l-semibold-font-family);
+  font-size: var(--typography-body-l-semibold-font-size);
+  font-weight: var(--typography-body-l-semibold-font-weight);
+  line-height: var(--typography-body-l-semibold-line-height);
+  letter-spacing: var(--typography-body-l-semibold-letter-spacing);
+}
+.typography-body-l-medium {
+  font-family: var(--typography-body-l-medium-font-family);
+  font-size: var(--typography-body-l-medium-font-size);
+  font-weight: var(--typography-body-l-medium-font-weight);
+  line-height: var(--typography-body-l-medium-line-height);
+  letter-spacing: var(--typography-body-l-medium-letter-spacing);
+}
+.typography-body-l-regular {
+  font-family: var(--typography-body-l-regular-font-family);
+  font-size: var(--typography-body-l-regular-font-size);
+  font-weight: var(--typography-body-l-regular-font-weight);
+  line-height: var(--typography-body-l-regular-line-height);
+  letter-spacing: var(--typography-body-l-regular-letter-spacing);
+}
+.typography-body-m-semibold {
+  font-family: var(--typography-body-m-semibold-font-family);
+  font-size: var(--typography-body-m-semibold-font-size);
+  font-weight: var(--typography-body-m-semibold-font-weight);
+  line-height: var(--typography-body-m-semibold-line-height);
+  letter-spacing: var(--typography-body-m-semibold-letter-spacing);
+}
+.typography-body-m-medium {
+  font-family: var(--typography-body-m-medium-font-family);
+  font-size: var(--typography-body-m-medium-font-size);
+  font-weight: var(--typography-body-m-medium-font-weight);
+  line-height: var(--typography-body-m-medium-line-height);
+  letter-spacing: var(--typography-body-m-medium-letter-spacing);
+}
+.typography-body-m-regular {
+  font-family: var(--typography-body-m-regular-font-family);
+  font-size: var(--typography-body-m-regular-font-size);
+  font-weight: var(--typography-body-m-regular-font-weight);
+  line-height: var(--typography-body-m-regular-line-height);
+  letter-spacing: var(--typography-body-m-regular-letter-spacing);
+}
+.typography-body-s-semibold {
+  font-family: var(--typography-body-s-semibold-font-family);
+  font-size: var(--typography-body-s-semibold-font-size);
+  font-weight: var(--typography-body-s-semibold-font-weight);
+  line-height: var(--typography-body-s-semibold-line-height);
+  letter-spacing: var(--typography-body-s-semibold-letter-spacing);
+}
+.typography-body-s-medium {
+  font-family: var(--typography-body-s-medium-font-family);
+  font-size: var(--typography-body-s-medium-font-size);
+  font-weight: var(--typography-body-s-medium-font-weight);
+  line-height: var(--typography-body-s-medium-line-height);
+  letter-spacing: var(--typography-body-s-medium-letter-spacing);
+}
+.typography-body-s-regular {
+  font-family: var(--typography-body-s-regular-font-family);
+  font-size: var(--typography-body-s-regular-font-size);
+  font-weight: var(--typography-body-s-regular-font-weight);
+  line-height: var(--typography-body-s-regular-line-height);
+  letter-spacing: var(--typography-body-s-regular-letter-spacing);
+}
+.typography-body-xs-semibold {
+  font-family: var(--typography-body-xs-semibold-font-family);
+  font-size: var(--typography-body-xs-semibold-font-size);
+  font-weight: var(--typography-body-xs-semibold-font-weight);
+  line-height: var(--typography-body-xs-semibold-line-height);
+  letter-spacing: var(--typography-body-xs-semibold-letter-spacing);
+}
+.typography-body-xs-medium {
+  font-family: var(--typography-body-xs-medium-font-family);
+  font-size: var(--typography-body-xs-medium-font-size);
+  font-weight: var(--typography-body-xs-medium-font-weight);
+  line-height: var(--typography-body-xs-medium-line-height);
+  letter-spacing: var(--typography-body-xs-medium-letter-spacing);
+}
+.typography-body-xs-regular {
+  font-family: var(--typography-body-xs-regular-font-family);
+  font-size: var(--typography-body-xs-regular-font-size);
+  font-weight: var(--typography-body-xs-regular-font-weight);
+  line-height: var(--typography-body-xs-regular-line-height);
+  letter-spacing: var(--typography-body-xs-regular-letter-spacing);
+}

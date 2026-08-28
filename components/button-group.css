@@ -1,0 +1,38 @@
+/**
+ * ButtonGroup — 버튼 여러 개를 일정한 간격으로 묶는 레이아웃.
+ *
+ *   <div class="btn-group btn-group--vertical">
+ *     <button class="btn btn--filled btn--m">확인</button>
+ *     <button class="btn btn--ghost btn--m">취소</button>
+ *   </div>
+ *
+ * 방향: --vertical (기본, 버튼이 폭을 꽉 채움) | --horizontal (버튼이 폭을 균등 분할)
+ * 간격: 기본 medium (6px) | --gap-large (8px)
+ *
+ * 버튼 크기는 여기서 정하지 않습니다. Figma 는 gap variant 가 버튼 크기까지 바꾸지만,
+ * 간격과 크기는 별개 축이라 버튼 쪽 클래스로 두었습니다.
+ */
+
+.btn-group {
+  display: flex;
+  gap: var(--spacing-150);
+}
+
+.btn-group--gap-large { gap: var(--spacing-200); }
+
+.btn-group--vertical {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.btn-group--horizontal {
+  flex-direction: row;
+  align-items: center;
+}
+
+/* 가로 배치에서는 버튼이 폭을 균등하게 나눕니다. min-inline-size:0 이 없으면
+   긴 레이블이 균등 분할을 깨뜨립니다. */
+.btn-group--horizontal > .btn {
+  flex: 1 0 0;
+  min-inline-size: 0;
+}

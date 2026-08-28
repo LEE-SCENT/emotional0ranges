@@ -1,0 +1,79 @@
+/**
+ * Tooltip — 앵커를 가리키는 말풍선.
+ *
+ *   <div class="tooltip tooltip--bottom">
+ *     <span class="tooltip__label">온라인 매칭 지금 보러 가기</span>
+ *   </div>
+ *
+ * placement 는 말풍선이 앵커의 어느 쪽에 놓이는지를 뜻합니다 —
+ *   --bottom : 앵커 아래에 놓이므로 꼬리는 위를 향합니다.
+ *   --top    : 앵커 위에 놓이므로 꼬리는 아래를 향합니다.
+ * 선택: --has-close  (닫기 버튼이 있으면 오른쪽 패딩이 줄어듭니다)
+ */
+
+.tooltip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-100);
+  padding: var(--spacing-150) var(--spacing-300);
+  border-radius: var(--_tooltip-rounded);
+  background: var(--_tooltip-bg);
+  color: var(--_tooltip-fg);
+  font-family: var(--_font-family-pretendard);
+  font-size: var(--typography-body-m-medium-font-size);
+  font-weight: var(--typography-body-m-medium-font-weight);
+  line-height: var(--typography-body-m-medium-line-height);
+  letter-spacing: var(--typography-body-m-medium-letter-spacing);
+}
+
+.tooltip--has-close { padding-inline-end: var(--spacing-150); }
+
+.tooltip__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-feature-settings: 'lnum' 1, 'tnum' 1;
+}
+
+.tooltip__close {
+  flex: none;
+  display: block;
+  inline-size: var(--spacing-400);
+  block-size: var(--spacing-400);
+  color: currentColor;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* ---- 꼬리 --------------------------------------------------------------
+   Figma 가 내보낸 꼬리 SVG 의 path 를 그대로 mask 로 씁니다. 꼭짓점이 둥글게
+   깎여 있어 CSS 삼각형(border trick)으로는 재현되지 않습니다. mask 라서
+   색은 --_tooltip-bg 를 그대로 따라갑니다.
+*/
+.tooltip::after {
+  content: '';
+  position: absolute;
+  inset-inline-start: 50%;
+  translate: -50% 0;
+  inline-size: var(--_tooltip-arrow-width);
+  block-size: var(--_tooltip-arrow-height);
+  background: var(--_tooltip-bg);
+  --tooltip-arrow-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='6' viewBox='0 0 13 6'%3E%3Cpath d='M0 6L4.98862 0.642364C5.78612 -0.214122 7.21388 -0.214121 8.01138 0.642364L13 6H0Z' fill='%23000'/%3E%3C/svg%3E");
+  -webkit-mask-image: var(--tooltip-arrow-mask);
+  mask-image: var(--tooltip-arrow-mask);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+}
+
+.tooltip--bottom::after {
+  inset-block-end: 100%;
+}
+
+.tooltip--top::after {
+  inset-block-start: 100%;
+  scale: 1 -1;
+}

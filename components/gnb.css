@@ -1,0 +1,124 @@
+/**
+ * GNB — 전역 내비게이션.
+ *
+ * Figma 의 width variant(small 360–1024 / medium 1025–1600 / large 1601–2000)를
+ * 웹에서는 미디어 쿼리로 옮겼습니다. 마크업은 하나이고 CSS 가 breakpoint 마다
+ * 보일 것과 배치를 바꿉니다 — variant 마다 다른 DOM 을 쓰면 SSR·접근성이 나빠집니다.
+ *
+ *   <header class="gnb">
+ *     <div class="gnb__inner">
+ *       <div class="gnb__start"> 로고, segmentedControl </div>
+ *       <div class="gnb__end">   메뉴, 액션 버튼        </div>
+ *     </div>
+ *   </header>
+ *
+ * ⚠️ breakpoint 값이 CSS 에 박혀 있습니다. 미디어 쿼리는 var() 를 받지 못해
+ *    --breakpoint-* 토큰을 조건에 쓸 수 없습니다. 화면 전체 브레이크포인트(961 / 1601)를
+ *    따르며, 값을 바꿀 때는 tokens/semantic.layout.json 과 함께 고쳐야 합니다.
+ */
+
+.gnb {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  inline-size: 100%;
+  /* small: 좌우가 비대칭입니다 (왼쪽 20, 오른쪽 12) */
+  padding: var(--spacing-300) var(--spacing-300) var(--spacing-300) var(--spacing-500);
+  background: var(--colors-bg);
+  color: var(--_gnb-fg);
+  font-family: var(--_font-family-pretendard);
+}
+
+.gnb__inner {
+  flex: 1 0 0;
+  min-inline-size: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.gnb__start,
+.gnb__end {
+  display: flex;
+  align-items: center;
+}
+
+.gnb__logo {
+  flex: none;
+  display: block;
+  block-size: 40px;
+  inline-size: 126px;
+  color: inherit;
+}
+
+.gnb__menu {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-150);
+  /* 메뉴는 ghost 버튼을 그대로 쓰되 글자색만 fg 로 올립니다.
+     .btn 셀렉터를 덮어쓰지 않고 버튼이 읽는 변수를 이 범위에서만 재지정합니다 —
+     버튼이 자기 스타일의 주인으로 남으므로 나중에 hover/focus 가 추가돼도 그대로 따라옵니다. */
+  --_button-ghost-fg: var(--_gnb-fg);
+}
+
+.gnb__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-150);
+}
+
+/* small 에서는 segmentedControl 과 메뉴가 접힙니다. */
+.gnb__segmented,
+.gnb__menu,
+.gnb__notify {
+  display: none;
+}
+
+/* small 의 액션 버튼만 아이콘이 32px 입니다 — iconSize 토큰에 없는 값이라
+   여기서만 예외로 지정합니다. ⚠️ Figma 에 32px 토큰 추가가 필요합니다. */
+.gnb__actions .btn--icon-only .btn__icon { inline-size: 32px; block-size: 32px; }
+
+/* ---- medium (1025px~) -------------------------------------------------- */
+@media (min-width: 961px) {
+  .gnb { padding: var(--spacing-400) var(--spacing-600); }
+
+  .gnb__start { gap: var(--spacing-800); }
+  .gnb__end { gap: var(--spacing-400); }
+
+  .gnb__segmented { display: block; }
+  .gnb__menu { display: flex; }
+
+  .gnb__actions .btn--icon-only .btn__icon {
+    inline-size: var(--_button-icon-size-m);
+    block-size: var(--_button-icon-size-m);
+  }
+}
+
+/* ---- large (1601px~) --------------------------------------------------- */
+@media (min-width: 1601px) {
+  /* 가운데 콘텐츠는 1200px 로 묶고, 로고와 액션은 화면 가장자리에 붙입니다.
+     그래서 로고/액션만 흐름에서 빼냅니다 — space-between 으로는 가운데를
+     정확히 1200px 로 고정할 수 없습니다. */
+  .gnb__inner {
+    flex: none;
+    inline-size: 100%;
+    max-inline-size: var(--_gnb-max-content-width);
+  }
+
+  .gnb__logo {
+    position: absolute;
+    inset-inline-start: var(--spacing-600);
+    inset-block-start: 50%;
+    translate: 0 -50%;
+  }
+
+  .gnb__actions {
+    position: absolute;
+    inset-inline-end: var(--spacing-600);
+    inset-block-start: var(--spacing-400);
+  }
+
+  .gnb__notify { display: inline-flex; }
+}

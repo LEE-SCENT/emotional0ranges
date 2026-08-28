@@ -1,0 +1,56 @@
+{
+  "semantic": {
+    "breakpoint": {
+      "$type": "dimension",
+      "$description": "각 티어가 시작하는 최소 폭. Figma Breakpoint 섹션의 프레임 이름(~440 / 441-960 / 961-1600 / 1601~)에서 읽었습니다. 기본은 가장 좁은 티어이고 위로 올라가며 덮어씁니다.",
+      "sm": {
+        "$value": "441px",
+        "$description": "441~960"
+      },
+      "md": {
+        "$value": "961px",
+        "$description": "961~1600"
+      },
+      "lg": {
+        "$value": "1601px",
+        "$description": "1601~"
+      }
+    },
+    "container": {
+      "gutter": {
+        "$type": "dimension",
+        "$description": "콘텐츠와 화면 가장자리 사이 여백.",
+        "base": {
+          "$value": "{primitive.dimension}",
+          "$extensions": {
+            "scale": 5
+          },
+          "$description": "20px — ~960"
+        },
+        "md": {
+          "$value": "{primitive.dimension}",
+          "$extensions": {
+            "scale": 6
+          },
+          "$description": "24px — 961~"
+        }
+      },
+      "maxWidth": {
+        "$type": "dimension",
+        "$description": "콘텐츠가 넓어지는 한계. 이보다 넓은 화면에서는 가운데 정렬됩니다.",
+        "md": {
+          "$value": "1200px",
+          "$description": "961~1600"
+        },
+        "lg": {
+          "$value": "1440px",
+          "$description": "1601~ 기본"
+        },
+        "wide": {
+          "$value": "1600px",
+          "$description": "1601~ 에서 .container--wide 를 쓸 때. KV 처럼 화면을 크게 쓰는 영역용입니다."
+        }
+      }
+    }
+  }
+}

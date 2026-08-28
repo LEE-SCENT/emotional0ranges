@@ -1,0 +1,59 @@
+{
+  "components": {
+    "button": {
+      "$description": "type(filled/outlined/ghost/blur) × size(s/m/l) × iconOnly × isOn. isOn 은 반전 상태로 -on 접미사 토큰을 씁니다.",
+
+      "filled": {
+        "$type": "color",
+        "fg":    { "$value": "{primitive.colors.white}" },
+        "bg":    { "$value": "{primitive.colors.black}" },
+        "fg-on": {
+          "$value": "{semantic.colors.fg}",
+          "$description": "반전 상태(흰 배경) 위의 글자색. primitive 가 아니라 semantic 을 참조합니다."
+        },
+        "bg-on": { "$value": "{primitive.colors.white}" }
+      },
+      "outlined": {
+        "$type": "color",
+        "fg":        { "$value": "{primitive.colors.seriousGray.900}" },
+        "border":    { "$value": "{primitive.colors.seriousGray.300}" },
+        "fg-on":     { "$value": "{primitive.colors.white}" },
+        "border-on": { "$value": "{primitive.colors.seriousGray.300}" }
+      },
+      "ghost": {
+        "$type": "color",
+        "fg":    { "$value": "{primitive.colors.seriousGray.700}" },
+        "fg-on": { "$value": "{primitive.colors.white}" }
+      },
+      "blur": {
+        "$type": "color",
+        "$description": "이미지·영상 위에 올리는 반투명 버튼. 배경이 비쳐야 하므로 alpha 토큰을 씁니다.",
+        "fg":    { "$value": "{primitive.colors.seriousGray.700}" },
+        "bg":    { "$value": "{primitive.colors.seriousGray.alpha.900.4}" },
+        "fg-on": { "$value": "{primitive.colors.white}" },
+        "bg-on": { "$value": "{primitive.colors.whiteAlpha.15}" }
+      },
+
+      "rounded": { "$type": "dimension", "$value": "{primitive.rounded.full}" },
+
+      "iconSize": {
+        "$type": "dimension",
+        "xs": { "$value": "{primitive.dimension}", "$extensions": { "scale": 4 } },
+        "s":  { "$value": "{primitive.dimension}", "$extensions": { "scale": 5 } },
+        "m":  { "$value": "{primitive.dimension}", "$extensions": { "scale": 6 } },
+        "l":  { "$value": "{primitive.dimension}", "$extensions": { "scale": 7 } }
+      },
+
+      "borderWidth": {
+        "$type": "dimension",
+        "$value": "1px",
+        "$description": "⚠️ Figma 에 변수로 없습니다. outlined 의 stroke 두께에서 읽었습니다."
+      },
+      "blurRadius": {
+        "$type": "dimension",
+        "$value": "7.5px",
+        "$description": "⚠️ Figma 에 변수로 없습니다. blur 타입의 backdrop-blur 값이며, isOn 일 때만 7px 로 달라 확인이 필요합니다."
+      }
+    }
+  }
+}

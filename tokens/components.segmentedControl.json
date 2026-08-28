@@ -1,0 +1,27 @@
+{
+  "components": {
+    "segmentedControl": {
+      "$description": "서로 배타적인 선택지를 나란히 놓는 컨트롤. 선택된 항목만 브랜드 색으로 채워집니다.",
+      "bg":      { "$type": "color", "$value": "{primitive.colors.white}" },
+      "border":  { "$type": "color", "$value": "{primitive.colors.seriousGray.alpha.900.8}" },
+      "rounded": { "$type": "dimension", "$value": "{primitive.rounded.full}" },
+      "borderWidth": {
+        "$type": "dimension",
+        "$value": "1px",
+        "$description": "⚠️ Figma 에 변수로 없습니다. 컨테이너 stroke 두께에서 읽었습니다."
+      },
+      "transition": {
+        "$description": "선택 표시가 항목 사이를 미끄러지는 모션.",
+        "duration": { "$type": "duration",    "$value": "{primitive.duration.base}" },
+        "easing":   { "$type": "cubicBezier", "$value": "{primitive.easing.standard}" }
+      },
+
+      "item": {
+        "fg":        { "$type": "color", "$value": "{primitive.colors.seriousGray.800}" },
+        "fg-active": { "$type": "color", "$value": "{primitive.colors.white}" },
+        "bg-active": { "$type": "color", "$value": "{primitive.colors.twistOrange.500}" },
+        "rounded":   { "$type": "dimension", "$value": "{primitive.rounded.full}" }
+      }
+    }
+  }
+}

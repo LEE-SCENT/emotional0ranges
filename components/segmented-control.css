@@ -1,0 +1,95 @@
+/**
+ * SegmentedControl — 서로 배타적인 선택지를 나란히 놓는 컨트롤.
+ *
+ *   <div class="segmented" role="tablist">
+ *     <span class="segmented__thumb" aria-hidden="true"></span>
+ *     <button class="segmented__item is-selected" role="tab" aria-selected="true">온라인</button>
+ *     <button class="segmented__item" role="tab" aria-selected="false">오프라인</button>
+ *   </div>
+ *
+ * size: 기본 small (높이 40) | --medium (높이 56)
+ *
+ * 선택 표시는 항목의 배경이 아니라 별도의 __thumb 이 맡습니다. 배경을 켜고 끄면
+ * 즉시 점프하지만, thumb 은 위치와 폭을 전환할 수 있어 미끄러지듯 이동합니다.
+ * 항목 폭이 글자 수에 따라 달라 위치를 CSS 만으로 알 수 없으므로,
+ * segmented-control.js 가 측정해서 --segmented-thumb-x / -w 에 넣어줍니다.
+ * JS 없이도 정적인 모습은 그대로 나옵니다(thumb 만 움직이지 않습니다).
+ *
+ * 컨테이너 테두리는 inset box-shadow 로 그립니다. Figma 의 stroke 가 안쪽 정렬이라
+ * 높이에 영향을 주지 않기 때문 — border 를 쓰면 40px 이 42px 이 됩니다.
+ */
+
+.segmented {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  overflow: clip;
+  border-radius: var(--_segmented-control-rounded);
+  background: var(--_segmented-control-bg);
+  box-shadow: inset 0 0 0 var(--_segmented-control-border-width) var(--_segmented-control-border);
+}
+
+.segmented__thumb {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  inline-size: var(--segmented-thumb-w, 0);
+  translate: var(--segmented-thumb-x, 0) 0;
+  border-radius: var(--_segmented-control-item-rounded);
+  background: var(--_segmented-control-item-bg-active);
+  /* Figma drop-shadow. ⚠️ 아직 토큰이 아니라 값이 박혀 있습니다. */
+  filter: drop-shadow(0 2px 10px rgb(0 0 0 / 0.06));
+  transition:
+    translate var(--_segmented-control-transition-duration) var(--_segmented-control-transition-easing),
+    inline-size var(--_segmented-control-transition-duration) var(--_segmented-control-transition-easing);
+}
+
+/* 첫 배치에서 왼쪽 끝에서 날아오는 것처럼 보이지 않도록, JS 가 준비되기 전에는
+   전환을 끕니다. JS 가 위치를 잡은 뒤 is-ready 를 붙입니다. */
+.segmented:not(.is-ready) .segmented__thumb { transition: none; }
+
+.segmented__item {
+  position: relative;   /* thumb 위에 글자가 오도록 */
+  z-index: 1;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border: 0;
+  margin: 0;
+  padding: var(--spacing-200) var(--spacing-400);
+  border-radius: var(--_segmented-control-item-rounded);
+  background: transparent;
+  color: var(--_segmented-control-item-fg);
+  font-family: var(--_font-family-pretendard);
+  font-size: var(--typography-body-l-medium-font-size);
+  font-weight: var(--typography-body-l-medium-font-weight);
+  line-height: var(--typography-body-l-medium-line-height);
+  letter-spacing: var(--typography-body-l-medium-letter-spacing);
+  white-space: nowrap;
+  cursor: pointer;
+  /* 글자색은 thumb 이 도착하는 속도에 맞춰 함께 바뀝니다. */
+  transition: color var(--_segmented-control-transition-duration)
+              var(--_segmented-control-transition-easing);
+}
+
+.segmented--medium .segmented__item { padding: var(--spacing-400); }
+
+.segmented__item.is-selected {
+  color: var(--_segmented-control-item-fg-active);
+}
+
+/* JS 가 없으면 thumb 이 움직이지 않으므로, 선택된 항목이 스스로 배경을 그립니다. */
+.segmented:not(.is-ready) .segmented__item.is-selected {
+  background: var(--_segmented-control-item-bg-active);
+  filter: drop-shadow(0 2px 10px rgb(0 0 0 / 0.06));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .segmented__thumb,
+  .segmented__item {
+    transition: none;
+  }
+}

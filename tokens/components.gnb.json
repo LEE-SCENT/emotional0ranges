@@ -1,0 +1,17 @@
+{
+  "components": {
+    "gnb": {
+      "$description": "전역 내비게이션. 브레이크포인트는 화면 전체 규칙(semantic/breakpoint)을 따릅니다.",
+      "fg": {
+        "$type": "color",
+        "$value": "{semantic.colors.fg}",
+        "$description": "GNB 메뉴 텍스트 색. ghost 버튼 기본값(seriousGray 700)보다 진한 fg 를 씁니다 — 메뉴는 본문 위계라 더 또렷해야 합니다. Figma 는 여기에 팔레트에 없는 #212121 을 쓰고 있어 fg 로 정리했습니다."
+      },
+      "maxContentWidth": {
+        "$type": "dimension",
+        "$value": "1200px",
+        "$description": "가장 넓은 티어에서 가운데 콘텐츠가 넓어지지 않도록 잡는 한계. 로고와 액션은 이 폭 밖 화면 가장자리에 붙습니다."
+      }
+    }
+  }
+}

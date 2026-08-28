@@ -1,0 +1,17 @@
+{
+  "primitive": {
+    "rounded": {
+      "$type": "dimension",
+      "xs":   { "$value": "4px" },
+      "s":    { "$value": "6px" },
+      "m":    { "$value": "8px" },
+      "l":    { "$value": "12px" },
+      "xl":   { "$value": "16px" },
+      "2xl":  { "$value": "20px" },
+      "full": {
+        "$value": "9999px",
+        "$description": "실제 반지름이 아니라 '한계까지 둥글게'를 뜻하는 관용값입니다. 알약 버튼·아바타·뱃지처럼 높이에 상관없이 완전히 둥근 모서리가 필요할 때 씁니다."
+      }
+    }
+  }
+}

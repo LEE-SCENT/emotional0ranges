@@ -1,0 +1,14 @@
+{
+  "name": "emotional0ranges-design-system",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "디자인 시스템 토큰",
+  "scripts": {
+    "build": "npm run build:tokens && npm run build:icons && npm run build:logo",
+    "build:tokens": "node scripts/build-tokens.mjs",
+    "build:icons": "node scripts/build-icons.mjs",
+    "build:logo": "node scripts/build-logo.mjs",
+    "preview": "node scripts/serve.mjs"
+  }
+}

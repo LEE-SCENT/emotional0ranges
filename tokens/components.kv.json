@@ -1,0 +1,38 @@
+{
+  "components": {
+    "kv": {
+      "$description": "홈 최상단 키비주얼. 배경에 영상이 깔리고 그 위에 흰 텍스트와 CTA 가 올라갑니다.",
+      "rounded": {
+        "$type": "dimension",
+        "base": {
+          "$value": "{primitive.rounded.l}",
+          "$description": "~960"
+        },
+        "md": {
+          "$value": "{primitive.rounded.2xl}",
+          "$description": "961~"
+        }
+      },
+      "scrim": {
+        "$type": "color",
+        "$value": "{primitive.colors.seriousGray.alpha.900.8}",
+        "$description": "⚠️ Figma 에 없습니다. 영상 위 흰 텍스트의 가독성을 위해 필요해 추가했습니다. 실제 서비스도 어두운 그라디언트를 깔고 있습니다."
+      },
+      "minHeight": {
+        "$type": "dimension",
+        "base": {
+          "$value": "548px",
+          "$description": "~440"
+        },
+        "sm": {
+          "$value": "616px",
+          "$description": "441~960"
+        },
+        "md": {
+          "$value": "518px",
+          "$description": "961~"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,166 @@
+<meta charset="utf-8"><title>Components</title>
+<link rel="stylesheet" href="./fonts/pretendard/pretendard.css">
+<link rel="stylesheet" href="./build/tokens.css">
+<link rel="stylesheet" href="./components/badge.css">
+<link rel="stylesheet" href="./components/button.css">
+<link rel="stylesheet" href="./components/button-group.css">
+<link rel="stylesheet" href="./components/segmented-control.css">
+<link rel="stylesheet" href="./components/tooltip.css">
+<link rel="stylesheet" href="./components/gnb.css">
+<link rel="stylesheet" href="./components/container.css">
+<link rel="stylesheet" href="./components/footer.css">
+<style>
+  body { margin:0; padding:24px; background:var(--colors-bg); color:var(--colors-fg);
+         font-family:var(--_font-family-pretendard); }
+  h2 { font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+       color:var(--colors-fg-lower); margin:28px 0 10px; }
+  .row { display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-bottom:10px; }
+  .onbg { background:var(--colors-bg-contrast); padding:16px; border-radius:var(--_rounded-m); }
+  .blurbg { background:linear-gradient(120deg,#c2410c,#f59e0b); padding:16px; border-radius:var(--_rounded-m); }
+  small { font-size:11px; color:var(--colors-fg-lowest); }
+</style>
+<div id="sprite" hidden></div>
+<h2>Breakpoint — 창 폭을 줄여보세요</h2>
+<div style="background:var(--colors-bg-low);padding:8px 0;border-radius:var(--_rounded-m)">
+  <div class="container" id="bp-probe" style="background:var(--colors-bg);border:1px dashed var(--colors-border);padding-block:12px;text-align:center;font-size:12px"></div>
+</div>
+<h2>Footer</h2>
+<div id="footer-host"></div>
+<h2>GNB — 창 폭에 따라 small / medium / large</h2>
+<div id="gnb-host" style="border:1px solid var(--colors-border);border-radius:var(--_rounded-m);overflow:hidden"></div>
+<h2>Logo — original / white / currentColor</h2>
+<div class="row" style="gap:24px">
+  <img src="./build/logo/original.svg" alt="emotional oranges" height="40">
+  <span style="background:var(--colors-bg-contrast);padding:12px 16px;border-radius:var(--_rounded-m);display:inline-flex">
+    <img src="./build/logo/white.svg" alt="emotional oranges" height="40">
+  </span>
+  <span id="logo-inline" style="color:var(--colors-fg-brand)"></span>
+</div>
+<h2>Font — weight 400 / 500 / 600 구분 확인</h2>
+<div id="wt" style="display:flex;flex-direction:column;gap:2px"></div>
+<h2>Button — 기본형 (suffixIcon·hasBadge 없음)</h2>
+<div class="row" id="r0"></div>
+<h2>Button — suffixIcon</h2>
+<div class="row" id="r1"></div>
+<h2>Button — isOn (반전 배경)</h2>
+<div class="row onbg" id="r2"></div>
+<h2>Button — blur</h2>
+<div class="row blurbg" id="r3"></div>
+<h2>Button — iconOnly 기본형 (badge 없음)</h2>
+<div class="row" id="r4"></div>
+<h2>Button — iconOnly + badge</h2>
+<div class="row" id="r4b"></div>
+<h2>SegmentedControl — small(40) / medium(56)</h2>
+<div class="row" id="r5"></div>
+<h2>Tooltip — bottom / top × 닫기버튼</h2>
+<div class="row" id="r6" style="gap:32px;row-gap:28px;padding:20px 0"></div>
+<h2>ButtonGroup — vertical</h2>
+<div class="row" id="r7"></div>
+<h2>ButtonGroup — horizontal</h2>
+<div class="row" id="r8"></div>
+<script type="module">
+document.getElementById('sprite').innerHTML = await (await fetch('./build/icons.svg')).text()
+const ic = '<svg class="btn__icon" aria-hidden="true"><use href="#icon-chevronRight"></use></svg>'
+const btn = (cls, size) => `<button class="btn btn--${cls} btn--${size}"><span class="btn__label">Button</span>${ic}</button>`
+const iconOnly = (cls, size, badge) => `<button class="btn btn--${cls} btn--${size} btn--icon-only" aria-label="다음">${ic}${badge ? '<span class="badge btn__badge"></span>' : ''}</button>`
+const TIERS = [[441,'~440'],[961,'441~960'],[1601,'961~1600'],[Infinity,'1601~']]
+function showTier() {
+  const w = innerWidth
+  const tier = TIERS.find(([max]) => w < max)[1]
+  const el = document.getElementById('bp-probe')
+  const cs = getComputedStyle(el)
+  el.textContent = `viewport ${w}px · 티어 ${tier} · 여백 ${cs.paddingInlineStart} · 최대폭 ${cs.maxInlineSize}`
+}
+addEventListener('resize', showTier); showTier()
+
+const LINKS = ['Ⓒ 2026 Emotional 0ranges', ['개인정보 처리방침', true], '이용약관', '의견 보내기']
+const META = ['(주)감정적인오렌지들', '경기도 남양주시 별내중앙로 34, 502호(별내동)',
+  'emotional0ranges@naver.com', '개인정보보호책임자: {{이름}}', '사업자 등록번호 000-00-00000',
+  '통신판매신고번호 2024-경기남양주-0000', '고객센터 0505-1922-2274 (평일 10시-19시, 주말 및 공휴일 제외)']
+const SNS = [['instagram','인스타그램','is-instagram'], ['naver-blog','네이버 블로그','is-naver-blog'], ['somoim','소모임','']]
+document.getElementById('footer-host').innerHTML = `
+<footer class="footer">
+  <div class="footer__info">
+    <p class="footer__links">${LINKS.map(l => Array.isArray(l)
+      ? `<a class="is-strong" href="#">${l[0]}</a>`
+      : (l.startsWith('Ⓒ') ? `<span>${l}</span>` : `<a href="#">${l}</a>`)).join('')}</p>
+    <p class="footer__meta">${META.map(m => `<span>${m.replace(/[<>]/g,'')}</span>`).join('')}</p>
+  </div>
+  <ul class="footer__sns">${SNS.map(([f,label,cls]) =>
+    `<li><a class="${cls.trim()}" href="#" aria-label="${label}"><img src="./logo/sns/${f}.png" alt=""></a></li>`).join('')}</ul>
+</footer>`
+
+const MENU = ['모임','매칭','모임 후기','자주 묻는 질문','저널']
+document.getElementById('gnb-host').innerHTML = `
+<header class="gnb">
+  <div class="gnb__inner">
+    <div class="gnb__start">
+      <a class="gnb__logo" href="#" aria-label="emotional oranges">
+        <svg width="126" height="40" role="img" aria-label="emotional oranges"><use href="#logo-eo"></use></svg>
+      </a>
+      <div class="gnb__segmented">
+        <div class="segmented" role="tablist">
+          <span class="segmented__thumb" aria-hidden="true"></span>
+          <button class="segmented__item is-selected" role="tab" aria-selected="true">온라인</button>
+          <button class="segmented__item" role="tab" aria-selected="false">오프라인</button>
+        </div>
+      </div>
+    </div>
+    <div class="gnb__end">
+      <nav class="gnb__menu">${MENU.map(m => `<button class="btn btn--ghost btn--medium"><span class="btn__label">${m}</span></button>`).join('')}</nav>
+      <div class="gnb__actions">
+        <button class="btn btn--ghost btn--medium btn--icon-only gnb__notify" aria-label="알림">
+          <svg class="btn__icon" aria-hidden="true"><use href="#icon-notifications"></use></svg>
+          <span class="badge btn__badge"></span>
+        </button>
+        <button class="btn btn--blur btn--medium btn--icon-only" aria-label="메뉴 열기">
+          <svg class="btn__icon" aria-hidden="true"><use href="#icon-menu"></use></svg>
+          <span class="badge btn__badge"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>`
+
+document.getElementById('logo-inline').innerHTML =
+  await (await fetch('./build/logo.svg')).text() + '<svg width="126" height="40" role="img" aria-label="emotional oranges"><use href="#logo-eo"></use></svg>'
+document.getElementById('wt').innerHTML = [400,500,600].map(w =>
+  `<div data-w="${w}" style="font-weight:${w};font-size:20px">디자인 시스템 Pretendard 123 — ${w}</div>`).join('')
+const plain = (cls, size) => `<button class="btn btn--${cls} btn--${size}"><span class="btn__label">Button</span></button>`
+document.getElementById('r0').innerHTML =
+  ['filled','outlined','ghost'].flatMap(t => ['small','medium','large'].map(s => plain(t,s))).join('')
+document.getElementById('r1').innerHTML =
+  ['filled','outlined','ghost'].flatMap(t => ['small','medium','large'].map(s => btn(t,s))).join('')
+document.getElementById('r2').innerHTML =
+  ['filled','outlined','ghost'].map(t => btn(t,'medium')).join('')
+document.querySelectorAll('#r2 .btn').forEach(b => b.classList.add('is-on'))
+document.getElementById('r3').innerHTML = ['small','medium','large'].map(s => btn('blur',s)).join('')
+document.getElementById('r4').innerHTML =
+  ['filled','outlined','ghost','blur'].flatMap(t => ['small','medium','large'].map(s => iconOnly(t,s,false))).join('')
+document.getElementById('r4b').innerHTML =
+  ['filled','outlined','ghost','blur'].flatMap(t => ['small','medium','large'].map(s => iconOnly(t,s,true))).join('')
+
+document.getElementById('r5').innerHTML = ['small','medium'].map(sz => `
+  <div class="segmented${sz==='medium'?' segmented--medium':''}" role="tablist">
+    <span class="segmented__thumb" aria-hidden="true"></span>
+    <button class="segmented__item is-selected" role="tab" aria-selected="true">온라인</button>
+    <button class="segmented__item" role="tab" aria-selected="false">오프라인</button>
+    <button class="segmented__item" role="tab" aria-selected="false">전체</button>
+  </div>`).join('')
+
+document.getElementById('r6').innerHTML = ['bottom','top'].flatMap(pl => [
+  `<div class="tooltip tooltip--${pl}"><span class="tooltip__label">온라인 매칭 지금 보러 가기</span></div>`,
+  `<div class="tooltip tooltip--${pl} tooltip--has-close"><span class="tooltip__label">온라인 매칭 지금 보러 가기</span><button class="tooltip__close" aria-label="닫기"><svg width="16" height="16" aria-hidden="true"><use href="#icon-close"></use></svg></button></div>`,
+]).join('')
+
+for (const [id, dir] of [['r7','vertical'],['r8','horizontal']]) {
+  document.getElementById(id).innerHTML = `
+    <div class="btn-group btn-group--${dir}" style="width:260px">
+      <button class="btn btn--filled btn--medium"><span class="btn__label">Button</span></button>
+      <button class="btn btn--ghost btn--medium"><span class="btn__label">Button</span></button>
+    </div>`
+}
+
+const { initSegmentedControls } = await import('./components/segmented-control.js')
+initSegmentedControls()
+</script>

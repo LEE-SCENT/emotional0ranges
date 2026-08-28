@@ -1,0 +1,18 @@
+{
+  "primitive": {
+    "duration": {
+      "$type": "duration",
+      "$description": "⚠️ Figma 에 변수로 없습니다. 모션이 필요해져 코드에서 신규 정의했습니다.",
+      "fast": { "$value": "120ms", "$description": "색·투명도처럼 위치가 변하지 않는 전환." },
+      "base": { "$value": "240ms", "$description": "요소가 눈에 띄게 이동하는 전환. 기본값." },
+      "slow": { "$value": "400ms", "$description": "화면 전환처럼 큰 변화." }
+    },
+    "easing": {
+      "$type": "cubicBezier",
+      "$description": "⚠️ Figma 에 변수로 없습니다.",
+      "standard":   { "$value": "cubic-bezier(0.2, 0, 0, 1)", "$description": "빠르게 출발해 부드럽게 멈춥니다. 사용자 조작에 대한 반응 기본값." },
+      "decelerate": { "$value": "cubic-bezier(0, 0, 0, 1)", "$description": "들어오는 요소." },
+      "accelerate": { "$value": "cubic-bezier(0.3, 0, 1, 1)", "$description": "나가는 요소." }
+    }
+  }
+}

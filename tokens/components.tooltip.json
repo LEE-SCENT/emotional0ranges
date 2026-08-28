@@ -1,0 +1,16 @@
+{
+  "components": {
+    "tooltip": {
+      "$description": "앵커 요소를 가리키는 말풍선. 꼬리는 말풍선 바깥으로 나갑니다.",
+      "fg":      { "$type": "color", "$value": "{primitive.colors.white}" },
+      "bg":      { "$type": "color", "$value": "{primitive.colors.seriousGray.900}" },
+      "rounded": { "$type": "dimension", "$value": "{primitive.rounded.m}" },
+      "arrow": {
+        "$type": "dimension",
+        "$description": "⚠️ Figma 에 변수로 없습니다. 내보낸 꼬리 SVG 의 viewBox(13×6)에서 읽었습니다.",
+        "width":  { "$value": "13px" },
+        "height": { "$value": "6px" }
+      }
+    }
+  }
+}

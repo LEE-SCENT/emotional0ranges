@@ -1,0 +1,24 @@
+{
+  "components": {
+    "badge": {
+      "$description": "읽지 않음·알림을 알리는 점. 테두리는 채움 바깥에 그려지므로 전체 지름 = size + borderWidth×2 입니다.",
+
+      "bg":     { "$type": "color", "$value": "{primitive.colors.twistOrange.500}" },
+      "border": { "$type": "color", "$value": "{primitive.colors.white}" },
+
+      "size": {
+        "$type": "dimension",
+        "$description": "채움(주황 원)의 지름. 전체 크기가 아닙니다.",
+        "m": { "$value": "{primitive.dimension}", "$extensions": { "scale": 2 } },
+        "l": { "$value": "{primitive.dimension}", "$extensions": { "scale": 2.5 } }
+      },
+
+      "borderWidth": {
+        "$type": "dimension",
+        "$description": "⚠️ Figma 에 아직 변수로 없습니다. 내보낸 SVG 의 stroke-width 에서 읽어 정의했습니다 (m=1, l=2). Figma 에도 추가해야 양쪽이 일치합니다.",
+        "m": { "$value": "1px" },
+        "l": { "$value": "2px" }
+      }
+    }
+  }
+}

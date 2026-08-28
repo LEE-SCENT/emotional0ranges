@@ -1,0 +1,45 @@
+/**
+ * Badge — 읽지 않음·알림을 알리는 점.
+ *
+ * 테두리는 채움 **바깥**에 그려집니다 (Figma 원본의 SVG stroke 와 동일).
+ * 그래서 레이아웃 박스는 size 그대로이고 링은 그 밖으로 넘칩니다 —
+ * box-shadow 를 쓰는 이유이며, border 를 쓰면 박스가 커지거나 채움이 줄어듭니다.
+ *
+ *   기본(small)  : 채움 8px  + 테두리 1px → 전체 10px
+ *   --medium     : 채움 10px + 테두리 2px → 전체 14px
+ *
+ * ⚠️ 클래스는 Figma variant(small/medium)를, 내부 토큰은 Figma 토큰명(size/m·size/l)을 따릅니다.
+ * Figma 안에서 둘이 어긋나 있어 그대로 반영했습니다.
+ *
+ * 아이콘·아바타 위에 겹쳐 놓을 때는 감싸는 요소에 position:relative 를 주고
+ * .badge 에 position:absolute 로 위치를 잡으세요.
+ */
+
+.badge {
+  display: inline-block;
+  flex: none;
+  box-sizing: content-box;
+  inline-size: var(--_badge-size-m);
+  block-size: var(--_badge-size-m);
+  border-radius: var(--_rounded-full);
+  background: var(--_badge-bg);
+  /* 링을 바깥에 그린다 — 레이아웃 크기는 그대로 둔다. */
+  box-shadow: 0 0 0 var(--_badge-border-width-m) var(--_badge-border);
+}
+
+.badge--medium {
+  inline-size: var(--_badge-size-l);
+  block-size: var(--_badge-size-l);
+  box-shadow: 0 0 0 var(--_badge-border-width-l) var(--_badge-border);
+}
+
+/* 강제 색상 모드에서는 box-shadow 가 지워지므로 링을 따로 복원한다. */
+@media (forced-colors: active) {
+  .badge {
+    background: Highlight;
+    outline: var(--_badge-border-width-m) solid Canvas;
+  }
+  .badge--medium {
+    outline-width: var(--_badge-border-width-l);
+  }
+}

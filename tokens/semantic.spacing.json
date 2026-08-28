@@ -1,0 +1,146 @@
+{
+  "semantic": {
+    "spacing": {
+      "$type": "dimension",
+      "$description": "primitive/dimension(4px) 의 배수입니다. 배수 = 이름 ÷ 100 (50 -> ×0.5 -> 2px, 400 -> ×4 -> 16px).",
+      "50": {
+        "$value": "{primitive.dimension}",
+        "$extensions": {
+          "scale": 0.5
+        }
+      },
+      "100": {
+        "$value": "{primitive.dimension}",
+        "$extensions": {
+          "scale": 1
+        }
+      },
+      "150": {
+        "$value": "{primitive.dimension}",
+        "$extensions": {
+          "scale": 1.5
+        }
+      },
+      "200": {
+        "$value": "{primitive.dimension}",
+        "$extensions": {
+          "scale": 2
+        }
+      },
+      "250": {
+        "$value": "{primitive.dimension}",
+        "$extensions": {
+          "scale": 2.5
+        }
+      },
+      "300": {
+        "$value": "{primitive.dimension}",
+        "$extensions": {
+          "scale": 3
+        }
+      },
+      "400": {
+        "$value": "{primitive.dimension}",
+        "$extensions": {
+          "scale": 4
+        }
+      },
+      "500": {
+        "$value": "{primitive.dimension}",
+        "$extensions": {
+          "scale": 5
+        }
+      },
+      "600": {
+        "$value": "{primitive.dimension}",
+        "$extensions": {
+          "scale": 6
+        }
+      },
+      "700": {
+        "$value": "{primitive.dimension}",
+        "$extensions": {
+          "scale": 7
+        }
+      },
+      "800": {
+        "$value": "{primitive.dimension}",
+        "$extensions": {
+          "scale": 8
+        }
+      },
+      "900": {
+        "$value": "{primitive.dimension}",
+        "$extensions": {
+          "scale": 9
+        }
+      },
+      "1000": {
+        "$value": "{primitive.dimension}",
+        "$extensions": {
+          "scale": 10
+        }
+      },
+      "1200": {
+        "$value": "{primitive.dimension}",
+        "$extensions": {
+          "scale": 12
+        }
+      },
+      "1500": {
+        "$value": "{primitive.dimension}",
+        "$extensions": {
+          "scale": 15
+        }
+      },
+      "1800": {
+        "$value": "{primitive.dimension}",
+        "$extensions": {
+          "scale": 18
+        }
+      },
+      "2000": {
+        "$value": "{primitive.dimension}",
+        "$extensions": {
+          "scale": 20
+        }
+      },
+      "2200": {
+        "$value": "{primitive.dimension}",
+        "$extensions": {
+          "scale": 22
+        }
+      },
+      "2400": {
+        "$value": "{primitive.dimension}",
+        "$extensions": {
+          "scale": 24
+        }
+      },
+      "3000": {
+        "$value": "{primitive.dimension}",
+        "$extensions": {
+          "scale": 30
+        }
+      },
+      "3200": {
+        "$value": "{primitive.dimension}",
+        "$extensions": {
+          "scale": 32
+        }
+      },
+      "4000": {
+        "$value": "{primitive.dimension}",
+        "$extensions": {
+          "scale": 40
+        }
+      },
+      "4500": {
+        "$value": "{primitive.dimension}",
+        "$extensions": {
+          "scale": 45
+        }
+      }
+    }
+  }
+}

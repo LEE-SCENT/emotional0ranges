@@ -1,0 +1,45 @@
+/**
+ * 화면 브레이크포인트와 콘텐츠 컨테이너.
+ *
+ *   <div class="container"> … </div>
+ *
+ * 티어는 넷입니다. 가장 좁은 쪽이 기본이고 위로 올라가며 덮어씁니다(mobile first).
+ *
+ *   ~440      좌우 여백 20
+ *   441~960   좌우 여백 20
+ *   961~1600  좌우 여백 24, 최대폭 1200
+ *   1601~     최대폭 1440 (.container--wide 는 1600)
+ *
+ * ⚠️ 미디어 쿼리는 var() 를 받지 못해 --breakpoint-* 토큰을 조건에 쓸 수 없습니다.
+ *    아래 숫자와 tokens/semantic.layout.json 을 항상 함께 고쳐야 합니다.
+ *    441 / 961 / 1601 세 곳뿐이니 검색으로 찾을 수 있습니다.
+ */
+
+.container {
+  box-sizing: border-box;
+  inline-size: 100%;
+  margin-inline: auto;
+  padding-inline: var(--container-gutter-base);
+}
+
+/* 441~960 은 ~440 과 여백이 같습니다. 티어가 나뉘어 있는 건 이 안에서 레이아웃이
+   달라지기 때문이지 여백 때문이 아니라, 여기에는 별도 규칙이 없습니다. */
+
+@media (min-width: 961px) {
+  .container {
+    padding-inline: var(--container-gutter-md);
+    max-inline-size: calc(var(--container-max-width-md) + 2 * var(--container-gutter-md));
+  }
+}
+
+@media (min-width: 1601px) {
+  .container {
+    max-inline-size: calc(var(--container-max-width-lg) + 2 * var(--container-gutter-md));
+  }
+
+  /* KV 처럼 화면을 크게 쓰는 영역만 한 단계 넓게 갑니다.
+     본문 기본 폭(1440)을 함께 넓히면 글줄이 너무 길어집니다. */
+  .container--wide {
+    max-inline-size: calc(var(--container-max-width-wide) + 2 * var(--container-gutter-md));
+  }
+}

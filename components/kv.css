@@ -1,0 +1,220 @@
+/**
+ * KV — 홈 최상단 키비주얼. 배경 영상 위에 흰 텍스트와 CTA 가 올라갑니다.
+ *
+ * 폭은 .container 규칙을 그대로 따릅니다 (~960 여백 20 / 961~ 여백 24 · 최대 1200 / 1601~ 최대 1440).
+ * Figma 의 KV 폭(400·920·976·1200·1440)이 .container 계산과 정확히 일치해 따로 잡지 않습니다.
+ *
+ * 레이아웃이 티어마다 갈립니다.
+ *   ~960   : 세로. 콘텐츠가 아래에 붙고 오른쪽 아래에 페이지네이션.
+ *   961~   : 가로. 좌우 화살표 버튼 사이에 콘텐츠가 가운데 정렬.
+ */
+
+.kv {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  overflow: clip;
+  min-block-size: var(--_kv-min-height-base);
+  border-radius: var(--_kv-rounded-base);
+  color: var(--colors-fg-contrast);
+  font-family: var(--_font-family-pretendard);
+}
+
+/* ---- 배경 영상 ---------------------------------------------------------
+   16:9 영상을 임의 비율의 박스에 꽉 채웁니다. 컨테이너 쿼리 단위를 쓰면
+   가로/세로 어느 쪽이 모자라든 넘치는 쪽으로 키워 잘라낼 수 있습니다.
+   iframe 은 object-fit 이 통하지 않아 이 방법이 필요합니다.
+*/
+.kv__media {
+  position: absolute;
+  inset: 0;
+  container-type: size;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--_colors-serious-gray-900);
+  /* 재생이 시작되기 전 YouTube 가 잠깐 띄우는 오버레이(일시정지 아이콘 등)를 가립니다.
+     controls=0 으로는 지워지지 않아, 실제로 재생될 때까지 덮어두는 편이 확실합니다.
+     그동안은 위 배경색이 보입니다. */
+  opacity: 0;
+  transition: opacity var(--_duration-base) var(--_easing-standard);
+}
+
+.kv.is-playing .kv__media { opacity: 1; }
+
+.kv__media > * {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  translate: -50% -50%;
+  border: 0;
+  /* cover 에 더해 한 번 더 키웁니다. YouTube 는 채널명(좌상단)과 로고(우하단)를
+     플레이어 가장자리에 붙여 그리므로, 딱 맞게 채우면 그 브랜딩이 그대로 보입니다.
+     넉넉히 키워 화면 밖으로 밀어냅니다. */
+  inline-size: calc(max(100cqw, 100cqh * 16 / 9) * var(--kv-media-overscale, 1.6));
+  block-size: calc(max(100cqh, 100cqw * 9 / 16) * var(--kv-media-overscale, 1.6));
+}
+
+/* 영상 위 흰 텍스트를 읽히게 하는 어둠. ⚠️ Figma 에 없지만 없으면 대비가 무너집니다. */
+.kv__scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    rgb(0 0 0 / 0.72) 0%,
+    rgb(0 0 0 / 0.36) 45%,
+    rgb(0 0 0 / 0.24) 100%
+  );
+}
+
+/* ---- 콘텐츠 ----------------------------------------------------------- */
+
+.kv__content {
+  position: relative;
+  box-sizing: border-box;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-600);
+  inline-size: 100%;
+  padding: var(--spacing-800) var(--spacing-500);
+}
+
+.kv__body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-600);
+  inline-size: 100%;
+}
+
+.kv__title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-300);
+  inline-size: 100%;
+  text-align: center;
+}
+
+.kv__headline {
+  margin: 0;
+  font-size: var(--typography-display-s-semibold-font-size);
+  font-weight: var(--typography-display-s-semibold-font-weight);
+  line-height: var(--typography-display-s-semibold-line-height);
+  letter-spacing: var(--typography-display-s-semibold-letter-spacing);
+}
+
+/* 문장 끝 마침표만 브랜드 색입니다. */
+.kv__dot { color: var(--colors-fg-brand); }
+
+.kv__sub {
+  margin: 0;
+  font-size: var(--typography-body-m-regular-font-size);
+  font-weight: var(--typography-body-m-regular-font-weight);
+  line-height: var(--typography-body-m-regular-line-height);
+  letter-spacing: var(--typography-body-m-regular-letter-spacing);
+}
+
+.kv__cta { inline-size: 100%; }
+
+/* ---- 페이지네이션 (~960) ----------------------------------------------- */
+
+.kv__pagination {
+  position: relative;
+  box-sizing: border-box;
+  z-index: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--spacing-50);
+  margin: 0;
+  inline-size: 100%;
+  max-inline-size: 640px;
+  padding: var(--spacing-300) var(--spacing-500);
+  font-size: var(--typography-body-m-regular-font-size);
+  line-height: var(--typography-body-m-regular-line-height);
+}
+.kv__pagination b { font-weight: var(--typography-body-m-semibold-font-weight); }
+
+/* ---- 좌우 이동 버튼 (961~) ---------------------------------------------
+   버튼 컴포넌트를 그대로 씁니다 — .btn--blur.btn--medium.btn--icon-only.is-on.
+   영상 위에 놓이므로 blur 타입이고, 어두운 화면 위라 반전 상태(is-on)입니다.
+   배경(whiteAlpha 15%)·글자색·backdrop-filter 를 버튼이 이미 갖고 있어
+   여기서 색을 덮어쓸 일이 없습니다.
+*/
+
+.kv__nav { display: none; }
+
+/* ---- 441~960 ----------------------------------------------------------- */
+@media (min-width: 441px) {
+  .kv { min-block-size: var(--_kv-min-height-sm); }
+  .kv__content { max-inline-size: 640px; }
+}
+
+/* ---- 961~ -------------------------------------------------------------- */
+@media (min-width: 961px) {
+  .kv {
+    justify-content: center;
+    min-block-size: var(--_kv-min-height-md);
+    border-radius: var(--_kv-rounded-md);
+  }
+
+  .kv__content {
+    flex-direction: row;
+    align-items: center;
+    max-inline-size: none;
+    /* 961~1600 은 40, 1601~ 은 120 입니다. 아래 티어에서 화살표가 안쪽으로 밀리면
+       가운데 텍스트가 좁아집니다. */
+    padding: 0 var(--spacing-1000);
+  }
+
+  .kv__body { flex: 1 0 0; min-inline-size: 0; }
+
+  /* 961~1600 구간에서 헤드라인이 44 → 52 로 자랍니다. Figma 가 같은 티어의
+     1024 프레임과 1600 프레임에 각각 44 / 52 를 그려두어 유동 스케일로 읽었습니다.
+     ⚠️ 단계 전환이 의도였다면 이 clamp 를 고정값으로 바꿔야 합니다. */
+  .kv__headline {
+    font-size: clamp(
+      var(--typography-display-m-semibold-font-size),
+      calc(29.78px + 1.3889vw),
+      var(--typography-display-xl-semibold-font-size)
+    );
+    letter-spacing: var(--typography-display-xl-semibold-letter-spacing);
+  }
+
+  .kv__sub {
+    font-size: var(--typography-body-l-regular-font-size);
+    line-height: var(--typography-body-l-regular-line-height);
+  }
+
+  .kv__cta { inline-size: 320px; }
+  .kv__pagination { display: none; }
+
+  /* 인디케이터는 평소에 숨어 있다가 KV 위에 마우스를 올릴 때 나타납니다.
+     display 를 껐다 켜면 가운데 텍스트 폭이 흔들리므로 opacity 만 바꿉니다 —
+     자리는 항상 차지하고 있습니다.
+     :focus-within 이 함께 있어야 키보드로 탭 이동할 때도 보입니다. */
+  .kv__nav {
+    display: inline-flex;
+    opacity: 0;
+    transition: opacity var(--_duration-fast) var(--_easing-standard);
+  }
+  .kv:hover .kv__nav,
+  .kv:focus-within .kv__nav {
+    opacity: 1;
+  }
+}
+
+/* ---- 1601~ ------------------------------------------------------------- */
+@media (min-width: 1601px) {
+  .kv__content { padding-inline: var(--spacing-3000); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kv__nav,
+  .kv__media { transition: none; }
+}

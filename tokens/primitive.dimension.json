@@ -1,0 +1,9 @@
+{
+  "primitive": {
+    "dimension": {
+      "$type": "dimension",
+      "$value": "4px",
+      "$description": "모든 spacing 이 배수로 참조하는 기준 단위. 이 값을 바꾸면 spacing 전체가 따라 움직입니다."
+    }
+  }
+}

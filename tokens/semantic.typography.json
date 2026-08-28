@@ -1,0 +1,188 @@
+{
+  "semantic": {
+    "typography": {
+      "$type": "typography",
+      "$description": "Figma 텍스트 스타일과 1:1 대응합니다. 이름은 role-size-weight 규칙을 따릅니다.",
+      "display": {
+        "$description": "마케팅/프로모션 등 화면당 1회 수준의 대형 텍스트.",
+        "xl-semibold": {
+          "$value": {
+            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontSize": "{primitive.fontSize.1150}",
+            "fontWeight": "{primitive.fontWeight.semibold-600}",
+            "lineHeight": "{primitive.lineHeight.130}",
+            "letterSpacing": "{primitive.letterSpacing.n2}"
+          }
+        },
+        "m-semibold": {
+          "$value": {
+            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontSize": "{primitive.fontSize.1050}",
+            "fontWeight": "{primitive.fontWeight.semibold-600}",
+            "lineHeight": "{primitive.lineHeight.130}",
+            "letterSpacing": "{primitive.letterSpacing.n2}"
+          }
+        },
+        "s-semibold": {
+          "$value": {
+            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontSize": "{primitive.fontSize.800}",
+            "fontWeight": "{primitive.fontWeight.semibold-600}",
+            "lineHeight": "{primitive.lineHeight.130}",
+            "letterSpacing": "{primitive.letterSpacing.n2}"
+          }
+        }
+      },
+      "heading": {
+        "$description": "페이지 제목과 섹션 제목.",
+        "l-semibold": {
+          "$value": {
+            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontSize": "{primitive.fontSize.900}",
+            "fontWeight": "{primitive.fontWeight.semibold-600}",
+            "lineHeight": "{primitive.lineHeight.110}",
+            "letterSpacing": "{primitive.letterSpacing.0}"
+          }
+        },
+        "m-semibold": {
+          "$value": {
+            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontSize": "{primitive.fontSize.750}",
+            "fontWeight": "{primitive.fontWeight.semibold-600}",
+            "lineHeight": "{primitive.lineHeight.130}",
+            "letterSpacing": "{primitive.letterSpacing.0}"
+          }
+        },
+        "s-semibold": {
+          "$value": {
+            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontSize": "{primitive.fontSize.700}",
+            "fontWeight": "{primitive.fontWeight.semibold-600}",
+            "lineHeight": "{primitive.lineHeight.140}",
+            "letterSpacing": "{primitive.letterSpacing.0}"
+          }
+        },
+        "xs-semibold": {
+          "$value": {
+            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontSize": "{primitive.fontSize.500}",
+            "fontWeight": "{primitive.fontWeight.semibold-600}",
+            "lineHeight": "{primitive.lineHeight.140}",
+            "letterSpacing": "{primitive.letterSpacing.0}"
+          }
+        }
+      },
+      "body": {
+        "$description": "본문과 UI 텍스트. 같은 크기 안에서 semibold/medium/regular 로 강조 단계를 나눕니다.",
+        "l-semibold": {
+          "$value": {
+            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontSize": "{primitive.fontSize.350}",
+            "fontWeight": "{primitive.fontWeight.semibold-600}",
+            "lineHeight": "{primitive.lineHeight.150}",
+            "letterSpacing": "{primitive.letterSpacing.0}"
+          }
+        },
+        "l-medium": {
+          "$value": {
+            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontSize": "{primitive.fontSize.350}",
+            "fontWeight": "{primitive.fontWeight.medium-500}",
+            "lineHeight": "{primitive.lineHeight.150}",
+            "letterSpacing": "{primitive.letterSpacing.0}"
+          }
+        },
+        "l-regular": {
+          "$value": {
+            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontSize": "{primitive.fontSize.350}",
+            "fontWeight": "{primitive.fontWeight.regular-400}",
+            "lineHeight": "{primitive.lineHeight.150}",
+            "letterSpacing": "{primitive.letterSpacing.0}"
+          }
+        },
+        "m-semibold": {
+          "$value": {
+            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontSize": "{primitive.fontSize.250}",
+            "fontWeight": "{primitive.fontWeight.semibold-600}",
+            "lineHeight": "{primitive.lineHeight.140}",
+            "letterSpacing": "{primitive.letterSpacing.0}"
+          }
+        },
+        "m-medium": {
+          "$value": {
+            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontSize": "{primitive.fontSize.250}",
+            "fontWeight": "{primitive.fontWeight.medium-500}",
+            "lineHeight": "{primitive.lineHeight.140}",
+            "letterSpacing": "{primitive.letterSpacing.0}"
+          }
+        },
+        "m-regular": {
+          "$value": {
+            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontSize": "{primitive.fontSize.250}",
+            "fontWeight": "{primitive.fontWeight.regular-400}",
+            "lineHeight": "{primitive.lineHeight.140}",
+            "letterSpacing": "{primitive.letterSpacing.0}"
+          }
+        },
+        "s-semibold": {
+          "$value": {
+            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontSize": "{primitive.fontSize.150}",
+            "fontWeight": "{primitive.fontWeight.semibold-600}",
+            "lineHeight": "{primitive.lineHeight.130}",
+            "letterSpacing": "{primitive.letterSpacing.0}"
+          }
+        },
+        "s-medium": {
+          "$value": {
+            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontSize": "{primitive.fontSize.150}",
+            "fontWeight": "{primitive.fontWeight.medium-500}",
+            "lineHeight": "{primitive.lineHeight.130}",
+            "letterSpacing": "{primitive.letterSpacing.0}"
+          }
+        },
+        "s-regular": {
+          "$value": {
+            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontSize": "{primitive.fontSize.150}",
+            "fontWeight": "{primitive.fontWeight.regular-400}",
+            "lineHeight": "{primitive.lineHeight.130}",
+            "letterSpacing": "{primitive.letterSpacing.0}"
+          }
+        },
+        "xs-semibold": {
+          "$value": {
+            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontSize": "{primitive.fontSize.100}",
+            "fontWeight": "{primitive.fontWeight.semibold-600}",
+            "lineHeight": "{primitive.lineHeight.130}",
+            "letterSpacing": "{primitive.letterSpacing.0}"
+          }
+        },
+        "xs-medium": {
+          "$value": {
+            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontSize": "{primitive.fontSize.100}",
+            "fontWeight": "{primitive.fontWeight.medium-500}",
+            "lineHeight": "{primitive.lineHeight.130}",
+            "letterSpacing": "{primitive.letterSpacing.0}"
+          }
+        },
+        "xs-regular": {
+          "$value": {
+            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontSize": "{primitive.fontSize.100}",
+            "fontWeight": "{primitive.fontWeight.regular-400}",
+            "lineHeight": "{primitive.lineHeight.130}",
+            "letterSpacing": "{primitive.letterSpacing.0}"
+          }
+        }
+      }
+    }
+  }
+}

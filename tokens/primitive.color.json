@@ -1,0 +1,80 @@
+{
+  "primitive": {
+    "colors": {
+      "$type": "color",
+
+      "black": { "$value": "#000000" },
+      "white": { "$value": "#FFFFFF" },
+
+      "whiteAlpha": {
+        "$description": "Figma 경로는 colors/white/alpha/* 이지만, DTCG 에서 토큰(white)은 자식을 가질 수 없어 형제 그룹으로 뒀습니다. CSS 변수명(--colors-white-alpha-15)은 Figma 경로와 동일합니다.",
+        "15": {
+          "$value": "#FFFFFF26",
+          "$description": "white 를 15% 로. 15% = 0.15×255 = 38.25 이므로 8자리 hex 에서는 26(14.9%) 으로 반올림됩니다. 어두운 배경·이미지 위에 올리는 밝은 오버레이."
+        }
+      },
+
+      "twistOrange": {
+        "$description": "브랜드 주조색.",
+        "50":  { "$value": "#FAE9E6" },
+        "100": { "$value": "#FDCCBA" },
+        "200": { "$value": "#FBAC8D" },
+        "300": { "$value": "#FA8C60" },
+        "400": { "$value": "#F8733C" },
+        "500": { "$value": "#F75D15" },
+        "600": { "$value": "#EC5711" },
+        "700": { "$value": "#DF500B" },
+        "800": { "$value": "#D14807" },
+        "900": { "$value": "#B83C00" }
+      },
+
+      "seriousGray": {
+        "$description": "텍스트·보더·배경에 쓰는 중립 그레이.",
+        "50":  { "$value": "#FDFBFA" },
+        "100": { "$value": "#F8F6F5" },
+        "200": { "$value": "#F3F1F0" },
+        "300": { "$value": "#E7E5E4" },
+        "400": { "$value": "#C5C3C2" },
+        "500": { "$value": "#A6A4A3" },
+        "600": { "$value": "#7D7B7A" },
+        "700": { "$value": "#686666" },
+        "800": { "$value": "#494746" },
+        "900": { "$value": "#272625" },
+
+        "alpha": {
+          "$description": "같은 톤의 반투명 버전. hover/press 오버레이나 딤 레이어처럼 아래 배경이 비쳐야 하는 곳에 씁니다. 8자리 hex 의 마지막 두 자리가 알파입니다.",
+          "900": {
+            "4": {
+              "$value": "#2726250A",
+              "$description": "seriousGray 900 을 4% 로. 0.04×255 = 10.2 이므로 8자리 hex 에서는 0A(3.92%) 로 반올림됩니다."
+            },
+            "8": {
+              "$value": "#27262514",
+              "$description": "seriousGray 900 을 8% 로. 0.08×255 = 20.4 이므로 8자리 hex 에서는 14(7.84%) 로 반올림됩니다."
+            }
+          }
+        }
+      },
+
+      "casualNeutral": {
+        "$description": "따뜻한 톤의 중립색.",
+        "50":  { "$value": "#EBE6E2" },
+        "100": { "$value": "#CBC0B9" },
+        "200": { "$value": "#A8978D" }
+      },
+
+      "accentRed": {
+        "$description": "경고·오류·할인 강조.",
+        "50":  { "$value": "#FFEBEF" },
+        "500": { "$value": "#FF383C" }
+      },
+
+      "accentGreen": {
+        "$description": "성공·완료 상태.",
+        "50":  { "$value": "#E5F7E8" },
+        "400": { "$value": "#34C759" },
+        "500": { "$value": "#00BC37" }
+      }
+    }
+  }
+}
