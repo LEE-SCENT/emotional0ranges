@@ -1,0 +1,10 @@
+{
+  "components": {
+    "notice": {
+      "$description": "서비스 신뢰 요소를 알리는 띠. 화면 폭을 꽉 채우고 안쪽만 컨테이너 폭으로 묶습니다.",
+      "bg":       { "$type": "color", "$value": "{semantic.colors.bg-low}" },
+      "iconSize": { "$type": "dimension", "$value": "{primitive.dimension}", "$extensions": { "scale": 8 }, "$description": "32px." },
+      "iconFg":   { "$type": "color", "$value": "{semantic.colors.fg-brand}" }
+    }
+  }
+}

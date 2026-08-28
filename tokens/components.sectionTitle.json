@@ -1,0 +1,17 @@
+{
+  "components": {
+    "sectionTitle": {
+      "$description": "섹션 머리말. 제목·설명과 우측 이동 버튼으로 이루어집니다.",
+      "fg": {
+        "$type": "color",
+        "$value": "{semantic.colors.fg}",
+        "$description": "⚠️ Figma 는 팔레트에 없는 #212121 을 씁니다. GNB 메뉴와 같은 값이라 같은 방식으로 fg 로 정리했습니다."
+      },
+      "fgDescription": {
+        "$type": "color",
+        "$value": "{semantic.colors.fg-lower}",
+        "$description": "⚠️ Figma 는 팔레트에 없는 #888 을 씁니다. 가장 가까운 fg-lower(#7D7B7A)로 대체했습니다."
+      }
+    }
+  }
+}

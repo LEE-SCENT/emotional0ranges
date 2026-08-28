@@ -21,6 +21,10 @@ tokens/                        ← 손으로 고치는 곳 (DTCG 포맷)
   components.segmentedControl.json
   components.gnb.json
   components.kv.json
+  components.tag.json
+  components.productCard.json
+  components.sectionTitle.json
+  components.notice.json
   components.footer.json
 icons/figma-export/            ← Figma에서 내려받은 원본 SVG (그대로 보존)
 logo/figma-export/             ← 로고 원본 SVG
@@ -29,7 +33,8 @@ fonts/pretendard/              ← Pretendard Variable 자체 호스팅 (OFL 1.1
 components/                    ← 손으로 쓰는 컴포넌트 CSS
   container.css
   badge.css  button.css  button-group.css
-  kv.css  kv.js
+  kv.css  kv.js  tag.css  product-card.css
+  section-title.css  notice.css
   segmented-control.css  segmented-control.js
   tooltip.css  gnb.css  footer.css
 scripts/
@@ -350,6 +355,11 @@ Figma `UI Icons` 섹션(node `3:595`)에서 가져온 24×24 아이콘 16개입�
 | --- | --- |
 | Default (13) | `menu` `chevronLeft` `chevronRight` `arrowBack` `close` `window` `share` `notifications` `favorite` `asterisk` `schedule` `calendarClosed` `payments` |
 | Filled (3) | `scheduleFilled` `memberBlack` `windowFilled` |
+| Notice (3, 32px) | `idCardFilled` `hostFilled` `verifiedUserFilled` |
+
+**아이콘마다 크기와 원본 색이 다릅니다.** UI 아이콘은 24px `#424242`, Notice 아이콘은 32px
+브랜드색입니다. 그래서 빌드가 크기를 viewBox 에서 읽고, 색은 하드코딩 대신 **단색이면 그 색을
+찾아** `currentColor` 로 바꿉니다. 두 색이 섞여 있으면 어느 쪽을 바꿀지 정할 수 없어 멈춥니다.
 
 Figma export 는 아이콘이 놓인 부모 프레임 배경(`#F5F5F5` rect 등)까지 함께 나옵니다.
 `build-icons.mjs` 가 `<g id="icon/…">` 서브트리만 뽑아 24×24 좌표계 그대로 재포장하고,
@@ -733,6 +743,65 @@ iframe 을 마크업이 아니라 `kv.js` 에서 만듭니다. `enablejsapi=1` �
 
 ⚠️ **어둠(scrim)은 Figma 에 없습니다.** 영상 위 흰 텍스트의 대비를 위해 추가했습니다.
 실제 서비스도 어두운 그라디언트를 깔고 있습니다.
+
+### Tag
+
+```html
+<span class="tag">8월 25일 (화) 저녁 7시</span>
+<span class="tag tag--accent-pri">남성 2자리 남음</span>
+<span class="tag tag--accent-sec">여성 마감</span>
+```
+
+사진 위에 놓이므로 배경이 반투명이고 `backdrop-filter` 로 뒤를 흐립니다. 불투명하게 깔면
+사진에서 오려붙인 것처럼 보입니다. 세 배경이 앞서 추가한 alpha 토큰을 그대로 씁니다 —
+`whiteAlpha.85` · `twistOrange.alpha500.85` · `seriousGray.alpha900.25`.
+
+`--accent-sec` 만 글자색이 흰색이 아니라 `seriousGray 300` 입니다. 마감처럼 힘을 뺀 상태라
+한 단계 죽입니다. ⚠️ Figma 는 팔레트에 없는 `#EEE` 를 씁니다.
+
+### ProductCard
+
+```html
+<article class="product-card">
+  <div class="product-card__media">
+    <img src="…" alt="">
+    <div class="product-card__tags"><span class="tag">…</span></div>
+  </div>
+  <div class="product-card__info">
+    <h3 class="product-card__title">…</h3>
+    <p class="product-card__desc">…</p>
+    <p class="product-card__price"><b>할인가</b> 33,000원~</p>
+  </div>
+</article>
+```
+
+Figma 는 이미지를 398×275 로 고정하지만 카드가 그리드 안에서 늘어나야 해 같은 비율
+(`aspect-ratio`)로 옮겼습니다. 이미지 위쪽에는 어둠을 깔아 밝은 사진에서도 tag 가 읽히게 합니다.
+
+**카드 그룹은 모서리가 바깥쪽에만 둥급니다.** 간격이 2px 뿐이라 거의 이어진 띠로 보이는데,
+모든 카드를 둥글게 하면 그 의도가 깨집니다.
+
+```css
+.product-card-group > .product-card:first-child .product-card__media { /* 좌측만 */ }
+.product-card-group > .product-card:last-child  .product-card__media { /* 우측만 */ }
+```
+
+카드가 하나뿐이면 두 규칙이 함께 걸려 네 모서리가 모두 둥글어집니다.
+
+### SectionTitle
+
+제목·설명과 우측 이동 버튼으로 이루어진 섹션 머리말입니다. 이동 버튼은
+`btn--blur.btn--medium.btn--icon-only` 를 그대로 씁니다.
+
+⚠️ Figma 가 제목에 `#212121`, 설명에 `#888` 을 쓰는데 **둘 다 팔레트 밖**입니다.
+각각 `fg` 와 `fg-lower` 로 정리했습니다.
+
+### Notice
+
+서비스 신뢰 요소를 알리는 띠입니다. 배경은 화면 폭을 꽉 채우고 내용만 컨테이너 폭으로
+묶습니다 — 그래서 `.container` 를 밖에 두르지 않고 `.notice__inner` 가 같은 최대폭을 갖습니다.
+
+3열 그리드에서 헤더가 1열, 항목 셋이 나머지 2열을 나눠 씁니다. 960px 이하에서는 세로로 쌓입니다.
 
 ### Tooltip
 

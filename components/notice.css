@@ -1,0 +1,110 @@
+/**
+ * Notice — 서비스 신뢰 요소를 알리는 띠.
+ *
+ *   <section class="notice">
+ *     <div class="notice__inner">
+ *       <div class="notice__header"> 제목 + 설명 </div>
+ *       <ul class="notice__items">
+ *         <li class="notice__item"> 아이콘 + 제목 + 설명 </li>
+ *       </ul>
+ *     </div>
+ *   </section>
+ *
+ * 배경은 화면 폭을 꽉 채우고 내용만 컨테이너 폭으로 묶습니다. 그래서 .container 를
+ * 밖에 두르지 않고 안쪽 .notice__inner 가 같은 최대폭을 갖습니다.
+ */
+
+.notice {
+  box-sizing: border-box;
+  padding: var(--spacing-800) var(--spacing-600);
+  background: var(--_notice-bg);
+  font-family: var(--_font-family-pretendard);
+}
+
+.notice__inner {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--spacing-800);
+  align-items: start;
+  inline-size: 100%;
+  max-inline-size: var(--container-max-width-md);
+  margin-inline: auto;
+}
+
+.notice__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-100);
+  min-inline-size: 0;
+}
+
+.notice__heading,
+.notice__lead,
+.notice__item-title,
+.notice__item-desc {
+  margin: 0;
+  font-feature-settings: 'lnum' 1, 'tnum' 1;
+}
+
+.notice__heading {
+  color: var(--colors-fg);
+  font-size: var(--typography-heading-s-semibold-font-size);
+  font-weight: var(--typography-heading-s-semibold-font-weight);
+  line-height: var(--typography-heading-s-semibold-line-height);
+}
+
+/* 문장 끝 마침표만 브랜드 색입니다. KV 헤드라인과 같은 규칙입니다. */
+.notice__heading .dot { color: var(--colors-fg-brand); }
+
+.notice__lead {
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-l-regular-font-size);
+  font-weight: var(--typography-body-l-regular-font-weight);
+  line-height: var(--typography-body-l-regular-line-height);
+}
+
+/* 헤더가 1열, 항목 셋이 나머지 2열을 나눠 씁니다. */
+.notice__items {
+  grid-column: 2 / span 2;
+  display: flex;
+  gap: var(--spacing-800);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.notice__item {
+  flex: 1 0 0;
+  min-inline-size: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-300);
+}
+
+.notice__item svg {
+  display: block;
+  flex: none;
+  inline-size: var(--_notice-icon-size);
+  block-size: var(--_notice-icon-size);
+  color: var(--_notice-icon-fg);
+}
+
+.notice__item-title {
+  color: var(--colors-fg);
+  font-size: var(--typography-body-l-medium-font-size);
+  font-weight: var(--typography-body-l-medium-font-weight);
+  line-height: var(--typography-body-l-medium-line-height);
+}
+
+.notice__item-desc {
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-m-regular-font-size);
+  font-weight: var(--typography-body-m-regular-font-weight);
+  line-height: var(--typography-body-m-regular-line-height);
+}
+
+/* 좁은 화면에서는 3열 그리드가 성립하지 않습니다. */
+@media (max-width: 960px) {
+  .notice__inner { grid-template-columns: 1fr; }
+  .notice__items { grid-column: 1; flex-direction: column; gap: var(--spacing-600); }
+}

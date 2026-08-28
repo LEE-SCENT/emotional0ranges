@@ -401,6 +401,23 @@ export const components = {
       "md": "518px"
     }
   },
+  "notice": {
+    "bg": "#F8F6F5",
+    "iconSize": "32px",
+    "iconFg": "#F75D15"
+  },
+  "productCard": {
+    "rounded": "12px",
+    "imageRatio": 1.4473,
+    "scrim": {
+      "from": "#000000A6",
+      "height": "160px"
+    }
+  },
+  "sectionTitle": {
+    "fg": "#000000",
+    "fgDescription": "#7D7B7A"
+  },
   "segmentedControl": {
     "bg": "#FFFFFF",
     "border": "#27262514",
@@ -416,6 +433,16 @@ export const components = {
       "bg-active": "#F75D15",
       "rounded": "9999px"
     }
+  },
+  "tag": {
+    "bg": "#FFFFFFD9",
+    "fg": "#000000",
+    "bgAccentPri": "#F75D15D9",
+    "bgAccentSec": "#27262540",
+    "fgAccent": "#FFFFFF",
+    "fgAccentSec": "#E7E5E4",
+    "rounded": "8px",
+    "blurRadius": "12px"
   },
   "tooltip": {
     "fg": "#FFFFFF",

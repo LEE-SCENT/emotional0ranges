@@ -11,6 +11,10 @@
 <link rel="stylesheet" href="./components/segmented-control.css">
 <link rel="stylesheet" href="./components/gnb.css">
 <link rel="stylesheet" href="./components/kv.css">
+<link rel="stylesheet" href="./components/tag.css">
+<link rel="stylesheet" href="./components/product-card.css">
+<link rel="stylesheet" href="./components/section-title.css">
+<link rel="stylesheet" href="./components/notice.css">
 <style>
   body { margin: 0; background: var(--colors-bg); color: var(--colors-fg); }
   /* 화면에는 안 보이지만 스크린리더는 읽는 텍스트 */
@@ -85,7 +89,92 @@
 
     <p class="kv__pagination"><b>1</b> <span aria-hidden="true">/</span> <span class="sr-only">중</span> 6</p>
   </section>
+
+  <section class="product-card-section" style="margin-block-start:var(--spacing-800)">
+    <header class="section-title">
+      <div class="section-title__content">
+        <h2 class="section-title__heading">금요일 저녁, 여섯 명의 온도</h2>
+        <p class="section-title__desc">한 주의 끝, 새로운 만남의 시작</p>
+      </div>
+      <div class="section-title__nav btn-group btn-group--horizontal">
+        <button class="btn btn--blur btn--medium btn--icon-only" aria-label="이전">
+          <svg class="btn__icon" aria-hidden="true"><use href="#icon-chevronLeft"></use></svg>
+        </button>
+        <button class="btn btn--blur btn--medium btn--icon-only" aria-label="다음">
+          <svg class="btn__icon" aria-hidden="true"><use href="#icon-chevronRight"></use></svg>
+        </button>
+      </div>
+    </header>
+    <div class="product-card-group">
+        <article class="product-card">
+          <div class="product-card__media">
+            <img src="./images/meetup-sample.jpg" alt="">
+            <div class="product-card__tags">
+              <span class="tag">8월 25일 (화) 저녁 7시</span>
+            </div>
+          </div>
+          <div class="product-card__info">
+            <h3 class="product-card__title">12:12 티키타카 로테이션 소개팅</h3>
+            <p class="product-card__desc">경기 성남시 외 4개 지역 · 일정 5개</p>
+            <p class="product-card__price"><b>할인가</b> 33,000원~</p>
+          </div>
+        </article>
+        <article class="product-card">
+          <div class="product-card__media">
+            <img src="./images/meetup-sample.jpg" alt="">
+            <div class="product-card__tags">
+              <span class="tag">8월 25일 (화) 저녁 7시</span><span class="tag tag--accent-pri">남성 2자리 남음</span>
+            </div>
+          </div>
+          <div class="product-card__info">
+            <h3 class="product-card__title">돌싱 로테이션 소개팅</h3>
+            <p class="product-card__desc">서울 마포구 외 2개 지역 · 일정 3개</p>
+            <p class="product-card__price"><b>할인가</b> 42,000원~</p>
+          </div>
+        </article>
+        <article class="product-card">
+          <div class="product-card__media">
+            <img src="./images/meetup-sample.jpg" alt="">
+            <div class="product-card__tags">
+              <span class="tag">8월 25일 (화) 저녁 7시</span><span class="tag tag--accent-sec">여성 마감</span>
+            </div>
+          </div>
+          <div class="product-card__info">
+            <h3 class="product-card__title">테마 로테이션 소개팅</h3>
+            <p class="product-card__desc">인천 연수구 외 3개 지역 · 일정 4개</p>
+            <p class="product-card__price"><b>할인가</b> 38,000원~</p>
+          </div>
+        </article>
+    </div>
+  </section>
 </main>
+
+<section class="notice">
+  <div class="notice__inner">
+    <div class="notice__header">
+      <h2 class="notice__heading">누적 회원 5만 명이 선택한<br>진짜 만남<span class="dot">.</span></h2>
+      <p class="notice__lead">프로필부터 현장 운영까지 꼼꼼하게 확인해요.</p>
+    </div>
+    <ul class="notice__items">
+        <li class="notice__item">
+          <svg aria-hidden="true"><use href="#icon-idCardFilled"></use></svg>
+          <p class="notice__item-title">확인된 프로필</p>
+          <p class="notice__item-desc">서비스 이용에 필요한 인증과 프로필 정보를 확인해요</p>
+        </li>
+        <li class="notice__item">
+          <svg aria-hidden="true"><use href="#icon-hostFilled"></use></svg>
+          <p class="notice__item-title">호스트가 함께하는 모임</p>
+          <p class="notice__item-desc">처음 참여해도 편하게 대화할 수 있도록 진행해요</p>
+        </li>
+        <li class="notice__item">
+          <svg aria-hidden="true"><use href="#icon-verifiedUserFilled"></use></svg>
+          <p class="notice__item-title">신중한 연락처 교환</p>
+          <p class="notice__item-desc">현장에서 선택한 상대와 필요한 정보만 교환해요</p>
+        </li>
+    </ul>
+  </div>
+</section>
+
 
 <script type="module">
   document.getElementById('sprite').innerHTML =

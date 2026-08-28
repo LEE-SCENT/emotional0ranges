@@ -1,0 +1,135 @@
+/**
+ * ProductCard — 모임 카드.
+ *
+ *   <article class="product-card">
+ *     <div class="product-card__media">
+ *       <img src="…" alt="">
+ *       <div class="product-card__tags">
+ *         <span class="tag">8월 25일 (화) 저녁 7시</span>
+ *       </div>
+ *     </div>
+ *     <div class="product-card__info">
+ *       <h3 class="product-card__title">12:12 티키타카 로테이션 소개팅</h3>
+ *       <p class="product-card__desc">경기 성남시 외 4개 지역 · 일정 5개</p>
+ *       <p class="product-card__price"><b>할인가</b> 33,000원~</p>
+ *     </div>
+ *   </article>
+ *
+ * Figma 는 이미지를 398×275 로 고정하지만, 카드가 그리드 안에서 늘어나야 해
+ * 같은 비율(aspect-ratio)로 옮겼습니다.
+ */
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-300);
+  min-inline-size: 0;
+  font-family: var(--_font-family-pretendard);
+}
+
+.product-card__media {
+  position: relative;
+  overflow: clip;
+  aspect-ratio: var(--_product-card-image-ratio);
+  background: var(--colors-bg-low);
+}
+
+.product-card__media img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+/* 사진 위 tag 가 밝은 하늘·벽에서도 읽히도록 위쪽만 어둡게 깝니다. */
+.product-card__media::after {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  block-size: var(--_product-card-scrim-height);
+  pointer-events: none;
+  background: linear-gradient(to bottom, var(--_product-card-scrim-from), transparent);
+}
+
+.product-card__tags {
+  position: absolute;
+  inset-block-start: var(--spacing-300);
+  inset-inline-start: var(--spacing-300);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-100);
+}
+
+.product-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-100);
+  min-inline-size: 0;
+}
+
+.product-card__title,
+.product-card__desc,
+.product-card__price {
+  margin: 0;
+  font-feature-settings: 'lnum' 1, 'tnum' 1;
+}
+
+.product-card__title {
+  color: var(--colors-fg);
+  font-size: var(--typography-body-l-medium-font-size);
+  font-weight: var(--typography-body-l-medium-font-weight);
+  line-height: var(--typography-body-l-medium-line-height);
+}
+
+.product-card__desc {
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-m-regular-font-size);
+  font-weight: var(--typography-body-m-regular-font-weight);
+  line-height: var(--typography-body-m-regular-line-height);
+}
+
+.product-card__price {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-150);
+  color: var(--colors-fg);
+  font-size: var(--typography-body-xl-semibold-font-size);
+  font-weight: var(--typography-body-xl-semibold-font-weight);
+  line-height: var(--typography-body-xl-semibold-line-height);
+  white-space: nowrap;
+}
+
+/* 할인 라벨. 가격보다 작고 브랜드 색입니다. */
+.product-card__price b {
+  color: var(--colors-fg-brand);
+  font-size: var(--typography-body-s-semibold-font-size);
+  font-weight: var(--typography-body-s-semibold-font-weight);
+  line-height: var(--typography-body-s-semibold-line-height);
+}
+
+/* ---- 카드 그룹 ---------------------------------------------------------
+   간격이 2px 뿐이라 거의 이어진 띠로 보입니다. 그래서 모서리도 그룹의
+   바깥쪽에만 둥글게 주고 안쪽은 각지게 둡니다.
+*/
+
+.product-card-group {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: var(--spacing-50);
+  align-items: start;
+}
+
+.product-card-group > .product-card:first-child .product-card__media {
+  border-start-start-radius: var(--_product-card-rounded);
+  border-end-start-radius: var(--_product-card-rounded);
+}
+
+.product-card-group > .product-card:last-child .product-card__media {
+  border-start-end-radius: var(--_product-card-rounded);
+  border-end-end-radius: var(--_product-card-rounded);
+}
+
+/* 카드가 하나뿐이면 네 모서리가 모두 둥글어집니다 — 위 두 규칙이 함께 걸립니다. */
