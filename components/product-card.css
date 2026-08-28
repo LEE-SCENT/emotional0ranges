@@ -34,7 +34,12 @@
   background: var(--colors-bg-low);
 }
 
+/* 이미지를 흐름에서 빼야 합니다. block-size:100% 로 두면 부모의 높이를 참조하는데
+   부모는 aspect-ratio 로 높이를 정하려 해서 순환이 생기고, 결국 이미지 원본 높이가
+   박스를 밀어냅니다 — 사진마다 카드 높이가 달라지던 원인입니다. */
 .product-card__media img {
+  position: absolute;
+  inset: 0;
   display: block;
   inline-size: 100%;
   block-size: 100%;
@@ -110,12 +115,13 @@
 }
 
 /* ---- 카드 그룹 ---------------------------------------------------------
-   간격이 2px 뿐이라 거의 이어진 띠로 보입니다. 그래서 모서리도 띠의 양 끝에만
-   둥글게 줍니다.
+   간격이 2px 뿐이라 거의 이어진 띠로 보입니다. 모서리는 카드가 아니라 레일에
+   줍니다 — 카드마다 주면 스크롤 중 보이는 경계가 카드 경계와 어긋나 둥근 모서리가
+   띠 한가운데 떠 보입니다. 레일을 둥근 창으로 만들면 카드는 그 아래로 지나가고,
+   창의 네 모서리는 스크롤 위치와 무관하게 언제나 둥글게 남습니다.
 
-   양 끝 판정을 :first-child / :last-child 로 하면 DOM 순서에 묶여, 캐러셀이
-   넘어가도 둥근 모서리가 원래 첫 카드에 남습니다. 그래서 지금 화면에 보이는
-   양 끝 카드에 product-card.js 가 is-edge-start / is-edge-end 를 붙입니다.
+   레일 전체를 자르지만 아래쪽 가격 텍스트는 깎이지 않습니다. 줄높이가 남긴
+   여백 덕에 12px 곡선이 글리프에 닿지 않습니다.
 */
 
 .product-card-group {
@@ -126,38 +132,15 @@
   gap: var(--spacing-50);
   align-items: start;
   overflow-x: auto;
-  /* mandatory 는 부드러운 스크롤과 맞물려 위치를 되돌려버립니다. 카드 폭이
-     (100% - 4px) / 3 = 398.67 로 소수점이라 스냅 지점이 딱 떨어지지 않기 때문입니다.
-     proximity 는 가까울 때만 붙어 버튼 이동을 방해하지 않습니다. */
   scroll-snap-type: x proximity;
   scrollbar-width: none;
-  /* 둥근 모서리가 스크롤 컨테이너에 잘리지 않도록 여백 없이 둡니다. */
   overscroll-behavior-x: contain;
+  /* 레일 자체가 둥근 창입니다. 카드는 그 아래로 지나가고, 창의 네 모서리는
+     스크롤 위치와 무관하게 항상 둥글게 남습니다. */
+  border-radius: var(--_product-card-rounded);
 }
 
 .product-card-group::-webkit-scrollbar { display: none; }
 
 .product-card-group > .product-card { scroll-snap-align: start; }
 
-.product-card-group > .product-card.is-edge-start .product-card__media {
-  border-start-start-radius: var(--_product-card-rounded);
-  border-end-start-radius: var(--_product-card-rounded);
-}
-
-.product-card-group > .product-card.is-edge-end .product-card__media {
-  border-start-end-radius: var(--_product-card-rounded);
-  border-end-end-radius: var(--_product-card-rounded);
-}
-
-/* 모서리에는 전환을 걸지 않습니다. 스크롤 중 양 끝이 바뀔 때마다 반지름이
-   함께 움직이면 카드가 꿈틀거리는 것처럼 보입니다. */
-
-/* JS 가 없으면 첫·마지막 카드가 양 끝을 맡습니다. 스크롤은 손으로 할 수 있습니다. */
-.product-card-group:not(.is-ready) > .product-card:first-child .product-card__media {
-  border-start-start-radius: var(--_product-card-rounded);
-  border-end-start-radius: var(--_product-card-rounded);
-}
-.product-card-group:not(.is-ready) > .product-card:last-child .product-card__media {
-  border-start-end-radius: var(--_product-card-rounded);
-  border-end-end-radius: var(--_product-card-rounded);
-}

@@ -9,13 +9,20 @@
       },
       "imageRatio": {
         "$type": "number",
-        "$value": 1.4473,
-        "$description": "⚠️ Figma 는 398×275 고정입니다. 폭이 유동적이어야 해 비율로 옮겼습니다."
+        "$value": 1.4497,
+        "$description": "Figma 는 398.67×275 고정입니다. 카드 폭이 유동적이어야 해 비율(398.6667/275)로 옮겼습니다."
       },
       "scrim": {
         "$description": "이미지 상단의 어둠. tag 가 밝은 사진 위에서도 읽히게 합니다. ⚠️ Figma 에 색 변수로는 없습니다.",
-        "from":   { "$type": "color", "$value": "#000000A6", "$description": "65% → A6" },
-        "height": { "$type": "dimension", "$value": "160px" }
+        "from": {
+          "$type": "color",
+          "$value": "#000000A6",
+          "$description": "65% → A6"
+        },
+        "height": {
+          "$type": "dimension",
+          "$value": "160px"
+        }
       }
     }
   }

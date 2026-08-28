@@ -2,8 +2,9 @@
  * 상품 카드 캐러셀.
  *
  * 스크롤 자체는 CSS(scroll-snap)가 합니다. 이 스크립트가 하는 일은 둘뿐입니다.
- *   1. 목록을 한 벌 복제해 레일을 잇고, 이동 버튼을 스크롤에 연결
- *   2. 멈췄을 때 양 끝 카드에 is-edge-start / is-edge-end 를 붙이기
+ * 목록을 한 벌 복제해 레일을 잇고, 이동 버튼을 스크롤에 연결합니다.
+ *
+ * 둥근 모서리는 CSS 가 레일 자체에 줍니다 — 여기서 관여하지 않습니다.
  *
  * 복제하는 이유는 방향 때문입니다. 복제 없이 끝에서 처음으로 돌아가려면 레일을
  * 왼쪽으로 되감아야 하는데, 마지막 다음은 1번이 오른쪽에서 이어져 나와야 합니다.
@@ -73,37 +74,6 @@ function scrollDuration(el) {
   return Number.isFinite(ms) ? (raw.endsWith('ms') ? ms : ms * 1000) : 400
 }
 
-/**
- * 멈춰 있을 때 양 끝에 오는 카드에 모서리를 줍니다.
- *
- * 움직이는 동안에는 모서리를 아예 걷어냅니다(clearEdges). 레일이 미끄러지는 중에는
- * 보이는 경계가 카드 경계와 어긋나서, 어느 카드를 고르든 둥근 모서리가 띠 한가운데
- * 떠 보이기 때문입니다. 잘린 레일은 각진 게 맞고, 멈춰야 양 끝이 둥글어집니다.
- */
-function clearEdges(track) {
-  for (const card of track.querySelectorAll('.product-card')) {
-    card.classList.remove('is-edge-start', 'is-edge-end')
-  }
-}
-
-function updateEdges(track) {
-  const cards = [...track.querySelectorAll('.product-card')]
-  if (!cards.length) return
-
-  const gap = parseFloat(getComputedStyle(track).columnGap) || 0
-  const step = cards[0].offsetWidth + gap
-  if (!step) return
-
-  const first = Math.min(Math.round(track.scrollLeft / step), cards.length - 1)
-  const perView = Math.max(1, Math.round((track.clientWidth + gap) / step))
-  const last = Math.min(first + perView - 1, cards.length - 1)
-
-  cards.forEach((card, i) => {
-    card.classList.toggle('is-edge-start', i === first)
-    card.classList.toggle('is-edge-end', i === last)
-  })
-}
-
 /** 목록을 한 벌 복제합니다. 복제본은 보조기기와 탭 이동에서 감춥니다. */
 function cloneList(track) {
   const originals = [...track.querySelectorAll('.product-card')]
@@ -125,13 +95,6 @@ export function initProductCarousel(scope = document) {
     const originalCount = cloneList(track)
 
     const [prev, next] = section.querySelectorAll('.section-title__nav .btn')
-    // 손으로 스크롤할 때도 멈춘 뒤에 모서리를 붙입니다.
-    let settleTimer
-    const settle = () => {
-      clearTimeout(settleTimer)
-      settleTimer = setTimeout(() => updateEdges(track), 120)
-    }
-    const onScroll = () => { clearEdges(track); settle() }
     const step = () => {
       const card = track.querySelector('.product-card')
       const gap = parseFloat(getComputedStyle(track).columnGap) || 0
@@ -155,22 +118,10 @@ export function initProductCarousel(scope = document) {
       if (dir < 0 && track.scrollLeft < step() - EDGE_TOLERANCE) {
         track.scrollLeft += lapWidth()
       }
-      clearEdges(track)
-      // 도착한 뒤에만 모서리를 다시 줍니다. scroll 이벤트에 기대지 않는 이유는
-      // 탭이 숨겨져 있으면 그 이벤트가 발생하지 않기 때문입니다.
-      animateScrollTo(track, track.scrollLeft + dir * step(), scrollDuration(track), () => {
-        normalize()
-        settle()
-      })
+      animateScrollTo(track, track.scrollLeft + dir * step(), scrollDuration(track), normalize)
     }
     prev?.addEventListener('click', () => move(-1))
     next?.addEventListener('click', () => move(1))
 
-    track.addEventListener('scroll', onScroll, { passive: true })
-    new ResizeObserver(() => updateEdges(track)).observe(track)
-    document.fonts?.ready.then(() => updateEdges(track))
-
-    track.classList.add('is-ready')
-    updateEdges(track)
   }
 }
