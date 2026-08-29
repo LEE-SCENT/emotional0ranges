@@ -559,6 +559,7 @@ export const components = {
     "paddingBlockEnd": "4px",
     "paddingInline": "4px",
     "gap": "4px",
+    "modalShadow": "0 12px 32px #0000001f",
     "shadow": "0 -4px 12px #0000001a"
   },
   "summaryCard": {

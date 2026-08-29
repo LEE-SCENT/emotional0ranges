@@ -7,6 +7,7 @@
  *
  *   .sheet--inline  넓은 화면에서는 시트가 아니라, 감싼 것이 없는 것처럼
  *                   그 자리에 내용을 그대로 둡니다.
+ *   .sheet--modal   넓은 화면에서는 아래에 붙지 않고 화면 가운데에 뜹니다.
  *
  * 상세 화면의 일정 목록이 --inline 을 씁니다. 넓은 화면에서는 본문 옆 단에 서고
  * 좁아지면 시트가 되는데, 목록을 복사해 두 벌 만들지 않았습니다 — 라디오 이름이
@@ -14,8 +15,10 @@
  * 바꾸는 순간 고른 것이 사라집니다. 대신 961 부터 <dialog> 와 판이 display:contents
  * 로 자리에서 빠집니다.
  *
- * 신청·결제 화면의 일정 변경은 --inline 없이 씁니다. 그 화면에는 목록을 늘 펼쳐둘
- * 자리가 없어 어느 폭에서든 시트로 엽니다.
+ * 신청·결제 화면의 일정 변경은 --modal 을 씁니다. 그 화면에는 목록을 늘 펼쳐둘 자리가
+ * 없어 어느 폭에서든 띄우는데, 넓은 화면에서 화면 아래에 붙으면 눈이 가 있던 자리에서
+ * 한참 떨어진 곳에 뜹니다. 좁은 화면에서는 그대로 아래에서 올라옵니다 — 손가락이
+ * 닿는 자리가 거기입니다.
  *
  * 시트 안에서만 필요한 규칙은 [open] 에 겁니다. --inline 은 넓은 화면에서 열리는
  * 일이 없으므로, 그 하나로 "지금 시트인가"가 갈립니다.
@@ -140,6 +143,67 @@
   font-size: var(--typography-body-m-medium-font-size);
   font-weight: var(--typography-body-m-medium-font-weight);
   line-height: var(--typography-body-m-medium-line-height);
+}
+
+/* ---- 머리글 ------------------------------------------------------------
+   모달일 때만 나옵니다. 아래에서 올라오는 시트는 어디에서 왔는지가 방향으로
+   드러나고 손가락을 내리면 닫히지만, 화면 가운데 뜬 상자는 무엇인지와 어떻게
+   닫는지를 스스로 말해야 합니다.
+*/
+
+.sheet__head { display: none; }
+
+.sheet__head h2 {
+  flex: 1 1 auto;
+  margin: 0;
+  color: var(--colors-fg);
+  font-size: var(--typography-body-l-medium-font-size);
+  font-weight: var(--typography-body-l-medium-font-weight);
+  line-height: var(--typography-body-l-medium-line-height);
+}
+
+/* ---- 961~ : --modal 은 가운데에 뜹니다 ---------------------------------
+   ⚠️ 모달 디자인이 나오기 전입니다. 시트가 이미 가진 것(폭·여백·최대 높이)을 그대로
+   쓰고, 붙는 자리와 모서리·그림자·나타나는 방향만 바꿨습니다. 디자인이 나오면
+   이 블록만 고치면 됩니다.
+*/
+
+@media (min-width: 961px) {
+  .sheet--modal[open] { align-items: center; }
+
+  .sheet--modal .sheet__head {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-300);
+  }
+
+  .sheet--modal .sheet__panel {
+    /* 아래가 화면 끝에 닿지 않으므로 네 모서리를 모두 둥글립니다. */
+    border-radius: var(--_sheet-rounded);
+    box-shadow: var(--_sheet-modal-shadow);
+    /* 화면 끝에서 떨어져 있어 홈 표시줄을 피할 이유가 없습니다. */
+    padding-block-end: var(--_sheet-padding-block-end);
+  }
+
+  /* 아래에서 올라오는 대신 그 자리에서 살짝 커지며 나타납니다. 가운데 뜬 상자가
+     아래에서 밀려 올라오면 어디에서 왔는지 알 수 없습니다. */
+  .sheet--modal .sheet__panel {
+    transition:
+      scale var(--_duration-base) var(--_easing-standard),
+      opacity var(--_duration-base) var(--_easing-standard);
+  }
+
+  .sheet--modal:not([open]) .sheet__panel {
+    translate: none;
+    scale: 0.98;
+  }
+
+  @starting-style {
+    .sheet--modal[open] .sheet__panel {
+      translate: none;
+      scale: 0.98;
+    }
+  }
 }
 
 /* ---- 961~ : --inline 은 시트가 아닙니다 --------------------------------
