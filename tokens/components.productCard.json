@@ -17,11 +17,6 @@
         "$value": "312px",
         "$description": "카드가 이보다 좁아지지 않습니다. 좁은 화면에서는 세 장을 우겨넣는 대신 이 폭을 지키고 레일이 가로로 스크롤됩니다."
       },
-      "priceOriginalFg": {
-        "$type": "color",
-        "$value": "{semantic.colors.fg-lower}",
-        "$description": "할인 상품의 취소선 기존가. ⚠️ Figma 의 카드에는 기존가 자리가 없어(할인가만 있습니다) 색·크기를 코드에서 정했습니다."
-      },
       "scrim": {
         "$description": "이미지 상단의 어둠. tag 가 밝은 사진 위에서도 읽히게 합니다. ⚠️ Figma 에 색 변수로는 없습니다.",
         "from": {

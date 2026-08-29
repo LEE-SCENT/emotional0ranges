@@ -64,8 +64,8 @@
                  자동으로 옮겨가고, 남은 일정이 없으면 "모든 일정 마감".
      날짜·시간   대표 일정의 것을 썸네일 위에 항상.
      잔여석·마감 대표 일정 기준으로만. 다른 일정의 현황과 섞지 않습니다.
-     가격        최저가 기준 "42,000원~". 할인 상품은 할인가를 앞에 두고
-                 기존가를 취소선으로 뒤에 붙입니다.
+     가격        최저가 기준 "42,000원~". 할인 상품은 "할인가" 라벨과 할인가만
+                 보여줍니다 — 기존가는 노출하지 않습니다.
 
    장소·일정 문구는 신청 가능한 일정만 세어 만듭니다.
 
@@ -183,16 +183,6 @@
   font-size: var(--typography-body-s-semibold-font-size);
   font-weight: var(--typography-body-s-semibold-font-weight);
   line-height: var(--typography-body-s-semibold-line-height);
-}
-
-/* 할인 전 가격. 할인가 뒤에 취소선으로 붙습니다.
-   ⚠️ Figma 카드에는 이 자리가 없어(할인가만 있습니다) 크기와 색을 코드에서
-   정했습니다 — 설명글과 같은 크기, 한 단계 낮은 색입니다. */
-.product-card__price s {
-  color: var(--_product-card-price-original-fg);
-  font-size: var(--typography-body-m-regular-font-size);
-  font-weight: var(--typography-body-m-regular-font-weight);
-  line-height: var(--typography-body-m-regular-line-height);
 }
 
 /* ---- 카드 그룹 ---------------------------------------------------------
