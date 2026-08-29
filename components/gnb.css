@@ -107,10 +107,14 @@
 
 /* small 에서는 segmentedControl 과 메뉴가 접힙니다. */
 .gnb__segmented,
-.gnb__menu,
-.gnb__notify {
+.gnb__menu {
   display: none;
 }
+
+/* small 의 오른쪽에는 알림만 둡니다. 이 폭에서는 화면 아래 앱바가 이동을 맡고,
+   햄버거가 열던 화면도 앱바의 "마이"가 들고 있습니다. 위쪽에는 지금 볼 것만
+   남깁니다 — 스티키로 바뀌어도 같은 버튼이라 손이 가던 자리가 달라지지 않습니다. */
+.gnb__actions .btn--blur { display: none; }
 
 /* ---- medium (1025px~) -------------------------------------------------- */
 @media (min-width: 961px) {
@@ -120,6 +124,10 @@
 
   .gnb__segmented { display: block; }
   .gnb__menu { display: flex; }
+
+  /* 이 폭부터는 앱바가 없으므로 메뉴 버튼이 돌아오고, 알림은 large 에서만 붙습니다. */
+  .gnb__actions .btn--blur { display: inline-flex; }
+  .gnb__notify { display: none; }
 }
 
 /* ---- large (1601px~) --------------------------------------------------- */
@@ -133,9 +141,8 @@
 
    `is-sticky` 는 gnb.js 가 붙입니다. CSS 만으로는 "붙어 있는 중"을 알 수 없습니다.
 
-   붙은 상태에서는 알림만 남고 메뉴 버튼이 빠집니다. 화면 아래 앱바가 이미 이동을
-   담당하고 있어, 위쪽에는 지금 볼 것(알림)만 둡니다. ⚠️ Figma 22:11662 가 그렇게
-   되어 있습니다 — 평소 small 과 버튼이 뒤바뀌므로 확인이 필요합니다.
+   오른쪽 버튼은 평소와 같은 알림입니다. 붙었다고 버튼이 바뀌면 손이 가던 자리가
+   달라집니다 — 달라지는 것은 로고 크기와 바 높이뿐입니다.
 */
 
 @media (max-width: 960px) {
@@ -160,9 +167,6 @@
     inline-size: var(--_gnb-logo-sticky-width);
     block-size: var(--_gnb-logo-sticky-height);
   }
-
-  .gnb.is-sticky .gnb__notify { display: inline-flex; }
-  .gnb.is-sticky .gnb__actions .btn--blur { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
