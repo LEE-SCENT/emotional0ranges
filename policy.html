@@ -1,0 +1,114 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>emotional oranges — 상품 카드 정책</title>
+<link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
+<link rel="stylesheet" href="./build/tokens.css?v=fbe22b3e">
+<link rel="stylesheet" href="./components/container.css?v=4a4dc1f9">
+<style>
+  body { margin: 0; background: var(--colors-bg); color: var(--colors-fg);
+         font-family: var(--_font-family-pretendard); }
+  main { padding-block: var(--spacing-2000) var(--spacing-3000); }
+  .back { display: inline-block; margin-bottom: var(--spacing-600);
+          color: var(--colors-fg-lower); text-decoration: none;
+          font-size: var(--typography-body-m-regular-font-size); }
+  .back:hover { color: var(--colors-fg); }
+  h1 { margin: 0 0 var(--spacing-300);
+       font-size: var(--typography-heading-l-semibold-font-size);
+       font-weight: var(--typography-heading-l-semibold-font-weight);
+       line-height: var(--typography-heading-l-semibold-line-height);
+       letter-spacing: var(--typography-heading-l-semibold-letter-spacing); }
+  .lead { margin: 0 0 var(--spacing-1500); color: var(--colors-fg-lower);
+          font-size: var(--typography-body-l-regular-font-size);
+          line-height: var(--typography-body-l-regular-line-height); }
+  h2 { margin: var(--spacing-1500) 0 var(--spacing-500);
+       padding-top: var(--spacing-600);
+       border-top: 1px solid var(--colors-border);
+       font-size: var(--typography-heading-s-semibold-font-size);
+       font-weight: var(--typography-heading-s-semibold-font-weight);
+       line-height: var(--typography-heading-s-semibold-line-height); }
+  h2:first-of-type { margin-top: 0; }
+  table { inline-size: 100%; border-collapse: collapse; margin-bottom: var(--spacing-600);
+          font-size: var(--typography-body-m-regular-font-size);
+          line-height: var(--typography-body-m-regular-line-height); }
+  th, td { text-align: start; vertical-align: top; padding: var(--spacing-300) var(--spacing-400);
+           border-bottom: 1px solid var(--colors-divider); }
+  th { inline-size: 200px; color: var(--colors-fg);
+       font-weight: var(--typography-body-m-medium-font-weight); }
+  td { color: var(--colors-fg-lower); }
+  td b { color: var(--colors-fg); font-weight: var(--typography-body-m-medium-font-weight); }
+  code { padding: 2px 6px; border-radius: var(--_rounded-xs);
+         background: var(--colors-bg-low); color: var(--colors-fg);
+         font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; }
+  .note { margin: 0 0 var(--spacing-600); padding: var(--spacing-500);
+          border-radius: var(--_rounded-m); background: var(--colors-bg-low);
+          color: var(--colors-fg-lower);
+          font-size: var(--typography-body-m-regular-font-size);
+          line-height: var(--typography-body-m-regular-line-height); }
+  .note b { color: var(--colors-fg); }
+</style>
+<main class="container">
+  <a class="back" href="./guide.html">← 디자인 시스템</a>
+  <h1>상품 카드 정책</h1>
+  <p class="lead">카드에 무엇이 실리고, 그 값이 어느 일정에서 오는지에 대한 규칙입니다.
+    화면 구현(<code>components/product-card.css</code>)이 이 문서를 따릅니다.</p>
+
+  <p class="note"><b>모든 값은 “대표 일정” 하나에서 옵니다.</b>
+    카드에 보이는 날짜와 그 옆의 잔여석은 반드시 같은 일정을 가리켜야 합니다.
+    여러 일정의 현황을 섞으면 사용자는 A 일정의 날짜를 보고 B 일정의 자리를 믿게 됩니다.</p>
+
+  <h2>대표 일정</h2>
+  <table>
+    <tr><th>선정</th><td>신청 가능한 일정 중 <b>가장 가까운</b> 일정</td></tr>
+    <tr><th>마감 시</th><td>다음 신청 가능 일정으로 자동 변경. 남녀 모두 마감된 일정은 후보에서 제외</td></tr>
+    <tr><th>모두 마감</th><td>신청 가능한 일정이 없으면 날짜·잔여석 대신 <b>모든 일정 마감</b></td></tr>
+  </table>
+
+  <h2>Tag 노출 조건</h2>
+  <table>
+    <tr><th>일정</th><td>대표 일정의 날짜·시간. <b>항상 노출</b> — 예: <code>8월 25일 (화) 저녁 7시</code></td></tr>
+    <tr><th>잔여석</th><td>한 성별이 <b>1~2자리</b> 남았을 때만 — 예: <code>남성 2자리 남음</code></td></tr>
+    <tr><th>성별 마감</th><td>한 성별의 신청이 마감됐을 때 — 예: <code>여성 마감</code></td></tr>
+    <tr><th>동시 노출</th><td>성별끼리 상태가 다르면 둘 다 — 예: <code>남성 1자리 남음</code> + <code>여성 마감</code></td></tr>
+    <tr><th>3자리 이상</th><td>현황 Tag 없음. 일정 Tag만</td></tr>
+    <tr><th>모든 일정 마감</th><td>일정 Tag 자리를 대신하므로 <b>흰 배경</b>(기본 tag)</td></tr>
+    <tr><th>전용 상품</th><td>이용 조건이 있으면 <code>블랙회원 전용</code>을 <b>상시</b> 추가</td></tr>
+  </table>
+  <p class="note">최대 조합은 <b>전용 + 일정 + 성별 둘 = 4개</b>입니다.
+    카드가 가장 좁은 312px 일 때 4개는 한 줄에 들어가지 않아 두 줄로 내려갑니다.
+    3개(284px)는 한 줄이지만 여유가 4px뿐이라, <code>12월 25일 (수) 오후 12시</code>처럼
+    날짜가 길어지면 역시 두 줄이 됩니다.</p>
+
+  <h2>가격</h2>
+  <table>
+    <tr><th>기본</th><td>최저가 기준 <code>42,000원~</code></td></tr>
+    <tr><th>할인 상품</th><td><code>할인가</code> 라벨 + 할인가. <b>기존가는 노출하지 않습니다</b></td></tr>
+    <tr><th>잠긴 상품</th><td>가격 자리에 <code>블랙 인증 후 공개</code></td></tr>
+  </table>
+
+  <h2>장소 · 일정 문구</h2>
+  <p class="note">개수는 <b>신청 가능한 일정만</b> 세어 계산합니다. 마감된 일정의 장소는 포함하지 않습니다.</p>
+  <table>
+    <tr><th>장소 1개</th><td><code>서울 강남</code></td></tr>
+    <tr><th>장소 2개</th><td><code>서울 강남 · 수원 광교</code></td></tr>
+    <tr><th>장소 3개 이상</th><td><code>서울 강남 외 4개 지역</code></td></tr>
+    <tr><th>일정 1개</th><td>개수를 적지 않습니다</td></tr>
+    <tr><th>일정 2개 이상</th><td><code>일정 5개</code></td></tr>
+  </table>
+
+  <h2>목록 노출</h2>
+  <table>
+    <tr><th>데스크톱</th><td>기본 3개. <b>좌우 탐색 버튼은 두지 않습니다</b> — 가로 스크롤과 목록 끝의 더보기가 그 역할을 합니다</td></tr>
+    <tr><th>모바일</th><td>같은 가로 스크롤. 카드가 312px 에서 멈춰 다음 카드가 일부 보입니다</td></tr>
+    <tr><th>전용 상품</th><td>프로모션 카드로 단독 노출 (블랙 라운지)</td></tr>
+    <tr><th>빈 목록</th><td>노출할 상품이 없으면 <b>섹션 자체를 숨깁니다</b></td></tr>
+    <tr><th>찜</th><td>카드에 두지 않습니다. MY 의 <b>찜한 모임</b>에서 봅니다</td></tr>
+  </table>
+
+  <h2>어드민 등록 시 주의</h2>
+  <table>
+    <tr><th>이미지 비율</th><td><b>1.4444 : 1</b> (Figma 398.67 × 276). 다른 비율은 가운데를 기준으로 잘립니다</td></tr>
+    <tr><th>이미지 밝기</th><td>상단 160px 에 어두운 그라디언트가 깔립니다. 위쪽에 중요한 피사체를 두지 마세요 — Tag 가 얹힙니다</td></tr>
+    <tr><th>제목 길이</th><td><b>2줄까지</b>. 넘치면 <code>…</code> 로 잘립니다. 1줄과 2줄이 섞이면 카드 아래쪽 높이가 어긋납니다</td></tr>
+    <tr><th>설명 길이</th><td><b>1줄까지</b></td></tr>
+  </table>
+</main>
