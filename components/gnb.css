@@ -7,10 +7,16 @@
  *
  *   <header class="gnb">
  *     <div class="gnb__inner">
- *       <div class="gnb__start"> 로고, segmentedControl </div>
- *       <div class="gnb__end">   메뉴, 액션 버튼        </div>
+ *       <div class="gnb__side">   로고                      </div>
+ *       <div class="gnb__center"> segmentedControl, 메뉴     </div>
+ *       <div class="gnb__side">   알림·메뉴 버튼             </div>
  *     </div>
  *   </header>
+ *
+ * 세 칸인 이유는 폭 제한이 서로 다르기 때문입니다. 로고와 액션은 화면 끝(최대
+ * 1920)까지 나가고, 가운데 블록만 본문과 같은 1280 에서 멈춥니다. 양쪽 칸을
+ * flex: 1 1 0 으로 똑같이 늘려두면 가운데 블록이 화면 정중앙에 놓여, 결과적으로
+ * 본문 1280 컨테이너와 세로선이 맞습니다.
  *
  * ⚠️ breakpoint 값이 CSS 에 박혀 있습니다. 미디어 쿼리는 var() 를 받지 못해
  *    --breakpoint-* 토큰을 조건에 쓸 수 없습니다. 화면 전체 브레이크포인트(961 / 1601)를
@@ -39,13 +45,27 @@
   min-inline-size: 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
 }
 
-.gnb__start,
-.gnb__end {
+/* 양쪽 칸은 basis 0 에서 똑같이 자라므로 폭이 서로 같아집니다 — 가운데 블록이
+   정확히 가운데 놓이는 근거입니다. max-content 아래로는 줄지 않게 막아, 좁은
+   화면에서 로고가 찌그러지는 대신 가운데 블록이 먼저 줄어듭니다. */
+.gnb__side {
+  flex: 1 1 0;
+  min-inline-size: max-content;
   display: flex;
   align-items: center;
+}
+
+.gnb__side--end { justify-content: flex-end; }
+
+.gnb__center {
+  /* 늘어나지 않고(0) 필요하면 줄며(1), 기본 폭이 본문과 같은 1280 입니다. */
+  flex: 0 1 var(--_gnb-max-content-width);
+  min-inline-size: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .gnb__logo {
@@ -91,15 +111,7 @@
 @media (min-width: 961px) {
   .gnb { padding: var(--spacing-400) var(--spacing-600); }
 
-  /* 본문 콘텐츠와 같은 폭에서 멈춥니다. 배경만 화면을 꽉 채우고 안쪽은
-     카드·배너와 세로선이 맞아야 합니다. */
-  .gnb__inner {
-    inline-size: 100%;
-    max-inline-size: var(--_gnb-max-content-width);
-  }
-
-  .gnb__start { gap: var(--spacing-800); }
-  .gnb__end { gap: var(--spacing-400); }
+  .gnb__inner { gap: var(--spacing-400); }
 
   .gnb__segmented { display: block; }
   .gnb__menu { display: flex; }

@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
 <link rel="stylesheet" href="./components/segmented-control.css?v=6f478c07">
 <link rel="stylesheet" href="./components/tooltip.css?v=db9cbcc1">
-<link rel="stylesheet" href="./components/gnb.css?v=2aafdcea">
+<link rel="stylesheet" href="./components/gnb.css?v=6227a2a0">
 <link rel="stylesheet" href="./components/container.css?v=35013892">
 <link rel="stylesheet" href="./components/footer.css?v=45853c18">
 <style>
@@ -94,10 +94,13 @@ const MENU = ['모임','매칭','모임 후기','자주 묻는 질문','저널']
 document.getElementById('gnb-host').innerHTML = `
 <header class="gnb">
   <div class="gnb__inner">
-    <div class="gnb__start">
+    <div class="gnb__side gnb__side--start">
       <a class="gnb__logo" href="#" aria-label="emotional oranges">
         <svg width="126" height="40" role="img" aria-label="emotional oranges"><use href="#logo-eo"></use></svg>
       </a>
+    </div>
+    <!-- 로고와 액션은 화면 끝에 두고, 가운데 블록만 본문과 같은 1280 에서 멈춥니다. -->
+    <div class="gnb__center">
       <div class="gnb__segmented">
         <div class="segmented" role="tablist">
           <span class="segmented__thumb" aria-hidden="true"></span>
@@ -105,8 +108,6 @@ document.getElementById('gnb-host').innerHTML = `
           <button class="segmented__item" role="tab" aria-selected="false">오프라인</button>
         </div>
       </div>
-    </div>
-    <div class="gnb__end">
       <nav class="gnb__menu">${MENU.map(m => `<button class="btn btn--ghost btn--medium"><span class="btn__label">${m}</span></button>`).join('')}</nav>
       <div class="gnb__actions">
         <button class="btn btn--ghost btn--medium btn--icon-only gnb__notify" aria-label="알림">
@@ -118,6 +119,8 @@ document.getElementById('gnb-host').innerHTML = `
           <span class="badge btn__badge"></span>
         </button>
       </div>
+    </div>
+    <div class="gnb__side gnb__side--end">
     </div>
   </div>
 </header>`

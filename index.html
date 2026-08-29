@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="./components/button.css?v=f74b9b87">
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
 <link rel="stylesheet" href="./components/segmented-control.css?v=6f478c07">
-<link rel="stylesheet" href="./components/gnb.css?v=2aafdcea">
+<link rel="stylesheet" href="./components/gnb.css?v=6227a2a0">
 <link rel="stylesheet" href="./components/kv.css?v=018ae87a">
 <link rel="stylesheet" href="./components/tag.css?v=b860fce1">
 <link rel="stylesheet" href="./components/product-card.css?v=0ff21c86">
@@ -29,10 +29,13 @@
 
 <header class="gnb">
   <div class="gnb__inner">
-    <div class="gnb__start">
+    <div class="gnb__side gnb__side--start">
       <a class="gnb__logo" href="/" aria-label="감정적인 오렌지들 홈">
         <svg width="126" height="40" role="img" aria-label="emotional oranges"><use href="#logo-eo"></use></svg>
       </a>
+    </div>
+    <!-- 로고와 액션은 화면 끝에 두고, 가운데 블록만 본문과 같은 1280 에서 멈춥니다. -->
+    <div class="gnb__center">
       <div class="gnb__segmented">
         <div class="segmented" role="tablist" aria-label="모임 형태">
           <span class="segmented__thumb" aria-hidden="true"></span>
@@ -40,8 +43,6 @@
           <button class="segmented__item" role="tab" aria-selected="false">오프라인</button>
         </div>
       </div>
-    </div>
-    <div class="gnb__end">
       <nav class="gnb__menu" aria-label="주요 메뉴">
         <button class="btn btn--ghost btn--medium"><span class="btn__label">모임</span></button>
         <button class="btn btn--ghost btn--medium"><span class="btn__label">매칭</span></button>
@@ -49,6 +50,8 @@
         <button class="btn btn--ghost btn--medium"><span class="btn__label">자주 묻는 질문</span></button>
         <button class="btn btn--ghost btn--medium"><span class="btn__label">저널</span></button>
       </nav>
+    </div>
+    <div class="gnb__side gnb__side--end">
       <div class="gnb__actions">
         <button class="btn btn--ghost btn--medium btn--icon-only gnb__notify" aria-label="알림">
           <svg class="btn__icon" aria-hidden="true"><use href="#icon-notifications"></use></svg>
