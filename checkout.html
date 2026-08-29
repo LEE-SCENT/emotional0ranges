@@ -12,7 +12,7 @@
 <meta name="theme-color" content="#FFFFFF">
 <title>신청하기 — 감정적인 오렌지들</title>
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
-<link rel="stylesheet" href="./build/tokens.css?v=1739bea3">
+<link rel="stylesheet" href="./build/tokens.css?v=c1dea911">
 <link rel="stylesheet" href="./components/container.css?v=55694a09">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=445ba00a">
@@ -31,7 +31,7 @@
 <link rel="stylesheet" href="./components/checkout.css?v=fd5f58d2">
 <link rel="stylesheet" href="./components/roll.css?v=2f044986">
 <link rel="stylesheet" href="./components/bottom-cta.css?v=8c0377aa">
-<link rel="stylesheet" href="./components/sheet.css?v=746b17f4">
+<link rel="stylesheet" href="./components/sheet.css?v=4fafd65e">
 <link rel="stylesheet" href="./components/top-bar.css?v=8d2c027b">
 <style>
   body {
@@ -288,7 +288,7 @@
         <svg aria-hidden="true"><use href="#icon-error"></use></svg>
         당일 신청 상품은 취소·환불이 불가합니다
       </p>
-      <div class="schedule__list">
+      <div class="schedule__list" data-sheet-scroll>
         <!-- 신청 가능한 일정이 하나도 없을 때만 나옵니다. -->
         <p class="schedule__empty" hidden>변경 가능한 일정이 없어요</p>
         <div class="schedule__group">
@@ -410,7 +410,7 @@
   initSchedule()
   const { initDiscounts } = await import('./components/discount.js?v=20ec859b')
   initDiscounts()
-  const { initSheets } = await import('./components/sheet.js?v=4abbc8c4')
+  const { initSheets } = await import('./components/sheet.js?v=1db2480c')
   initSheets()
   const { initCheckout } = await import('./components/checkout.js?v=22df5b9f')
   initCheckout()

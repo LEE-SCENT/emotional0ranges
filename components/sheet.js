@@ -57,6 +57,29 @@ export function initSheet(dialog) {
     if (!e.target.closest('.sheet__panel')) dialog.close()
   })
 
+  /* ---- 잘린 자리 알리기 --------------------------------------------------
+     머리글과 버튼은 고정되어 있어 목록이 그 밑으로 이어지는지 보이지 않습니다.
+     남은 쪽에만 선을 긋도록 두 가지를 표시합니다 — 위로 더 있으면 is-above,
+     아래로 더 있으면 is-below. 넘치지 않으면 둘 다 붙지 않습니다.
+
+     1 을 빼고 재는 것은 확대·축소나 기기 화소 비율 때문에 끝까지 내려도 소수점
+     하나가 남는 일이 있어서입니다. 그 하나 때문에 선이 지워지지 않습니다. */
+
+  const scroller = dialog.querySelector('[data-sheet-scroll]')
+  const panel = dialog.querySelector('.sheet__panel')
+
+  if (scroller && panel) {
+    const edges = () => {
+      const over = scroller.scrollHeight - scroller.clientHeight
+      panel.classList.toggle('is-above', over > 1 && scroller.scrollTop > 1)
+      panel.classList.toggle('is-below', over > 1 && scroller.scrollTop < over - 1)
+    }
+    scroller.addEventListener('scroll', edges, { passive: true })
+    // 열려서 크기가 생기는 순간에도, 창 폭이 바뀌어 목록이 길어지거나 짧아질 때도
+    // 다시 잽니다.
+    new ResizeObserver(edges).observe(scroller)
+  }
+
   // Esc 로 닫는 것은 <dialog> 가 합니다. 뒤처리만 합니다.
   dialog.addEventListener('close', () => lock(false))
 

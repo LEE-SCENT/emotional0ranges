@@ -247,6 +247,35 @@
   }
 }
 
+/* ---- 잘린 자리를 알리는 선 --------------------------------------------
+   머리글과 버튼은 목록 위아래에 고정되어 있어, 목록이 그 밑으로 이어지는지 여기서
+   끝나는지가 보이지 않습니다. 남은 쪽에만 실선을 그어 그것을 대신합니다.
+
+   넘치지 않으면 둘 다 없고, 맨 위에서는 아래쪽만, 중간에서는 양쪽, 끝에서는
+   위쪽만 — 규칙은 하나입니다. "그 방향에 아직 내용이 있으면 긋는다".
+
+   inset 으로 그리는 것은 바깥 그림자가 카드 위에 겹쳐 번지기 때문입니다. 안쪽
+   선이면 정확히 경계에만 붙습니다.
+*/
+
+.sheet__head,
+.sheet .schedule__actions {
+  transition: box-shadow var(--_duration-fast) var(--_easing-standard);
+}
+
+.sheet__panel.is-above .sheet__head {
+  box-shadow: inset 0 -1px 0 var(--_sheet-scroll-line);
+}
+
+.sheet__panel.is-below .schedule__actions {
+  box-shadow: inset 0 1px 0 var(--_sheet-scroll-line);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheet__head,
+  .sheet .schedule__actions { transition: none; }
+}
+
 /* ---- 961~ : --inline 은 시트가 아닙니다 --------------------------------
    dialog 는 열려 있지 않으면 브라우저가 감춥니다. 그 규칙을 여기서 덮어, 감싼 것이
    없었던 것처럼 만듭니다. */

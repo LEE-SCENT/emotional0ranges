@@ -286,6 +286,7 @@
   --_sheet-padding-inline: var(--spacing-500);
   --_sheet-gap: var(--spacing-600);
   --_sheet-modal-shadow: 0 12px 32px #0000001f;
+  --_sheet-scroll-line: #0000000d;
   --_sheet-shadow: 0 -4px 12px #0000001a;
   --_summary-card-width: 380px;
   --_summary-card-bg: var(--colors-bg);

@@ -574,6 +574,7 @@ export const components = {
     "paddingInline": "4px",
     "gap": "4px",
     "modalShadow": "0 12px 32px #0000001f",
+    "scrollLine": "#0000000d",
     "shadow": "0 -4px 12px #0000001a"
   },
   "summaryCard": {
