@@ -31,7 +31,7 @@
 <link rel="stylesheet" href="./components/checkout.css?v=fd5f58d2">
 <link rel="stylesheet" href="./components/roll.css?v=2f044986">
 <link rel="stylesheet" href="./components/bottom-cta.css?v=8c0377aa">
-<link rel="stylesheet" href="./components/sheet.css?v=078b4ad2">
+<link rel="stylesheet" href="./components/sheet.css?v=0c26353b">
 <link rel="stylesheet" href="./components/top-bar.css?v=8d2c027b">
 <style>
   body {
@@ -324,9 +324,9 @@
                   <span class="option-card__place">서울 강남</span>
                 </span>
                 <span class="option-card__aside">
-                  <span class="tag tag--accent-sec option-card__deadline">
+                  <span class="tag tag--accent-pri option-card__deadline" hidden>
                     <svg aria-hidden="true"><use href="#icon-scheduleFilled"></use></svg>
-                    <time class="countdown">9월 2일까지 할인</time>
+                    <time class="countdown">02:30:24</time>
                   </span>
                   <span class="option-card__seats">남성 3자리 남음</span>
                 </span>
@@ -363,7 +363,7 @@
                   <span class="option-card__place">수원 광교</span>
                 </span>
                 <span class="option-card__aside">
-                  <span class="option-card__seats">대기 가능</span>
+                  <span class="option-card__seats"><svg aria-hidden="true"><use href="#icon-wait"></use></svg>대기 가능</span>
                 </span>
               </label>
             </li>
@@ -390,8 +390,6 @@
           </ul>
         </div>
       </div>
-      <!-- 고른다고 바뀌지 않습니다. 이 버튼을 눌러야 적용됩니다 — 지금 일정이
-           그대로면 누를 것이 없으므로 잠겨 있습니다. -->
       <div class="schedule__actions">
         <button class="btn btn--filled btn--large" data-apply-schedule disabled>
           <span class="btn__label">일정 변경</span>
@@ -408,7 +406,7 @@
   initStickyGnb()
   const { initSchedule } = await import('./components/schedule.js?v=6d625718')
   initSchedule()
-  const { initDiscounts } = await import('./components/discount.js?v=20ec859b')
+  const { initDiscounts } = await import('./components/discount.js?v=b7c8b9e1')
   initDiscounts()
   const { initSheets } = await import('./components/sheet.js?v=1db2480c')
   initSheets()

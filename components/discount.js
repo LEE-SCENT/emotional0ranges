@@ -15,13 +15,14 @@
  *
  * 표시는 남은 시간에 따라 셋 중 하나입니다.
  *
- *   24 시간 미만   02:30:24  — 초까지 세는 카운트다운. 지금 결정할 일이 됩니다.
- *   24 시간 이상   9월 2일까지 할인 — 날짜만. 아직 급한 일이 아닙니다.
- *   지났을 때      태그를 지우고 할인가를 정상가로 되돌립니다.
+ *   24 시간 미만   02:30:24 — 초까지 세는 칩. 지금 결정할 일이 됩니다.
+ *   24 시간 이상   칩 없음. 할인가와 정가 취소선만 남습니다.
+ *   지났을 때      할인가를 정상가로 되돌립니다.
  *
- * 24 시간에서 갈리는 것은, 그보다 남았을 때 초를 세어 보여주면 급하지 않은 것을
- * 급한 것처럼 꾸미는 일이 되기 때문입니다. 반대로 하루 안쪽인데 날짜만 적으면
- * 오늘 밤에 끝나는 줄 모르고 지나갑니다.
+ * 칩은 급하다는 말입니다. 하루 넘게 남은 할인에 칩을 붙이면 급하지 않은 것이
+ * 급해 보이고, 목록에서 칩이 붙은 카드와 붙지 않은 카드를 견주는 눈에는 그것이
+ * 곧 차이로 읽힙니다. 할인 자체는 가격이 이미 말하고 있습니다 — 할인가와 그 옆의
+ * 취소선이면 충분합니다.
  *
  * 마감된 카드에서 태그만 지우고 할인가를 남기면, 그 값으로 신청하려다 결제 화면에서
  * 다른 금액을 보게 됩니다. 둘은 언제나 함께 사라져야 합니다.
@@ -56,12 +57,6 @@ function duration(ms) {
   const s = Math.max(0, Math.floor(ms / 1000))
   return `PT${Math.floor(s / 3600)}H${Math.floor((s % 3600) / 60)}M${s % 60}S`
 }
-
-const dateLabel = (at) => `${at.getMonth() + 1}월 ${at.getDate()}일까지 할인`
-
-/** datetime 에 넣을 YYYY-MM-DD. toISOString 은 UTC 라 자정 근처에서 하루가 밀립니다. */
-const isoDate = (at) =>
-  `${at.getFullYear()}-${pad(at.getMonth() + 1)}-${pad(at.getDate())}`
 
 /**
  * 마감 시각을 읽습니다.
@@ -108,23 +103,13 @@ function paint(item, left) {
   const soon = left < DAY_MS
   if (item.soon !== soon) {
     item.soon = soon
-    // 하루 안쪽으로 들어오면 태그도 힘을 줍니다. 배경만 진해지고 글자색과 시계는
-    // 그대로입니다 — 같은 할인이지, 다른 것이 된 게 아닙니다.
-    item.tag.classList.toggle('tag--accent-pri', soon)
-    item.tag.classList.toggle('tag--accent-sec', !soon)
+    // 하루 안쪽으로 들어와야 칩이 붙습니다. 그 전에는 자리도 차지하지 않습니다.
+    item.tag.hidden = !soon
   }
+  if (!soon) return
 
-  if (soon) {
-    item.text.textContent = clock(left)
-    item.text.dateTime = duration(left)
-    return
-  }
-
-  const label = dateLabel(item.deadline)
-  if (item.text.textContent !== label) {
-    item.text.textContent = label
-    item.text.dateTime = isoDate(item.deadline)
-  }
+  item.text.textContent = clock(left)
+  item.text.dateTime = duration(left)
 }
 
 export function initDiscounts(scope = document) {
