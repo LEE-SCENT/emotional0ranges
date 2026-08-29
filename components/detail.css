@@ -358,3 +358,15 @@
 .detail-page .footer {
   max-inline-size: none;
 }
+
+/* 비슷한 모임은 다섯 장이 한 화면에 다 들어갑니다. 홈의 레일은 세 장을 보여주고
+   나머지를 밀어두지만, 여기는 목록이 다섯에서 끝나 밀어둘 것이 없습니다.
+
+   폭이 좁아지면 다섯을 우겨넣는 대신 홈과 같은 레일로 돌아갑니다 — 1280 아래에서
+   다섯으로 나누면 카드가 250 밑으로 내려가 사진도 글도 읽히지 않습니다. */
+@media (min-width: 1281px) {
+  .detail-page .product-card-group > .product-card {
+    flex: 1 0 0;
+    min-inline-size: 0;
+  }
+}
