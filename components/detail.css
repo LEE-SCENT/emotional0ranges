@@ -25,8 +25,19 @@
   inline-size: 100%;
 }
 
-.detail-top { padding-block-start: var(--spacing-1800); }
-.detail-body { padding-block: var(--spacing-1200); }
+/* GNB 바로 아래에서 시작합니다 — Figma 에서 GNB 가 끝나는 72 지점이 곧 사진의
+   윗변입니다. 사이를 띄우면 사진이 화면에서 밀려 내려갑니다. */
+.detail-body { padding-block-start: var(--spacing-800); }
+
+/* 본문은 탭 → 소개 → 후기 → 안내 순으로 간격이 다릅니다. 하나의 gap 으로 묶을 수
+   없어 각자 자기 위 여백을 갖습니다. */
+.detail-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-main .tabs { margin-block-end: var(--spacing-500); }
+.detail-main .review { margin-block-start: var(--spacing-800); }
 
 .detail-main,
 .detail-gallery {
