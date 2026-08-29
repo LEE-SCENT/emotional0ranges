@@ -177,6 +177,7 @@
   --_product-card-scrim-from: #000000A6;
   --_product-card-scrim-height: 160px;
   --_product-card-more-fg: var(--colors-fg);
+  --_product-card-more-min-width: 128px;
   --_product-card-more-icon-size: calc(var(--_dimension) * 6);
   --_product-card-category-image-ratio: 1;
   --_product-card-category-width: 198px;

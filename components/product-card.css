@@ -202,6 +202,10 @@
     max(var(--_product-card-min-width), (100cqw - 2 * var(--spacing-50)) / 3)
     / var(--_product-card-image-ratio)
   );
+  /* Figma 의 minWidth 는 좌우 여백을 포함한 값입니다. border-box 로 두지 않으면
+     여백 48 이 그 위에 얹혀 176 이 됩니다. */
+  box-sizing: border-box;
+  min-inline-size: var(--_product-card-more-min-width);
   padding-inline: var(--spacing-600);
   color: var(--_product-card-more-fg);
   text-decoration: none;

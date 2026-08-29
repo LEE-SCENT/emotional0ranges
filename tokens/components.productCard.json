@@ -35,6 +35,11 @@
           "$type": "color",
           "$value": "{semantic.colors.fg}"
         },
+        "minWidth": {
+          "$type": "dimension",
+          "$value": "128px",
+          "$description": "더보기가 이보다 좁아지지 않습니다. 좌우 여백만으로는 레이블이 짧아 눌러야 할 자리로 보이지 않습니다."
+        },
         "iconSize": {
           "$type": "dimension",
           "$value": "{primitive.dimension}",
