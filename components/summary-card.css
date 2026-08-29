@@ -50,7 +50,7 @@
   align-items: center;
   gap: var(--spacing-150);
   margin: 0;
-  padding: var(--spacing-150) var(--spacing-300);
+  padding: var(--spacing-200) var(--spacing-300);
   border-radius: var(--_summary-card-banner-rounded);
   background: var(--_summary-card-banner-bg);
   color: var(--_summary-card-banner-fg);
