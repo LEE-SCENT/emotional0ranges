@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="./components/container.css?v=4a4dc1f9">
 <link rel="stylesheet" href="./components/footer.css?v=6092471f">
 <link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
-<link rel="stylesheet" href="./components/product-card.css?v=ff884ba5">
+<link rel="stylesheet" href="./components/product-card.css?v=ec7ce389">
 <style>
   body { margin:0; padding:24px; background:var(--colors-bg); color:var(--colors-fg);
          font-family:var(--_font-family-pretendard); }
@@ -83,6 +83,81 @@
     <div class="product-card__info">
       <h3 class="product-card__title">상품명</h3>
       <p class="product-card__desc">모임 3개</p>
+    </div>
+  </article>
+</div>
+
+<h2>Card — 태그 노출 조건 (카드 폭 312, 가장 좁은 경우)</h2>
+<div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">
+  <article class="product-card" style="inline-size:312px">
+    <div class="product-card__media">
+      <img src="./images/meetup-couple.jpg" alt="">
+      <div class="product-card__tags">
+          <span class="tag">8월 25일 (화) 저녁 7시</span>
+      </div>
+    </div>
+    <div class="product-card__info">
+      <h3 class="product-card__title">3자리 이상 — 일정 태그만</h3>
+      <p class="product-card__desc">서울 강남 · 일정 5개</p>
+      <p class="product-card__price">42,000원~</p>
+    </div>
+  </article>
+  <article class="product-card" style="inline-size:312px">
+    <div class="product-card__media">
+      <img src="./images/meetup-lamp.jpg" alt="">
+      <div class="product-card__tags">
+          <span class="tag">8월 25일 (화) 저녁 7시</span>
+          <span class="tag tag--accent-pri">남성 2자리 남음</span>
+      </div>
+    </div>
+    <div class="product-card__info">
+      <h3 class="product-card__title">한 성별 1~2자리</h3>
+      <p class="product-card__desc">서울 강남 · 일정 5개</p>
+      <p class="product-card__price">42,000원~</p>
+    </div>
+  </article>
+  <article class="product-card" style="inline-size:312px">
+    <div class="product-card__media">
+      <img src="./images/meetup-record.jpg" alt="">
+      <div class="product-card__tags">
+          <span class="tag">8월 25일 (화) 저녁 7시</span>
+          <span class="tag tag--accent-pri">남성 1자리 남음</span>
+          <span class="tag tag--accent-sec">여성 마감</span>
+      </div>
+    </div>
+    <div class="product-card__info">
+      <h3 class="product-card__title">상태가 다를 때 — 동시 노출</h3>
+      <p class="product-card__desc">서울 강남 · 일정 5개</p>
+      <p class="product-card__price">42,000원~</p>
+    </div>
+  </article>
+  <article class="product-card" style="inline-size:312px">
+    <div class="product-card__media">
+      <img src="./images/promo-tile-2.jpg" alt="">
+      <div class="product-card__tags">
+          <span class="tag tag--accent-sec">모든 일정 마감</span>
+      </div>
+    </div>
+    <div class="product-card__info">
+      <h3 class="product-card__title">신청 가능한 일정 없음</h3>
+      <p class="product-card__desc">서울 강남 · 일정 5개</p>
+      <p class="product-card__price">42,000원~</p>
+    </div>
+  </article>
+  <article class="product-card" style="inline-size:312px">
+    <div class="product-card__media">
+      <img src="./images/promo-main.jpg" alt="">
+      <div class="product-card__tags">
+          <span class="tag tag--black"><svg aria-hidden="true"><use href="#icon-memberBlack"></use></svg>블랙회원 전용</span>
+          <span class="tag">9월 6일 (일) 저녁 7시</span>
+          <span class="tag tag--accent-pri">남성 1자리 남음</span>
+          <span class="tag tag--accent-sec">여성 마감</span>
+      </div>
+    </div>
+    <div class="product-card__info">
+      <h3 class="product-card__title">전용 상품 — 최대 조합 4개</h3>
+      <p class="product-card__desc">서울 강남 · 일정 5개</p>
+      <p class="product-card__price">42,000원~</p>
     </div>
   </article>
 </div>
