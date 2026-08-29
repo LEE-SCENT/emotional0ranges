@@ -417,7 +417,7 @@ export const components = {
     },
     "more": {
       "fg": "#000000",
-      "minWidth": "128px",
+      "minWidth": "108px",
       "iconSize": "24px"
     },
     "category": {
