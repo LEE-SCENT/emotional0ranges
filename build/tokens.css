@@ -180,6 +180,8 @@
   --_kv-min-height-base: 534px;
   --_kv-min-height-sm: 616px;
   --_kv-min-height-md: 518px;
+  --_kv-slide-gap: var(--spacing-200);
+  --_kv-slide-scale-idle: 0.882;
   --_notice-bg: var(--colors-bg-low);
   --_notice-icon-size: calc(var(--_dimension) * 8);
   --_notice-icon-fg: var(--colors-fg-brand);

@@ -32,6 +32,19 @@
           "$value": "518px",
           "$description": "961~"
         }
+      },
+      "slide": {
+        "$description": "KV 가 여러 장일 때. 다음 장이 화면 오른쪽에 살짝 걸쳐 힌트로 보입니다.",
+        "gap": {
+          "$type": "dimension",
+          "$value": "{semantic.spacing.200}",
+          "$description": "장 사이 8px. Figma 13:4169 에서 KV1 오른쪽 410, KV2 왼쪽 418."
+        },
+        "scaleIdle": {
+          "$type": "number",
+          "$value": 0.882,
+          "$description": "현재가 아닌 장의 크기. Figma 344/390 = 471/534 = 0.882 로 가로세로가 같습니다."
+        }
       }
     }
   }

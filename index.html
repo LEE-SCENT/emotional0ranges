@@ -7,7 +7,7 @@
 <meta name="format-detection" content="telephone=no">
 <title>감정적인 오렌지들</title>
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
-<link rel="stylesheet" href="./build/tokens.css?v=b5a065d9">
+<link rel="stylesheet" href="./build/tokens.css?v=2cf12f9f">
 <link rel="stylesheet" href="./components/container.css?v=4a4dc1f9">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=b84ee9e0">
@@ -15,13 +15,13 @@
 <link rel="stylesheet" href="./components/segmented-control.css?v=7a4a3de6">
 <link rel="stylesheet" href="./components/tooltip.css?v=d3d8dfa4">
 <link rel="stylesheet" href="./components/gnb.css?v=5bdc7e5d">
-<link rel="stylesheet" href="./components/kv.css?v=018ae87a">
+<link rel="stylesheet" href="./components/kv.css?v=55b2b606">
 <link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
 <link rel="stylesheet" href="./components/product-card.css?v=afaede78">
 <link rel="stylesheet" href="./components/section-title.css?v=d1c6b1bc">
 <link rel="stylesheet" href="./components/footer.css?v=b6122ba5">
 <link rel="stylesheet" href="./components/notice.css?v=de267cbf">
-<link rel="stylesheet" href="./components/mobile-switch.css?v=af1f2546">
+<link rel="stylesheet" href="./components/mobile-switch.css?v=0122d735">
 <link rel="stylesheet" href="./components/app-bar.css?v=4709389e">
 <style>
   body { margin: 0; background: var(--colors-bg); color: var(--colors-fg); }
@@ -74,32 +74,64 @@
 </header>
 
 <main class="container container--wide">
-  <section class="kv" aria-roledescription="캐러셀" aria-label="주요 소식">
-    <div class="kv__media" data-youtube="9fRsFJAS1-Y" data-title="감정적인 오렌지들 소개 영상"></div>
-    <div class="kv__scrim"></div>
+  <section class="kv-group" aria-roledescription="캐러셀" aria-label="주요 소식">
+    <div class="kv-group__track">
+    <article class="kv is-current">
+      <div class="kv__media" data-youtube="9fRsFJAS1-Y" data-title="감정적인 오렌지들 소개 영상"></div>
+      <div class="kv__scrim"></div>
 
-    <div class="kv__content">
-      <button class="btn btn--blur btn--medium btn--icon-only is-on kv__nav" aria-label="이전 슬라이드">
-        <svg class="btn__icon" aria-hidden="true"><use href="#icon-chevronLeft"></use></svg>
-      </button>
+      <div class="kv__content">
+        <button class="btn btn--blur btn--medium btn--icon-only is-on kv__nav" aria-label="이전 슬라이드">
+          <svg class="btn__icon" aria-hidden="true"><use href="#icon-chevronLeft"></use></svg>
+        </button>
 
-      <div class="kv__body">
-        <div class="kv__title">
-          <h1 class="kv__headline">당신은 좋은 사람이예요<br>만날 기회가 없었을 뿐<span class="kv__dot">.</span></h1>
-          <p class="kv__sub">앱 소개팅의 피로감도, 결혼정보회사의 부담도 없이<br>직접 만나 대화하며 알아가는 소개팅</p>
+        <div class="kv__body">
+          <div class="kv__title">
+            <h1 class="kv__headline">당신은 좋은 사람이예요<br>만날 기회가 없었을 뿐<span class="kv__dot">.</span></h1>
+            <p class="kv__sub">앱 소개팅의 피로감도, 결혼정보회사의 부담도 없이<br>직접 만나 대화하며 알아가는 소개팅</p>
+          </div>
+          <div class="btn-group btn-group--horizontal kv__cta">
+            <button class="btn btn--filled btn--large is-on"><span class="btn__label">모임 둘러보기</span></button>
+            <button class="btn btn--blur btn--large is-on"><span class="btn__label">매칭 방법 보기</span></button>
+          </div>
         </div>
-        <div class="btn-group btn-group--horizontal kv__cta">
-          <button class="btn btn--filled btn--large is-on"><span class="btn__label">모임 둘러보기</span></button>
-          <button class="btn btn--blur btn--large is-on"><span class="btn__label">매칭 방법 보기</span></button>
-        </div>
+
+        <button class="btn btn--blur btn--medium btn--icon-only is-on kv__nav" aria-label="다음 슬라이드">
+          <svg class="btn__icon" aria-hidden="true"><use href="#icon-chevronRight"></use></svg>
+        </button>
       </div>
 
-      <button class="btn btn--blur btn--medium btn--icon-only is-on kv__nav" aria-label="다음 슬라이드">
-        <svg class="btn__icon" aria-hidden="true"><use href="#icon-chevronRight"></use></svg>
-      </button>
-    </div>
+      <p class="kv__pagination"><b>1</b> <span aria-hidden="true">/</span> <span class="sr-only">중</span> 2</p>
+    </article>
 
-    <p class="kv__pagination"><b>1</b> <span aria-hidden="true">/</span> <span class="sr-only">중</span> 6</p>
+    <!-- ⚠️ 두 번째 장은 동작 확인용입니다. 사진과 문구 모두 임시입니다. -->
+    <article class="kv">
+      <div class="kv__media"><img src="./images/meetup-record.jpg" alt=""></div>
+      <div class="kv__scrim"></div>
+
+      <div class="kv__content">
+        <button class="btn btn--blur btn--medium btn--icon-only is-on kv__nav" aria-label="이전 슬라이드">
+          <svg class="btn__icon" aria-hidden="true"><use href="#icon-chevronLeft"></use></svg>
+        </button>
+
+        <div class="kv__body">
+          <div class="kv__title">
+            <h2 class="kv__headline">취향이 같으면<br>대화가 쉬워져요<span class="kv__dot">.</span></h2>
+            <p class="kv__sub">음악, 전시, 러닝까지<br>좋아하는 것으로 모이는 자리</p>
+          </div>
+          <div class="btn-group btn-group--horizontal kv__cta">
+            <button class="btn btn--filled btn--large is-on"><span class="btn__label">테마 보러 가기</span></button>
+          </div>
+        </div>
+
+        <button class="btn btn--blur btn--medium btn--icon-only is-on kv__nav" aria-label="다음 슬라이드">
+          <svg class="btn__icon" aria-hidden="true"><use href="#icon-chevronRight"></use></svg>
+        </button>
+      </div>
+
+      <p class="kv__pagination"><b>2</b> <span aria-hidden="true">/</span> <span class="sr-only">중</span> 2</p>
+    </article>
+    </div>
   </section>
 
   <section class="product-card-section">
@@ -309,8 +341,11 @@
 
 <div class="mobile-switch">
   <div class="mobile-switch__inner">
-    <div class="tooltip tooltip--top mobile-switch__tip">
+    <div class="tooltip tooltip--top tooltip--has-close mobile-switch__tip">
       <span class="tooltip__label">온라인 매칭 지금 보러 가기</span>
+      <button class="tooltip__close" aria-label="닫기">
+        <svg width="16" height="16" aria-hidden="true"><use href="#icon-close"></use></svg>
+      </button>
     </div>
     <div class="segmented" role="tablist" aria-label="모임 형태">
       <span class="segmented__thumb" aria-hidden="true"></span>
@@ -350,6 +385,8 @@
   initSegmentedControls()
   const { initKvVideo } = await import('./components/kv.js?v=d2d085a7')
   initKvVideo()
+  const { initKvCarousels } = await import('./components/kv-carousel.js?v=bf6a6c33')
+  initKvCarousels()
   const { initStickyGnb } = await import('./components/gnb.js?v=ca09b963')
   initStickyGnb()
   const { initAutoHide } = await import('./components/auto-hide.js?v=ef9c163a')

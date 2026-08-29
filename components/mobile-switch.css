@@ -18,7 +18,7 @@
 .mobile-switch {
   position: fixed;
   /* 앱바 바로 위에 뜹니다. 앱바가 화면 맨 아래를 차지하므로 그 높이만큼 올립니다. */
-  inset-block-end: calc(var(--_app-bar-height) + var(--spacing-600));
+  inset-block-end: calc(var(--_app-bar-height) + var(--spacing-500));
   inset-inline: 0;
   z-index: 10;
   display: flex;

@@ -416,6 +416,10 @@ export const components = {
       "base": "534px",
       "sm": "616px",
       "md": "518px"
+    },
+    "slide": {
+      "gap": "4px",
+      "scaleIdle": 0.882
     }
   },
   "notice": {
