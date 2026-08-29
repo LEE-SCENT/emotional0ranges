@@ -77,6 +77,14 @@
   color: inherit;
 }
 
+/* 안쪽 svg 는 width/height 속성을 들고 있어 링크만 줄이면 그림은 그대로입니다.
+   심볼에 viewBox 가 있어 상자만 맞춰주면 그림이 따라 줄어듭니다. */
+.gnb__logo svg {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+}
+
 .gnb__menu {
   display: flex;
   align-items: center;
