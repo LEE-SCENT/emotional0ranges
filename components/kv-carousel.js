@@ -53,13 +53,44 @@ export function initKvCarousel(group) {
       getComputedStyle(document.documentElement).getPropertyValue('--_kv-slide-scale-idle'),
     ) || 1
 
+  // 크기는 스크롤을 곧바로 따르지 않고 천천히 뒤따라옵니다.
+  //
+  // 스냅이 걸려 있어 손을 떼면 스크롤이 순식간에 다음 장으로 넘어갑니다. 크기를
+  // 스크롤 위치에 그대로 묶으면 그 짧은 시간에 0.882 에서 1 까지 다 가버려서
+  // 팡 하고 튀어 오르는 것처럼 보입니다. 그래서 목표값과 현재값을 따로 두고,
+  // 매 프레임 목표 쪽으로 조금씩(FOLLOW) 다가가게 합니다. 천천히 끄는 동안에는
+  // 목표도 천천히 움직이므로 차이가 거의 없고, 튕겨 넘길 때만 부드럽게 늘어납니다.
+  const FOLLOW = 0.12
+  const DONE = 0.001
+
   let current = -1
   let queued = false
+  let running = false
   let size = 0
   let settle = 0
 
+  const targets = slides.map(() => 1)
+  const values = slides.map(() => 1)
+
   const measure = () => {
     size = step(track)
+  }
+
+  const draw = () => {
+    let moving = false
+    slides.forEach((el, i) => {
+      const gap = targets[i] - values[i]
+      if (Math.abs(gap) < DONE) {
+        values[i] = targets[i]
+      } else {
+        values[i] += gap * FOLLOW
+        moving = true
+      }
+      el.style.setProperty('--kv-slide-scale', values[i].toFixed(4))
+    })
+
+    running = moving
+    if (moving) requestAnimationFrame(draw)
   }
 
   const mark = () => {
@@ -69,8 +100,13 @@ export function initKvCarousel(group) {
     slides.forEach((el, i) => {
       // 지금 자리에서 한 장 이상 떨어지면 완전히 줄어든 크기입니다.
       const away = Math.min(1, Math.abs(pos - i))
-      el.style.setProperty('--kv-slide-scale', String(idle + (1 - idle) * (1 - away)))
+      targets[i] = idle + (1 - idle) * (1 - away)
     })
+
+    if (!running) {
+      running = true
+      requestAnimationFrame(draw)
+    }
 
     const next = Math.round(pos)
     if (next === current) return
@@ -89,7 +125,9 @@ export function initKvCarousel(group) {
       clearTimeout(settle)
       settle = setTimeout(() => {
         settle = 0
-        track.classList.remove('is-scrolling')
+        // 스크롤이 멈춰도 크기는 아직 뒤따라오는 중일 수 있습니다.
+        if (!running) track.classList.remove('is-scrolling')
+        else setTimeout(() => track.classList.remove('is-scrolling'), 400)
       }, 160)
 
       if (queued) return
@@ -107,6 +145,11 @@ export function initKvCarousel(group) {
 
   measure()
   mark()
+  // 처음 그릴 때는 뒤따라올 이유가 없습니다. 목표를 그대로 씁니다.
+  slides.forEach((el, i) => {
+    values[i] = targets[i]
+    el.style.setProperty('--kv-slide-scale', values[i].toFixed(4))
+  })
 }
 
 export function initKvCarousels(scope = document) {
