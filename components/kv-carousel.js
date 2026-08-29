@@ -7,14 +7,18 @@
  * 넘기는 것 자체는 CSS 가 합니다 — overflow-x 와 scroll-snap 이면 손가락으로는
  * 충분합니다. 여기서는 세 가지만 합니다.
  *
- *   data-slides   장 수. 한 장이면 CSS 가 페이지네이션을 감춥니다.
+ *   data-slides   장 수.
  *   is-current    지금 보고 있는 장.
  *   --kv-slide-scale
  *                 장마다의 크기. 스크롤 위치에서 바로 계산해 매 프레임 넣습니다.
  *                 CSS 전환에 맡기면 스냅이 끝난 뒤 한 번에 커져 툭 튀어 보입니다.
  *
- * 넘기는 버튼은 두지 않습니다 — 손가락과 트랙패드로 넘기고, 지금 몇 번째인지는
- * 페이지네이션이 알려줍니다.
+ * 넘기는 방법은 둘입니다. 좁은 화면에서는 손가락으로 끌고, 961 부터는 좌우 화살표를
+ * 씁니다. 화살표는 마크업에 늘 있고 어느 폭에서 보일지는 CSS 가 정합니다.
+ *
+ * 자동 전환은 사진 장에만 겁니다 — 영상 장은 영상이 끝날 때 넘어갑니다. 마우스가
+ * 올라가 있거나 키보드가 안에 들어와 있는 동안에는 멈춥니다. 읽고 있는 것이 눈앞에서
+ * 사라지면 안 됩니다.
  *
  * 스크롤 위치를 장 폭으로 나눠 반올림합니다. 눈에 보이는 비율을 재는 방법도 있지만,
  * 장이 스냅으로 멈추므로 나눗셈이면 충분하고 결과가 흔들리지 않습니다.
@@ -36,6 +40,15 @@ function step(track) {
   const gap = parseFloat(getComputedStyle(track).columnGap) || 0
   return first.offsetWidth + gap
 }
+
+/**
+ * 사진 한 장을 보여주는 시간.
+ * ⚠️ Figma 에 없어 코드에서 정했습니다. 헤드라인 두 줄을 읽고 CTA 를 훑기에
+ * 5 초면 충분하다고 보았습니다.
+ */
+const IMAGE_DURATION = 5000
+
+const wantsLessMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches
 
 export function initKvCarousel(group) {
   if (group.dataset.kvReady) return
@@ -112,6 +125,7 @@ export function initKvCarousel(group) {
     if (next === current) return
     current = next
     slides.forEach((el, i) => el.classList.toggle('is-current', i === next))
+    plan()
   }
 
   track.addEventListener(
@@ -143,6 +157,61 @@ export function initKvCarousel(group) {
     mark()
   }).observe(track)
 
+  /* ---- 자동 전환 --------------------------------------------------------
+     사진 장은 정해진 시간이 지나면, 영상 장은 영상이 끝나면 다음으로 넘어갑니다.
+     마지막 장 다음은 처음으로 돌아옵니다. */
+
+  let timer = 0
+  let paused = false
+
+  const advance = () => {
+    const next = (current + 1) % slides.length
+    track.scrollTo({ left: next * size, behavior: 'smooth' })
+  }
+
+  const stop = () => {
+    clearTimeout(timer)
+    timer = 0
+  }
+
+  const plan = () => {
+    stop()
+    if (paused || slides.length < 2 || wantsLessMotion()) return
+    const slide = slides[current]
+    // 영상 장은 시간이 아니라 재생이 끝나는 때를 기다립니다.
+    if (!slide || slide.querySelector('[data-youtube]')) return
+    timer = setTimeout(advance, IMAGE_DURATION)
+  }
+
+  group.addEventListener('kv:ended', () => {
+    if (!paused && slides.length > 1) advance()
+  })
+
+  // 보고 있는 동안에는 멈춥니다.
+  const hold = () => {
+    paused = true
+    stop()
+  }
+  const release = () => {
+    paused = false
+    plan()
+  }
+  group.addEventListener('mouseenter', hold)
+  group.addEventListener('mouseleave', release)
+  group.addEventListener('focusin', hold)
+  group.addEventListener('focusout', (e) => {
+    if (!group.contains(e.relatedTarget)) release()
+  })
+
+  // 화살표는 마크업에 늘 있습니다. 어느 폭에서 보일지는 CSS 가 정합니다.
+  group.addEventListener('click', (e) => {
+    const nav = e.target.closest('.kv__nav')
+    if (!nav || !group.contains(nav)) return
+    const back = nav.getAttribute('aria-label')?.includes('이전')
+    const next = (current + (back ? -1 : 1) + slides.length) % slides.length
+    track.scrollTo({ left: next * size, behavior: 'smooth' })
+  })
+
   measure()
   mark()
   // 처음 그릴 때는 뒤따라올 이유가 없습니다. 목표를 그대로 씁니다.
@@ -150,6 +219,7 @@ export function initKvCarousel(group) {
     values[i] = targets[i]
     el.style.setProperty('--kv-slide-scale', values[i].toFixed(4))
   })
+  plan()
 }
 
 export function initKvCarousels(scope = document) {

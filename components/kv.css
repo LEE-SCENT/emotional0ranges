@@ -86,7 +86,8 @@
 .kv__body {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* 좁은 화면은 왼쪽 아래 정렬입니다. 가운데 정렬은 961 부터. */
+  align-items: flex-start;
   gap: var(--spacing-600);
   inline-size: 100%;
 }
@@ -94,10 +95,10 @@
 .kv__title {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--spacing-300);
   inline-size: 100%;
-  text-align: center;
+  text-align: start;
 }
 
 .kv__headline {
@@ -123,20 +124,16 @@
 
 /* ---- 페이지네이션 (~960) ----------------------------------------------- */
 
+/* 숫자 인디케이터는 노출하지 않습니다 — PC 는 화살표, 모바일은 스와이프로
+   넘깁니다. 마크업에는 남겨 스크린 리더가 몇 번째인지 읽을 수 있게 합니다. */
 .kv__pagination {
-  position: relative;
-  box-sizing: border-box;
-  z-index: 1;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: var(--spacing-50);
+  position: absolute;
   margin: 0;
-  inline-size: 100%;
-  max-inline-size: 640px;
-  padding: var(--spacing-300) var(--spacing-500);
-  font-size: var(--typography-body-m-regular-font-size);
-  line-height: var(--typography-body-m-regular-line-height);
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 .kv__pagination b { font-weight: var(--typography-body-m-semibold-font-weight); }
 
@@ -162,7 +159,14 @@
     padding: 0 var(--spacing-1000);
   }
 
-  .kv__body { flex: 1 0 0; min-inline-size: 0; }
+  /* 넓은 화면은 가운데 정렬입니다. 좁은 화면의 왼쪽 아래 정렬을 되돌립니다. */
+  .kv__body {
+    flex: 1 0 0;
+    min-inline-size: 0;
+    align-items: center;
+  }
+
+  .kv__title { align-items: center; text-align: center; }
 
   /* 961~1600 구간에서 헤드라인이 44 → 52 로 자랍니다. Figma 가 같은 티어의
      1024 프레임과 1600 프레임에 각각 44 / 52 를 그려두어 유동 스케일로 읽었습니다.
@@ -185,6 +189,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .kv__nav,
   .kv__media { transition: none; }
 }
 
@@ -237,6 +242,40 @@
    KV 는 넘겨 보는 자리라 버튼까지 얹으면 손이 갈 곳이 겹칩니다. */
 @media (max-width: 960px) {
   .kv__cta { display: none; }
+}
+
+/* ---- 여러 장 · 961~ ----------------------------------------------------
+   넓은 화면에서는 소재끼리 붙습니다. 둥근 모서리는 KV 영역 전체가 갖고, 소재
+   자체는 각지게 둡니다 — 넘길 때 모서리가 소재를 따라다니면 한 덩어리로 보이지
+   않습니다. 트랙에 반지름을 주면 그 자체가 마스크가 되어 안쪽 소재를 잘라냅니다.
+*/
+@media (min-width: 961px) {
+  .kv-group__track {
+    gap: 0;
+    border-radius: var(--_kv-rounded-md);
+  }
+
+  .kv-group .kv { border-radius: 0; }
+}
+
+/* ---- 좌우 이동 버튼 (961~) ---------------------------------------------
+   버튼 컴포넌트를 그대로 씁니다 — .btn--blur.btn--medium.btn--icon-only.is-on.
+   좁은 화면에서는 스와이프로 넘기므로 두지 않습니다.
+*/
+
+.kv__nav { display: none; }
+
+@media (min-width: 961px) {
+  /* 평소에는 비어 있다가 KV 위에 마우스를 올리거나 키보드가 들어올 때 나타납니다.
+     display 를 껐다 켜면 가운데 텍스트 폭이 흔들리므로 자리는 늘 차지합니다. */
+  .kv__nav {
+    display: inline-flex;
+    opacity: 0;
+    transition: opacity var(--_duration-fast) var(--_easing-standard);
+  }
+
+  .kv:hover .kv__nav,
+  .kv:focus-within .kv__nav { opacity: 1; }
 }
 
 /* ---- 힌트 (~960) --------------------------------------------------------

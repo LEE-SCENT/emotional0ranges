@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="./components/segmented-control.css?v=7a4a3de6">
 <link rel="stylesheet" href="./components/tooltip.css?v=d3d8dfa4">
 <link rel="stylesheet" href="./components/gnb.css?v=5bdc7e5d">
-<link rel="stylesheet" href="./components/kv.css?v=8e3b9b2f">
+<link rel="stylesheet" href="./components/kv.css?v=51813047">
 <link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
 <link rel="stylesheet" href="./components/product-card.css?v=afaede78">
 <link rel="stylesheet" href="./components/section-title.css?v=d1c6b1bc">
@@ -82,6 +82,10 @@
 
       <div class="kv__content">
 
+        <button class="btn btn--blur btn--medium btn--icon-only is-on kv__nav" aria-label="이전 슬라이드">
+          <svg class="btn__icon" aria-hidden="true"><use href="#icon-chevronLeft"></use></svg>
+        </button>
+
         <div class="kv__body">
           <div class="kv__title">
             <h1 class="kv__headline">당신은 좋은 사람이예요<br>만날 기회가 없었을 뿐<span class="kv__dot">.</span></h1>
@@ -92,6 +96,10 @@
             <button class="btn btn--blur btn--large is-on"><span class="btn__label">매칭 방법 보기</span></button>
           </div>
         </div>
+
+        <button class="btn btn--blur btn--medium btn--icon-only is-on kv__nav" aria-label="다음 슬라이드">
+          <svg class="btn__icon" aria-hidden="true"><use href="#icon-chevronRight"></use></svg>
+        </button>
       </div>
 
       <p class="kv__pagination"><b>1</b> <span aria-hidden="true">/</span> <span class="sr-only">중</span> 2</p>
@@ -104,15 +112,24 @@
 
       <div class="kv__content">
 
+        <button class="btn btn--blur btn--medium btn--icon-only is-on kv__nav" aria-label="이전 슬라이드">
+          <svg class="btn__icon" aria-hidden="true"><use href="#icon-chevronLeft"></use></svg>
+        </button>
+
         <div class="kv__body">
           <div class="kv__title">
-            <h2 class="kv__headline">취향이 같으면<br>대화가 쉬워져요<span class="kv__dot">.</span></h2>
-            <p class="kv__sub">음악, 전시, 러닝까지<br>좋아하는 것으로 모이는 자리</p>
+            <h2 class="kv__headline">당신은 좋은 사람이예요<br>만날 기회가 없었을 뿐<span class="kv__dot">.</span></h2>
+            <p class="kv__sub">앱 소개팅의 피로감도, 결혼정보회사의 부담도 없이<br>직접 만나 대화하며 알아가는 소개팅</p>
           </div>
           <div class="btn-group btn-group--horizontal kv__cta">
-            <button class="btn btn--filled btn--large is-on"><span class="btn__label">테마 보러 가기</span></button>
+            <button class="btn btn--filled btn--large is-on"><span class="btn__label">모임 둘러보기</span></button>
+            <button class="btn btn--blur btn--large is-on"><span class="btn__label">매칭 방법 보기</span></button>
           </div>
         </div>
+
+        <button class="btn btn--blur btn--medium btn--icon-only is-on kv__nav" aria-label="다음 슬라이드">
+          <svg class="btn__icon" aria-hidden="true"><use href="#icon-chevronRight"></use></svg>
+        </button>
       </div>
 
       <p class="kv__pagination"><b>2</b> <span aria-hidden="true">/</span> <span class="sr-only">중</span> 2</p>
@@ -369,9 +386,9 @@
     await (await fetch('./build/icons.svg')).text() + await (await fetch('./build/logo.svg')).text()
   const { initSegmentedControls } = await import('./components/segmented-control.js?v=bbd7c4b8')
   initSegmentedControls()
-  const { initKvVideo } = await import('./components/kv.js?v=d2d085a7')
+  const { initKvVideo } = await import('./components/kv.js?v=52dd42b0')
   initKvVideo()
-  const { initKvCarousels } = await import('./components/kv-carousel.js?v=f3ea26ee')
+  const { initKvCarousels } = await import('./components/kv-carousel.js?v=74983f7e')
   initKvCarousels()
   const { initStickyGnb } = await import('./components/gnb.js?v=ca09b963')
   initStickyGnb()

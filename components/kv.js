@@ -79,7 +79,12 @@ export function initKvVideo(scope = document) {
     try { data = JSON.parse(e.data) } catch { return }
     const state = playerState(data)
     if (state === PLAYING) reveal(frame)
-    if (state === ENDED) command(frame, 'playVideo')
+    if (state === ENDED) {
+      // 캐러셀이 여러 장이면 다음 장으로 넘길 기회를 줍니다. 한 장뿐이면 아무도
+      // 듣지 않으므로 아래에서 그대로 다시 틉니다.
+      frame.closest('.kv')?.dispatchEvent(new CustomEvent('kv:ended', { bubbles: true }))
+      command(frame, 'playVideo')
+    }
   })
 
   for (const frame of frames) {
