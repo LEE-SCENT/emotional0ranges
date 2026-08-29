@@ -143,14 +143,14 @@
   gap: var(--spacing-500);
 }
 
-/* 사진은 조금 눌러둡니다. 옆 글자보다 앞으로 나오면 안 됩니다. */
+/* 배경이 비어 있는 PNG 라 모서리를 둥글게 하거나 바탕을 깔지 않습니다 — 그리면
+   투명해야 할 자리에 사각형이 생깁니다. 조금 눌러두는 것만 디자인을 따릅니다. */
 .detail-info__fact img {
   flex: none;
   display: block;
   inline-size: 48px;
   block-size: 48px;
-  border-radius: var(--_rounded-m);
-  object-fit: cover;
+  object-fit: contain;
   opacity: 0.8;
 }
 
