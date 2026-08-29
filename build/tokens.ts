@@ -421,6 +421,9 @@ export const components = {
     },
     "category": {
       "imageRatio": 1,
+      "width": "198px",
+      "minWidth": "108px",
+      "gap": "4px",
       "scrim": {
         "from": "#00000066",
         "height": "80px"

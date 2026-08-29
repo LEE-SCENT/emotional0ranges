@@ -245,6 +245,33 @@
   background: linear-gradient(to bottom, var(--_product-card-category-scrim-from), transparent);
 }
 
+/* 카테고리 카드도 같은 레일에 담기지만 간격과 폭 규칙이 다릅니다. 상품 카드는
+   레일이 한 장처럼 보이도록 2px 로 붙이는 반면, 카테고리는 낱장으로 읽혀야 해서
+   12px 을 띄우고 모서리도 네 곳 모두 둥급니다.
+
+   폭은 화면에 따라 두 값 중 하나입니다 — 사이를 유동적으로 잇지 않는 건 디자인이
+   198 과 108 두 지점만 정해두었기 때문입니다. 어느 쪽이든 다 안 들어가면
+   레일이 가로로 스크롤됩니다. */
+.product-card-group--category {
+  gap: var(--_product-card-category-gap);
+}
+
+.product-card-group--category > .product-card {
+  flex: 0 0 var(--_product-card-category-min-width);
+}
+
+@media (min-width: 961px) {
+  .product-card-group--category > .product-card {
+    flex-basis: var(--_product-card-category-width);
+  }
+}
+
+/* 낱장으로 놓이므로 처음·마지막만 둥글게 두는 상품 카드 규칙을 되돌립니다. */
+.product-card-group--category > .product-card:first-of-type .product-card__media,
+.product-card-group--category > .product-card:last-of-type .product-card__media {
+  border-radius: var(--_product-card-rounded);
+}
+
 /* ---- promotion ---------------------------------------------------------
    큰 사진 하나와 3×2 타일이 2px 간격으로 한 덩어리를 이룹니다.
 
@@ -334,6 +361,13 @@
 
 /* 상품 카드의 스크림은 promotion 에서 쓰지 않습니다. */
 .product-card--promotion .product-card__media::after { content: none; }
+
+/* small 에서는 큰 사진 하나만 보여주고 타일 격자는 접습니다. 폭이 좁아지면
+   타일 한 칸이 60px 아래로 내려가 무엇이 찍혔는지 알아볼 수 없습니다.
+   __main 이 flex: 1 0 0 이라 타일이 사라지면 자동으로 폭을 다 씁니다. */
+@media (max-width: 960px) {
+  .product-card__tiles { display: none; }
+}
 
 .product-card__tile--more {
   display: flex;

@@ -50,6 +50,21 @@
           "$value": 1,
           "$description": "Figma 198×198 정사각입니다."
         },
+        "width": {
+          "$type": "dimension",
+          "$value": "198px",
+          "$description": "medium 이상에서의 카드 폭. Figma 22:7550."
+        },
+        "minWidth": {
+          "$type": "dimension",
+          "$value": "108px",
+          "$description": "small 에서의 카드 폭. Figma 22:9976. 이보다 좁아지면 제목이 두 줄로 무너집니다."
+        },
+        "gap": {
+          "$type": "dimension",
+          "$value": "{semantic.spacing.300}",
+          "$description": "카드 사이 12px. 상품 레일(2px)과 달리 낱장으로 읽혀야 해서 벌립니다."
+        },
         "scrim": {
           "$description": "상품 카드보다 얕고 옅습니다 — 얹히는 tag 가 없어 글자 대비용이 아니라 위쪽 마감용입니다.",
           "from": {
