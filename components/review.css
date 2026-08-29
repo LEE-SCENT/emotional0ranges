@@ -96,6 +96,9 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-100);
+  /* <p> 라 브라우저가 위아래 1em 을 붙입니다. 지우지 않으면 별점과 본문 사이가
+     항목의 gap 4 가 아니라 18 이 됩니다. */
+  margin: 0;
   color: var(--colors-fg-lower);
   font-size: var(--typography-body-m-regular-font-size);
   line-height: var(--typography-body-m-regular-line-height);
