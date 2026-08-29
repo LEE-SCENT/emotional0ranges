@@ -33,6 +33,29 @@
         "$type": "dimension",
         "$value": "12px",
         "$description": "⚠️ Figma 에 변수로 없습니다. backdrop-blur 값에서 읽었습니다."
+      },
+      "bgBlackFrom": {
+        "$type": "color",
+        "$value": "#2A2A2A",
+        "$description": "블랙회원 라벨 그라디언트 시작. ⚠️ Figma 에 색 변수로는 없습니다."
+      },
+      "bgBlackTo": {
+        "$type": "color",
+        "$value": "#666666",
+        "$description": "그라디언트 끝."
+      },
+      "fgBlack": {
+        "$type": "color",
+        "$value": "#EEEEEE",
+        "$description": "검은 배경 위 글자. 순백보다 한 단계 낮춰 눈부심을 줄입니다."
+      },
+      "iconSize": {
+        "$type": "dimension",
+        "$value": "{primitive.dimension}",
+        "$extensions": {
+          "scale": 4
+        },
+        "$description": "라벨 앞 아이콘 16px."
       }
     }
   }

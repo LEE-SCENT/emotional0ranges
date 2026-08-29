@@ -38,3 +38,21 @@
   background: var(--_tag-bg-accent-sec);
   color: var(--_tag-fg-accent);
 }
+
+/* 블랙회원 전용 라벨. 배경이 반투명이 아니라 사선 그라디언트라 backdrop-blur 가
+   보이지 않지만, 상속받은 값을 굳이 끄지는 않습니다 — 라운드 모서리 바깥으로
+   비치는 부분은 여전히 흐려집니다. */
+.tag--black {
+  background: linear-gradient(
+    -17.82deg,
+    var(--_tag-bg-black-from) 38.75%,
+    var(--_tag-bg-black-to) 90.11%
+  );
+  color: var(--_tag-fg-black);
+}
+
+.tag svg {
+  display: block;
+  inline-size: var(--_tag-icon-size);
+  block-size: var(--_tag-icon-size);
+}

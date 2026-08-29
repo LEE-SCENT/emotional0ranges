@@ -37,6 +37,70 @@
             "scale": 6
           }
         }
+      },
+      "category": {
+        "$description": "카테고리 카드. 정사각 썸네일에 제목과 모임 수만 붙고 가격이 없습니다.",
+        "imageRatio": {
+          "$type": "number",
+          "$value": 1,
+          "$description": "Figma 198×198 정사각입니다."
+        },
+        "scrim": {
+          "$description": "상품 카드보다 얕고 옅습니다 — 얹히는 tag 가 없어 글자 대비용이 아니라 위쪽 마감용입니다.",
+          "from": {
+            "$type": "color",
+            "$value": "#00000066",
+            "$description": "black 40% → 66. ⚠️ Figma 에 색 변수로는 없습니다."
+          },
+          "height": {
+            "$type": "dimension",
+            "$value": "80px"
+          }
+        }
+      },
+      "promotion": {
+        "$description": "프로모션 카드. 큰 사진 하나와 3×2 타일이 한 덩어리로 붙고, 마지막 칸이 더보기입니다.",
+        "gap": {
+          "$type": "dimension",
+          "$value": "{semantic.spacing.50}",
+          "$description": "사진 사이 2px. 상품 레일과 같은 간격이라 같은 토큰을 씁니다."
+        },
+        "columns": {
+          "$type": "number",
+          "$value": 3
+        },
+        "mainRatio": {
+          "$type": "number",
+          "$value": 1.4975,
+          "$description": "Figma 599×400. 타일 높이가 여기서 따라 나옵니다."
+        },
+        "tint": {
+          "$type": "color",
+          "$value": "#00000033",
+          "$description": "사진마다 깔리는 20% 어둠. ⚠️ Figma 에 색 변수로는 없습니다."
+        },
+        "scrim": {
+          "from": {
+            "$type": "color",
+            "$value": "#000000E6",
+            "$description": "90% → E6. 상품 카드(65%)보다 진합니다 — tag 가 세 개라 더 넓게 가립니다."
+          },
+          "height": {
+            "$type": "dimension",
+            "$value": "160px"
+          }
+        },
+        "moreIconSize": {
+          "$type": "dimension",
+          "$value": "{primitive.dimension}",
+          "$extensions": {
+            "scale": 6
+          }
+        },
+        "moreFg": {
+          "$type": "color",
+          "$value": "{semantic.colors.fg-contrast}"
+        }
       }
     }
   }

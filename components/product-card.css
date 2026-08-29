@@ -206,3 +206,135 @@
   /* arrowBack 을 뒤집어 오른쪽 화살표로 씁니다. */
   scale: -1 1;
 }
+
+/* ---- category ----------------------------------------------------------
+   정사각 썸네일 + 제목 + 모임 수. 가격이 없습니다.
+
+     <article class="product-card product-card--category">
+       <div class="product-card__media"><img …></div>
+       <div class="product-card__info">
+         <h3 class="product-card__title">…</h3>
+         <p class="product-card__desc">모임 3개</p>
+       </div>
+     </article>
+
+   레일에 들어가는 상품 카드와 달리 낱장으로 놓이므로 네 모서리를 모두 둥글게
+   둡니다 — 상품 카드는 레일의 처음·마지막만 둥글다는 규칙이 있어 기본값에
+   반지름이 없습니다.
+*/
+
+.product-card--category .product-card__media {
+  aspect-ratio: var(--_product-card-category-image-ratio);
+  border-radius: var(--_product-card-rounded);
+}
+
+.product-card--category .product-card__media::after {
+  block-size: var(--_product-card-category-scrim-height);
+  background: linear-gradient(to bottom, var(--_product-card-category-scrim-from), transparent);
+}
+
+/* ---- promotion ---------------------------------------------------------
+   큰 사진 하나와 3×2 타일이 2px 간격으로 한 덩어리를 이룹니다.
+
+     <article class="product-card product-card--promotion">
+       <div class="product-card__media">
+         <div class="product-card__main"><img …></div>
+         <div class="product-card__tiles">
+           <div class="product-card__tile"><img …></div>
+           … 5장 …
+           <a class="product-card__tile product-card__tile--more"> 더보기 </a>
+         </div>
+         <div class="product-card__tags"> tag … </div>
+       </div>
+       <div class="product-card__info"> … </div>
+     </article>
+
+   높이는 큰 사진의 비율 하나로 정해집니다. 타일 칸은 남는 높이를 반씩 나눠 갖고,
+   그 결과가 마침 정사각에 가깝습니다 (599×400 → 198×199). 타일에 따로 비율을
+   주면 두 값이 싸워서 어느 한쪽에 빈틈이 생깁니다.
+*/
+
+.product-card--promotion .product-card__media {
+  /* 높이는 아래 __main 이 정합니다. */
+  aspect-ratio: auto;
+  display: flex;
+  gap: var(--_product-card-promotion-gap);
+  border-radius: var(--_product-card-rounded);
+}
+
+.product-card__main {
+  position: relative;
+  flex: 1 0 0;
+  min-inline-size: 0;
+  aspect-ratio: var(--_product-card-promotion-main-ratio);
+}
+
+.product-card__tiles {
+  flex: 1 0 0;
+  min-inline-size: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--_product-card-promotion-columns), minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: var(--_product-card-promotion-gap);
+}
+
+.product-card__tile { position: relative; }
+
+.product-card__main img,
+.product-card__tile img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+/* 사진마다 한 겹 어둡게 깝니다. 밝기가 제각각인 사진 일곱 장이 붙어 있어
+   그대로 두면 한 덩어리로 읽히지 않습니다. */
+.product-card__main::after,
+.product-card__tile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--_product-card-promotion-tint);
+  pointer-events: none;
+}
+
+/* 위쪽 그늘은 덩어리 전체에 한 번만 겁니다. tag 가 세 개라 상품 카드보다 진합니다. */
+.product-card--promotion .product-card__media::after {
+  block-size: var(--_product-card-promotion-scrim-height);
+  background: linear-gradient(to bottom, var(--_product-card-promotion-scrim-from), transparent);
+}
+
+.product-card__tile--more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+/* 타일의 어둠(::after) 위로 올려야 글자가 묻히지 않습니다. */
+.product-card__more-label {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-200);
+  padding: var(--spacing-500);
+  color: var(--_product-card-promotion-more-fg);
+  text-align: center;
+  font-size: var(--typography-body-l-medium-font-size);
+  font-weight: var(--typography-body-l-medium-font-weight);
+  line-height: var(--typography-body-l-medium-line-height);
+}
+
+.product-card__more-label svg {
+  display: block;
+  inline-size: var(--_product-card-promotion-more-icon-size);
+  block-size: var(--_product-card-promotion-more-icon-size);
+  /* arrowBack 을 뒤집어 오른쪽 화살표로 씁니다. */
+  scale: -1 1;
+}

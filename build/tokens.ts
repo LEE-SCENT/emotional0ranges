@@ -417,6 +417,25 @@ export const components = {
     "more": {
       "fg": "#000000",
       "iconSize": "24px"
+    },
+    "category": {
+      "imageRatio": 1,
+      "scrim": {
+        "from": "#00000066",
+        "height": "80px"
+      }
+    },
+    "promotion": {
+      "gap": "4px",
+      "columns": 3,
+      "mainRatio": 1.4975,
+      "tint": "#00000033",
+      "scrim": {
+        "from": "#000000E6",
+        "height": "160px"
+      },
+      "moreIconSize": "24px",
+      "moreFg": "#FFFFFF"
     }
   },
   "sectionTitle": {
@@ -446,7 +465,11 @@ export const components = {
     "bgAccentSec": "#27262540",
     "fgAccent": "#FFFFFF",
     "rounded": "8px",
-    "blurRadius": "12px"
+    "blurRadius": "12px",
+    "bgBlackFrom": "#2A2A2A",
+    "bgBlackTo": "#666666",
+    "fgBlack": "#EEEEEE",
+    "iconSize": "16px"
   },
   "tooltip": {
     "fg": "#FFFFFF",

@@ -1,6 +1,6 @@
 <meta charset="utf-8"><title>Components</title>
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
-<link rel="stylesheet" href="./build/tokens.css?v=c71c33e3">
+<link rel="stylesheet" href="./build/tokens.css?v=ed224732">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=f74b9b87">
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
@@ -9,6 +9,8 @@
 <link rel="stylesheet" href="./components/gnb.css?v=6227a2a0">
 <link rel="stylesheet" href="./components/container.css?v=4a4dc1f9">
 <link rel="stylesheet" href="./components/footer.css?v=882c0a53">
+<link rel="stylesheet" href="./components/tag.css?v=4c8c3831">
+<link rel="stylesheet" href="./components/product-card.css?v=3f7b56c3">
 <style>
   body { margin:0; padding:24px; background:var(--colors-bg); color:var(--colors-fg);
          font-family:var(--_font-family-pretendard); }
@@ -58,6 +60,67 @@
 <div class="row" id="r7"></div>
 <h2>ButtonGroup — horizontal</h2>
 <div class="row" id="r8"></div>
+<h2>Card — product / category / promotion</h2>
+<div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">
+  <article class="product-card" style="inline-size:398px">
+    <div class="product-card__media">
+      <img src="./images/meetup-couple.jpg" alt="">
+      <div class="product-card__tags">
+        <span class="tag">8월 25일 (화) 저녁 7시</span>
+        <span class="tag tag--accent-pri">남성 2자리 남음</span>
+        <span class="tag tag--accent-sec">여성 마감</span>
+      </div>
+    </div>
+    <div class="product-card__info">
+      <h3 class="product-card__title">상품명</h3>
+      <p class="product-card__desc">서울 강남</p>
+      <p class="product-card__price"><b>할인가</b> 33,000원~</p>
+    </div>
+  </article>
+
+  <article class="product-card product-card--category" style="inline-size:198px">
+    <div class="product-card__media"><img src="./images/meetup-lamp.jpg" alt=""></div>
+    <div class="product-card__info">
+      <h3 class="product-card__title">상품명</h3>
+      <p class="product-card__desc">모임 3개</p>
+    </div>
+  </article>
+</div>
+
+<h2>Card — promotion (전체 폭)</h2>
+<article class="product-card product-card--promotion">
+  <div class="product-card__media">
+    <div class="product-card__main"><img src="./images/promo-main.jpg" alt=""></div>
+    <div class="product-card__tiles">
+        <div class="product-card__tile"><img src="./images/promo-tile-1.jpg" alt=""></div>
+        <div class="product-card__tile"><img src="./images/promo-tile-2.jpg" alt=""></div>
+        <div class="product-card__tile"><img src="./images/promo-tile-3.jpg" alt=""></div>
+        <div class="product-card__tile"><img src="./images/promo-tile-4.jpg" alt=""></div>
+        <div class="product-card__tile"><img src="./images/promo-tile-5.jpg" alt=""></div>
+      <a class="product-card__tile product-card__tile--more" href="#">
+        <img src="./images/promo-tile-4.jpg" alt="">
+        <span class="product-card__more-label">
+          <svg aria-hidden="true"><use href="#icon-arrowBack"></use></svg>
+          더보기
+        </span>
+      </a>
+    </div>
+    <div class="product-card__tags">
+      <span class="tag tag--black">
+        <svg aria-hidden="true"><use href="#icon-memberBlack"></use></svg>
+        블랙회원 전용
+      </span>
+      <span class="tag">9월 6일 (일) 저녁 7시</span>
+      <span class="tag tag--accent-pri">남성 2자리 남음</span>
+    </div>
+  </div>
+  <div class="product-card__info">
+    <h3 class="product-card__title">상품명</h3>
+    <p class="product-card__desc">서울 강남</p>
+    <p class="product-card__price">59,000원~</p>
+  </div>
+</article>
+
 <script type="module">
 document.getElementById('sprite').innerHTML = await (await fetch('./build/icons.svg')).text()
 const ic = '<svg class="btn__icon" aria-hidden="true"><use href="#icon-chevronRight"></use></svg>'

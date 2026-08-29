@@ -177,6 +177,17 @@
   --_product-card-scrim-height: 160px;
   --_product-card-more-fg: var(--colors-fg);
   --_product-card-more-icon-size: calc(var(--_dimension) * 6);
+  --_product-card-category-image-ratio: 1;
+  --_product-card-category-scrim-from: #00000066;
+  --_product-card-category-scrim-height: 80px;
+  --_product-card-promotion-gap: var(--spacing-50);
+  --_product-card-promotion-columns: 3;
+  --_product-card-promotion-main-ratio: 1.4975;
+  --_product-card-promotion-tint: #00000033;
+  --_product-card-promotion-scrim-from: #000000E6;
+  --_product-card-promotion-scrim-height: 160px;
+  --_product-card-promotion-more-icon-size: calc(var(--_dimension) * 6);
+  --_product-card-promotion-more-fg: var(--colors-fg-contrast);
   --_section-title-fg: var(--colors-fg);
   --_section-title-fg-description: var(--colors-fg-lower);
   --_segmented-control-bg: var(--_colors-white);
@@ -196,6 +207,10 @@
   --_tag-fg-accent: var(--colors-fg-contrast);
   --_tag-rounded: var(--_rounded-m);
   --_tag-blur-radius: 12px;
+  --_tag-bg-black-from: #2A2A2A;
+  --_tag-bg-black-to: #666666;
+  --_tag-fg-black: #EEEEEE;
+  --_tag-icon-size: calc(var(--_dimension) * 4);
   --_tooltip-fg: var(--_colors-white);
   --_tooltip-bg: var(--_colors-serious-gray-900);
   --_tooltip-rounded: var(--_rounded-m);
