@@ -13,13 +13,27 @@
 
 const SELECTED = 'is-selected'
 
-function moveThumb(root) {
+/**
+ * animate 가 false 면 전환을 잠깐 끄고 값을 바꿉니다.
+ *
+ * 폰트가 늦게 오거나 창이 바뀌면 항목 폭이 달라지는데, 그때도 전환이 살아 있으면
+ * thumb 이 스스로 늘어나는 것처럼 보입니다 — 처음 화면에 뜰 때 오렌지 배경이
+ * 왼쪽에서 오른쪽으로 채워지던 게 이것입니다. 사용자가 탭을 누른 게 아니라면
+ * 미끄러질 이유가 없습니다.
+ */
+function moveThumb(root, animate = true) {
   const selected = root.querySelector('.' + SELECTED)
   const thumb = root.querySelector('.segmented__thumb')
   if (!thumb || !selected) return
+  if (!animate) root.classList.remove('is-ready')
   // offsetLeft 는 컨테이너 기준이라 스크롤·변형에 영향을 받지 않습니다.
   root.style.setProperty('--segmented-thumb-x', `${selected.offsetLeft}px`)
   root.style.setProperty('--segmented-thumb-w', `${selected.offsetWidth}px`)
+  if (!animate) {
+    // 전환이 꺼진 상태에서 새 값을 확정시킨 뒤 다시 켭니다.
+    void root.offsetWidth
+    root.classList.add('is-ready')
+  }
 }
 
 function select(root, item) {
@@ -56,9 +70,10 @@ export function initSegmentedControl(root) {
   })
   root.addEventListener('keydown', (e) => onKeydown(root, e))
 
-  // 폰트가 늦게 로드되면 글자 폭이 달라져 thumb 이 어긋납니다.
-  document.fonts?.ready.then(() => moveThumb(root))
-  new ResizeObserver(() => moveThumb(root)).observe(root)
+  // 폰트가 늦게 로드되면 글자 폭이 달라져 thumb 이 어긋납니다. 다시 재는 것뿐이니
+  // 움직임 없이 값만 갈아끼웁니다.
+  document.fonts?.ready.then(() => moveThumb(root, false))
+  new ResizeObserver(() => moveThumb(root, false)).observe(root)
 
   select(root, root.querySelector('.' + SELECTED) ?? root.querySelector('.segmented__item'))
   // 첫 위치를 잡은 뒤에 전환을 켭니다.

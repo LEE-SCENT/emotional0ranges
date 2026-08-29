@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
 <link rel="stylesheet" href="./components/segmented-control.css?v=6f478c07">
 <link rel="stylesheet" href="./components/tooltip.css?v=4939da06">
-<link rel="stylesheet" href="./components/gnb.css?v=152b429a">
+<link rel="stylesheet" href="./components/gnb.css?v=49081eb3">
 <link rel="stylesheet" href="./components/kv.css?v=018ae87a">
 <link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
 <link rel="stylesheet" href="./components/product-card.css?v=e1489947">
@@ -309,7 +309,7 @@
 <script type="module">
   document.getElementById('sprite').innerHTML =
     await (await fetch('./build/icons.svg')).text() + await (await fetch('./build/logo.svg')).text()
-  const { initSegmentedControls } = await import('./components/segmented-control.js?v=5ba79c04')
+  const { initSegmentedControls } = await import('./components/segmented-control.js?v=24d9a072')
   initSegmentedControls()
   const { initKvVideo } = await import('./components/kv.js?v=d2d085a7')
   initKvVideo()
