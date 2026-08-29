@@ -1,0 +1,308 @@
+<!doctype html>
+<!-- 상품 상세 화면 — 사진·소개·일정·후기. Figma 22:12063 을 따릅니다. -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Safari 는 숫자 나열을 전화번호로 보고 스스로 링크를 겁니다. 푸터의 사업자
+     등록번호·고객센터 번호가 그렇게 파란 밑줄로 바뀌어 꺼둡니다. -->
+<meta name="format-detection" content="telephone=no">
+<!-- 파비콘. SVG 한 장으로 모든 크기를 감당합니다 — 크기별 PNG 를 따로 두면
+     하나만 바뀌어 탭마다 다른 그림이 뜨는 일이 생깁니다. -->
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<link rel="mask-icon" href="./favicon.svg" color="#F75D15">
+<meta name="theme-color" content="#FFFFFF">
+<title>신청하기 — 감정적인 오렌지들</title>
+<link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
+<link rel="stylesheet" href="./build/tokens.css?v=eba63d43">
+<link rel="stylesheet" href="./components/container.css?v=511b6f74">
+<link rel="stylesheet" href="./components/badge.css?v=daa79c09">
+<link rel="stylesheet" href="./components/button.css?v=04c0adfe">
+<link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
+<link rel="stylesheet" href="./components/segmented-control.css?v=7a4a3de6">
+<link rel="stylesheet" href="./components/tooltip.css?v=d3d8dfa4">
+<link rel="stylesheet" href="./components/gnb.css?v=3046ec8e">
+<link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
+<link rel="stylesheet" href="./components/footer.css?v=b6122ba5">
+<link rel="stylesheet" href="./components/option-card.css?v=bab39e79">
+<link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
+<link rel="stylesheet" href="./components/checkbox.css?v=67340959">
+<link rel="stylesheet" href="./components/summary-card.css?v=af02bebe">
+<link rel="stylesheet" href="./components/checkout.css?v=84f5b5de">
+<link rel="stylesheet" href="./components/bottom-cta.css?v=8c0377aa">
+<link rel="stylesheet" href="./components/sheet.css?v=3a404ddc">
+<link rel="stylesheet" href="./components/top-bar.css?v=3528f9ff">
+<style>
+  body {
+    margin: 0;
+    background: var(--colors-bg);
+    color: var(--colors-fg);
+    /* 컴포넌트마다 따로 걸지 않고 여기서 한 번 정합니다. 이 화면에는 어느 컴포넌트에도
+       속하지 않는 글(제목·설명)이 있어, 빠뜨리면 그 부분만 시스템 글꼴로 나옵니다. */
+    font-family: var(--_font-family-pretendard);
+  }
+  .sr-only {
+    position: absolute; inline-size: 1px; block-size: 1px;
+    overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+  }
+</style>
+
+<div id="sprite" hidden></div>
+
+<header class="gnb" data-auto-hide="up">
+  <div class="gnb__inner">
+    <div class="gnb__side gnb__side--start">
+      <a class="gnb__logo" href="/" aria-label="감정적인 오렌지들 홈">
+        <svg width="126" height="40" role="img" aria-label="emotional oranges"><use href="#logo-eo"></use></svg>
+      </a>
+    </div>
+    <!-- 로고와 액션은 화면 끝에 두고, 가운데 블록만 본문과 같은 1280 에서 멈춥니다. -->
+    <div class="gnb__center">
+      <div class="gnb__segmented">
+        <div class="segmented" role="tablist" aria-label="모임 형태">
+          <span class="segmented__thumb" aria-hidden="true"></span>
+          <button class="segmented__item is-selected" role="tab" aria-selected="true">온라인</button>
+          <button class="segmented__item" role="tab" aria-selected="false">오프라인</button>
+        </div>
+      </div>
+      <nav class="gnb__menu" aria-label="주요 메뉴">
+        <button class="btn btn--ghost btn--medium"><span class="btn__label">모임</span></button>
+        <button class="btn btn--ghost btn--medium"><span class="btn__label">매칭</span></button>
+        <button class="btn btn--ghost btn--medium"><span class="btn__label">모임 후기</span></button>
+        <button class="btn btn--ghost btn--medium"><span class="btn__label">자주 묻는 질문</span></button>
+        <button class="btn btn--ghost btn--medium"><span class="btn__label">저널</span></button>
+      </nav>
+    </div>
+    <div class="gnb__side gnb__side--end">
+      <div class="gnb__actions">
+        <button class="btn btn--ghost btn--medium btn--icon-only gnb__notify" aria-label="알림">
+          <svg class="btn__icon" aria-hidden="true"><use href="#icon-notifications"></use></svg>
+          <span class="badge btn__badge"></span>
+        </button>
+        <button class="btn btn--blur btn--medium btn--icon-only" aria-label="메뉴 열기">
+          <svg class="btn__icon" aria-hidden="true"><use href="#icon-menu"></use></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<main class="container checkout">
+  <header class="checkout__header">
+    <a class="btn btn--ghost btn--medium btn--icon-only" href="./detail.html" aria-label="상세로 돌아가기">
+      <svg class="btn__icon" aria-hidden="true"><use href="#icon-arrowBack"></use></svg>
+    </a>
+    <h1>신청하기</h1>
+  </header>
+
+  <div class="checkout__body">
+    <div class="checkout__main">
+      <section class="checkout__card">
+        <h2>결제 수단</h2>
+        <p class="checkout__method">
+          <span class="btn btn--filled btn--small"><span class="btn__label">신용 · 체크카드</span></span>
+        </p>
+      </section>
+
+      <section class="checkout__card checkout__agree">
+        <label class="checkbox">
+          <input type="checkbox" data-agree
+                 aria-label="[필수] 참석 약속 및 취소·환불 규정에 동의합니다">
+          <span class="checkbox__box" aria-hidden="true">
+            <svg><use href="#icon-check"></use></svg>
+          </span>
+        </label>
+
+        <div class="checkout__agree-body">
+          <span class="checkout__agree-head">
+            <b>[필수] 참석 약속 및 취소·환불 규정에 동의합니다</b>
+            <span>참석이 어렵다면 모임 시작 전에 취소하거나 고객센터로 알려주세요</span>
+          </span>
+
+          <div class="checkout__terms">
+            <section>
+              <h3>취소·불참에 따른 이용 제한</h3>
+              <ul>
+                <li>전날~시작 4시간 전 취소: 2회부터 14일간 구매 제한</li>
+                <li>시작 4시간 이내 취소: 1회 30일, 2회부터 영구 이용 제한</li>
+                <li>무단 불참: 1회 90일, 2회부터 영구 이용 제한</li>
+              </ul>
+            </section>
+            <section>
+              <h3>환불 기준</h3>
+              <ul>
+                <li>10일 전까지: 100% 환불</li>
+                <li>7~9일 전: 70% 환불</li>
+                <li>5~6일 전: 50% 환불</li>
+                <li>4일 전~당일: 환불 불가</li>
+              </ul>
+            </section>
+          </div>
+
+          <!-- 스크립트가 규정을 접고 이 버튼을 켭니다. 스크립트가 오지 않으면
+               규정은 펼쳐진 채이고 이 버튼은 할 일이 없습니다. -->
+          <button class="checkout__terms-toggle" type="button" aria-expanded="true">규정 접기</button>
+        </div>
+      </section>
+
+      <div class="checkout__pay">
+        <button class="btn btn--filled btn--large" data-pay disabled>
+          <span class="btn__label">결제하기</span>
+        </button>
+      </div>
+    </div>
+
+    <aside class="summary-card" aria-label="주문 요약">
+      <p class="summary-card__banner" hidden>
+        <svg aria-hidden="true"><use href="#icon-error"></use></svg>
+        당일 신청 상품은 취소·환불이 불가합니다
+      </p>
+
+      <div class="summary-card__product">
+        <img src="./images/detail-photo-1.jpg" alt="">
+        <p>[서울 한남] 테마 로테이션 소개팅 &lt;생활운동인 특집&gt;</p>
+      </div>
+
+      <div class="summary-card__row">
+        <span class="summary-card__label">
+          <b>선택한 일정</b>
+          <span class="summary-card__value">
+            <span class="summary-card__when"></span>
+            <span class="summary-card__where"></span>
+          </span>
+        </span>
+        <button class="btn btn--blur btn--small" data-sheet-open="schedule-sheet">
+          <span class="btn__label">변경</span>
+        </button>
+      </div>
+
+      <hr class="summary-card__divider">
+
+      <div class="summary-card__row">
+        <span class="summary-card__label">
+          <b>아는 사람 확인</b>
+          <span class="summary-card__value">
+            <span class="summary-card__result">현재 같은 직장 사람이 없어요</span>
+            <span class="summary-card__guide">
+              <svg aria-hidden="true"><use href="#icon-infoCircle"></use></svg>
+              <span>
+                등록된 직장 정보 기준으로 확인했어요
+                <a href="#">확인 기준 보기</a>
+              </span>
+            </span>
+          </span>
+        </span>
+        <button class="btn btn--blur btn--small"><span class="btn__label">직장 정보 변경</span></button>
+      </div>
+
+      <!-- 직장을 등록한 사람에게만 보입니다. 등록 전에는 확인할 것이 없어
+           이어서 확인할 것도 없습니다. -->
+      <label class="summary-card__option">
+        <span class="checkbox">
+          <input type="checkbox" data-extra-option="10000"
+                 aria-label="모임 전까지 계속 확인하기, 10,000원 추가">
+          <span class="checkbox__box" aria-hidden="true">
+            <svg><use href="#icon-check"></use></svg>
+          </span>
+        </span>
+        <span class="summary-card__option-text">
+          <b>모임 전까지 계속 확인하기 (+10,000원)</b>
+          <span>새로 겹치는 사람이 확인되면 알려드려요</span>
+          <span>참여 · 일정 변경 · 환불 중에서 선택할 수 있어요</span>
+        </span>
+      </label>
+
+      <hr class="summary-card__divider">
+
+      <dl class="summary-card__price">
+        <dt data-price-label="base">상품 금액</dt>
+        <dd data-price="base"></dd>
+        <dt data-price-label="discount">할인</dt>
+        <dd class="is-discount" data-price="discount"></dd>
+        <dt data-price-label="extra">추가 옵션</dt>
+        <dd class="is-discount" data-price="extra"></dd>
+        <dt class="is-total" data-price-label="total">총 결제 금액</dt>
+        <dd class="is-total" data-price="total"></dd>
+      </dl>
+    </aside>
+  </div>
+</main>
+
+<!-- 좁은 화면에서만 보입니다. 왼쪽 단의 결제하기와 같은 버튼입니다. -->
+<div class="bottom-cta">
+  <button class="btn btn--filled btn--large" data-pay disabled>
+    <span class="btn__label">결제하기</span>
+  </button>
+</div>
+
+<!-- 일정 변경. 이 화면에는 목록을 늘 펼쳐둘 자리가 없어 어느 폭에서든 시트로 엽니다. -->
+<dialog class="sheet" id="schedule-sheet" aria-label="일정 변경">
+  <div class="sheet__panel">
+    <div class="schedule">
+      <div class="schedule__list">
+        <div class="schedule__group">
+          <p class="schedule__date">신청 가능한 일정</p>
+          <ul class="schedule__options">
+        <li>
+          <label class="option-card" data-date-in="0" data-time="저녁 7시"
+                 data-where="서울 강남 · 27-38세" data-price="45000" data-discount="3000">
+            <input class="sr-only" type="radio" name="schedule" checked>
+            <span class="option-card__main">
+              <span class="option-card__time">저녁 7:00~9:30</span>
+              <span class="option-card__price"><b>42,000원</b> <s>45,000원</s></span>
+              <span class="option-card__place">서울 강남 · 27-38세</span>
+            </span>
+            <span class="option-card__aside">
+              <span class="option-card__seats">남성 6 · 여성 5자리 남음</span>
+            </span>
+          </label>
+        </li>
+        <li>
+          <label class="option-card" data-date-in="3" data-time="저녁 7시"
+                 data-where="서울 성수 · 27-38세" data-price="45000" data-discount="0">
+            <input class="sr-only" type="radio" name="schedule">
+            <span class="option-card__main">
+              <span class="option-card__time">저녁 7:00~9:30</span>
+              <span class="option-card__price"><b>45,000원</b></span>
+              <span class="option-card__place">서울 성수 · 27-38세</span>
+            </span>
+            <span class="option-card__aside">
+              <span class="option-card__seats">여성 1자리 남음</span>
+            </span>
+          </label>
+        </li>
+        <li>
+          <label class="option-card" data-date-in="5" data-time="밤 10시"
+                 data-where="경기 성남 · 30-42세" data-price="38000" data-discount="3000">
+            <input class="sr-only" type="radio" name="schedule">
+            <span class="option-card__main">
+              <span class="option-card__time">밤 10:00~12:30</span>
+              <span class="option-card__price"><b>35,000원</b> <s>38,000원</s></span>
+              <span class="option-card__place">경기 성남 · 30-42세</span>
+            </span>
+            <span class="option-card__aside">
+              <span class="option-card__seats">남성 3 · 여성 4자리 남음</span>
+            </span>
+          </label>
+        </li>
+          </ul>
+        </div>
+      </div>
+      <div class="schedule__actions">
+        <button class="btn btn--filled btn--large" data-sheet-close="schedule-sheet">
+          <span class="btn__label">이 일정으로 변경</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<script type="module">
+  document.getElementById('sprite').innerHTML =
+    await (await fetch('./build/icons.svg')).text() + await (await fetch('./build/logo.svg')).text()
+  const { initStickyGnb } = await import('./components/gnb.js?v=ca09b963')
+  initStickyGnb()
+  const { initSheets } = await import('./components/sheet.js?v=4abbc8c4')
+  initSheets()
+  const { initCheckout } = await import('./components/checkout.js?v=1acfda8f')
+  initCheckout()
+</script>

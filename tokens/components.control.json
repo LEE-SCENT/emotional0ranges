@@ -1,0 +1,23 @@
+{
+  "components": {
+    "control": {
+      "$description": "체크박스·라디오처럼 켜고 끄는 것들의 상자. 24 정사각에 4 모서리이고, 켜지면 안이 검게 차고 흰 체크가 들어옵니다.",
+      "size": { "$type": "dimension", "$value": "24px" },
+      "iconSize": {
+        "$type": "dimension",
+        "$value": "20px",
+        "$description": "안에 들어가는 체크. 상자보다 작아 사방에 2 씩 남습니다."
+      },
+      "rounded": { "$type": "dimension", "$value": "{primitive.rounded.xs}" },
+      "borderWidth": {
+        "$type": "dimension",
+        "$value": "2px",
+        "$description": "⚠️ Figma 에 변수로 없습니다. stroke 두께에서 읽었습니다. 24 짜리 작은 상자라 1 로는 눌러야 할 것으로 보이지 않습니다."
+      },
+      "bg": { "$type": "color", "$value": "{semantic.colors.bg}" },
+      "border": { "$type": "color", "$value": "{semantic.colors.border}" },
+      "bgChecked": { "$type": "color", "$value": "{semantic.colors.fg}" },
+      "fgChecked": { "$type": "color", "$value": "{semantic.colors.bg}" }
+    }
+  }
+}

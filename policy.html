@@ -11,7 +11,7 @@
 <meta name="theme-color" content="#FFFFFF">
 <title>emotional oranges — 상품 카드 정책</title>
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
-<link rel="stylesheet" href="./build/tokens.css?v=5fe9437c">
+<link rel="stylesheet" href="./build/tokens.css?v=eba63d43">
 <link rel="stylesheet" href="./components/container.css?v=511b6f74">
 <style>
   body { margin: 0; background: var(--colors-bg); color: var(--colors-fg);
@@ -124,6 +124,47 @@
     <tr><th>빈 목록</th><td>노출할 상품이 없으면 <b>섹션 자체를 숨깁니다</b></td></tr>
     <tr><th>찜</th><td>카드에 두지 않습니다. MY 의 <b>찜한 모임</b>에서 봅니다</td></tr>
     <tr><th>비슷한 모임</th><td>상세 화면 아래 <b>다섯 개</b>. Tag 와 가격을 <b>노출하지 않습니다</b> — 지금 보고 있는 상품과 값을 나란히 두면 비교로 읽히고, 잔여석은 대표 일정 기준이라 목록에서 스쳐 지나가면 오해를 부릅니다</td></tr>
+  </table>
+
+  <h2>신청·결제 화면</h2>
+  <p class="note">고를 것은 왼쪽에, 무엇을 사는지는 오른쪽에 둡니다. 결제는 무엇을 사는지 잊지 않은 채 끝나야 합니다.</p>
+  <table>
+    <tr><th>PC</th><td>왼쪽에 <b>결제 수단 → 필수 동의 → 결제</b>, 오른쪽에 주문 요약을 붙여 따라오게 합니다</td></tr>
+    <tr><th>모바일</th><td>요약이 본문 <b>맨 위</b>로 올라오고 결제 버튼만 화면 아래에 고정됩니다</td></tr>
+    <tr><th>일정 변경</th><td><code>변경</code>은 시트로 엽니다. 신청 가능한 일정만 고를 수 있고, 고르면 장소·연령·가격·할인·환불 안내가 <b>그 자리에서</b> 갱신됩니다</td></tr>
+  </table>
+
+  <h3>당일 환불 불가 배너</h3>
+  <table>
+    <tr><th>노출 조건</th><td>선택한 일정과 결제일이 <b>같은 날</b>일 때만. 기준 시간대는 <b>한국 시간</b>입니다 — 기기 시계를 따르면 해외에서 아니라고 안내받고 결제한 뒤 서버는 당일로 봅니다</td></tr>
+    <tr><th>문구</th><td><code>당일 신청 상품은 취소·환불이 불가합니다</code></td></tr>
+    <tr><th>자리</th><td>요약 카드 <b>맨 위</b>. 무엇을 사는지 보기 전에 알아야 할 조건입니다</td></tr>
+    <tr><th>일정 변경 시</th><td>바뀐 일정 기준으로 <b>다시 판단</b>합니다. 당일에서 다른 날로 옮긴 사람이 환불 불가 안내를 계속 보면 안 됩니다</td></tr>
+    <tr><th>4일 전 규정</th><td>별개입니다. 필수 동의의 <b>환불 기준</b>에서 안내합니다</td></tr>
+  </table>
+
+  <h3>아는 사람 확인</h3>
+  <table>
+    <tr><th>직장 인증 완료</th><td>확인 결과 + <code>직장 정보 변경</code>. 이 상태에서만 <code>모임 전까지 계속 확인하기</code>가 보입니다</td></tr>
+    <tr><th>직장 미등록</th><td>결과 대신 <code>직장 등록하기</code>. 확인할 것이 없으면 이어서 확인할 것도 없습니다</td></tr>
+    <tr><th>등록 후 복귀</th><td>기존 신청 정보를 <b>유지</b>하고 자동으로 다시 확인합니다</td></tr>
+    <tr><th>유료 옵션</th><td>기본 <b>미선택</b>. 켜면 <code>+10,000원</code>이 그 자리에서 총액에 반영됩니다</td></tr>
+  </table>
+
+  <h3>금액과 동의</h3>
+  <table>
+    <tr><th>금액 구분</th><td>상품 금액 · 할인 · 추가 옵션을 나눠 적습니다. 추가 옵션은 <b>고른 경우에만</b> 줄이 생깁니다 — 0원짜리 줄이 남아 있으면 무엇을 더 냈는지 세는 눈이 한 번 더 멈춥니다</td></tr>
+    <tr><th>총액과 버튼</th><td>언제나 같은 수입니다. 한 번 구한 값을 두 곳에 넣습니다 — 각각 계산하면 언젠가 갈립니다. <code>42,000원 결제하기</code></td></tr>
+    <tr><th>필수 동의</th><td>참석 약속과 취소·환불 규정을 <b>하나로</b> 묶습니다. 상세 규정은 기본 접힘, <code>규정 자세히 보기</code>로 펼칩니다</td></tr>
+    <tr><th>미동의</th><td>결제 버튼 비활성. 감추지 않고 흐리게 둡니다 — 다음에 무엇이 기다리는지 보이지 않으면 어디까지 왔는지 알 수 없습니다</td></tr>
+  </table>
+
+  <h3>결제 처리</h3>
+  <table>
+    <tr><th>누른 뒤</th><td>일정 마감·가격·할인·당일 여부를 <b>최종 검증</b>합니다. 화면을 열어둔 사이에 달라졌을 수 있습니다</td></tr>
+    <tr><th>처리 중</th><td>버튼을 잠가 중복 결제를 막습니다</td></tr>
+    <tr><th>실패</th><td>원인을 안내하고 <b>입력·선택 상태는 유지</b>합니다. 처음부터 다시 고르게 하지 않습니다</td></tr>
+    <tr><th>완료</th><td>신청 완료 화면으로 이동</td></tr>
   </table>
 
   <h2>어드민 등록 시 주의</h2>

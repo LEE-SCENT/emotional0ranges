@@ -26,6 +26,10 @@
       "divider":        {
         "$value": "{primitive.colors.seriousGray.300}",
         "$description": "구획을 나누는 선. 현재 border 와 값이 같지만 역할이 달라 별도 토큰입니다 — 테두리와 구분선의 농도를 따로 조정할 때 여기만 바꾸면 됩니다."
+      },
+      "divider-low":    {
+        "$value": "{primitive.colors.seriousGray.200}",
+        "$description": "상자 안에서 항목을 가르는 선. divider 보다 한 단계 옅습니다 — 상자의 테두리와 같은 농도로 그으면 카드가 여러 장으로 쪼개져 보입니다."
       }
     }
   }

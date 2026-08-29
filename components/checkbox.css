@@ -1,0 +1,89 @@
+/**
+ * Checkbox — 켜고 끄는 네모 상자.
+ *
+ *   <label class="checkbox">
+ *     <input type="checkbox">
+ *     <span class="checkbox__box" aria-hidden="true">
+ *       <svg><use href="#icon-check"></use></svg>
+ *     </span>
+ *   </label>
+ *
+ * 진짜 <input type="checkbox"> 를 그대로 두고 화면에서만 감춥니다. 그림만 그려두고
+ * 자바스크립트로 흉내 내면 키보드로 옮겨 다닐 수 없고, 스크린 리더가 "체크박스,
+ * 선택 안 됨"이라고 읽어주지도 않으며, 폼 전송에도 실려 가지 않습니다.
+ *
+ * 감추는 방법은 opacity 0 입니다. display:none 이나 visibility:hidden 은 초점을
+ * 받지 못해 키보드로 켤 수 없게 됩니다. 상자 위에 그대로 겹쳐 두어, 눌리는 것도
+ * 초점이 가는 것도 여전히 <input> 입니다.
+ */
+
+.checkbox {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  inline-size: var(--_control-size);
+  block-size: var(--_control-size);
+  cursor: pointer;
+}
+
+.checkbox input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  opacity: 0;
+  cursor: inherit;
+}
+
+.checkbox__box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  inline-size: 100%;
+  block-size: 100%;
+  border: var(--_control-border-width) solid var(--_control-border);
+  border-radius: var(--_control-rounded);
+  background: var(--_control-bg);
+  color: var(--_control-fg-checked);
+  transition:
+    background-color var(--_duration-fast) var(--_easing-standard),
+    border-color var(--_duration-fast) var(--_easing-standard);
+}
+
+.checkbox__box svg {
+  inline-size: var(--_control-icon-size);
+  block-size: var(--_control-icon-size);
+  /* 꺼져 있을 때도 자리를 지킵니다. 나타났다 사라지면 상자가 들썩입니다. */
+  opacity: 0;
+  scale: 0.7;
+  transition:
+    opacity var(--_duration-fast) var(--_easing-standard),
+    scale var(--_duration-fast) var(--_easing-standard);
+}
+
+.checkbox input:checked + .checkbox__box {
+  border-color: var(--_control-bg-checked);
+  background: var(--_control-bg-checked);
+}
+
+.checkbox input:checked + .checkbox__box svg { opacity: 1; scale: 1; }
+
+/* 초점 테두리는 감춘 <input> 이 아니라 눈에 보이는 상자에 그립니다. */
+.checkbox input:focus-visible + .checkbox__box {
+  outline: 2px solid var(--colors-fg);
+  outline-offset: 2px;
+}
+
+.checkbox input:disabled { cursor: not-allowed; }
+
+.checkbox input:disabled + .checkbox__box {
+  border-color: var(--colors-border);
+  background: var(--colors-bg-disabled);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .checkbox__box,
+  .checkbox__box svg { transition: none; }
+}

@@ -21,15 +21,22 @@ const lock = (on) => {
   document.documentElement.style.overflow = on ? 'hidden' : ''
 }
 
-/** 이 폭에서 시트로 동작하는지. CSS 의 미디어 쿼리와 같은 경계입니다. */
-const isSheet = () => matchMedia('(max-width: 960px)').matches
+/**
+ * 지금 이 요소가 시트로 동작하는지.
+ *
+ * --inline 은 961 부터 display:contents 로 자리에서 빠지므로 그 폭에서는 시트가
+ * 아닙니다. 그때 showModal() 을 부르면 화면 한가운데에 목록만 덩그러니 뜹니다.
+ * --inline 이 아닌 시트는 어느 폭에서든 시트입니다.
+ */
+const isSheet = (el) =>
+  !el.classList.contains('sheet--inline') || matchMedia('(max-width: 960px)').matches
 
 export function initSheet(dialog) {
   if (dialog.dataset.sheetReady) return
   dialog.dataset.sheetReady = '1'
 
   const open = () => {
-    if (!isSheet() || dialog.open) return
+    if (!isSheet(dialog) || dialog.open) return
     dialog.showModal()
     lock(true)
   }
@@ -56,7 +63,7 @@ export function initSheet(dialog) {
   // 시트가 열린 채로 넓은 화면이 되면 목록이 제자리로 돌아가야 합니다. 열어둔 채
   // 두면 화면 가운데에 목록만 남고 본문에서는 사라집니다.
   matchMedia('(min-width: 961px)').addEventListener('change', (e) => {
-    if (e.matches && dialog.open) dialog.close()
+    if (e.matches && dialog.open && dialog.classList.contains('sheet--inline')) dialog.close()
   })
 }
 

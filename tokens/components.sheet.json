@@ -13,6 +13,11 @@
         "$value": "{primitive.rounded.2xl}",
         "$description": "위쪽 두 모서리만. 아래는 화면 끝에 닿아 있어 둥글릴 자리가 없습니다."
       },
+      "maxWidth": {
+        "$type": "dimension",
+        "$value": "480px",
+        "$description": "⚠️ Figma 에 변수로 없습니다. 좁은 화면 프레임(430)에는 필요 없던 값인데, 신청·결제 화면에서는 넓은 화면에서도 시트를 열어 상한이 필요해졌습니다. 화면 폭을 다 쓰면 카드 한 줄의 정보가 양 끝으로 흩어집니다."
+      },
       "maxHeight": {
         "$type": "dimension",
         "$value": "76dvh",

@@ -1,0 +1,265 @@
+/**
+ * SummaryCard — 신청·결제 화면의 주문 요약.
+ *
+ *   <aside class="summary-card">
+ *     <p class="summary-card__banner">…당일 안내…</p>
+ *     <div class="summary-card__product"> 사진 + 제목 </div>
+ *     <div class="summary-card__row"> 선택한 일정 … [변경] </div>
+ *     <hr class="summary-card__divider">
+ *     <div class="summary-card__row"> 아는 사람 확인 … [직장 등록하기] </div>
+ *     <label class="summary-card__option"> 계속 확인하기 (+10,000원) </label>
+ *     <hr class="summary-card__divider">
+ *     <dl class="summary-card__price"> 상품 금액 · 할인 · 총 결제 금액 </dl>
+ *   </aside>
+ *
+ * 무엇을, 언제, 얼마에 신청하는지를 한 장에 모읍니다. 넓은 화면에서는 왼쪽에서
+ * 결제 수단과 동의를 밟는 동안 오른쪽에 따라붙고, 좁은 화면에서는 본문 안에
+ * 그대로 놓입니다.
+ *
+ * 세로 간격은 전부 16 하나입니다. 항목마다 다르게 주면 어디가 한 덩어리이고 어디가
+ * 갈리는지를 여백이 말하게 되는데, 여기서는 그 일을 구분선이 합니다.
+ */
+
+.summary-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--_summary-card-gap);
+  box-sizing: border-box;
+  inline-size: 100%;
+  padding: var(--_summary-card-padding);
+  /* Figma 의 stroke 는 안쪽 정렬이라 카드 크기에 얹히지 않습니다. border 로 그리면
+     380 이 382 가 되고 높이도 2 늘어납니다. */
+  box-shadow: inset 0 0 0 1px var(--_summary-card-border);
+  border-radius: var(--_summary-card-rounded);
+  background: var(--_summary-card-bg);
+  color: var(--colors-fg);
+  font-family: var(--_font-family-pretendard);
+}
+
+/* ---- 당일 배너 ----------------------------------------------------------
+   고른 일정이 오늘이면 환불이 되지 않습니다. 결제 버튼 옆이 아니라 카드 맨 위에
+   두는 것은, 무엇을 사는지 보기 전에 알아야 할 조건이기 때문입니다.
+
+   조건을 만족하지 않으면 감추지 않고 마크업에서 뺍니다 — 자리만 비어 있어도
+   레이아웃이 그만큼 달라 보입니다.
+*/
+
+.summary-card__banner {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-150);
+  margin: 0;
+  padding: var(--spacing-150) var(--spacing-300);
+  border-radius: var(--_summary-card-banner-rounded);
+  background: var(--_summary-card-banner-bg);
+  color: var(--_summary-card-banner-fg);
+  font-size: var(--typography-body-s-medium-font-size);
+  font-weight: var(--typography-body-s-medium-font-weight);
+  line-height: var(--typography-body-s-medium-line-height);
+}
+
+.summary-card__banner svg {
+  flex: none;
+  inline-size: var(--_summary-card-banner-icon-size);
+  block-size: var(--_summary-card-banner-icon-size);
+}
+
+/* ---- 상품 -------------------------------------------------------------- */
+
+.summary-card__product {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-400);
+}
+
+.summary-card__product img {
+  flex: none;
+  inline-size: var(--_summary-card-thumbnail-size);
+  block-size: var(--_summary-card-thumbnail-size);
+  border-radius: var(--_summary-card-thumbnail-rounded);
+  object-fit: cover;
+}
+
+.summary-card__product p {
+  flex: 1 1 0;
+  min-inline-size: 0;
+  margin: 0;
+  font-size: var(--typography-body-l-medium-font-size);
+  font-weight: var(--typography-body-l-medium-font-weight);
+  line-height: var(--typography-body-l-medium-line-height);
+}
+
+/* ---- 항목 줄 ------------------------------------------------------------
+   왼쪽에 제목과 내용, 오른쪽에 그 항목을 바꾸는 버튼. 버튼은 줄 맨 위에 맞춥니다 —
+   내용이 두 줄이 되든 세 줄이 되든 누르는 자리가 움직이지 않아야 합니다.
+*/
+
+.summary-card__row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-300);
+}
+
+.summary-card__row > .btn { flex: none; }
+
+.summary-card__label {
+  flex: 1 1 0;
+  min-inline-size: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-100);
+}
+
+.summary-card__label > b {
+  color: var(--colors-fg);
+  font-size: var(--typography-body-s-medium-font-size);
+  font-weight: var(--typography-body-s-medium-font-weight);
+  line-height: var(--typography-body-s-medium-line-height);
+}
+
+.summary-card__value {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-50);
+}
+
+/* 일정 줄: 날짜는 14, 장소·연령은 12. */
+.summary-card__when {
+  color: var(--colors-fg);
+  font-size: var(--typography-body-m-regular-font-size);
+  line-height: var(--typography-body-m-regular-line-height);
+}
+
+.summary-card__where {
+  color: var(--colors-fg);
+  font-size: var(--typography-body-s-regular-font-size);
+  line-height: var(--typography-body-s-regular-line-height);
+}
+
+/* 확인 결과. 브랜드색은 좋은 소식이라서가 아니라, 이 카드에서 지금 막 계산된
+   유일한 값이라 눈이 먼저 닿아야 하기 때문입니다. */
+.summary-card__result {
+  color: var(--colors-fg-brand);
+  font-size: var(--typography-body-m-regular-font-size);
+  line-height: var(--typography-body-m-regular-line-height);
+}
+
+/* ---- 도움말 ------------------------------------------------------------ */
+
+.summary-card__guide {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-100);
+  color: var(--_summary-card-guide-fg);
+  font-size: var(--typography-body-s-regular-font-size);
+  line-height: var(--typography-body-s-regular-line-height);
+}
+
+.summary-card__guide > svg {
+  flex: none;
+  inline-size: var(--_summary-card-guide-icon-size);
+  block-size: var(--_summary-card-guide-icon-size);
+}
+
+.summary-card__guide span {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-50);
+  min-inline-size: 0;
+}
+
+.summary-card__guide a {
+  align-self: flex-start;
+  color: inherit;
+}
+
+/* ---- 유료 옵션 ---------------------------------------------------------
+   기본은 꺼져 있습니다. 켜면 총액이 바로 오릅니다 — 결제 직전에 금액이 달라지는
+   일이 없어야 합니다.
+*/
+
+.summary-card__option {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-300);
+  padding: var(--spacing-400);
+  border-radius: var(--_summary-card-option-rounded);
+  background: var(--_summary-card-option-bg);
+  cursor: pointer;
+}
+
+.summary-card__option-text {
+  flex: 1 1 0;
+  min-inline-size: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-50);
+}
+
+.summary-card__option-text b {
+  color: var(--colors-fg);
+  font-size: var(--typography-body-m-medium-font-size);
+  font-weight: var(--typography-body-m-medium-font-weight);
+  line-height: var(--typography-body-m-medium-line-height);
+}
+
+.summary-card__option-text span {
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-s-regular-font-size);
+  line-height: var(--typography-body-s-regular-line-height);
+}
+
+/* ---- 구분선 ------------------------------------------------------------ */
+
+.summary-card__divider {
+  block-size: 1px;
+  margin: 0;
+  border: 0;
+  background: var(--_summary-card-divider);
+}
+
+/* ---- 금액 --------------------------------------------------------------
+   <dl> 입니다. 항목 이름과 값이 짝을 이루는 목록이라, 스크린 리더가 "상품 금액,
+   45,000원"처럼 붙여 읽습니다. 표로 짜면 행과 열을 오가며 읽어 길어집니다.
+*/
+
+.summary-card__price {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
+  gap: var(--spacing-150) var(--spacing-300);
+  margin: 0;
+  font-feature-settings: 'lnum' 1;
+}
+
+.summary-card__price dt {
+  color: var(--colors-fg);
+  font-size: var(--typography-body-s-regular-font-size);
+  line-height: var(--typography-body-s-regular-line-height);
+}
+
+.summary-card__price dd {
+  margin: 0;
+  text-align: end;
+  color: var(--colors-fg);
+  font-size: var(--typography-body-s-regular-font-size);
+  line-height: var(--typography-body-s-regular-line-height);
+}
+
+/* 할인과 추가 옵션은 총액을 움직인 값이라 색으로 구분합니다. */
+.summary-card__price .is-discount { color: var(--colors-fg-brand); }
+
+/* 총 결제 금액. 이름은 그대로 12 이고 숫자만 20 으로 커집니다 — 이 카드에서
+   하나만 크게 남긴다면 지금 결제될 금액입니다. */
+.summary-card__price .is-total {
+  font-size: var(--typography-body-s-medium-font-size);
+  font-weight: var(--typography-body-s-medium-font-weight);
+  line-height: var(--typography-body-s-medium-line-height);
+}
+
+.summary-card__price dd.is-total {
+  font-size: var(--typography-body-xl-semibold-font-size);
+  font-weight: var(--typography-body-xl-semibold-font-weight);
+  line-height: var(--typography-body-xl-semibold-line-height);
+}

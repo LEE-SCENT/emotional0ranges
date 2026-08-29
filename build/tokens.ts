@@ -145,7 +145,8 @@ export const semantic = {
     "fg-success": "#34C759",
     "fg-critical": "#FF383C",
     "border": "#E7E5E4",
-    "divider": "#E7E5E4"
+    "divider": "#E7E5E4",
+    "divider-low": "#F3F1F0"
   },
   "breakpoint": {
     "sm": "441px",
@@ -407,6 +408,16 @@ export const components = {
     "borderWidth": "1px",
     "blurRadius": "7.5px"
   },
+  "control": {
+    "size": "24px",
+    "iconSize": "20px",
+    "rounded": "4px",
+    "borderWidth": "2px",
+    "bg": "#FFFFFF",
+    "border": "#E7E5E4",
+    "bgChecked": "#000000",
+    "fgChecked": "#FFFFFF"
+  },
   "footer": {
     "snsIconSize": "20px"
   },
@@ -542,12 +553,34 @@ export const components = {
     "backdrop": "#00000040",
     "bg": "#FFFFFF",
     "rounded": "20px",
+    "maxWidth": "480px",
     "maxHeight": "76dvh",
     "paddingBlock": "4px",
     "paddingBlockEnd": "4px",
     "paddingInline": "4px",
     "gap": "4px",
     "shadow": "0 -4px 12px #0000001a"
+  },
+  "summaryCard": {
+    "width": "380px",
+    "bg": "#FFFFFF",
+    "border": "#E7E5E4",
+    "rounded": "20px",
+    "padding": "4px",
+    "gap": "4px",
+    "thumbnailSize": "108px",
+    "thumbnailRounded": "12px",
+    "divider": "#F3F1F0",
+    "banner": {
+      "bg": "#f75d151a",
+      "fg": "#F75D15",
+      "rounded": "8px",
+      "iconSize": "20px"
+    },
+    "guideIconSize": "16px",
+    "guideFg": "#7D7B7A",
+    "optionBg": "#F8F6F5",
+    "optionRounded": "12px"
   },
   "tabs": {
     "border": "#F3F1F0",
