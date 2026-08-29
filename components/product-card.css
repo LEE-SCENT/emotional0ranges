@@ -81,14 +81,31 @@
   font-feature-settings: 'lnum' 1, 'tnum' 1;
 }
 
+/* 제목은 2줄까지만 보여주고 넘치면 … 로 자릅니다. 어드민에서 등록하는 값이라
+   길이를 통제할 수 없는데, 3줄이 되면 그 카드만 키가 커져 옆 카드와 가격 줄이
+   어긋납니다.
+
+   min-block-size 로 2줄분 높이를 미리 잡아둡니다. 자르기만 하면 1줄 제목과
+   2줄 제목이 섞였을 때 여전히 카드 바닥이 들쭉날쭉합니다. 1lh 는 계산된
+   줄높이 한 줄이라, line-height 를 % 로 두고 있어도 따라옵니다. */
 .product-card__title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
   color: var(--colors-fg);
   font-size: var(--typography-body-l-medium-font-size);
   font-weight: var(--typography-body-l-medium-font-weight);
   line-height: var(--typography-body-l-medium-line-height);
+  min-block-size: calc(2 * 1lh);
 }
 
+/* 설명은 1줄. 지역명이 길어지면 넘칩니다. */
 .product-card__desc {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
   color: var(--colors-fg-lower);
   font-size: var(--typography-body-m-regular-font-size);
   font-weight: var(--typography-body-m-regular-font-weight);
@@ -115,9 +132,8 @@
 }
 
 /* ---- 카드 그룹 ---------------------------------------------------------
-   카드 사이가 20px 벌어져 있어 각 카드가 독립적으로 둥급니다. 예전처럼 간격이
-   2px 이라 띠처럼 보일 때는 레일에 마스크를 씌워야 했지만, 지금은 그럴 필요가
-   없습니다 — 배경색에 기대지 않고, 카드가 한두 개뿐이어도 그대로 맞습니다.
+   카드 사이는 2px 라 한 장의 레일처럼 보입니다. 그래서 모서리는 목록의 처음과
+   마지막 상품 바깥쪽에만 둡니다 (아래 참고).
 
    grid 가 아니라 flex 인 이유는 마지막 "더보기" 때문입니다. grid 의 auto 열은
    모두 같은 폭이라 더보기만 좁게 둘 수 없습니다.
