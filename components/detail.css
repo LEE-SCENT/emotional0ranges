@@ -36,7 +36,19 @@
   flex-direction: column;
 }
 
-.detail-main .tabs { margin-block-end: var(--spacing-500); }
+/* 탭도 일정과 함께 따라옵니다. 소개·리뷰·안내를 한참 내려가며 읽는 동안 지금 어느
+   대목인지, 어디로 건너뛸 수 있는지가 계속 보여야 합니다.
+
+   GNB 가 72 를 차지하므로 그 아래에 붙습니다. 배경을 깔지 않으면 지나가는 사진이
+   글자 뒤로 비칩니다. */
+.detail-main .tabs {
+  position: sticky;
+  inset-block-start: 72px;
+  /* GNB(20) 아래, 본문 위. */
+  z-index: 10;
+  margin-block-end: var(--spacing-500);
+  background: var(--colors-bg);
+}
 .detail-main .review { margin-block-start: var(--spacing-800); }
 
 .detail-main,
