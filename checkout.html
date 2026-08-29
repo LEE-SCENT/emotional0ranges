@@ -23,7 +23,7 @@
 <link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
 <link rel="stylesheet" href="./components/footer.css?v=b6122ba5">
 <link rel="stylesheet" href="./components/option-card.css?v=bab39e79">
-<link rel="stylesheet" href="./components/schedule.css?v=c79a8691">
+<link rel="stylesheet" href="./components/schedule.css?v=6094ad80">
 <link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
 <link rel="stylesheet" href="./components/checkbox.css?v=67340959">
 <link rel="stylesheet" href="./components/summary-card.css?v=38648332">
@@ -282,6 +282,8 @@
     </div>
     <div class="schedule">
       <div class="schedule__list">
+        <!-- 신청 가능한 일정이 하나도 없을 때만 나옵니다. -->
+        <p class="schedule__empty" hidden>변경 가능한 일정이 없어요</p>
         <div class="schedule__group">
           <time class="schedule__date"></time>
           <ul class="schedule__options">
@@ -399,8 +401,10 @@
   initStickyGnb()
   const { initSchedule } = await import('./components/schedule.js?v=5b9beb2d')
   initSchedule()
+  const { initDiscounts } = await import('./components/discount.js?v=20ec859b')
+  initDiscounts()
   const { initSheets } = await import('./components/sheet.js?v=4abbc8c4')
   initSheets()
-  const { initCheckout } = await import('./components/checkout.js?v=91453c76')
+  const { initCheckout } = await import('./components/checkout.js?v=6fe05423')
   initCheckout()
 </script>

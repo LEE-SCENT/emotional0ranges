@@ -68,3 +68,14 @@
 }
 
 .schedule__actions .btn { inline-size: 100%; }
+
+/* 고를 것이 하나도 없을 때. 빈 목록을 그대로 두면 아직 불러오는 중인지, 없는 것인지
+   알 수 없습니다. */
+.schedule__empty {
+  margin: 0;
+  padding-block: var(--spacing-1200);
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-m-regular-font-size);
+  line-height: var(--typography-body-m-regular-line-height);
+  text-align: center;
+}

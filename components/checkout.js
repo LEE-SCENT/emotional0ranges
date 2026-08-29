@@ -144,6 +144,11 @@ export function initCheckout(scope = document) {
   extra?.addEventListener('change', render)
   agree?.addEventListener('change', lock)
 
+  // 보고 있는 사이에 시간제한 할인이 끝날 수 있습니다. 카드가 정상가로 돌아가면
+  // 요약의 금액도 같이 돌아가야 합니다 — 둘이 갈린 채로 결제 버튼을 누르게 두면
+  // 안 됩니다.
+  scope.addEventListener('discount:expired', render)
+
   /* ---- 일정 변경 --------------------------------------------------------
      시트 안에서 고르는 것은 아직 정해진 것이 아닙니다. 테두리만 옮겨 다니고,
      아래 버튼을 눌러야 적용됩니다 — 목록을 훑다 손이 스친 카드로 금액이 바뀌어
@@ -176,6 +181,39 @@ export function initCheckout(scope = document) {
     render()
     sheet?.close()
   })
+
+  /* ---- 시트에는 신청 가능한 일정만 -------------------------------------
+     대기·마감은 여기서 뺍니다. 고르는 자리에 고를 수 없는 것이 섞여 있으면, 눌러본
+     뒤에야 안 된다는 것을 알게 됩니다. 대기는 상세 화면의 그 일정에서 따로 겁니다.
+
+     상세 화면의 목록은 그대로입니다 — 거기서는 대기 가능도 보여주어야 대기를 걸
+     수 있습니다. 감추는 것은 이 화면의 변경 목록뿐입니다. */
+
+  const bookable = (el) => {
+    const card = el.closest('.option-card')
+    return (
+      !card.classList.contains('option-card--wait') &&
+      !card.classList.contains('option-card--soldout')
+    )
+  }
+
+  if (sheet) {
+    for (const el of sheet.querySelectorAll('[name="schedule"]')) {
+      if (bookable(el)) continue
+      el.disabled = true
+      const item = el.closest('li')
+      if (item) item.hidden = true
+    }
+    // 한 항목도 남지 않은 날짜는 머리글만 남습니다.
+    for (const group of sheet.querySelectorAll('.schedule__group')) {
+      const alive = [...group.querySelectorAll('li')].some((li) => !li.hidden)
+      group.hidden = !alive
+    }
+    const empty = sheet.querySelector('.schedule__empty')
+    const none = ![...sheet.querySelectorAll('[name="schedule"]')].some(bookable)
+    if (empty) empty.hidden = !none
+    if (none && apply) apply.hidden = true
+  }
 
   /* 시트를 그냥 닫으면 고르던 것은 없던 일이 됩니다. 열 때마다 지금 일정에서
      다시 시작하고, 그 카드가 보이는 자리로 목록을 옮겨둡니다 — 다섯 번째 일정을

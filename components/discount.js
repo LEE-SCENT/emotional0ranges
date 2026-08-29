@@ -80,7 +80,16 @@ function deadlineOf(el) {
   return Number.isFinite(left) ? new Date(Date.now() + left * 1000) : null
 }
 
-/** 할인이 끝난 카드를 정상가로 되돌립니다. */
+/**
+ * 할인이 끝난 카드를 정상가로 되돌립니다.
+ *
+ * 보이는 값만 고치지 않고 data-discount 도 0 으로 내립니다. 이 카드를 읽어 금액을
+ * 세는 쪽(신청·결제 화면)이 있는데, 화면에는 정상가가 적혀 있고 계산에는 할인이
+ * 남아 있으면 결제 직전에 두 숫자가 갈립니다.
+ *
+ * 그리고 끝났다는 것을 알립니다 — 지금 그 일정을 고른 채로 보고 있었다면 요약의
+ * 금액도 다시 그려져야 합니다.
+ */
 function expire(item) {
   item.tag?.remove()
   const was = item.price?.querySelector('s')
@@ -89,7 +98,9 @@ function expire(item) {
     now.textContent = was.textContent
     was.remove()
   }
+  item.card.dataset.discount = '0'
   item.card.classList.add('is-discount-over')
+  item.card.dispatchEvent(new CustomEvent('discount:expired', { bubbles: true }))
 }
 
 /** 남은 시간에 맞는 모습으로 고칩니다. 바뀐 것이 없으면 손대지 않습니다. */
