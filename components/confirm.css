@@ -25,6 +25,9 @@
  */
 
 .confirm {
+  /* 아래 [open] 이 좌우 여백을 주므로, 그 여백이 폭에 더해지지 않아야 합니다.
+     없으면 430 짜리 화면에서 대화상자가 470 이 되어 넘친 만큼 오른쪽으로 쏠립니다. */
+  box-sizing: border-box;
   inline-size: 100%;
   max-inline-size: 100%;
   block-size: 100%;
