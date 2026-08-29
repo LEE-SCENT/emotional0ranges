@@ -265,6 +265,10 @@
     transform-origin: left center;
     scale: var(--kv-slide-scale, 1);
   }
+
+  /* 넘기는 동안에만 켭니다. 안에 영상이 들어 있어, 이것이 없으면 크기가 바뀔
+     때마다 영상까지 다시 그려집니다. kv-carousel.js 가 멈추면 바로 뗍니다. */
+  .kv-group__track.is-scrolling .kv { will-change: scale; }
 }
 
 /* 움직임을 줄이도록 설정한 경우에는 크기 변화 자체를 두지 않습니다. */

@@ -26,6 +26,9 @@
  * offsetWidth 를 쓰는 이유는 장이 scale 로 줄어 있기 때문입니다. 화면에 보이는
  * 폭(getBoundingClientRect)을 재면 줄어든 값이 나와, 그 값으로 다시 크기를
  * 계산하면 서로를 물고 조금씩 어긋납니다. offsetWidth 는 변형 전 폭입니다.
+ *
+ * 스크롤 중에는 부르지 않습니다 — offsetWidth 와 getComputedStyle 은 그 자리에서
+ * 레이아웃을 다시 계산하게 만들어, 매 프레임 부르면 그만큼 프레임이 밀립니다.
  */
 function step(track) {
   const first = track.querySelector('.kv')
@@ -52,10 +55,15 @@ export function initKvCarousel(group) {
 
   let current = -1
   let queued = false
+  let size = 0
+  let settle = 0
+
+  const measure = () => {
+    size = step(track)
+  }
 
   const mark = () => {
     queued = false
-    const size = step(track)
     const pos = size ? track.scrollLeft / size : 0
 
     slides.forEach((el, i) => {
@@ -73,6 +81,17 @@ export function initKvCarousel(group) {
   track.addEventListener(
     'scroll',
     () => {
+      // 스크롤이 시작되면 브라우저에 크기가 계속 바뀔 것이라고 미리 알립니다.
+      // 그러면 장을 한 겹으로 따로 올려두고 그 겹만 늘였다 줄입니다 — 안에 든
+      // 영상까지 매 프레임 다시 그리지 않아 끊김이 사라집니다. 계속 켜두면 그만큼
+      // 메모리를 물고 있으므로 멈추면 바로 끕니다.
+      if (!settle) track.classList.add('is-scrolling')
+      clearTimeout(settle)
+      settle = setTimeout(() => {
+        settle = 0
+        track.classList.remove('is-scrolling')
+      }, 160)
+
       if (queued) return
       queued = true
       requestAnimationFrame(mark)
@@ -80,7 +99,13 @@ export function initKvCarousel(group) {
     { passive: true },
   )
 
-  new ResizeObserver(mark).observe(track)
+  // 폭은 창이 바뀔 때만 다시 잽니다.
+  new ResizeObserver(() => {
+    measure()
+    mark()
+  }).observe(track)
+
+  measure()
   mark()
 }
 
