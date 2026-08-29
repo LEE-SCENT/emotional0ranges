@@ -305,6 +305,10 @@
   .checkout__body {
     flex-direction: column;
     gap: var(--spacing-300);
+    /* 옆으로 놓을 때는 flex-start 라야 오른쪽 요약이 왼쪽 단 높이만큼 늘어나지
+       않습니다. 세로로 쌓이면 그 값이 폭에 걸려, 카드가 글자 길이만큼만 넓어지고
+       화면 끝까지 가지 않습니다. */
+    align-items: stretch;
   }
 
   .checkout__main { gap: var(--spacing-300); }

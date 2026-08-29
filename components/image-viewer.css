@@ -195,11 +195,6 @@
 
 .image-viewer__nav { flex: none; }
 
-/* 목록에 있을 때는 목록 보기 버튼을 숨깁니다 — 이미 그 화면입니다.
-   .btn 의 display 가 브라우저 기본 [hidden] 규칙보다 구체적이라, 여기서 다시
-   눌러주지 않으면 hidden 을 붙여도 그대로 보입니다. */
-.image-viewer__to-list[hidden] { display: none; }
-
 /* 지금 보고 있는 화면이 아닌 쪽은 자리도 차지하지 않습니다. */
 .image-viewer[data-view='list'] .image-viewer__single,
 .image-viewer[data-view='single'] .image-viewer__list { display: none; }
