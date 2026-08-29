@@ -13,6 +13,9 @@
 
 const SELECTED = 'is-selected'
 
+/** 비활성 항목은 고를 수 없습니다. disabled 속성과 aria-disabled 둘 다 받습니다. */
+const isDisabled = (el) => el.disabled || el.getAttribute('aria-disabled') === 'true'
+
 /**
  * animate 가 false 면 전환을 잠깐 끄고 값을 바꿉니다.
  *
@@ -49,7 +52,7 @@ function select(root, item) {
 
 /** 화살표 키로 좌우 이동. role="tablist" 의 기대 동작입니다. */
 function onKeydown(root, e) {
-  const items = [...root.querySelectorAll('.segmented__item')]
+  const items = [...root.querySelectorAll('.segmented__item')].filter((el) => !isDisabled(el))
   const i = items.indexOf(document.activeElement)
   if (i < 0) return
   const delta = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0
@@ -66,7 +69,7 @@ export function initSegmentedControl(root) {
 
   root.addEventListener('click', (e) => {
     const item = e.target.closest('.segmented__item')
-    if (item && root.contains(item)) select(root, item)
+    if (item && root.contains(item) && !isDisabled(item)) select(root, item)
   })
   root.addEventListener('keydown', (e) => onKeydown(root, e))
 

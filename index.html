@@ -7,12 +7,12 @@
 <meta name="format-detection" content="telephone=no">
 <title>감정적인 오렌지들</title>
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
-<link rel="stylesheet" href="./build/tokens.css?v=f29d47c0">
+<link rel="stylesheet" href="./build/tokens.css?v=b5a065d9">
 <link rel="stylesheet" href="./components/container.css?v=4a4dc1f9">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=b84ee9e0">
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
-<link rel="stylesheet" href="./components/segmented-control.css?v=6f478c07">
+<link rel="stylesheet" href="./components/segmented-control.css?v=cd992fe9">
 <link rel="stylesheet" href="./components/tooltip.css?v=4939da06">
 <link rel="stylesheet" href="./components/gnb.css?v=10f2d5a3">
 <link rel="stylesheet" href="./components/kv.css?v=018ae87a">
@@ -312,7 +312,7 @@
     <div class="tooltip tooltip--top mobile-switch__tip">
       <span class="tooltip__label">온라인 매칭 지금 보러 가기</span>
     </div>
-    <div class="segmented segmented--medium" role="tablist" aria-label="모임 형태">
+    <div class="segmented" role="tablist" aria-label="모임 형태">
       <span class="segmented__thumb" aria-hidden="true"></span>
       <button class="segmented__item is-selected" role="tab" aria-selected="true">오프라인</button>
       <button class="segmented__item" role="tab" aria-selected="false">온라인</button>
@@ -346,7 +346,7 @@
 <script type="module">
   document.getElementById('sprite').innerHTML =
     await (await fetch('./build/icons.svg')).text() + await (await fetch('./build/logo.svg')).text()
-  const { initSegmentedControls } = await import('./components/segmented-control.js?v=24d9a072')
+  const { initSegmentedControls } = await import('./components/segmented-control.js?v=bbd7c4b8')
   initSegmentedControls()
   const { initKvVideo } = await import('./components/kv.js?v=d2d085a7')
   initKvVideo()

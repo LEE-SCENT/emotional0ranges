@@ -219,6 +219,7 @@
   --_segmented-control-transition-duration: var(--_duration-base);
   --_segmented-control-transition-easing: var(--_easing-standard);
   --_segmented-control-item-fg: var(--_colors-serious-gray-800);
+  --_segmented-control-item-fg-disabled: var(--_colors-serious-gray-400);
   --_segmented-control-item-fg-active: var(--_colors-white);
   --_segmented-control-item-bg-active: var(--_colors-twist-orange-500);
   --_segmented-control-item-rounded: var(--_rounded-full);

@@ -17,7 +17,8 @@
       },
 
       "item": {
-        "fg":        { "$type": "color", "$value": "{primitive.colors.seriousGray.800}" },
+        "fg":          { "$type": "color", "$value": "{primitive.colors.seriousGray.800}" },
+        "fg-disabled": { "$type": "color", "$value": "{primitive.colors.seriousGray.400}", "$description": "고를 수 없는 항목. Figma 의 #C5C3C2 가 seriousGray 400 과 같습니다." },
         "fg-active": { "$type": "color", "$value": "{primitive.colors.white}" },
         "bg-active": { "$type": "color", "$value": "{primitive.colors.twistOrange.500}" },
         "rounded":   { "$type": "dimension", "$value": "{primitive.rounded.full}" }

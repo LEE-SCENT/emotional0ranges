@@ -483,6 +483,7 @@ export const components = {
     },
     "item": {
       "fg": "#494746",
+      "fg-disabled": "#C5C3C2",
       "fg-active": "#FFFFFF",
       "bg-active": "#F75D15",
       "rounded": "9999px"

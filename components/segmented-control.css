@@ -59,7 +59,8 @@
   box-sizing: border-box;
   border: 0;
   margin: 0;
-  padding: var(--spacing-200) var(--spacing-400);
+  /* 좌우 12 는 두 크기가 같고, 위아래만 달라집니다 (small 8 / medium 16). */
+  padding: var(--spacing-200) var(--spacing-300);
   border-radius: var(--_segmented-control-item-rounded);
   background: transparent;
   color: var(--_segmented-control-item-fg);
@@ -75,7 +76,15 @@
               var(--_segmented-control-transition-easing);
 }
 
-.segmented--medium .segmented__item { padding: var(--spacing-400); }
+.segmented--medium .segmented__item { padding-block: var(--spacing-400); }
+
+/* 고를 수 없는 항목. 배경은 그대로 두고 글자만 낮춥니다 — 자리를 지키고 있어야
+   나머지 항목의 폭이 흔들리지 않습니다. */
+.segmented__item:disabled,
+.segmented__item[aria-disabled='true'] {
+  color: var(--_segmented-control-item-fg-disabled);
+  cursor: not-allowed;
+}
 
 .segmented__item.is-selected {
   color: var(--_segmented-control-item-fg-active);

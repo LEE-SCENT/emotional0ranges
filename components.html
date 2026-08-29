@@ -4,11 +4,11 @@
      등록번호·고객센터 번호가 그렇게 파란 밑줄로 바뀌어 꺼둡니다. -->
 <meta name="format-detection" content="telephone=no">
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
-<link rel="stylesheet" href="./build/tokens.css?v=f29d47c0">
+<link rel="stylesheet" href="./build/tokens.css?v=b5a065d9">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=b84ee9e0">
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
-<link rel="stylesheet" href="./components/segmented-control.css?v=6f478c07">
+<link rel="stylesheet" href="./components/segmented-control.css?v=cd992fe9">
 <link rel="stylesheet" href="./components/tooltip.css?v=4939da06">
 <link rel="stylesheet" href="./components/gnb.css?v=10f2d5a3">
 <link rel="stylesheet" href="./components/container.css?v=4a4dc1f9">
@@ -57,7 +57,7 @@
 <div class="row" id="r4"></div>
 <h2>Button — iconOnly + badge</h2>
 <div class="row" id="r4b"></div>
-<h2>SegmentedControl — small(40) / medium(56)</h2>
+<h2>SegmentedControl — small(40) / medium(56) · 마지막 항목은 비활성</h2>
 <div class="row" id="r5"></div>
 <h2>Tooltip — bottom / top × 닫기버튼</h2>
 <div class="row" id="r6" style="gap:32px;row-gap:28px;padding:20px 0"></div>
@@ -485,6 +485,7 @@ document.getElementById('r5').innerHTML = ['small','medium'].map(sz => `
     <button class="segmented__item is-selected" role="tab" aria-selected="true">온라인</button>
     <button class="segmented__item" role="tab" aria-selected="false">오프라인</button>
     <button class="segmented__item" role="tab" aria-selected="false">전체</button>
+    <button class="segmented__item" role="tab" aria-selected="false" disabled>준비 중</button>
   </div>`).join('')
 
 document.getElementById('r6').innerHTML = ['bottom','top'].flatMap(pl => [
@@ -500,6 +501,6 @@ for (const [id, dir] of [['r7','vertical'],['r8','horizontal']]) {
     </div>`
 }
 
-const { initSegmentedControls } = await import('./components/segmented-control.js?v=24d9a072')
+const { initSegmentedControls } = await import('./components/segmented-control.js?v=bbd7c4b8')
 initSegmentedControls()
 </script>
