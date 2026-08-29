@@ -74,17 +74,27 @@ export function initWaitlist(scope = document) {
     }
   }
 
-  /** 대기 상태를 카드에 씁니다. */
+  /**
+   * 대기 상태를 카드에 씁니다.
+   *
+   * textContent 로 통째로 갈아끼우지 않습니다. 그 자리에는 상태 아이콘이 함께 들어
+   * 있어서, 글자만 바꾼다는 것이 아이콘까지 지우는 일이 됩니다 — 실제로 지워졌습니다.
+   * 글자가 들어 있는 텍스트 노드만 찾아 그것만 고칩니다.
+   */
+  const labelNode = (seats) =>
+    [...seats.childNodes].find((n) => n.nodeType === Node.TEXT_NODE && n.textContent.trim())
+
   const mark = (el, on) => {
     const card = cardOf(el)
     const seats = card?.querySelector('.option-card__seats')
-    if (!card || !seats) return
+    const label = seats && labelNode(seats)
+    if (!card || !label) return
     card.classList.toggle('option-card--waiting', on)
     if (on) {
-      seats.dataset.seats = seats.dataset.seats || seats.textContent
-      seats.textContent = '대기 신청 완료'
+      seats.dataset.seats = seats.dataset.seats || label.textContent
+      label.textContent = '대기 신청 완료'
     } else if (seats.dataset.seats) {
-      seats.textContent = seats.dataset.seats
+      label.textContent = seats.dataset.seats
     }
   }
 
