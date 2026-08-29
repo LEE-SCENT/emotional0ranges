@@ -15,6 +15,12 @@
  *    441 / 961 / 1601 세 곳뿐이니 검색으로 찾을 수 있습니다.
  */
 
+/* 스크롤바 자리를 늘 비워둡니다.
+   팝업이 열리는 동안에는 뒤 페이지의 스크롤을 잠그는데(overflow:hidden), 그때
+   스크롤바가 사라지면서 본문이 그 폭만큼 옆으로 밀립니다. 자리를 처음부터 비워두면
+   잠기든 말든 폭이 같습니다. */
+:root { scrollbar-gutter: stable; }
+
 .container {
   box-sizing: border-box;
   inline-size: 100%;

@@ -12,7 +12,7 @@
 <title>emotional oranges — 상품 카드 정책</title>
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
 <link rel="stylesheet" href="./build/tokens.css?v=7e7ec44a">
-<link rel="stylesheet" href="./components/container.css?v=a91eb189">
+<link rel="stylesheet" href="./components/container.css?v=511b6f74">
 <style>
   body { margin: 0; background: var(--colors-bg); color: var(--colors-fg);
          font-family: var(--_font-family-pretendard); }
@@ -92,6 +92,18 @@
     <tr><th>기본</th><td>최저가 기준 <code>42,000원~</code></td></tr>
     <tr><th>할인 상품</th><td><code>할인가</code> 라벨 + 할인가. <b>기존가는 노출하지 않습니다</b></td></tr>
     <tr><th>잠긴 상품</th><td>가격 자리에 <code>블랙 인증 후 공개</code></td></tr>
+  </table>
+
+  <h2>일정 카드의 타이머</h2>
+  <p class="note">상세 화면의 일정 목록에만 있습니다. 급한 것을 급하다고 말하는 자리이지, 급하지 않은 것을 급해 보이게 만드는 자리가 아닙니다.</p>
+  <table>
+    <tr><th>노출 조건</th><td><b>시간제한 할인·프로모션이 걸린 일정에만</b> 붙입니다</td></tr>
+    <tr><th>24시간 미만</th><td>초까지 세는 카운트다운 <code>02:30:24</code></td></tr>
+    <tr><th>24시간 이상</th><td>종료일로만 <code>8월 22일까지 할인</code> — 하루 넘게 남은 것에 초를 세면 없는 급함을 만드는 일이 됩니다</td></tr>
+    <tr><th>종료 후</th><td>타이머와 할인가를 <b>함께</b> 지우고 정상가로 돌립니다. 태그만 지우고 할인가를 남기면 그 값으로 신청하려다 결제에서 다른 금액을 봅니다</td></tr>
+    <tr><th>선택 여부</th><td>관계없습니다. 조건을 만족하는 카드에 모두 붙습니다</td></tr>
+    <tr><th>쓰지 않는 곳</th><td>일반가, 상시 할인, 잔여석 부족. 마감 시각이 없거나, 시간이 아닌 다른 이유로 급한 것들입니다</td></tr>
+    <tr><th>같은 프로모션</th><td>여러 일정에 걸려도 <b>일정마다 제 종료 시각</b>을 따릅니다. 하나의 시계를 나눠 쓰면 먼저 끝나는 일정이 남은 시간을 잘못 말합니다</td></tr>
   </table>
 
   <h2>장소 · 일정 문구</h2>

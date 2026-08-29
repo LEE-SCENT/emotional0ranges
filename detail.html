@@ -13,7 +13,7 @@
 <title>12:12 티키타카 로테이션 소개팅 — 감정적인 오렌지들</title>
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
 <link rel="stylesheet" href="./build/tokens.css?v=7e7ec44a">
-<link rel="stylesheet" href="./components/container.css?v=a91eb189">
+<link rel="stylesheet" href="./components/container.css?v=511b6f74">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=04c0adfe">
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
@@ -30,10 +30,10 @@
 <link rel="stylesheet" href="./components/detail.css?v=ddf65880">
 <link rel="stylesheet" href="./components/favorite.css?v=7b27f284">
 <link rel="stylesheet" href="./components/app-bar.css?v=4709389e">
-<link rel="stylesheet" href="./components/top-bar.css?v=9bb0fa4b">
+<link rel="stylesheet" href="./components/top-bar.css?v=3528f9ff">
 <link rel="stylesheet" href="./components/image-viewer.css?v=6b3bbe17">
 <link rel="stylesheet" href="./components/bottom-cta.css?v=8c0377aa">
-<link rel="stylesheet" href="./components/sheet.css?v=20316759">
+<link rel="stylesheet" href="./components/sheet.css?v=83b4c0d1">
 <style>
   body {
     margin: 0;
@@ -304,7 +304,8 @@
         <p class="schedule__date">8월 22일(토요일)</p>
         <ul class="schedule__options">
         <li>
-          <label class="option-card">
+          <!-- 마감이 2 시간 30 분 뒤 — 24 시간 안쪽이라 초까지 셉니다. -->
+          <label class="option-card" data-discount-in="9024">
             <input class="sr-only" type="radio" name="schedule" checked>
             <span class="option-card__main">
               <span class="option-card__time">오후 2:00~5:30</span>
@@ -312,16 +313,18 @@
               <span class="option-card__place">서울 강남</span>
             </span>
             <span class="option-card__aside">
-          <span class="tag tag--accent-pri">
-            <svg aria-hidden="true"><use href="#icon-scheduleFilled"></use></svg>
-            <time class="countdown" data-countdown="9024">02:30:24</time>
-          </span>
+              <span class="tag tag--accent-pri option-card__deadline">
+                <svg aria-hidden="true"><use href="#icon-scheduleFilled"></use></svg>
+                <time class="countdown">02:30:24</time>
+              </span>
               <span class="option-card__seats">남성 6 · 여성 5자리 남음</span>
             </span>
           </label>
         </li>
         <li>
-          <label class="option-card">
+          <!-- 마감이 사흘 뒤 — 하루보다 멀어 날짜로만 알립니다. 선택된 카드가
+               아니어도 조건을 만족하면 그대로 붙습니다. -->
+          <label class="option-card" data-discount-in="284400">
             <input class="sr-only" type="radio" name="schedule">
             <span class="option-card__main">
               <span class="option-card__time">밤 10:00~12:30</span>
@@ -329,6 +332,10 @@
               <span class="option-card__place">서울 강남</span>
             </span>
             <span class="option-card__aside">
+              <span class="tag tag--accent-sec option-card__deadline">
+                <svg aria-hidden="true"><use href="#icon-scheduleFilled"></use></svg>
+                <time class="countdown">9월 1일까지 할인</time>
+              </span>
               <span class="option-card__seats">남성 3자리 남음</span>
             </span>
           </label>
@@ -564,8 +571,8 @@
     await (await fetch('./build/icons.svg')).text() + await (await fetch('./build/logo.svg')).text()
   const { initStickyGnb } = await import('./components/gnb.js?v=ca09b963')
   initStickyGnb()
-  const { initCountdowns } = await import('./components/countdown.js?v=49896f10')
-  initCountdowns()
+  const { initDiscounts } = await import('./components/discount.js?v=852f7b20')
+  initDiscounts()
   const { initFavorites } = await import('./components/favorite.js?v=c0bbee77')
   initFavorites()
   const { initDetailIntro } = await import('./components/detail-intro.js?v=0e1ce781')

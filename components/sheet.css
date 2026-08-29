@@ -42,6 +42,10 @@
     padding: 0;
     border: 0;
     background: none;
+    /* dialog 의 기본값은 overflow:auto 입니다. 시트가 올라오는 동안 판이 아래로
+       밀려나 있어 그 순간만 상자가 넘치고, 스크롤바가 나타났다 사라집니다.
+       바닥에 붙는 판이라 넘치는 부분은 볼 일이 없으므로 잘라둡니다. */
+    overflow: clip;
   }
 
   .sheet[open] {
