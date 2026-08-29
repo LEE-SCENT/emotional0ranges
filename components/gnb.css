@@ -103,10 +103,6 @@
   display: none;
 }
 
-/* small 의 액션 버튼만 아이콘이 32px 입니다 — iconSize 토큰에 없는 값이라
-   여기서만 예외로 지정합니다. ⚠️ Figma 에 32px 토큰 추가가 필요합니다. */
-.gnb__actions .btn--icon-only .btn__icon { inline-size: 32px; block-size: 32px; }
-
 /* ---- medium (1025px~) -------------------------------------------------- */
 @media (min-width: 961px) {
   .gnb { padding: var(--spacing-400) var(--spacing-600); }
@@ -115,11 +111,6 @@
 
   .gnb__segmented { display: block; }
   .gnb__menu { display: flex; }
-
-  .gnb__actions .btn--icon-only .btn__icon {
-    inline-size: var(--_button-icon-size-m);
-    block-size: var(--_button-icon-size-m);
-  }
 }
 
 /* ---- large (1601px~) --------------------------------------------------- */

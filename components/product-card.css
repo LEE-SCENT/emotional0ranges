@@ -248,6 +248,10 @@
        <div class="product-card__info"> … </div>
      </article>
 
+   더보기는 옵션입니다. 메인 썸네일을 포함해 사진이 7장 이상일 때만 마지막 타일에
+   얹습니다 — 타일 칸이 여섯이라 7장이 되어야 격자가 다 차기 때문입니다. 6장 이하면
+   더보기 없이 두고, 마지막 칸은 비워 둡니다(카드 배경색이 보입니다).
+
    높이는 큰 사진의 비율 하나로 정해집니다. 타일 칸은 남는 높이를 반씩 나눠 갖고,
    그 결과가 마침 정사각에 가깝습니다 (599×400 → 198×199). 타일에 따로 비율을
    주면 두 값이 싸워서 어느 한쪽에 빈틈이 생깁니다.
@@ -300,11 +304,23 @@
   pointer-events: none;
 }
 
-/* 위쪽 그늘은 덩어리 전체에 한 번만 겁니다. tag 가 세 개라 상품 카드보다 진합니다. */
-.product-card--promotion .product-card__media::after {
-  block-size: var(--_product-card-promotion-scrim-height);
-  background: linear-gradient(to bottom, var(--_product-card-promotion-scrim-from), transparent);
+/* 위쪽 그늘은 tag 가 얹히는 메인 썸네일에만 겁니다. 덩어리 전체에 걸면 오른쪽
+   타일 윗줄까지 같이 어두워집니다.
+
+   가리개(tint)와 그늘을 한 겹에 겹쳐 담습니다. ::before 로 나누면 그늘이 사진
+   아래로 깔립니다 — 사진이 position:absolute 라 정적인 ::before 보다 위에 그려집니다. */
+.product-card__main::after {
+  background-image: linear-gradient(
+    to bottom,
+    var(--_product-card-promotion-scrim-from),
+    transparent
+  );
+  background-repeat: no-repeat;
+  background-size: 100% var(--_product-card-promotion-scrim-height);
 }
+
+/* 상품 카드의 스크림은 promotion 에서 쓰지 않습니다. */
+.product-card--promotion .product-card__media::after { content: none; }
 
 .product-card__tile--more {
   display: flex;
