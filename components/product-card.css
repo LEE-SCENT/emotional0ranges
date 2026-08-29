@@ -60,6 +60,76 @@
 /* 카드에 무엇이 실리고 그 값이 어느 일정에서 오는지는 policy.html 에 정리해
    두었습니다. 아래 주석은 그중 CSS 로 강제되는 부분만 다시 적습니다. */
 
+/* ---- 잔여석 띠 (좁은 화면) ----------------------------------------------
+   960 이하에서는 잔여석·마감을 이미지 위 tag 대신 이미지 아래 띠로 보여줍니다.
+   상품 카드와 프로모션 카드가 같습니다.
+
+     <div class="product-card__media">
+       …
+       <p class="product-card__status">
+         <span class="is-remaining">남성 2자리 남음</span>
+         <span class="is-closed">여성 마감</span>
+       </p>
+     </div>
+
+   좁은 카드에서 tag 를 세 개까지 얹으면 사진이 거의 가려지고, 날짜가 길면 줄까지
+   바뀝니다. 띠로 내리면 폭에 상관없이 한 줄로 들어갑니다.
+
+   두 정보 모두 마크업에 두고 CSS 가 무엇을 보일지 고릅니다 — 폭에 따라 다른 DOM 을
+   쓰면 서버 렌더링에서 어느 쪽을 내보낼지 알 수 없습니다.
+*/
+
+.product-card__status {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline: 0;
+  z-index: 1;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-50);
+  margin: 0;
+  padding: var(--spacing-200);
+  background: var(--_product-card-status-bg);
+  backdrop-filter: blur(var(--_product-card-status-blur-radius));
+  font-size: var(--typography-body-s-medium-font-size);
+  font-weight: var(--typography-body-s-medium-font-weight);
+  line-height: var(--typography-body-s-medium-line-height);
+  letter-spacing: var(--typography-body-s-medium-letter-spacing);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.product-card__status .is-remaining { color: var(--_product-card-status-fg-remaining); }
+.product-card__status .is-closed { color: var(--_product-card-status-fg-closed); }
+
+/* 가운뎃점은 뒤따르는 항목에 붙입니다 — 푸터와 같은 이유입니다. */
+.product-card__status > * + *::before {
+  content: '·';
+  padding-inline-end: var(--spacing-50);
+  color: var(--_product-card-status-fg-closed);
+}
+
+/* 좁은 화면에서 레일은 화면 끝까지 씁니다. 컨테이너 여백 안에 갇혀 있으면
+   스크롤 중인 카드가 화면 가장자리에서 20px 안쪽에 잘려 멈춘 것처럼 보입니다.
+   음수 바깥여백으로 여백을 지우고 같은 크기의 안쪽여백으로 되돌려, 첫 카드와
+   마지막 카드는 그대로 본문에 맞으면서 가운데 카드만 가장자리까지 흐릅니다. */
+@media (max-width: 960px) {
+  .product-card-group {
+    margin-inline: calc(-1 * var(--container-gutter-base));
+    padding-inline: var(--container-gutter-base);
+    scroll-padding-inline: var(--container-gutter-base);
+  }
+}
+
+@media (max-width: 960px) {
+  .product-card__status { display: flex; }
+
+  /* 같은 정보가 위아래로 두 번 나오지 않게 합니다. 날짜 tag 는 그대로 둡니다. */
+  .product-card__tags .tag--accent-pri,
+  .product-card__tags .tag--accent-sec { display: none; }
+}
+
 /* 태그 노출 조건은 policy.html 에 있습니다. 여기서 CSS 가 감당하는 건 하나입니다 —
    최대 조합(전용 + 일정 + 성별 둘 = 4개)이 312px 카드의 이미지 폭을 넘으므로,
    잘라내지 않고 다음 줄로 넘기려고 폭을 묶고 wrap 을 켭니다. */

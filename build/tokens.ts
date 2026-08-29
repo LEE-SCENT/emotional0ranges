@@ -423,6 +423,12 @@ export const components = {
       "from": "#000000A6",
       "height": "160px"
     },
+    "status": {
+      "bg": "#00000099",
+      "fgRemaining": "#FF6400",
+      "fgClosed": "#CCCCCC",
+      "blurRadius": "12px"
+    },
     "more": {
       "fg": "#000000",
       "minWidth": "108px",

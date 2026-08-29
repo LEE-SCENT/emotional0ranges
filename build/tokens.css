@@ -182,6 +182,10 @@
   --_product-card-min-width: 312px;
   --_product-card-scrim-from: #000000A6;
   --_product-card-scrim-height: 160px;
+  --_product-card-status-bg: #00000099;
+  --_product-card-status-fg-remaining: #FF6400;
+  --_product-card-status-fg-closed: #CCCCCC;
+  --_product-card-status-blur-radius: 12px;
   --_product-card-more-fg: var(--colors-fg);
   --_product-card-more-min-width: 108px;
   --_product-card-more-icon-size: calc(var(--_dimension) * 6);

@@ -29,6 +29,29 @@
           "$value": "160px"
         }
       },
+      "status": {
+        "$description": "좁은 화면에서 이미지 아래에 깔리는 잔여석 띠. 넓은 화면의 잔여석·마감 tag 를 대신합니다.",
+        "bg": {
+          "$type": "color",
+          "$value": "#00000099",
+          "$description": "60% → 99. ⚠️ Figma 에 색 변수로는 없습니다."
+        },
+        "fgRemaining": {
+          "$type": "color",
+          "$value": "#FF6400",
+          "$description": "자리가 남은 성별. ⚠️ Figma 에 색 변수로는 없고 브랜드색(#F75D15)과도 다릅니다."
+        },
+        "fgClosed": {
+          "$type": "color",
+          "$value": "#CCCCCC",
+          "$description": "마감된 성별과 가운뎃점. ⚠️ Figma 에 색 변수로는 없습니다."
+        },
+        "blurRadius": {
+          "$type": "dimension",
+          "$value": "12px",
+          "$description": "⚠️ Figma 에 변수로 없습니다. backdrop-blur 값에서 읽었습니다."
+        }
+      },
       "more": {
         "$description": "목록 끝에 붙는 더보기. 높이는 상품 썸네일과 같습니다.",
         "fg": {
