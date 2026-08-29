@@ -22,10 +22,7 @@
  * 이미 받아둔 파일과 주소가 같아 갈아끼우는 순간 그대로 나타납니다.
  */
 
-/** 팝업이 열려 있는 동안 뒤 페이지가 스크롤되지 않게 합니다. */
-const lock = (on) => {
-  document.documentElement.style.overflow = on ? 'hidden' : ''
-}
+import { lockScroll, unlockScroll } from './scroll-lock.js'
 
 const wantsLessMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -147,7 +144,7 @@ export function initImageViewer(dialog) {
     }
     if (!dialog.open) {
       dialog.showModal()
-      lock(true)
+      lockScroll()
     }
   }
 
@@ -200,7 +197,7 @@ export function initImageViewer(dialog) {
   })
 
   // Esc 로 닫는 것은 <dialog> 가 알아서 합니다. 뒤처리만 합니다.
-  dialog.addEventListener('close', () => lock(false))
+  dialog.addEventListener('close', () => unlockScroll())
 
   view(dialog.dataset.view || 'list')
   show(0, true)

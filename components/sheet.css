@@ -41,13 +41,13 @@
      밀려나 있어 그 순간만 상자가 넘치고, 스크롤바가 나타났다 사라집니다.
      바닥에 붙는 판이라 넘치는 부분은 볼 일이 없으므로 잘라둡니다. */
   overflow: clip;
-}
-
-.sheet[open] {
-  display: flex;
+  /* 자리를 잡는 값들은 [open] 이 아니라 여기에 둡니다 — display 만 allow-discrete 로
+     전환되고 나머지는 닫는 순간 바로 풀려, 판이 한 번 튄 뒤에 사라집니다. */
   align-items: flex-end;
   justify-content: center;
 }
+
+.sheet[open] { display: flex; }
 
 .sheet::backdrop { background: var(--_sheet-backdrop); }
 
@@ -170,7 +170,7 @@
 */
 
 @media (min-width: 961px) {
-  .sheet--modal[open] { align-items: center; }
+  .sheet--modal { align-items: center; }
 
   /* 머리글은 줄 전체를 씁니다 — 목록이 그 아래를 스크롤해도 제목과 닫기는 남습니다. */
   .sheet--modal .sheet__head {

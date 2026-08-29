@@ -32,18 +32,18 @@
   max-inline-size: 100%;
   block-size: 100%;
   max-block-size: 100%;
-  padding: 0;
   border: 0;
   background: none;
   overflow: clip;
-}
-
-.confirm[open] {
-  display: flex;
+  /* 자리를 잡는 값들은 [open] 이 아니라 여기에 둡니다. display 는 allow-discrete 로
+     전환되지만 align-items 나 padding 은 그렇지 않아, [open] 에 두면 닫는 순간
+     먼저 풀려 판이 좌상단으로 튄 뒤에 사라집니다. */
   align-items: center;
   justify-content: center;
   padding: var(--spacing-500);
 }
+
+.confirm[open] { display: flex; }
 
 .confirm::backdrop { background: var(--_confirm-backdrop); }
 

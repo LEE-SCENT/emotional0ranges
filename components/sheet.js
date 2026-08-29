@@ -16,10 +16,7 @@
  * showModal() 로 띄우면 화면 한가운데에 목록만 덩그러니 뜹니다.
  */
 
-/** 시트가 열려 있는 동안 뒤 페이지가 스크롤되지 않게 합니다. */
-const lock = (on) => {
-  document.documentElement.style.overflow = on ? 'hidden' : ''
-}
+import { lockScroll, unlockScroll } from './scroll-lock.js'
 
 /**
  * 지금 이 요소가 시트로 동작하는지.
@@ -38,7 +35,7 @@ export function initSheet(dialog) {
   const open = () => {
     if (!isSheet(dialog) || dialog.open) return
     dialog.showModal()
-    lock(true)
+    lockScroll()
   }
 
   document.addEventListener('click', (e) => {
@@ -81,7 +78,7 @@ export function initSheet(dialog) {
   }
 
   // Esc 로 닫는 것은 <dialog> 가 합니다. 뒤처리만 합니다.
-  dialog.addEventListener('close', () => lock(false))
+  dialog.addEventListener('close', () => unlockScroll())
 
   // 시트가 열린 채로 넓은 화면이 되면 목록이 제자리로 돌아가야 합니다. 열어둔 채
   // 두면 화면 가운데에 목록만 남고 본문에서는 사라집니다.

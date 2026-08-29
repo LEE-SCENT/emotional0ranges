@@ -46,6 +46,28 @@ export function initTabs(scope = document) {
       const item = e.target.closest('.tabs__item')
       if (!item || !root.contains(item)) return
       select(root, item)
+
+      /* 브라우저에 맡기지 않고 여기서 옮깁니다.
+         탭이 화면 위에 붙어 있어, 그냥 두면 섹션의 첫 줄이 탭 뒤로 들어갑니다.
+         붙는 자리(--detail-sticky-top)와 탭 높이를 합한 만큼 위를 비웁니다.
+
+         갈 곳이 없는 탭도 있습니다. href 가 없으면 아무 데도 가지 않습니다 —
+         빈 href("#")를 두면 누를 때마다 문서 맨 위로 튑니다. */
+      const id = item.getAttribute('href')
+      if (!id || !id.startsWith('#') || id === '#') return
+      const target = document.querySelector(id)
+      if (!target) return
+
+      e.preventDefault()
+      const stuck = root.getBoundingClientRect().height
+      const top =
+        parseFloat(getComputedStyle(root).getPropertyValue('top')) ||
+        parseFloat(
+          getComputedStyle(root).getPropertyValue('inset-block-start'),
+        ) ||
+        0
+      const y = target.getBoundingClientRect().top + window.scrollY - stuck - top
+      window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' })
     })
 
     document.fonts?.ready.then(() => move(root, false))

@@ -17,9 +17,7 @@
  * 같은 모양의 창을 다시 쓸 수 없습니다.
  */
 
-const lock = (on) => {
-  document.documentElement.style.overflow = on ? 'hidden' : ''
-}
+import { lockScroll, unlockScroll } from './scroll-lock.js'
 
 export function initConfirm(dialog) {
   if (dialog.dataset.confirmReady) return
@@ -30,7 +28,7 @@ export function initConfirm(dialog) {
     e.preventDefault()
     if (dialog.open) return
     dialog.showModal()
-    lock(true)
+    lockScroll()
   })
 
   dialog.addEventListener('click', (e) => {
@@ -49,7 +47,7 @@ export function initConfirm(dialog) {
     if (!e.target.closest('.confirm__panel')) dialog.close()
   })
 
-  dialog.addEventListener('close', () => lock(false))
+  dialog.addEventListener('close', () => unlockScroll())
 }
 
 export function initConfirms(scope = document) {

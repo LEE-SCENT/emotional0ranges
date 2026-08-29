@@ -27,12 +27,12 @@
   border: 0;
   background: var(--colors-bg);
   color: var(--colors-fg);
-}
-
-.image-viewer[open] {
-  display: flex;
+  /* 방향은 [open] 이 아니라 여기에 둡니다 — display 만 allow-discrete 로 전환되고
+     flex-direction 은 닫는 순간 바로 풀려, 내용이 한 번 가로로 눕고 사라집니다. */
   flex-direction: column;
 }
+
+.image-viewer[open] { display: flex; }
 
 /* 화면을 꽉 채우므로 뒤가 비칠 자리가 없습니다. 그래도 열리는 순간 흰 배경이
    깔리기 전에 한 겹 받쳐둡니다. */

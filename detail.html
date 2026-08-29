@@ -27,15 +27,15 @@
 <link rel="stylesheet" href="./components/tabs.css?v=77e05f5c">
 <link rel="stylesheet" href="./components/option-card.css?v=dc5cfd48">
 <link rel="stylesheet" href="./components/schedule.css?v=6094ad80">
-<link rel="stylesheet" href="./components/confirm.css?v=81ddcf56">
+<link rel="stylesheet" href="./components/confirm.css?v=f5b4d8e7">
 <link rel="stylesheet" href="./components/review.css?v=e6a76bd1">
 <link rel="stylesheet" href="./components/detail.css?v=0f2e70f5">
 <link rel="stylesheet" href="./components/favorite.css?v=7b27f284">
 <link rel="stylesheet" href="./components/app-bar.css?v=4709389e">
 <link rel="stylesheet" href="./components/top-bar.css?v=8d2c027b">
-<link rel="stylesheet" href="./components/image-viewer.css?v=87e3d045">
+<link rel="stylesheet" href="./components/image-viewer.css?v=4e4a32e2">
 <link rel="stylesheet" href="./components/bottom-cta.css?v=8c0377aa">
-<link rel="stylesheet" href="./components/sheet.css?v=0c26353b">
+<link rel="stylesheet" href="./components/sheet.css?v=ee6842a9">
 <style>
   body {
     margin: 0;
@@ -94,7 +94,7 @@
 <!-- 좁은 화면에서 GNB 를 대신합니다. 상세 화면에서 필요한 것은 메뉴가 아니라 왔던
      곳으로 돌아가는 길과, 이 모임을 공유하거나 찜하는 것입니다. -->
 <header class="top-bar top-bar--page detail-topbar">
-  <button class="btn btn--ghost btn--medium btn--icon-only" aria-label="뒤로">
+  <button class="btn btn--ghost btn--medium btn--icon-only" type="button" data-back aria-label="뒤로">
     <svg class="btn__icon" aria-hidden="true"><use href="#icon-arrowBack"></use></svg>
   </button>
   <div class="btn-group btn-group--horizontal">
@@ -130,7 +130,7 @@
     <div class="detail-info">
       <header class="detail-info__header">
         <div class="detail-info__title">
-          <h1 class="detail-info__name">12:12 티키타카 로테이션 소개팅</h1>
+          <h1 class="detail-info__name" data-product-title>12:12 티키타카 로테이션 소개팅</h1>
           <p class="detail-info__lead">한 번의 참여로 여러 이성과 차례로 대화하는 대표 프로그램이예요.<br>1:1로 10분씩, 또래 6~12명과 차례로 마주 앉아 대화해요.<br>20개 이상 항목으로 정리된 프로필 카드를 함께 받아,<br>짧지만 충분히 알아갈 수 있어요.</p>
         </div>
         <div class="btn-group btn-group--horizontal">
@@ -176,15 +176,17 @@
     <div class="detail-main">
       <nav class="tabs" aria-label="상세 정보">
         <span class="tabs__thumb" aria-hidden="true"></span>
-      <a class="tabs__item is-active" href="#" aria-current="true">모임 소개</a>
-      <a class="tabs__item" href="#">리뷰</a>
-      <a class="tabs__item" href="#">모임 디테일</a>
-      <a class="tabs__item" href="#">위치 및 정보</a>
-      <a class="tabs__item" href="#">안내사항</a>
+      <a class="tabs__item is-active" href="#section-intro" aria-current="true">모임 소개</a>
+      <a class="tabs__item" href="#section-review">리뷰</a>
+      <!-- 이 둘은 아직 화면에 없는 섹션입니다. 갈 곳이 정해지면 href 만 채우면 됩니다.
+           빈 href("#")를 두면 누를 때마다 문서 맨 위로 튑니다. -->
+      <a class="tabs__item">모임 디테일</a>
+      <a class="tabs__item">위치 및 정보</a>
+      <a class="tabs__item" href="#section-notice">안내사항</a>
       </nav>
 
       <!-- 펼쳐진 채로 두고 detail-intro.js 가 접습니다. 스크립트가 없으면 소개가 그대로 다 보입니다. -->
-      <div class="detail-intro">
+      <div class="detail-intro" id="section-intro">
         <div class="detail-intro__content">
           <img src="./images/detail-intro.jpg" alt="12:12 티키타카 로테이션 소개팅 소개">
         </div>
@@ -195,7 +197,7 @@
         </div>
       </div>
 
-      <section class="review">
+      <section class="review" id="section-review">
         <header class="review__header">
           <p class="review__average">
             <svg aria-hidden="true"><use href="#icon-eoSymbol"></use></svg>
@@ -414,7 +416,7 @@
     </dialog>
   </div>
 
-  <section class="detail-notice">
+  <section class="detail-notice" id="section-notice">
     <h2 class="detail-notice__title">알아두어야 할 사항</h2>
     <ul class="detail-notice__items">
     <li class="detail-notice__item">
@@ -455,7 +457,7 @@
               <img src="./images/meetup-lamp.jpg" alt="" loading="lazy">
             </div>
             <div class="product-card__info">
-              <h3 class="product-card__title"><a href="./detail.html">돌싱 로테이션 소개팅</a></h3>
+              <h3 class="product-card__title"><a href="./detail.html?product=dolsing">돌싱 로테이션 소개팅</a></h3>
               <p class="product-card__desc">서울 강남 외 4개 지역 · 일정 5개</p>
             </div>
           </article>
@@ -464,7 +466,7 @@
               <img src="./images/meetup-couple.jpg" alt="" loading="lazy">
             </div>
             <div class="product-card__info">
-              <h3 class="product-card__title"><a href="./detail.html">12:12 티키타카 로테이션 소개팅</a></h3>
+              <h3 class="product-card__title"><a href="./detail.html?product=tikitaka">12:12 티키타카 로테이션 소개팅</a></h3>
               <p class="product-card__desc">경기 성남시 외 4개 지역 · 일정 5개</p>
             </div>
           </article>
@@ -473,7 +475,7 @@
               <img src="./images/meetup-record.jpg" alt="" loading="lazy">
             </div>
             <div class="product-card__info">
-              <h3 class="product-card__title"><a href="./detail.html">테마 로테이션 소개팅</a></h3>
+              <h3 class="product-card__title"><a href="./detail.html?product=theme">테마 로테이션 소개팅</a></h3>
               <p class="product-card__desc">경기 성수 외 4개 지역 · 일정 5개</p>
             </div>
           </article>
@@ -656,9 +658,17 @@
   initStickyGnb()
   const { initSchedule } = await import('./components/schedule.js?v=6d625718')
   initSchedule()
+  const { initProduct } = await import('./components/product.js?v=d6cb9709')
+  initProduct()
+  // 상세는 목록에서 들어오는 화면이라 뒤로가 곧 목록입니다. 열자마자 눌렀다면
+  // 돌아갈 곳이 없으므로 홈으로 보냅니다.
+  document.querySelector('[data-back]')?.addEventListener('click', () => {
+    if (history.length > 1) history.back()
+    else location.href = './index.html'
+  })
   const { initRecentReview } = await import('./components/recent-review.js?v=417e597f')
   initRecentReview()
-  const { initConfirms } = await import('./components/confirm.js?v=126eea7a')
+  const { initConfirms } = await import('./components/confirm.js?v=517cc9a3')
   initConfirms()
   const { initWaitlist } = await import('./components/waitlist.js?v=35237412')
   initWaitlist()
@@ -668,10 +678,10 @@
   initFavorites()
   const { initDetailIntro } = await import('./components/detail-intro.js?v=0e1ce781')
   initDetailIntro()
-  const { initTabs } = await import('./components/tabs.js?v=047f0e24')
+  const { initTabs } = await import('./components/tabs.js?v=3a928a3e')
   initTabs()
-  const { initImageViewers } = await import('./components/image-viewer.js?v=00dfca30')
+  const { initImageViewers } = await import('./components/image-viewer.js?v=10466713')
   initImageViewers()
-  const { initSheets } = await import('./components/sheet.js?v=1db2480c')
+  const { initSheets } = await import('./components/sheet.js?v=e2639981')
   initSheets()
 </script>

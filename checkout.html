@@ -31,7 +31,7 @@
 <link rel="stylesheet" href="./components/checkout.css?v=fd5f58d2">
 <link rel="stylesheet" href="./components/roll.css?v=2f044986">
 <link rel="stylesheet" href="./components/bottom-cta.css?v=8c0377aa">
-<link rel="stylesheet" href="./components/sheet.css?v=0c26353b">
+<link rel="stylesheet" href="./components/sheet.css?v=ee6842a9">
 <link rel="stylesheet" href="./components/top-bar.css?v=8d2c027b">
 <style>
   body {
@@ -185,7 +185,7 @@
 
       <div class="summary-card__product">
         <img src="./images/detail-photo-1.jpg" alt="">
-        <p>12:12 티키타카 로테이션 소개팅</p>
+        <p data-product-title>12:12 티키타카 로테이션 소개팅</p>
       </div>
 
       <div class="summary-card__row">
@@ -406,9 +406,11 @@
   initStickyGnb()
   const { initSchedule } = await import('./components/schedule.js?v=6d625718')
   initSchedule()
+  const { initProduct } = await import('./components/product.js?v=d6cb9709')
+  initProduct()
   const { initDiscounts } = await import('./components/discount.js?v=b7c8b9e1')
   initDiscounts()
-  const { initSheets } = await import('./components/sheet.js?v=1db2480c')
+  const { initSheets } = await import('./components/sheet.js?v=e2639981')
   initSheets()
   const { initCheckout } = await import('./components/checkout.js?v=7624cede')
   initCheckout()
