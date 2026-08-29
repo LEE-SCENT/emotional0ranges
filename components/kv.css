@@ -233,6 +233,12 @@
   object-fit: cover;
 }
 
+/* 좁은 화면에서는 CTA 를 두지 않습니다. 화면 아래 앱바가 이동을 맡고 있고,
+   KV 는 넘겨 보는 자리라 버튼까지 얹으면 손이 갈 곳이 겹칩니다. */
+@media (max-width: 960px) {
+  .kv__cta { display: none; }
+}
+
 /* ---- 힌트 (~960) --------------------------------------------------------
    좁은 화면에서만 다음 장이 걸쳐 보입니다. 넓은 화면은 KV 가 이미 크고 좌우
    버튼이 있어 힌트가 필요하지 않습니다.
@@ -247,16 +253,21 @@
   }
 
   /* 현재가 아닌 장은 물러나 있습니다. 왼쪽 변을 축으로 줄여야 다음 장이 시작하는
-     자리가 그대로 유지되고, 세로는 가운데를 기준으로 줄어듭니다. */
+     자리가 그대로 유지되고, 세로는 가운데를 기준으로 줄어듭니다.
+
+     크기는 kv-carousel.js 가 스크롤 위치를 따라 매 프레임 넣어줍니다. 전환에
+     맡기면 스냅이 끝난 뒤에야 한 번에 커져서 툭 튀어 오르는 것처럼 보입니다.
+     손가락을 따라 조금씩 자라야 부드럽습니다.
+
+     기본값이 1 인 것은 스크립트가 없을 때를 위한 것입니다 — 그 경우 모든 장이
+     원래 크기로 남습니다. 작아진 채로 굳는 것보다 낫습니다. */
   .kv-group .kv {
     transform-origin: left center;
-    scale: var(--_kv-slide-scale-idle);
-    transition: scale var(--_duration-base) var(--_easing-standard);
+    scale: var(--kv-slide-scale, 1);
   }
-
-  .kv-group .kv.is-current { scale: 1; }
 }
 
+/* 움직임을 줄이도록 설정한 경우에는 크기 변화 자체를 두지 않습니다. */
 @media (prefers-reduced-motion: reduce) {
-  .kv-group .kv { transition: none; }
+  .kv-group .kv { scale: 1; }
 }

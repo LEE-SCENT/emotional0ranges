@@ -8,7 +8,10 @@
  * 충분합니다. 여기서는 세 가지만 합니다.
  *
  *   data-slides   장 수. 한 장이면 CSS 가 페이지네이션을 감춥니다.
- *   is-current    지금 보고 있는 장. 나머지는 작게 물러납니다.
+ *   is-current    지금 보고 있는 장.
+ *   --kv-slide-scale
+ *                 장마다의 크기. 스크롤 위치에서 바로 계산해 매 프레임 넣습니다.
+ *                 CSS 전환에 맡기면 스냅이 끝난 뒤 한 번에 커져 툭 튀어 보입니다.
  *
  * 넘기는 버튼은 두지 않습니다 — 손가락과 트랙패드로 넘기고, 지금 몇 번째인지는
  * 페이지네이션이 알려줍니다.
@@ -17,11 +20,18 @@
  * 장이 스냅으로 멈추므로 나눗셈이면 충분하고 결과가 흔들리지 않습니다.
  */
 
+/**
+ * 한 장을 넘기는 데 필요한 스크롤 거리.
+ *
+ * offsetWidth 를 쓰는 이유는 장이 scale 로 줄어 있기 때문입니다. 화면에 보이는
+ * 폭(getBoundingClientRect)을 재면 줄어든 값이 나와, 그 값으로 다시 크기를
+ * 계산하면 서로를 물고 조금씩 어긋납니다. offsetWidth 는 변형 전 폭입니다.
+ */
 function step(track) {
   const first = track.querySelector('.kv')
   if (!first) return 0
   const gap = parseFloat(getComputedStyle(track).columnGap) || 0
-  return first.getBoundingClientRect().width + gap
+  return first.offsetWidth + gap
 }
 
 export function initKvCarousel(group) {
@@ -34,13 +44,27 @@ export function initKvCarousel(group) {
 
   group.dataset.slides = String(slides.length)
 
+  // 줄어든 크기는 토큰이 갖고 있습니다. 여기서 숫자를 다시 적으면 둘이 어긋납니다.
+  const idle =
+    parseFloat(
+      getComputedStyle(document.documentElement).getPropertyValue('--_kv-slide-scale-idle'),
+    ) || 1
+
   let current = -1
   let queued = false
 
   const mark = () => {
     queued = false
     const size = step(track)
-    const next = size ? Math.round(track.scrollLeft / size) : 0
+    const pos = size ? track.scrollLeft / size : 0
+
+    slides.forEach((el, i) => {
+      // 지금 자리에서 한 장 이상 떨어지면 완전히 줄어든 크기입니다.
+      const away = Math.min(1, Math.abs(pos - i))
+      el.style.setProperty('--kv-slide-scale', String(idle + (1 - idle) * (1 - away)))
+    })
+
+    const next = Math.round(pos)
     if (next === current) return
     current = next
     slides.forEach((el, i) => el.classList.toggle('is-current', i === next))
