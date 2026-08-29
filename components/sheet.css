@@ -177,20 +177,53 @@
 @media (min-width: 961px) {
   .sheet--modal[open] { align-items: center; }
 
+  /* 머리글은 줄 전체를 씁니다 — 목록이 그 아래를 스크롤해도 제목과 닫기는 남습니다. */
   .sheet--modal .sheet__head {
     display: flex;
+    flex: none;
     align-items: center;
     gap: var(--spacing-300);
+    box-sizing: border-box;
+    block-size: var(--_sheet-modal-header-height);
+    /* 오른쪽이 좁은 것은 닫기 버튼이 제 좌우 여백 16 을 이미 품고 있기 때문입니다. */
+    padding: 0 var(--spacing-200) 0 var(--spacing-500);
+  }
+
+  .sheet--modal .sheet__head h2 {
+    font-size: var(--typography-heading-xs-semibold-font-size);
+    font-weight: var(--typography-heading-xs-semibold-font-weight);
+    line-height: var(--typography-heading-xs-semibold-line-height);
   }
 
   .sheet--modal .sheet__panel {
-    /* 화면 폭을 다 쓰면 카드 한 줄에 담긴 것이 양 끝으로 흩어집니다. */
-    max-inline-size: var(--_sheet-max-width);
+    max-inline-size: var(--_sheet-modal-width);
+    max-block-size: var(--_sheet-modal-max-height);
+    /* 안쪽 여백은 머리글·목록·버튼이 각자 가집니다. 판이 통째로 물고 있으면
+       머리글이 줄 전체를 쓸 수 없습니다. */
+    padding: 0;
+    gap: 0;
     /* 아래가 화면 끝에 닿지 않으므로 네 모서리를 모두 둥글립니다. */
     border-radius: var(--_sheet-rounded);
     box-shadow: var(--_sheet-modal-shadow);
-    /* 화면 끝에서 떨어져 있어 홈 표시줄을 피할 이유가 없습니다. */
-    padding-block-end: var(--_sheet-padding-block-end);
+  }
+
+  /* 목록·배너·버튼은 같은 세로선에서 시작합니다. */
+  .sheet--modal[open] .schedule {
+    gap: 0;
+    padding-block: 0;
+  }
+
+  .sheet--modal[open] .alert-banner {
+    margin: 0 var(--_sheet-modal-padding-inline) var(--spacing-400);
+  }
+
+  .sheet--modal[open] .schedule__list {
+    margin-inline: 0;
+    padding-inline: var(--_sheet-modal-padding-inline);
+  }
+
+  .sheet--modal[open] .schedule__actions {
+    padding: var(--spacing-300) var(--_sheet-modal-padding-inline);
   }
 
   /* 아래에서 올라오는 대신 그 자리에서 살짝 커지며 나타납니다. 가운데 뜬 상자가

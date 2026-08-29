@@ -13,6 +13,25 @@
         "$value": "{primitive.rounded.2xl}",
         "$description": "위쪽 두 모서리만. 아래는 화면 끝에 닿아 있어 둥글릴 자리가 없습니다."
       },
+      "modalWidth": {
+        "$type": "dimension",
+        "$value": "600px",
+        "$description": "넓은 화면에서 모달의 폭. 안쪽 24 를 빼면 카드가 552 로, 프레임의 값과 같습니다."
+      },
+      "modalMaxHeight": {
+        "$type": "dimension",
+        "$value": "min(960px, 100dvh - 96px)",
+        "$description": "⚠️ 960 은 프레임에서 읽었고, 96(위아래 48)은 코드에서 정했습니다. 1080 짜리 화면에서 정확히 960 이 되고, 더 낮은 화면에서는 위아래 48 을 남기고 줄어듭니다 — 모달이 화면 끝에 닿으면 닫고 돌아갈 곳이 보이지 않습니다."
+      },
+      "modalHeaderHeight": {
+        "$type": "dimension",
+        "$value": "76px",
+        "$description": "제목(28)과 닫기 버튼(40)이 들어가는 줄."
+      },
+      "modalPaddingInline": {
+        "$type": "dimension",
+        "$value": "{semantic.spacing.600}"
+      },
       "maxWidth": {
         "$type": "dimension",
         "$value": "480px",
