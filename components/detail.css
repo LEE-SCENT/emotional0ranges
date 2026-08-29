@@ -83,12 +83,51 @@
     gap: var(--spacing-800);
   }
 
+  /* 사진 아래는 정보 블록의 머리가 이미 32 를 비웁니다. 여기서 한 번 더 띄우면
+     64 가 되어 제목이 사진에서 너무 멀어집니다. */
+  .detail-top { gap: 0; }
+
   .detail-info,
   .detail-side {
     inline-size: 100%;
   }
 
   .detail-side { position: static; }
+}
+
+/* ---- 좁은 화면의 머리 ----------------------------------------------------
+   GNB 를 내리고 topBar 를 올립니다. 상세 화면에서 필요한 것은 사이트 메뉴가 아니라
+   왔던 곳으로 돌아가는 길입니다 — 좁은 화면의 GNB 는 로고와 햄버거뿐이라, 여기서는
+   그 둘 다 지금 하려는 일과 상관이 없습니다.
+*/
+
+/* .top-bar 가 display:flex 를 들고 있고 이 파일보다 뒤에 실립니다. 클래스 하나로는
+   덮이지 않아 둘을 함께 겁니다. */
+.top-bar.detail-topbar { display: none; }
+
+@media (max-width: 960px) {
+  body:has(.detail-page) > .gnb { display: none; }
+
+  .top-bar.detail-topbar {
+    display: flex;
+    /* 읽어 내려가는 동안 남습니다. 돌아가는 길이 화면 밖으로 나가면 다시 위까지
+       올라가야 합니다. */
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 20;
+  }
+
+  /* 공유·찜은 topBar 로 올라갔습니다. 제목 아래에 한 벌 더 두면 같은 것이 한 화면에
+     둘이 됩니다. */
+  .detail-info__header > .btn-group { display: none; }
+
+  /* 본문은 24, 사진은 16 에서 시작합니다. 사진이 한 칸 더 넓게 나가는 것은 이
+     화면에서 가장 먼저 보아야 할 것이 사진이기 때문입니다. */
+  .detail-page { padding-inline: var(--spacing-600); }
+
+  .detail-gallery {
+    margin-inline: calc(var(--spacing-400) - var(--spacing-600));
+  }
 }
 
 /* ---- 사진 ---------------------------------------------------------------
@@ -279,6 +318,12 @@
   font-family: var(--_font-family-pretendard);
 }
 
+.schedule__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-600);
+}
+
 .schedule__group {
   display: flex;
   flex-direction: column;
@@ -341,8 +386,11 @@
   list-style: none;
 }
 
+/* 좁은 화면에서도 두 칸입니다. 한 칸으로 세우면 세 항목이 세로로 길게 늘어져,
+   훑고 지나가야 할 안내가 본문만큼 자리를 차지합니다. 글이 짧아 두 칸에서도
+   읽힙니다. */
 @media (max-width: 960px) {
-  .detail-notice__items { grid-template-columns: 1fr; }
+  .detail-notice__items { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 .detail-notice__item {

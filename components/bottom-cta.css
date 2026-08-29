@@ -1,0 +1,50 @@
+/**
+ * BottomCTA — 좁은 화면에서 화면 아래에 붙어 있는 신청 버튼.
+ *
+ *   <div class="bottom-cta">
+ *     <button class="btn btn--filled btn--large" data-sheet-open="apply-sheet">
+ *       <span class="btn__label">신청하기</span>
+ *     </button>
+ *   </div>
+ *
+ * 넓은 화면에서는 일정과 신청하기가 오른쪽 단에 붙어 따라옵니다. 좁은 화면에는 그
+ * 단이 없어 신청하기가 본문 어딘가에 묻히므로, 화면 아래에 고정합니다.
+ *
+ * 앱바의 자동 숨김과 달리 이것은 물러나지 않습니다. 읽다가 마음이 정해지는 순간이
+ * 어디일지 알 수 없고, 그때 손가락이 닿는 자리에 없으면 다시 찾아야 합니다.
+ */
+
+.bottom-cta {
+  position: fixed;
+  inset-block-end: 0;
+  inset-inline: 0;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-200);
+  box-sizing: border-box;
+  block-size: var(--_bottom-cta-height);
+  padding: var(--_bottom-cta-padding-block) var(--_bottom-cta-padding-inline);
+  /* 홈 표시줄이 있는 기기에서는 그만큼 더 띄웁니다. 값이 없는 기기에서는 0 이라
+     높이가 그대로입니다. */
+  padding-block-end: calc(var(--_bottom-cta-padding-block) + env(safe-area-inset-bottom));
+  block-size: calc(var(--_bottom-cta-height) + env(safe-area-inset-bottom));
+  background: var(--_bottom-cta-bg);
+  /* 위로 내용이 이어진다는 것을 알리는 실선. 아래에서 스크롤되어 올라온 글자가
+     버튼 배경과 맞닿으면 어디까지가 본문인지 알 수 없습니다. */
+  border-block-start: 1px solid var(--_bottom-cta-border);
+}
+
+.bottom-cta .btn { flex: 1 1 0; min-inline-size: 0; }
+
+/* 961 부터는 일정이 오른쪽 단에 그대로 있습니다. */
+@media (min-width: 961px) {
+  .bottom-cta { display: none; }
+}
+
+/* 고정된 만큼 본문 끝을 가립니다. 페이지가 스스로 그 높이만큼 자리를 비웁니다. */
+@media (max-width: 960px) {
+  .has-bottom-cta {
+    padding-block-end: calc(var(--_bottom-cta-height) + env(safe-area-inset-bottom));
+  }
+}

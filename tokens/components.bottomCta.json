@@ -1,0 +1,20 @@
+{
+  "components": {
+    "bottomCta": {
+      "$description": "좁은 화면에서 화면 아래에 붙어 있는 신청 버튼. 상세 화면은 길어서 오른쪽 단에 있던 신청하기가 스크롤 밖으로 사라지는데, 언제든 누를 수 있어야 합니다.",
+      "height": {
+        "$type": "dimension",
+        "$value": "72px",
+        "$description": "여백(12 × 2)과 large 버튼(48)을 더한 값입니다."
+      },
+      "paddingBlock": { "$type": "dimension", "$value": "{semantic.spacing.300}" },
+      "paddingInline": { "$type": "dimension", "$value": "{semantic.spacing.500}" },
+      "bg": { "$type": "color", "$value": "{semantic.colors.bg}" },
+      "border": {
+        "$type": "color",
+        "$value": "#0000000d",
+        "$description": "⚠️ Figma 에 변수로 없습니다. inset 0 1px 0 rgba(0,0,0,0.05) 그림자로 그려져 있어 색만 옮겼습니다. 아래로 내용이 이어진다는 것을 알리는 실선이라 border 로 긋습니다."
+      }
+    }
+  }
+}

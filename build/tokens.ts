@@ -366,6 +366,13 @@ export const components = {
       "l": "2px"
     }
   },
+  "bottomCta": {
+    "height": "72px",
+    "paddingBlock": "4px",
+    "paddingInline": "4px",
+    "bg": "#FFFFFF",
+    "border": "#0000000d"
+  },
   "button": {
     "filled": {
       "fg": "#FFFFFF",
@@ -531,6 +538,17 @@ export const components = {
       "rounded": "9999px"
     }
   },
+  "sheet": {
+    "backdrop": "#00000040",
+    "bg": "#FFFFFF",
+    "rounded": "20px",
+    "maxHeight": "76dvh",
+    "paddingBlock": "4px",
+    "paddingBlockEnd": "4px",
+    "paddingInline": "4px",
+    "gap": "4px",
+    "shadow": "0 -4px 12px #0000001a"
+  },
   "tabs": {
     "border": "#F3F1F0",
     "item": {
@@ -560,6 +578,15 @@ export const components = {
     "arrow": {
       "width": "13px",
       "height": "6px"
+    }
+  },
+  "topBar": {
+    "height": "72px",
+    "paddingBlock": "4px",
+    "paddingInline": "4px",
+    "gap": "4px",
+    "label": {
+      "fg": "#686666"
     }
   }
 } as const

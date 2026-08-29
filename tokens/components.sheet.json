@@ -1,0 +1,40 @@
+{
+  "components": {
+    "sheet": {
+      "$description": "화면 아래에서 올라오는 시트. 상세 화면에서 신청하기를 누르면 일정을 고르는 목록이 이 안에 뜹니다.",
+      "backdrop": {
+        "$type": "color",
+        "$value": "#00000040",
+        "$description": "⚠️ Figma 에 변수로 없습니다 (rgba(0,0,0,0.25)). 뒤 화면이 비쳐야 어디에서 열린 것인지 알 수 있어 완전히 가리지 않습니다."
+      },
+      "bg": { "$type": "color", "$value": "{semantic.colors.bg}" },
+      "rounded": {
+        "$type": "dimension",
+        "$value": "{primitive.rounded.2xl}",
+        "$description": "위쪽 두 모서리만. 아래는 화면 끝에 닿아 있어 둥글릴 자리가 없습니다."
+      },
+      "maxHeight": {
+        "$type": "dimension",
+        "$value": "76dvh",
+        "$description": "⚠️ Figma 에 변수로 없습니다. 932 프레임에서 시트가 706 이라 그 비율(75.8%)을 옮겼습니다. 뒤 화면이 위쪽에 남아 있어야 시트를 닫고 돌아갈 곳이 보입니다. dvh 인 것은 모바일 주소창이 접혔다 펴져도 시트가 화면을 넘지 않게 하기 위해서입니다."
+      },
+      "paddingBlock": {
+        "$type": "dimension",
+        "$value": "{semantic.spacing.600}",
+        "$description": "위쪽 24. 아래는 12 로 buttonPaddingBlock 을 씁니다."
+      },
+      "paddingBlockEnd": { "$type": "dimension", "$value": "{semantic.spacing.300}" },
+      "paddingInline": { "$type": "dimension", "$value": "{semantic.spacing.500}" },
+      "gap": {
+        "$type": "dimension",
+        "$value": "{semantic.spacing.600}",
+        "$description": "목록과 아래 버튼 사이."
+      },
+      "shadow": {
+        "$type": "shadow",
+        "$value": "0 -4px 12px #0000001a",
+        "$description": "⚠️ Figma 에 변수로 없습니다 (drop-shadow 0 -4px 12px rgba(0,0,0,0.1)). 시트가 뒤 화면 위로 떠 있다는 것을 위쪽 모서리에서 알립니다."
+      }
+    }
+  }
+}

@@ -145,6 +145,11 @@
   --_badge-size-l: calc(var(--_dimension) * 2.5);
   --_badge-border-width-m: 1px;
   --_badge-border-width-l: 2px;
+  --_bottom-cta-height: 72px;
+  --_bottom-cta-padding-block: var(--spacing-300);
+  --_bottom-cta-padding-inline: var(--spacing-500);
+  --_bottom-cta-bg: var(--colors-bg);
+  --_bottom-cta-border: #0000000d;
   --_button-filled-fg: var(--_colors-white);
   --_button-filled-bg: var(--_colors-black);
   --_button-filled-fg-on: var(--colors-fg);
@@ -250,6 +255,15 @@
   --_segmented-control-item-fg-active: var(--_colors-white);
   --_segmented-control-item-bg-active: var(--_colors-twist-orange-500);
   --_segmented-control-item-rounded: var(--_rounded-full);
+  --_sheet-backdrop: #00000040;
+  --_sheet-bg: var(--colors-bg);
+  --_sheet-rounded: var(--_rounded-2xl);
+  --_sheet-max-height: 76dvh;
+  --_sheet-padding-block: var(--spacing-600);
+  --_sheet-padding-block-end: var(--spacing-300);
+  --_sheet-padding-inline: var(--spacing-500);
+  --_sheet-gap: var(--spacing-600);
+  --_sheet-shadow: 0 -4px 12px #0000001a;
   --_tabs-border: var(--_colors-serious-gray-200);
   --_tabs-item-fg: var(--colors-fg-lower);
   --_tabs-item-fg-active: var(--colors-fg);
@@ -271,6 +285,11 @@
   --_tooltip-rounded: var(--_rounded-m);
   --_tooltip-arrow-width: 13px;
   --_tooltip-arrow-height: 6px;
+  --_top-bar-height: 72px;
+  --_top-bar-padding-block: var(--spacing-400);
+  --_top-bar-padding-inline: var(--spacing-100);
+  --_top-bar-gap: var(--spacing-150);
+  --_top-bar-label-fg: var(--colors-fg-low);
 
   /* ---- semantic typography composite (공개) ---- */
   --typography-display-xl-semibold-font-family: var(--_font-family-pretendard);

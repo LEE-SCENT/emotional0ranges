@@ -1,0 +1,150 @@
+/**
+ * Sheet — 화면 아래에서 올라오는 시트.
+ *
+ *   <dialog class="sheet" id="apply-sheet">
+ *     <div class="sheet__panel">
+ *       … 시트 안에 들어갈 것 …
+ *     </div>
+ *   </dialog>
+ *
+ * 상세 화면에서는 이 안에 일정 목록이 들어갑니다. 넓은 화면에서 오른쪽 단에 있던
+ * 그 목록 그대로입니다 — 복사해 두 벌을 만들지 않았습니다. 라디오 이름이 같은 목록이
+ * 문서에 둘 있으면 어느 쪽에서 고른 것인지 서로 모르게 되고, 화면 폭을 바꾸는 순간
+ * 고른 것이 사라집니다.
+ *
+ * 대신 961 부터는 <dialog> 와 그 껍데기가 display:contents 로 자리에서 빠집니다.
+ * 상자가 사라지고 안에 든 것만 남아, 목록이 마치 감싼 것이 없는 것처럼 본문 옆에
+ * 그대로 섭니다. 좁아지면 <dialog> 로 돌아와 시트가 됩니다.
+ *
+ * showModal() 이 주는 것 — Esc 로 닫기, 뒤 화면을 읽지도 누르지도 못하게 막기,
+ * 초점 가두기 — 은 사진 확대보기와 같은 이유로 씁니다.
+ */
+
+/* ---- 961~ : 시트가 아닙니다 ---------------------------------------------
+   dialog 는 열려 있지 않으면 브라우저가 감춥니다. 그 규칙을 여기서 덮어, 감싼 것이
+   없었던 것처럼 만듭니다. */
+
+@media (min-width: 961px) {
+  .sheet,
+  .sheet__panel { display: contents; }
+}
+
+/* ---- ~960 : 시트 -------------------------------------------------------- */
+
+@media (max-width: 960px) {
+  .sheet {
+    /* dialog 의 기본값(가운데 뜨는 작은 상자)을 지우고 화면 전체를 덮습니다.
+       판은 그 안에서 아래에 붙습니다. */
+    inline-size: 100%;
+    max-inline-size: 100%;
+    block-size: 100%;
+    max-block-size: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+
+  .sheet[open] {
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .sheet::backdrop { background: var(--_sheet-backdrop); }
+
+  .sheet__panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--_sheet-gap);
+    box-sizing: border-box;
+    inline-size: 100%;
+    /* 높이는 내용이 정하고 여기서 멈춥니다. 화면을 다 덮으면 시트를 닫고 돌아갈
+       곳이 보이지 않습니다. */
+    max-block-size: var(--_sheet-max-height);
+    padding: var(--_sheet-padding-block) var(--_sheet-padding-inline)
+      var(--_sheet-padding-block-end);
+    /* 홈 표시줄이 있는 기기에서는 아래를 그만큼 더 비웁니다. */
+    padding-block-end: calc(var(--_sheet-padding-block-end) + env(safe-area-inset-bottom));
+    background: var(--_sheet-bg);
+    border-start-start-radius: var(--_sheet-rounded);
+    border-start-end-radius: var(--_sheet-rounded);
+    box-shadow: var(--_sheet-shadow);
+  }
+
+  /* ---- 여닫는 모션 ------------------------------------------------------
+     아래에서 올라옵니다. 어디에서 온 것인지가 곧 어디로 닫히는지라, 눌렀던 버튼
+     쪽에서 자라나야 닫을 방향도 짐작이 됩니다.
+
+     display 와 top layer 는 중간값이 없어 그냥은 전환되지 않습니다. allow-discrete
+     를 붙여야 닫히는 동안 시트가 화면에 남아 내려가는 것이 보입니다. */
+
+  .sheet,
+  .sheet::backdrop {
+    transition:
+      opacity var(--_duration-base) var(--_easing-standard),
+      display var(--_duration-base) allow-discrete,
+      overlay var(--_duration-base) allow-discrete;
+  }
+
+  .sheet__panel {
+    transition: translate var(--_duration-base) var(--_easing-decelerate);
+  }
+
+  .sheet { opacity: 0; }
+  .sheet[open] { opacity: 1; }
+  .sheet::backdrop { opacity: 0; }
+  .sheet[open]::backdrop { opacity: 1; }
+  .sheet:not([open]) .sheet__panel { translate: 0 100%; }
+
+  @starting-style {
+    .sheet[open] { opacity: 0; }
+    .sheet[open]::backdrop { opacity: 0; }
+    .sheet[open] .sheet__panel { translate: 0 100%; }
+  }
+
+  /* ---- 시트 안의 일정 목록 ---------------------------------------------
+     넓은 화면에서는 목록이 본문과 함께 스크롤되지만, 시트 안에서는 목록만 움직이고
+     신청하기는 아래에 남습니다. 고르는 도중에 버튼이 밀려 나가면 다 고르고 다시
+     찾아 내려가야 합니다. */
+
+  .sheet .schedule {
+    min-block-size: 0;
+    gap: var(--spacing-600);
+    /* 시트가 이미 위아래를 비워두었습니다. */
+    padding-block: 0;
+  }
+
+  .sheet .schedule__list {
+    flex: 1 1 auto;
+    min-block-size: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    /* 목록이 잘리는 자리에서 카드 그림자가 잘려 보이지 않도록 좌우로 조금 넓혀
+       잡고, 같은 만큼 안쪽 여백으로 되돌립니다. */
+    margin-inline: calc(-1 * var(--spacing-100));
+    padding-inline: var(--spacing-100);
+  }
+
+  .sheet .schedule__actions { flex: none; }
+
+  /* 시트 안에서는 간격이 한 단계씩 좁습니다. 본문 옆에 설 때는 왼쪽 단의 긴 글과
+     보조를 맞춰야 하지만, 여기서는 고르는 것만 있어 촘촘한 편이 한눈에 들어옵니다. */
+  .sheet .schedule__list { gap: var(--spacing-400); }
+
+  .sheet .schedule__group,
+  .sheet .schedule__options { gap: var(--spacing-200); }
+
+  /* 날짜도 한 단계 작습니다 — 시트에서는 카드가 주인공입니다. */
+  .sheet .schedule__date {
+    font-size: var(--typography-body-m-medium-font-size);
+    font-weight: var(--typography-body-m-medium-font-weight);
+    line-height: var(--typography-body-m-medium-line-height);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sheet,
+    .sheet::backdrop,
+    .sheet__panel { transition: none; }
+
+    .sheet:not([open]) .sheet__panel { translate: none; }
+  }
+}

@@ -14,6 +14,11 @@
  *
  * aria-pressed 로 눌린 상태를 알리고, 이름도 "찜하기"와 "찜 해제"로 바꿉니다 —
  * 버튼 이름이 그대로면 스크린 리더에는 아무것도 달라지지 않습니다.
+ *
+ * 같은 것을 가리키는 버튼이 화면에 둘 있을 수 있습니다. 상세 화면은 넓을 때 제목
+ * 아래에, 좁을 때 상단 줄에 하트를 두는데 둘 다 문서에는 남아 있습니다. 하나를
+ * 누르면 나머지도 함께 바뀌어야 합니다 — 폭을 넘나드는 순간 찜한 적 없는 하트가
+ * 나타나면 눌렀던 것이 없던 일이 됩니다. data-favorite 값이 같으면 한 짝입니다.
  */
 
 const ICON = { on: '#icon-favoriteFilled', off: '#icon-favorite' }
@@ -31,6 +36,14 @@ export function initFavorites(scope = document) {
     if (btn.dataset.favoriteReady) continue
     btn.dataset.favoriteReady = '1'
     apply(btn, btn.classList.contains('is-favorite'))
-    btn.addEventListener('click', () => apply(btn, !btn.classList.contains('is-favorite')))
+    btn.addEventListener('click', () => {
+      const on = !btn.classList.contains('is-favorite')
+      // 값이 비어 있으면 짝이 없는 버튼입니다. 그때는 자기 자신만 바꿉니다.
+      const name = btn.dataset.favorite
+      const pair = name
+        ? document.querySelectorAll(`[data-favorite="${name}"]`)
+        : [btn]
+      for (const el of pair) apply(el, on)
+    })
   }
 }

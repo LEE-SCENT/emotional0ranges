@@ -1,0 +1,51 @@
+/**
+ * TopBar — 화면 맨 위에 눕는 줄.
+ *
+ *   <div class="top-bar">
+ *     <button class="btn btn--ghost btn--medium btn--icon-only" aria-label="뒤로">…</button>
+ *     <p class="top-bar__label body-m-medium">모임 · 티키타카</p>
+ *     <div class="btn-group btn-group--horizontal"> … </div>
+ *   </div>
+ *
+ * 왼쪽은 나가는 길(뒤로·닫기), 오른쪽은 이 화면에서 할 수 있는 것, 가운데는 지금
+ * 어디인지입니다. 상세 화면의 모바일 헤더와 사진 확대보기가 이것을 함께 씁니다 —
+ * Figma 에서도 같은 컴포넌트입니다.
+ *
+ * 가운데 글자는 absolute 로 띄웁니다. 좌우 사이에 flex 로 끼우면 양쪽 버튼 개수가
+ * 다를 때 글자가 화면 가운데에서 밀립니다. 상세 화면은 오른쪽에 둘, 확대보기는
+ * 하나라 실제로 어긋납니다.
+ *
+ * 높이(72)를 직접 주지 않습니다. 여백 16 두 번과 버튼 40 이 쌓여 그 값이 나오므로,
+ * 버튼이 커지면 줄도 따라 커져야 합니다.
+ */
+
+.top-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--_top-bar-gap);
+  padding: var(--_top-bar-padding-block) var(--_top-bar-padding-inline);
+  background: var(--colors-bg);
+  font-family: var(--_font-family-pretendard);
+}
+
+.top-bar__label {
+  position: absolute;
+  inset-inline-start: 50%;
+  translate: -50% 0;
+  margin: 0;
+  /* 좌우 버튼 자리를 침범하지 않는 선까지만. 넘치면 말줄임으로 접습니다. */
+  max-inline-size: 50%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--_top-bar-label-fg);
+  /* 내용이 바뀌어도 글자가 좌우로 흔들리지 않도록 숫자 폭을 고정합니다. */
+  font-feature-settings: 'lnum' 1, 'tnum' 1;
+}
+
+/* 오른쪽에 버튼이 없을 때도 가운데 글자가 가운데에 남아야 합니다. justify-content
+   가 홀로 남은 왼쪽 버튼을 붙여둘 뿐이라 따로 할 일은 없지만, 빈 자리를 채우는
+   요소를 두지 않는다는 뜻으로 적어둡니다. */
+.top-bar > * { flex: none; }
