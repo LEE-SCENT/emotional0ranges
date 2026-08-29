@@ -151,6 +151,7 @@
   --_bottom-cta-padding-inline: var(--spacing-500);
   --_bottom-cta-bg: var(--colors-bg);
   --_bottom-cta-border: #0000000d;
+  --_button-filled-disabled-opacity: 0.25;
   --_button-filled-fg: var(--_colors-white);
   --_button-filled-bg: var(--_colors-black);
   --_button-filled-fg-on: var(--colors-fg);

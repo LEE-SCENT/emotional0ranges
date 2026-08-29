@@ -376,6 +376,7 @@ export const components = {
   },
   "button": {
     "filled": {
+      "disabledOpacity": 0.25,
       "fg": "#FFFFFF",
       "bg": "#000000",
       "fg-on": "#000000",

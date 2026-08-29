@@ -3,6 +3,11 @@
     "button": {
       "$description": "type(filled/outlined/ghost/blur) × size(s/m/l) × iconOnly × isOn. isOn 은 반전 상태로 -on 접미사 토큰을 씁니다.",
       "filled": {
+        "disabledOpacity": {
+          "$type": "number",
+          "$value": 0.25,
+          "$description": "잠긴 채운 버튼. 색을 갈아끼우지 않고 그대로 흐립니다. ⚠️ 일정 변경 시트는 25%, 결제하기 프레임은 20% 로 그려져 있어 25 로 맞췄습니다 — 같은 버튼의 같은 상태가 화면마다 다를 이유가 없습니다."
+        },
         "$type": "color",
         "fg": {
           "$value": "{primitive.colors.white}"

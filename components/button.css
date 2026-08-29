@@ -40,6 +40,14 @@
   box-shadow: none;
 }
 
+/* 채운 버튼은 색을 바꾸지 않고 그대로 흐립니다. 흐려진 검정이 곧 "지금은 아니다"
+   이고, 눌릴 때 어떤 모습이 될지도 함께 보입니다. */
+.btn--filled:disabled {
+  opacity: var(--_button-filled-disabled-opacity);
+  background: var(--_button-filled-bg);
+  color: var(--_button-filled-fg);
+}
+
 .btn__label {
   overflow: hidden;
   text-overflow: ellipsis;

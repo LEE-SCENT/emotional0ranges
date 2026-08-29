@@ -56,10 +56,9 @@
   flex-direction: column;
   gap: var(--_sheet-gap);
   box-sizing: border-box;
+  /* 아래에 붙는 동안에는 화면 폭을 그대로 씁니다. 바닥에 붙은 판이 좌우로 떠 있으면
+     어디에서 올라온 것인지 알 수 없습니다. 폭을 묶는 것은 가운데 뜨는 모달뿐입니다. */
   inline-size: 100%;
-  /* 넓은 화면에서 화면 폭을 다 쓰면 카드 한 줄에 담긴 것이 양 끝으로 흩어집니다.
-     손이 닿는 폭에서 멈춥니다. */
-  max-inline-size: var(--_sheet-max-width);
   /* 높이는 내용이 정하고 여기서 멈춥니다. 화면을 다 덮으면 시트를 닫고 돌아갈
      곳이 보이지 않습니다. */
   max-block-size: var(--_sheet-max-height);
@@ -185,6 +184,8 @@
   }
 
   .sheet--modal .sheet__panel {
+    /* 화면 폭을 다 쓰면 카드 한 줄에 담긴 것이 양 끝으로 흩어집니다. */
+    max-inline-size: var(--_sheet-max-width);
     /* 아래가 화면 끝에 닿지 않으므로 네 모서리를 모두 둥글립니다. */
     border-radius: var(--_sheet-rounded);
     box-shadow: var(--_sheet-modal-shadow);

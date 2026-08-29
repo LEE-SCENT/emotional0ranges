@@ -263,13 +263,6 @@
 
 .checkout__pay .btn { inline-size: 100%; }
 
-.checkout__pay .btn:disabled {
-  /* 색을 바꾸는 대신 그대로 흐립니다. 흐려진 검정이 곧 "지금은 아니다" 입니다. */
-  opacity: 0.2;
-  background: var(--_button-filled-bg);
-  color: var(--_button-filled-fg);
-}
-
 /* ---- 좁은 화면 ---------------------------------------------------------
    붙일 옆자리가 없어 요약이 본문 위로 올라옵니다. 결제 버튼만 화면 아래에
    남아, 어디까지 읽었든 손가락이 닿습니다.
