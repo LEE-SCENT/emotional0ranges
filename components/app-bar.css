@@ -61,3 +61,16 @@
   text-align: center;
   font-feature-settings: 'lnum' 1;
 }
+
+/* 화면 아래에 붙여 쓸 때. 갤러리에서는 흐름 안에 그대로 놓고 봅니다.
+   961 부터는 GNB 가 같은 메뉴를 이미 들고 있어 내리지 않습니다. */
+.app-bar--fixed {
+  position: fixed;
+  inset-block-end: 0;
+  inset-inline: 0;
+  z-index: 10;
+}
+
+@media (min-width: 961px) {
+  .app-bar--fixed { display: none; }
+}

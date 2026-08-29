@@ -22,7 +22,9 @@
   flex-direction: column;
   align-items: flex-start;
   gap: var(--spacing-600);
-  padding-block: var(--spacing-500) var(--spacing-4000);
+  /* 아래 여백 160 은 화면에 떠 있는 전환을 비키는 자리입니다(Figma 기준). 그 아래
+     앱바가 한 겹 더 깔리므로 앱바 높이를 더합니다. */
+  padding-block: var(--spacing-500) calc(var(--spacing-4000) + var(--_app-bar-height));
   /* 디자인은 1280 고정입니다. .container 가 1601 이상에서 1440 까지 넓어지므로
      카드 섹션과 같은 방식으로 여기서 한 번 더 묶어 세로선을 맞춥니다. */
   inline-size: 100%;

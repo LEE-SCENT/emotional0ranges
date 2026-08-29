@@ -38,6 +38,14 @@
         },
         "$description": "앱바 전체가 이보다 좁아지지 않습니다. 360px — 항목 다섯 × 72."
       },
+      "height": {
+        "$type": "dimension",
+        "$value": "{primitive.dimension}",
+        "$extensions": {
+          "scale": 14
+        },
+        "$description": "56px. 항목 안쪽(8+24+2+14+8)에서 나오는 값이지만, 화면 아래에 고정될 때 다른 요소가 이 높이를 비켜야 해서 토큰으로 둡니다."
+      },
       "topLine": {
         "$type": "color",
         "$value": "#0000000D",

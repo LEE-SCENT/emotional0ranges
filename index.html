@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>감정적인 오렌지들</title>
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
-<link rel="stylesheet" href="./build/tokens.css?v=e849f6f8">
+<link rel="stylesheet" href="./build/tokens.css?v=1f045124">
 <link rel="stylesheet" href="./components/container.css?v=4a4dc1f9">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=b84ee9e0">
@@ -15,9 +15,10 @@
 <link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
 <link rel="stylesheet" href="./components/product-card.css?v=afaede78">
 <link rel="stylesheet" href="./components/section-title.css?v=d1c6b1bc">
-<link rel="stylesheet" href="./components/footer.css?v=6092471f">
+<link rel="stylesheet" href="./components/footer.css?v=b6122ba5">
 <link rel="stylesheet" href="./components/notice.css?v=de267cbf">
-<link rel="stylesheet" href="./components/mobile-switch.css?v=54720806">
+<link rel="stylesheet" href="./components/mobile-switch.css?v=10290e9a">
+<link rel="stylesheet" href="./components/app-bar.css?v=3f67ed4c">
 <style>
   body { margin: 0; background: var(--colors-bg); color: var(--colors-fg); }
   /* 화면에는 안 보이지만 스크린리더는 읽는 텍스트 */
@@ -313,6 +314,29 @@
     </div>
   </div>
 </div>
+
+<nav class="app-bar app-bar--fixed" aria-label="주요 메뉴">
+  <a class="app-bar__item is-active" href="#" aria-current="page">
+    <svg class="app-bar__icon" aria-hidden="true"><use href="#icon-homeFilled"></use></svg>
+    <span class="app-bar__label">홈</span>
+  </a>
+  <a class="app-bar__item" href="#">
+    <svg class="app-bar__icon" aria-hidden="true"><use href="#icon-explorer"></use></svg>
+    <span class="app-bar__label">모임</span>
+  </a>
+  <a class="app-bar__item" href="#">
+    <svg class="app-bar__icon" aria-hidden="true"><use href="#icon-match"></use></svg>
+    <span class="app-bar__label">매칭</span>
+  </a>
+  <a class="app-bar__item" href="#">
+    <svg class="app-bar__icon" aria-hidden="true"><use href="#icon-cardStar"></use></svg>
+    <span class="app-bar__label">추천</span>
+  </a>
+  <a class="app-bar__item" href="#">
+    <svg class="app-bar__icon" aria-hidden="true"><use href="#icon-my"></use></svg>
+    <span class="app-bar__label">마이</span>
+  </a>
+</nav>
 
 <script type="module">
   document.getElementById('sprite').innerHTML =

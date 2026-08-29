@@ -344,6 +344,7 @@ export const components = {
     "iconSize": "24px",
     "itemMinWidth": "56px",
     "minWidth": "360px",
+    "height": "56px",
     "topLine": "#0000000D"
   },
   "badge": {
