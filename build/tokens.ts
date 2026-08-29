@@ -411,6 +411,7 @@ export const components = {
     "rounded": "12px",
     "imageRatio": 1.4444,
     "minWidth": "312px",
+    "priceOriginalFg": "#7D7B7A",
     "scrim": {
       "from": "#000000A6",
       "height": "160px"
