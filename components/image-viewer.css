@@ -282,3 +282,36 @@
   .image-viewer__thumb:hover img,
   .image-viewer__thumb:focus-visible img { scale: 1; }
 }
+
+/* ---- 목록 ↔ 개별 사이의 확대·축소 --------------------------------------
+   스크립트가 두 사진에 같은 이름을 붙여둡니다. 나머지는 브라우저가 두 자리 사이를
+   이어 그립니다.
+
+   목록의 사진은 원본 비율 그대로라 개별 화면의 사진과 모양이 같습니다. 겹쳐 놓으면
+   크기만 달라, 흐려졌다 나타나는 것이 아니라 그대로 줄고 커지는 것으로 보입니다.
+   그래서 두 장을 같은 곡선으로 함께 움직이고 서로 지우지 않도록 둡니다.
+*/
+
+::view-transition-group(viewer-photo) {
+  animation-duration: var(--_duration-base);
+  animation-timing-function: var(--_easing-standard);
+}
+
+::view-transition-old(viewer-photo),
+::view-transition-new(viewer-photo) {
+  /* 같은 그림이 겹쳐 있으므로 투명도를 건드리면 가운데에서 오히려 옅어집니다. */
+  animation: none;
+  mix-blend-mode: normal;
+  block-size: 100%;
+  inline-size: 100%;
+  object-fit: cover;
+}
+
+/* 나머지 화면(상단 바의 제목 ↔ 장수)은 짧게 교차시킵니다. */
+::view-transition-group(root) {
+  animation-duration: var(--_duration-fast);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*) { animation: none; }
+}

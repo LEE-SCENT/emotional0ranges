@@ -96,10 +96,40 @@ export function initImageViewer(dialog) {
     if (toList) toList.hidden = name === 'list'
   }
 
+  /**
+   * 목록의 사진과 개별 화면의 사진을 한 장면으로 이어 붙입니다.
+   *
+   * 두 요소에 같은 view-transition-name 을 주면 브라우저가 바뀌기 전후를 각각 찍어
+   * 두 자리 사이를 이어 그립니다. 목록으로 물러날 때 보던 사진이 제자리로 줄어들고,
+   * 목록에서 고를 때는 그 자리에서 커집니다 — 어느 사진을 보고 있었는지 놓치지
+   * 않습니다.
+   *
+   * 이름이 겹쳐도 되는 것은 두 요소가 동시에 그려지지 않기 때문입니다. 개별 화면일
+   * 때 목록은 display:none 이고, 목록일 때 개별 화면이 그렇습니다. 장면마다 이름을
+   * 가진 요소는 언제나 하나뿐입니다.
+   *
+   * 지원하지 않는 브라우저에서는 바뀌는 것만 그대로 일어납니다.
+   */
+  const morph = (index, update) => {
+    const canMorph =
+      typeof document.startViewTransition === 'function' && !wantsLessMotion() && photos[index]
+    if (!canMorph) return update()
+
+    const pair = [single, photos[index]]
+    for (const el of pair) el.style.viewTransitionName = 'viewer-photo'
+    const done = () => {
+      // 이름을 남겨두면 다음 전환에서 엉뚱한 요소끼리 이어집니다.
+      for (const el of pair) el.style.viewTransitionName = ''
+    }
+    document.startViewTransition(update).finished.then(done, done)
+  }
+
   const openList = () => {
-    view('list')
-    // 방금 보던 사진이 화면 밖이면 목록이 엉뚱한 자리에서 시작합니다.
-    thumbs[at]?.scrollIntoView({ block: 'nearest' })
+    morph(at, () => {
+      view('list')
+      // 방금 보던 사진이 화면 밖이면 목록이 엉뚱한 자리에서 시작합니다.
+      thumbs[at]?.scrollIntoView({ block: 'nearest' })
+    })
   }
 
   /* ---- 여는 쪽 --------------------------------------------------------- */
@@ -131,8 +161,11 @@ export function initImageViewer(dialog) {
     const thumb = e.target.closest('.image-viewer__thumb')
     if (thumb) {
       cameFrom = thumb
-      show(thumbs.indexOf(thumb), true)
-      view('single')
+      const i = thumbs.indexOf(thumb)
+      morph(i, () => {
+        show(i, true)
+        view('single')
+      })
       // 사진이 바뀌었으니 다음 사진 버튼에 초점을 둡니다. 계속 넘겨 보게 됩니다.
       dialog.querySelector('.image-viewer__nav--next')?.focus()
       return
