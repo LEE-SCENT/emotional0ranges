@@ -9,8 +9,8 @@
       },
       "maxContentWidth": {
         "$type": "dimension",
-        "$value": "1200px",
-        "$description": "가장 넓은 티어에서 가운데 콘텐츠가 넓어지지 않도록 잡는 한계. 로고와 액션은 이 폭 밖 화면 가장자리에 붙습니다."
+        "$value": "{semantic.container.maxWidth.md}",
+        "$description": "본문 콘텐츠와 같은 폭을 씁니다. 따로 값을 두면 화면 폭이 바뀔 때마다 GNB 만 어긋납니다."
       },
       "maxWidth": {
         "$type": "dimension",

@@ -158,7 +158,7 @@ export const semantic = {
       "md": "24px"
     },
     "maxWidth": {
-      "md": "1200px",
+      "md": "1280px",
       "lg": "1440px",
       "wide": "1600px"
     }
@@ -387,7 +387,7 @@ export const components = {
   },
   "gnb": {
     "fg": "#000000",
-    "maxContentWidth": "1200px",
+    "maxContentWidth": "1280px",
     "maxWidth": "1920px"
   },
   "kv": {

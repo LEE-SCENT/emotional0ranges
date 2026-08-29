@@ -39,7 +39,7 @@
         "$type": "dimension",
         "$description": "콘텐츠가 넓어지는 한계. 이보다 넓은 화면에서는 가운데 정렬됩니다.",
         "md": {
-          "$value": "1200px",
+          "$value": "1280px",
           "$description": "961~1600"
         },
         "lg": {

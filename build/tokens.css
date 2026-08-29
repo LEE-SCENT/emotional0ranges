@@ -103,7 +103,7 @@
   --breakpoint-lg: 1601px;
   --container-gutter-base: calc(var(--_dimension) * 5);
   --container-gutter-md: calc(var(--_dimension) * 6);
-  --container-max-width-md: 1200px;
+  --container-max-width-md: 1280px;
   --container-max-width-lg: 1440px;
   --container-max-width-wide: 1600px;
   --spacing-50: calc(var(--_dimension) * 0.5);
@@ -160,7 +160,7 @@
   --_button-blur-radius: 7.5px;
   --_footer-sns-icon-size: calc(var(--_dimension) * 5);
   --_gnb-fg: var(--colors-fg);
-  --_gnb-max-content-width: 1200px;
+  --_gnb-max-content-width: var(--container-max-width-md);
   --_gnb-max-width: 1920px;
   --_kv-rounded-base: var(--_rounded-l);
   --_kv-rounded-md: var(--_rounded-2xl);
