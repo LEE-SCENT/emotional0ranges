@@ -191,8 +191,16 @@
 }
 
 /* ---- 소개 --------------------------------------------------------------
-   긴 이미지를 접어두고 아래에 "전체 보기"를 얹습니다. 버튼 뒤에 흰색으로 옅어지는
+   긴 소개를 접어두고 아래에 "전체 보기"를 얹습니다. 버튼 뒤에 흰색으로 옅어지는
    그라디언트를 깔아, 잘린 자리가 아니라 이어지는 자리로 보이게 합니다.
+
+   접힌 높이는 Figma 의 소개 프레임 높이(688)를 따릅니다. 지금 들어 있는 소개가
+   딱 그 높이라 눈에 띄게 잘리지는 않지만, 글과 사진이 더 붙으면 여기서 멈춥니다.
+
+   접는 것은 detail-intro.js 가 붙이는 is-collapsed 입니다. 마크업은 펼쳐진 채로
+   두고 스크립트가 접습니다 — 반대로 두면 스크립트가 없을 때 소개가 잘린 채 남고
+   펼칠 방법도 없습니다. <details> 를 쓰지 않는 것도 같은 이유입니다: 닫히면
+   내용을 일부가 아니라 전부 숨깁니다.
 */
 
 .detail-intro {
@@ -200,10 +208,18 @@
   overflow: clip;
 }
 
+.detail-intro.is-collapsed .detail-intro__content {
+  max-block-size: 688px;
+  overflow: clip;
+}
+
 .detail-intro img {
   display: block;
   inline-size: 100%;
 }
+
+/* 펼치고 나면 가릴 것도, 더 볼 것도 없습니다. */
+.detail-intro:not(.is-collapsed) .detail-intro__more { display: none; }
 
 .detail-intro__more {
   position: absolute;

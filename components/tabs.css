@@ -2,15 +2,21 @@
  * Tabs — 본문 안에서 섹션을 오가는 탭.
  *
  *   <nav class="tabs" aria-label="상세 정보">
+ *     <span class="tabs__thumb" aria-hidden="true"></span>
  *     <a class="tabs__item is-active" href="#intro" aria-current="true">모임 소개</a>
  *     <a class="tabs__item" href="#review">리뷰</a>
  *   </nav>
  *
- * 밑줄은 border 가 아니라 ::after 로 그립니다. border 로 그리면 선택된 항목만
- * 2px 높아져 글자가 위로 밀립니다.
+ * 밑줄은 항목마다 그리지 않고 하나를 두고 옮깁니다. 항목마다 그리면 켜고 끄는
+ * 것이라 미끄러질 수가 없습니다. 항목 폭은 글자 수에 따라 달라 CSS 만으로는 알 수
+ * 없어, tabs.js 가 재서 --tabs-thumb-x / -w 로 넘깁니다.
+ *
+ * border 가 아닌 이유는 따로 있습니다 — border 로 그리면 선택된 항목만 2px 높아져
+ * 글자가 위로 밀립니다.
  */
 
 .tabs {
+  position: relative;
   display: flex;
   align-items: center;
   gap: var(--spacing-600);
@@ -36,11 +42,23 @@
 
 .tabs__item.is-active { color: var(--_tabs-item-fg-active); }
 
-.tabs__item.is-active::after {
-  content: '';
+/* 하나뿐인 밑줄. 자리와 폭은 tabs.js 가 넣어줍니다. */
+.tabs__thumb {
   position: absolute;
   inset-block-end: 0;
-  inset-inline: 0;
+  inset-inline-start: 0;
+  inline-size: var(--tabs-thumb-w, 0);
+  translate: var(--tabs-thumb-x, 0) 0;
   block-size: var(--_tabs-item-border-width);
   background: var(--_tabs-item-border-active);
+  transition:
+    translate var(--_duration-base) var(--_easing-standard),
+    inline-size var(--_duration-base) var(--_easing-standard);
+}
+
+/* 첫 배치에서 왼쪽 끝에서 날아오지 않도록, 자리를 잡기 전에는 전환을 끕니다. */
+.tabs:not(.is-ready) .tabs__thumb { transition: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tabs__thumb { transition: none; }
 }

@@ -368,6 +368,7 @@ export const components = {
     },
     "outlined": {
       "fg": "#272625",
+      "bg": "#FFFFFF",
       "border": "#E7E5E4",
       "fg-on": "#FFFFFF",
       "border-on": "#E7E5E4"
@@ -435,7 +436,12 @@ export const components = {
     "borderWidthSelected": "2px",
     "rounded": "16px",
     "priceFg": "#F75D15",
-    "priceStrikeFg": "#A6A4A3"
+    "priceStrikeFg": "#A6A4A3",
+    "bgSoldout": "#FDFBFA",
+    "fgSoldout": "#C5C3C2",
+    "fgWait": "#F75D15",
+    "soldoutOpacity": 0.25,
+    "height": "92px"
   },
   "productCard": {
     "rounded": "12px",

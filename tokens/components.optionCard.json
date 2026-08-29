@@ -2,25 +2,64 @@
   "components": {
     "optionCard": {
       "$description": "상세 화면의 일정 선택 카드. 시간·가격·잔여석을 한 줄에 담고, 고른 것만 테두리가 굵어집니다.",
-      "bg": { "$type": "color", "$value": "{semantic.colors.bg}" },
-      "border": { "$type": "color", "$value": "{semantic.colors.border}" },
+      "bg": {
+        "$type": "color",
+        "$value": "{semantic.colors.bg}"
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{semantic.colors.border}"
+      },
       "borderSelected": {
         "$type": "color",
         "$value": "{primitive.colors.seriousGray.900}",
         "$description": "고른 카드. 브랜드색이 아니라 검정입니다 — 가격의 브랜드색과 겹치지 않게."
       },
-      "borderWidth": { "$type": "dimension", "$value": "1px" },
+      "borderWidth": {
+        "$type": "dimension",
+        "$value": "1px"
+      },
       "borderWidthSelected": {
         "$type": "dimension",
         "$value": "2px",
         "$description": "⚠️ Figma 에 변수로 없습니다. stroke 두께에서 읽었습니다."
       },
-      "rounded": { "$type": "dimension", "$value": "{primitive.rounded.xl}" },
-      "priceFg": { "$type": "color", "$value": "{semantic.colors.fg-brand}" },
+      "rounded": {
+        "$type": "dimension",
+        "$value": "{primitive.rounded.xl}"
+      },
+      "priceFg": {
+        "$type": "color",
+        "$value": "{semantic.colors.fg-brand}"
+      },
       "priceStrikeFg": {
         "$type": "color",
         "$value": "{semantic.colors.fg-lowest}",
         "$description": "할인 전 가격. 상품 카드와 달리 여기서는 노출합니다 — 일정마다 가격이 달라 비교가 필요합니다."
+      },
+      "bgSoldout": {
+        "$type": "color",
+        "$value": "{semantic.colors.bg-disabled}",
+        "$description": "마감된 일정. 카드를 지우지 않고 눌러 죽입니다 — 그 시간대가 있었다는 사실은 남아야 다음 일정을 고를 때 판단이 됩니다."
+      },
+      "fgSoldout": {
+        "$type": "color",
+        "$value": "{semantic.colors.fg-disabled}"
+      },
+      "fgWait": {
+        "$type": "color",
+        "$value": "{semantic.colors.fg-brand}",
+        "$description": "대기 가능. 자리는 없지만 길이 있다는 뜻이라 눈에 띄어야 합니다."
+      },
+      "soldoutOpacity": {
+        "$type": "number",
+        "$value": 0.25,
+        "$description": "마감 카드의 왼쪽 내용. ⚠️ Figma 에 변수로 없습니다 — opacity 25% 에서 읽었습니다."
+      },
+      "height": {
+        "$type": "dimension",
+        "$value": "92px",
+        "$description": "카드 높이. 내용이 짧아도 목록 안에서 줄이 흔들리지 않게 붙들어 둡니다."
       }
     }
   }

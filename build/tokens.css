@@ -150,6 +150,7 @@
   --_button-filled-fg-on: var(--colors-fg);
   --_button-filled-bg-on: var(--_colors-white);
   --_button-outlined-fg: var(--_colors-serious-gray-900);
+  --_button-outlined-bg: var(--colors-bg);
   --_button-outlined-border: var(--_colors-serious-gray-300);
   --_button-outlined-fg-on: var(--_colors-white);
   --_button-outlined-border-on: var(--_colors-serious-gray-300);
@@ -193,6 +194,11 @@
   --_option-card-rounded: var(--_rounded-xl);
   --_option-card-price-fg: var(--colors-fg-brand);
   --_option-card-price-strike-fg: var(--colors-fg-lowest);
+  --_option-card-bg-soldout: var(--colors-bg-disabled);
+  --_option-card-fg-soldout: var(--colors-fg-disabled);
+  --_option-card-fg-wait: var(--colors-fg-brand);
+  --_option-card-soldout-opacity: 0.25;
+  --_option-card-height: 92px;
   --_product-card-rounded: var(--_rounded-l);
   --_product-card-image-ratio: 1.4444;
   --_product-card-min-width: 312px;

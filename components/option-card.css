@@ -26,9 +26,8 @@
   justify-content: space-between;
   gap: var(--spacing-400);
   inline-size: 100%;
-  /* 높이는 안쪽 여백과 글이 정합니다. 92 로 붙들어 두면 여백을 줄여도 카드가
-     그대로라 남는 자리만 위에 생깁니다. */
-  padding: var(--spacing-300) var(--spacing-600);
+  block-size: var(--_option-card-height);
+  padding: var(--spacing-400) var(--spacing-600);
   border: var(--_option-card-border-width) solid var(--_option-card-border);
   border-radius: var(--_option-card-rounded);
   background: var(--_option-card-bg);
@@ -41,7 +40,7 @@
   border-width: var(--_option-card-border-width-selected);
   border-color: var(--_option-card-border-selected);
   /* 테두리가 1 굵어진 만큼 여백에서 뺍니다. 높이가 흔들리지 않습니다. */
-  padding: calc(var(--spacing-300) - 1px) calc(var(--spacing-600) - 1px);
+  padding: calc(var(--spacing-400) - 1px) calc(var(--spacing-600) - 1px);
 }
 
 .option-card__main {
@@ -104,3 +103,33 @@
   line-height: var(--typography-body-s-medium-line-height);
   font-feature-settings: 'lnum' 1;
 }
+
+/* 타이머는 1 초마다 숫자가 바뀝니다. 비례폭으로 두면 1 이 지날 때마다 글자가
+   좁아졌다 넓어져 태그가 들썩입니다. 여기서만 고정폭을 켭니다. */
+.countdown {
+  font-feature-settings: 'lnum' 1, 'tnum' 1;
+}
+
+/* ---- 대기 --------------------------------------------------------------
+   자리는 찼지만 대기를 걸 수 있는 일정입니다. 잔여석 자리에 "대기 가능"이 들어가고
+   브랜드색으로 눈에 띕니다 — 막다른 길이 아니라는 신호입니다.
+*/
+
+.option-card--wait .option-card__seats { color: var(--_option-card-fg-wait); }
+
+/* ---- 마감 --------------------------------------------------------------
+   카드를 목록에서 지우지 않습니다. 그 시간대가 있었다는 사실이 남아야 다음 일정을
+   고를 때 판단이 됩니다. 대신 고를 수 없다는 것이 분명해야 합니다.
+*/
+
+.option-card--soldout {
+  background: var(--_option-card-bg-soldout);
+  cursor: not-allowed;
+}
+
+.option-card--soldout .option-card__main { opacity: var(--_option-card-soldout-opacity); }
+.option-card--soldout .option-card__seats { color: var(--_option-card-fg-soldout); }
+
+/* 할인 전 가격이 없으면 가격은 브랜드색이 아니라 본문색입니다. 깎아준 것이 없는데
+   색으로 강조하면 할인처럼 읽힙니다. */
+.option-card__price:not(:has(s)) b { color: var(--colors-fg); }

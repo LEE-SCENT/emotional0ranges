@@ -7,10 +7,10 @@
 <meta name="format-detection" content="telephone=no">
 <title>12:12 티키타카 로테이션 소개팅 — 감정적인 오렌지들</title>
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
-<link rel="stylesheet" href="./build/tokens.css?v=44623719">
+<link rel="stylesheet" href="./build/tokens.css?v=be0239ab">
 <link rel="stylesheet" href="./components/container.css?v=4a4dc1f9">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
-<link rel="stylesheet" href="./components/button.css?v=b84ee9e0">
+<link rel="stylesheet" href="./components/button.css?v=04c0adfe">
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
 <link rel="stylesheet" href="./components/segmented-control.css?v=7a4a3de6">
 <link rel="stylesheet" href="./components/tooltip.css?v=d3d8dfa4">
@@ -19,11 +19,11 @@
 <link rel="stylesheet" href="./components/product-card.css?v=afaede78">
 <link rel="stylesheet" href="./components/section-title.css?v=d1c6b1bc">
 <link rel="stylesheet" href="./components/footer.css?v=b6122ba5">
-<link rel="stylesheet" href="./components/tabs.css?v=9bb14377">
-<link rel="stylesheet" href="./components/option-card.css?v=186a0f67">
+<link rel="stylesheet" href="./components/tabs.css?v=77e05f5c">
+<link rel="stylesheet" href="./components/option-card.css?v=024f0052">
 <link rel="stylesheet" href="./components/review.css?v=78bfe9ae">
-<link rel="stylesheet" href="./components/detail.css?v=69d9027d">
-<link rel="stylesheet" href="./components/favorite.css?v=baa7ccdf">
+<link rel="stylesheet" href="./components/detail.css?v=5a533c26">
+<link rel="stylesheet" href="./components/favorite.css?v=7b27f284">
 <link rel="stylesheet" href="./components/app-bar.css?v=4709389e">
 <style>
   body {
@@ -138,6 +138,7 @@
   <div class="detail-body">
     <div class="detail-main">
       <nav class="tabs" aria-label="상세 정보">
+        <span class="tabs__thumb" aria-hidden="true"></span>
       <a class="tabs__item is-active" href="#" aria-current="true">모임 소개</a>
       <a class="tabs__item" href="#">리뷰</a>
       <a class="tabs__item" href="#">모임 디테일</a>
@@ -145,10 +146,15 @@
       <a class="tabs__item" href="#">안내사항</a>
       </nav>
 
+      <!-- 펼쳐진 채로 두고 detail-intro.js 가 접습니다. 스크립트가 없으면 소개가 그대로 다 보입니다. -->
       <div class="detail-intro">
-        <img src="./images/detail-intro.jpg" alt="12:12 티키타카 로테이션 소개팅 소개">
+        <div class="detail-intro__content">
+          <img src="./images/detail-intro.jpg" alt="12:12 티키타카 로테이션 소개팅 소개">
+        </div>
         <div class="detail-intro__more">
-          <button class="btn btn--outlined btn--medium"><span class="btn__label">소개 전체 보기</span></button>
+          <button class="btn btn--outlined btn--medium" data-expand>
+            <span class="btn__label">소개 전체 보기</span>
+          </button>
         </div>
       </div>
 
@@ -327,8 +333,9 @@
         </li>
         </ul>
       </div>
+        <!-- 목록 아래에 "모든 날짜 보기"가 붙는 자리입니다. 지금은 일정이 몇 개
+             없어 더 볼 것이 없으므로 두지 않습니다. -->
         <div class="schedule__actions">
-          <button class="btn btn--outlined btn--large"><span class="btn__label">원하는 일정이 없어요</span></button>
           <button class="btn btn--filled btn--large"><span class="btn__label">신청하기</span></button>
         </div>
       </div>
@@ -458,4 +465,8 @@
   initCountdowns()
   const { initFavorites } = await import('./components/favorite.js?v=159043a9')
   initFavorites()
+  const { initDetailIntro } = await import('./components/detail-intro.js?v=0e1ce781')
+  initDetailIntro()
+  const { initTabs } = await import('./components/tabs.js?v=047f0e24')
+  initTabs()
 </script>

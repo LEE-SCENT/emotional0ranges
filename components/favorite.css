@@ -10,4 +10,21 @@
  * favorite.js 가 하고 여기서는 색만 맡습니다.
  */
 
+/* 누르는 순간 하트가 잠깐 움츠렸다가 브랜드색으로 채워집니다. 색만 바뀌면 눌린 줄
+   모르고 한 번 더 누르게 됩니다 — 손끝에서 무언가 일어났다는 신호가 필요합니다.
+   ⚠️ Figma 에 이 모션이 없어 시간과 곡선을 코드에서 정했습니다. */
+.btn[data-favorite] .btn__icon {
+  transition:
+    color var(--_duration-fast) var(--_easing-standard),
+    scale var(--_duration-fast) var(--_easing-standard);
+}
+
 .btn.is-favorite .btn__icon { color: var(--colors-fg-brand); }
+
+/* 누르고 있는 동안 움츠립니다. 떼면 위 전환을 타고 제 크기로 돌아옵니다. */
+.btn[data-favorite]:active .btn__icon { scale: 0.85; }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn[data-favorite] .btn__icon { transition: none; }
+  .btn[data-favorite]:active .btn__icon { scale: 1; }
+}
