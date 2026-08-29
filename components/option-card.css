@@ -1,0 +1,105 @@
+/**
+ * OptionCard — 상세 화면에서 일정을 고르는 카드.
+ *
+ *   <label class="option-card">
+ *     <input type="radio" name="schedule" class="sr-only">
+ *     <span class="option-card__main">
+ *       <span class="option-card__time">오후 2:00~5:30</span>
+ *       <span class="option-card__price"><b>35,000원~</b> <s>45,000원</s></span>
+ *       <span class="option-card__place">서울 강남</span>
+ *     </span>
+ *     <span class="option-card__aside">
+ *       <span class="tag tag--accent-pri"><svg…scheduleFilled…>02:30:24</span>
+ *       <span class="option-card__seats">남성 6 · 여성 5자리 남음</span>
+ *     </span>
+ *   </label>
+ *
+ * 테두리는 box-shadow 가 아니라 border 입니다. 고르면 1px 에서 2px 로 굵어지는데,
+ * inset 그림자로는 그 1px 이 안쪽을 파고들어 글자가 흔들립니다. 대신 굵어지는 만큼
+ * 안쪽 여백에서 빼 카드 높이를 92 로 붙들어 둡니다.
+ */
+
+.option-card {
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--spacing-400);
+  inline-size: 100%;
+  min-block-size: 92px;
+  padding: var(--spacing-400) var(--spacing-600);
+  border: var(--_option-card-border-width) solid var(--_option-card-border);
+  border-radius: var(--_option-card-rounded);
+  background: var(--_option-card-bg);
+  color: var(--colors-fg);
+  font-family: var(--_font-family-pretendard);
+  cursor: pointer;
+}
+
+.option-card:has(:checked) {
+  border-width: var(--_option-card-border-width-selected);
+  border-color: var(--_option-card-border-selected);
+  /* 테두리가 1 굵어진 만큼 여백에서 뺍니다. 높이가 흔들리지 않습니다. */
+  padding: calc(var(--spacing-400) - 1px) calc(var(--spacing-600) - 1px);
+}
+
+.option-card__main {
+  flex: 1 0 0;
+  min-inline-size: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-50);
+  white-space: nowrap;
+  font-feature-settings: 'lnum' 1;
+}
+
+.option-card__time {
+  font-size: var(--typography-body-l-medium-font-size);
+  font-weight: var(--typography-body-l-medium-font-weight);
+  line-height: var(--typography-body-l-medium-line-height);
+}
+
+.option-card__price {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-100);
+  font-size: var(--typography-body-s-regular-font-size);
+  line-height: var(--typography-body-s-regular-line-height);
+}
+
+.option-card__price b {
+  color: var(--_option-card-price-fg);
+  font-weight: var(--typography-body-s-semibold-font-weight);
+}
+
+/* 할인 전 가격. 일정마다 값이 달라 비교할 수 있게 남겨둡니다. */
+.option-card__price s {
+  color: var(--_option-card-price-strike-fg);
+  font-weight: var(--typography-body-s-regular-font-weight);
+}
+
+.option-card__place {
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-s-medium-font-size);
+  font-weight: var(--typography-body-s-medium-font-weight);
+  line-height: var(--typography-body-s-medium-line-height);
+}
+
+.option-card__aside {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: var(--spacing-400);
+}
+
+.option-card__seats {
+  color: var(--colors-fg);
+  text-align: end;
+  white-space: nowrap;
+  font-size: var(--typography-body-s-medium-font-size);
+  font-weight: var(--typography-body-s-medium-font-weight);
+  line-height: var(--typography-body-s-medium-line-height);
+  font-feature-settings: 'lnum' 1;
+}

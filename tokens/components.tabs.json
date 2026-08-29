@@ -1,0 +1,26 @@
+{
+  "components": {
+    "tabs": {
+      "$description": "본문 안에서 섹션을 오가는 탭. 선택된 항목만 아래 굵은 선과 진한 글자로 표시합니다.",
+      "border": {
+        "$type": "color",
+        "$value": "{primitive.colors.seriousGray.200}",
+        "$description": "탭 줄 전체를 받치는 선. Figma 의 #F3F1F0 이 seriousGray 200 과 같습니다."
+      },
+      "item": {
+        "fg": { "$type": "color", "$value": "{semantic.colors.fg-lower}" },
+        "fgActive": { "$type": "color", "$value": "{semantic.colors.fg}" },
+        "borderActive": {
+          "$type": "color",
+          "$value": "{semantic.colors.fg}",
+          "$description": "선택된 항목 아래의 굵은 선."
+        },
+        "borderWidth": {
+          "$type": "dimension",
+          "$value": "2px",
+          "$description": "⚠️ Figma 에 변수로 없습니다. 선택 항목의 밑줄 두께에서 읽었습니다."
+        }
+      }
+    }
+  }
+}

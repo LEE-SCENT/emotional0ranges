@@ -1,0 +1,314 @@
+/**
+ * 상세 화면 레이아웃.
+ *
+ *   <main class="container">
+ *     <div class="detail-top">
+ *       <div class="detail-gallery"> 사진 4장 + 모두 보기 </div>
+ *       <div class="detail-info">   제목·설명·공유/찜·정보 3줄 </div>
+ *     </div>
+ *     <div class="detail-body">
+ *       <div class="detail-main">   탭 + 소개 + 리뷰 + 안내 </div>
+ *       <aside class="detail-side"> 일정 </aside>
+ *     </div>
+ *   </main>
+ *
+ * 852 + 48 + 380 = 1280. 왼쪽은 고정 폭이 아니라 남는 자리를 받고, 오른쪽 일정만
+ * 380 으로 붙들어 둡니다 — 폭이 줄어도 일정 카드의 시간·가격·잔여석이 한 줄에
+ * 들어가야 합니다.
+ */
+
+.detail-top,
+.detail-body {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-1200);
+  inline-size: 100%;
+}
+
+.detail-top { padding-block-start: var(--spacing-1800); }
+.detail-body { padding-block: var(--spacing-1200); }
+
+.detail-main,
+.detail-gallery {
+  flex: 1 0 0;
+  min-inline-size: 0;
+}
+
+.detail-info,
+.detail-side {
+  flex: none;
+  inline-size: 380px;
+}
+
+/* 일정은 읽어 내려가는 동안 따라옵니다 — 어느 대목을 보든 신청은 바로 옆에 있어야
+   합니다. GNB 가 붙어 있는 만큼 아래로 내려 잡습니다. */
+.detail-side {
+  position: sticky;
+  inset-block-start: calc(72px + var(--spacing-600));
+}
+
+@media (max-width: 960px) {
+  .detail-top,
+  .detail-body {
+    flex-direction: column;
+    gap: var(--spacing-800);
+  }
+
+  .detail-info,
+  .detail-side {
+    inline-size: 100%;
+  }
+
+  .detail-side { position: static; }
+}
+
+/* ---- 사진 ---------------------------------------------------------------
+   2×2. 바깥 네 모서리만 크게 둥글고 안쪽은 8 입니다 — 네 장이 한 덩어리로
+   보이게 하려는 것이라, 각 장에 같은 반지름을 주면 조각조각 흩어집니다.
+*/
+
+.detail-gallery {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--spacing-50);
+}
+
+.detail-gallery img {
+  display: block;
+  inline-size: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: var(--_rounded-m);
+}
+
+.detail-gallery img:nth-child(1) { border-start-start-radius: var(--_rounded-2xl); }
+.detail-gallery img:nth-child(2) { border-start-end-radius: var(--_rounded-2xl); }
+.detail-gallery img:nth-child(3) { border-end-start-radius: var(--_rounded-2xl); }
+.detail-gallery img:nth-child(4) { border-end-end-radius: var(--_rounded-2xl); }
+
+.detail-gallery__more {
+  position: absolute;
+  inset-block-end: var(--spacing-500);
+  inset-inline-end: var(--spacing-500);
+}
+
+/* ---- 상품 정보 ---------------------------------------------------------- */
+
+.detail-info__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-600);
+  padding-block: var(--spacing-800);
+  border-block-end: 1px solid var(--colors-border);
+  text-align: center;
+}
+
+.detail-info__title {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-400);
+  inline-size: 100%;
+}
+
+.detail-info__name {
+  margin: 0;
+  color: var(--colors-fg);
+  font-size: var(--typography-heading-l-semibold-font-size);
+  font-weight: var(--typography-heading-l-semibold-font-weight);
+  line-height: var(--typography-heading-l-semibold-line-height);
+  letter-spacing: var(--typography-heading-l-semibold-letter-spacing);
+}
+
+.detail-info__lead {
+  margin: 0;
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-l-regular-font-size);
+  line-height: var(--typography-body-l-regular-line-height);
+}
+
+.detail-info__facts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-600);
+  margin: 0;
+  padding-block: var(--spacing-800);
+  list-style: none;
+}
+
+.detail-info__fact {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-500);
+}
+
+/* 사진은 조금 눌러둡니다. 옆 글자보다 앞으로 나오면 안 됩니다. */
+.detail-info__fact img {
+  flex: none;
+  display: block;
+  inline-size: 48px;
+  block-size: 48px;
+  border-radius: var(--_rounded-m);
+  object-fit: cover;
+  opacity: 0.8;
+}
+
+.detail-info__fact-text {
+  flex: 1 0 0;
+  min-inline-size: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-50);
+  font-size: var(--typography-body-m-regular-font-size);
+  line-height: var(--typography-body-m-regular-line-height);
+}
+
+.detail-info__fact-text b {
+  color: var(--colors-fg);
+  font-weight: var(--typography-body-m-regular-font-weight);
+}
+
+.detail-info__fact-text span { color: var(--colors-fg-lower); }
+
+.detail-info__fact-text small {
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-s-regular-font-size);
+  line-height: var(--typography-body-s-regular-line-height);
+}
+
+/* ---- 소개 --------------------------------------------------------------
+   긴 이미지를 접어두고 아래에 "전체 보기"를 얹습니다. 버튼 뒤에 흰색으로 옅어지는
+   그라디언트를 깔아, 잘린 자리가 아니라 이어지는 자리로 보이게 합니다.
+*/
+
+.detail-intro {
+  position: relative;
+  overflow: clip;
+}
+
+.detail-intro img {
+  display: block;
+  inline-size: 100%;
+}
+
+.detail-intro__more {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-block-size: 128px;
+  padding: var(--spacing-600);
+  background: linear-gradient(to bottom, transparent, var(--colors-bg));
+}
+
+.detail-intro__more .btn { inline-size: min(518px, 100%); }
+
+/* ---- 일정 -------------------------------------------------------------- */
+
+.schedule {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-600);
+  font-family: var(--_font-family-pretendard);
+}
+
+.schedule__group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-300);
+}
+
+.schedule__date {
+  margin: 0;
+  color: var(--colors-fg);
+  font-size: var(--typography-body-l-medium-font-size);
+  font-weight: var(--typography-body-l-medium-font-weight);
+  line-height: var(--typography-body-l-medium-line-height);
+  font-feature-settings: 'lnum' 1;
+}
+
+.schedule__options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-300);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.schedule__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-300);
+}
+
+.schedule__actions .btn { inline-size: 100%; }
+
+/* ---- 안내 사항 ---------------------------------------------------------- */
+
+.detail-notice {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-800);
+  padding-block: var(--spacing-1200);
+  font-family: var(--_font-family-pretendard);
+}
+
+.detail-notice__title {
+  margin: 0;
+  color: var(--colors-fg);
+  font-size: var(--typography-heading-s-semibold-font-size);
+  font-weight: var(--typography-heading-s-semibold-font-weight);
+  line-height: var(--typography-heading-s-semibold-line-height);
+}
+
+.detail-notice__items {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--spacing-800);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (max-width: 960px) {
+  .detail-notice__items { grid-template-columns: 1fr; }
+}
+
+.detail-notice__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-300);
+  min-inline-size: 0;
+}
+
+.detail-notice__item svg {
+  display: block;
+  flex: none;
+  inline-size: 32px;
+  block-size: 32px;
+  color: var(--colors-fg-brand);
+}
+
+.detail-notice__item-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-50);
+}
+
+.detail-notice__item b {
+  color: var(--colors-fg);
+  font-size: var(--typography-body-l-medium-font-size);
+  font-weight: var(--typography-body-l-medium-font-weight);
+  line-height: var(--typography-body-l-medium-line-height);
+}
+
+.detail-notice__item span,
+.detail-notice__item a {
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-m-regular-font-size);
+  line-height: var(--typography-body-m-regular-line-height);
+}

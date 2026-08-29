@@ -1,0 +1,146 @@
+/**
+ * Review — 상세 화면의 후기.
+ *
+ *   <section class="review">
+ *     <header class="review__header">
+ *       <p class="review__average"><svg…심볼…><b>4.9</b></p>
+ *       <p class="review__label">모임 만족도</p>
+ *       <p class="review__lead">실제 참여자들이 남긴 후기와 평점을 바탕으로 했어요</p>
+ *     </header>
+ *     <ul class="review__list">
+ *       <li class="review__item"> … </li>
+ *     </ul>
+ *     <a class="btn btn--outlined btn--medium review__more">…</a>
+ *   </section>
+ *
+ * 별점은 글자(★)가 아니라 아이콘을 씁니다. 글자로 그리면 기기마다 모양과 폭이
+ * 달라지고, 스크린 리더가 "검은 별 다섯 개"처럼 읽습니다. 실제 값은 아래
+ * review__rating 의 aria-label 한 줄이 전합니다.
+ */
+
+.review {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-1200);
+  font-family: var(--_font-family-pretendard);
+}
+
+.review__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-100);
+  text-align: center;
+}
+
+.review__average {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-200);
+  margin: 0;
+  color: var(--colors-fg);
+  font-size: var(--typography-display-m-semibold-font-size);
+  font-weight: var(--typography-display-m-semibold-font-weight);
+  line-height: var(--typography-display-m-semibold-line-height);
+  letter-spacing: var(--typography-display-m-semibold-letter-spacing);
+  font-feature-settings: 'lnum' 1;
+}
+
+.review__average svg {
+  display: block;
+  flex: none;
+  inline-size: var(--_review-symbol-size);
+  block-size: var(--_review-symbol-size);
+  color: var(--colors-fg-brand);
+}
+
+.review__label {
+  margin: 0;
+  color: var(--colors-fg);
+  font-size: var(--typography-body-l-medium-font-size);
+  font-weight: var(--typography-body-l-medium-font-weight);
+  line-height: var(--typography-body-l-medium-line-height);
+}
+
+.review__lead {
+  margin: 0;
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-m-regular-font-size);
+  line-height: var(--typography-body-m-regular-line-height);
+}
+
+/* 두 열로 놓습니다. 후기가 짧아 한 열로 세우면 세로로만 길어집니다. */
+.review__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--spacing-600) var(--spacing-1200);
+  inline-size: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (max-width: 960px) {
+  .review__list { grid-template-columns: 1fr; }
+}
+
+.review__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-100);
+  min-inline-size: 0;
+}
+
+.review__rating {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-100);
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-m-regular-font-size);
+  line-height: var(--typography-body-m-regular-line-height);
+}
+
+.review__stars {
+  display: flex;
+  align-items: center;
+  flex: none;
+}
+
+.review__stars svg {
+  display: block;
+  inline-size: var(--_review-star-size);
+  block-size: var(--_review-star-size);
+  color: var(--_review-star-fg);
+}
+
+.review__stars svg.is-empty { color: var(--_review-star-empty-fg); }
+
+.review__body {
+  margin: 0;
+  color: var(--colors-fg);
+  font-size: var(--typography-body-m-regular-font-size);
+  line-height: var(--typography-body-m-regular-line-height);
+  /* 두 줄까지. 후기 길이는 사람마다 달라 그대로 두면 열마다 높이가 어긋납니다. */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.review__profile {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-100);
+  margin: 0;
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-m-regular-font-size);
+  line-height: var(--typography-body-m-regular-line-height);
+}
+
+/* 가운뎃점은 뒤따르는 항목에 붙입니다 — 푸터와 같은 이유입니다. */
+.review__profile > * + *::before {
+  content: '·';
+  padding-inline-end: var(--spacing-100);
+  pointer-events: none;
+}

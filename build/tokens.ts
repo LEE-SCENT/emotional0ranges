@@ -427,6 +427,16 @@ export const components = {
     "iconSize": "32px",
     "iconFg": "#F75D15"
   },
+  "optionCard": {
+    "bg": "#FFFFFF",
+    "border": "#E7E5E4",
+    "borderSelected": "#272625",
+    "borderWidth": "1px",
+    "borderWidthSelected": "2px",
+    "rounded": "16px",
+    "priceFg": "#F75D15",
+    "priceStrikeFg": "#A6A4A3"
+  },
   "productCard": {
     "rounded": "12px",
     "imageRatio": 1.4444,
@@ -472,6 +482,12 @@ export const components = {
       }
     }
   },
+  "review": {
+    "starFg": "#F75D15",
+    "starEmptyFg": "#E7E5E4",
+    "starSize": "14px",
+    "symbolSize": "42px"
+  },
   "sectionTitle": {
     "fg": "#000000",
     "fgDescription": "#7D7B7A"
@@ -491,6 +507,15 @@ export const components = {
       "fg-active": "#FFFFFF",
       "bg-active": "#F75D15",
       "rounded": "9999px"
+    }
+  },
+  "tabs": {
+    "border": "#F3F1F0",
+    "item": {
+      "fg": "#7D7B7A",
+      "fgActive": "#000000",
+      "borderActive": "#000000",
+      "borderWidth": "2px"
     }
   },
   "tag": {

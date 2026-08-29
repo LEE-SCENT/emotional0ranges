@@ -1,0 +1,46 @@
+/**
+ * Tabs — 본문 안에서 섹션을 오가는 탭.
+ *
+ *   <nav class="tabs" aria-label="상세 정보">
+ *     <a class="tabs__item is-active" href="#intro" aria-current="true">모임 소개</a>
+ *     <a class="tabs__item" href="#review">리뷰</a>
+ *   </nav>
+ *
+ * 밑줄은 border 가 아니라 ::after 로 그립니다. border 로 그리면 선택된 항목만
+ * 2px 높아져 글자가 위로 밀립니다.
+ */
+
+.tabs {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-600);
+  box-shadow: inset 0 -1px 0 0 var(--_tabs-border);
+  font-family: var(--_font-family-pretendard);
+}
+
+.tabs__item {
+  position: relative;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: var(--spacing-300);
+  color: var(--_tabs-item-fg);
+  text-decoration: none;
+  white-space: nowrap;
+  font-size: var(--typography-body-l-medium-font-size);
+  font-weight: var(--typography-body-l-medium-font-weight);
+  line-height: var(--typography-body-l-medium-line-height);
+  letter-spacing: var(--typography-body-l-medium-letter-spacing);
+}
+
+.tabs__item.is-active { color: var(--_tabs-item-fg-active); }
+
+.tabs__item.is-active::after {
+  content: '';
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline: 0;
+  block-size: var(--_tabs-item-border-width);
+  background: var(--_tabs-item-border-active);
+}

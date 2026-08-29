@@ -1,0 +1,28 @@
+{
+  "components": {
+    "review": {
+      "$description": "상세 화면의 후기. 평균 평점과 개별 후기 목록으로 이루어집니다.",
+      "starFg": {
+        "$type": "color",
+        "$value": "{semantic.colors.fg-brand}",
+        "$description": "채워진 별."
+      },
+      "starEmptyFg": {
+        "$type": "color",
+        "$value": "{primitive.colors.seriousGray.300}",
+        "$description": "빈 별."
+      },
+      "starSize": {
+        "$type": "dimension",
+        "$value": "14px",
+        "$description": "⚠️ Figma 에 변수로 없습니다. 별 하나의 폭(14×13)에서 읽었습니다."
+      },
+      "symbolSize": {
+        "$type": "dimension",
+        "$value": "{primitive.dimension}",
+        "$extensions": { "scale": 10.5 },
+        "$description": "평균 평점 옆 브랜드 심볼. 42px."
+      }
+    }
+  }
+}

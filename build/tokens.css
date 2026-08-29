@@ -185,6 +185,14 @@
   --_notice-bg: var(--colors-bg-low);
   --_notice-icon-size: calc(var(--_dimension) * 8);
   --_notice-icon-fg: var(--colors-fg-brand);
+  --_option-card-bg: var(--colors-bg);
+  --_option-card-border: var(--colors-border);
+  --_option-card-border-selected: var(--_colors-serious-gray-900);
+  --_option-card-border-width: 1px;
+  --_option-card-border-width-selected: 2px;
+  --_option-card-rounded: var(--_rounded-xl);
+  --_option-card-price-fg: var(--colors-fg-brand);
+  --_option-card-price-strike-fg: var(--colors-fg-lowest);
   --_product-card-rounded: var(--_rounded-l);
   --_product-card-image-ratio: 1.4444;
   --_product-card-min-width: 312px;
@@ -212,6 +220,10 @@
   --_product-card-promotion-more-icon-size: calc(var(--_dimension) * 6);
   --_product-card-promotion-more-fg: var(--colors-fg-contrast);
   --_product-card-promotion-locked-fg: var(--colors-fg-lower);
+  --_review-star-fg: var(--colors-fg-brand);
+  --_review-star-empty-fg: var(--_colors-serious-gray-300);
+  --_review-star-size: 14px;
+  --_review-symbol-size: calc(var(--_dimension) * 10.5);
   --_section-title-fg: var(--colors-fg);
   --_section-title-fg-description: var(--colors-fg-lower);
   --_segmented-control-bg: var(--_colors-white);
@@ -225,6 +237,11 @@
   --_segmented-control-item-fg-active: var(--_colors-white);
   --_segmented-control-item-bg-active: var(--_colors-twist-orange-500);
   --_segmented-control-item-rounded: var(--_rounded-full);
+  --_tabs-border: var(--_colors-serious-gray-200);
+  --_tabs-item-fg: var(--colors-fg-lower);
+  --_tabs-item-fg-active: var(--colors-fg);
+  --_tabs-item-border-active: var(--colors-fg);
+  --_tabs-item-border-width: 2px;
   --_tag-bg: var(--_colors-white-alpha-85);
   --_tag-fg: var(--colors-fg);
   --_tag-bg-accent-pri: var(--_colors-twist-orange-alpha500-85);

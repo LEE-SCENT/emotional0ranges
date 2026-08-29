@@ -1,0 +1,447 @@
+<!doctype html>
+<!-- 상품 상세 화면 — 사진·소개·일정·후기. Figma 22:12063 을 따릅니다. -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Safari 는 숫자 나열을 전화번호로 보고 스스로 링크를 겁니다. 푸터의 사업자
+     등록번호·고객센터 번호가 그렇게 파란 밑줄로 바뀌어 꺼둡니다. -->
+<meta name="format-detection" content="telephone=no">
+<title>12:12 티키타카 로테이션 소개팅 — 감정적인 오렌지들</title>
+<link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
+<link rel="stylesheet" href="./build/tokens.css?v=44623719">
+<link rel="stylesheet" href="./components/container.css?v=4a4dc1f9">
+<link rel="stylesheet" href="./components/badge.css?v=daa79c09">
+<link rel="stylesheet" href="./components/button.css?v=b84ee9e0">
+<link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
+<link rel="stylesheet" href="./components/segmented-control.css?v=7a4a3de6">
+<link rel="stylesheet" href="./components/tooltip.css?v=d3d8dfa4">
+<link rel="stylesheet" href="./components/gnb.css?v=5bdc7e5d">
+<link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
+<link rel="stylesheet" href="./components/product-card.css?v=afaede78">
+<link rel="stylesheet" href="./components/section-title.css?v=d1c6b1bc">
+<link rel="stylesheet" href="./components/footer.css?v=b6122ba5">
+<link rel="stylesheet" href="./components/tabs.css?v=9bb14377">
+<link rel="stylesheet" href="./components/option-card.css?v=8b7e3e1f">
+<link rel="stylesheet" href="./components/review.css?v=78bfe9ae">
+<link rel="stylesheet" href="./components/detail.css?v=84ad64fb">
+<link rel="stylesheet" href="./components/app-bar.css?v=4709389e">
+<style>
+  body { margin: 0; background: var(--colors-bg); color: var(--colors-fg); }
+  .sr-only {
+    position: absolute; inline-size: 1px; block-size: 1px;
+    overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+  }
+</style>
+
+<div id="sprite" hidden></div>
+
+<header class="gnb" data-auto-hide="up">
+  <div class="gnb__inner">
+    <div class="gnb__side gnb__side--start">
+      <a class="gnb__logo" href="/" aria-label="감정적인 오렌지들 홈">
+        <svg width="126" height="40" role="img" aria-label="emotional oranges"><use href="#logo-eo"></use></svg>
+      </a>
+    </div>
+    <!-- 로고와 액션은 화면 끝에 두고, 가운데 블록만 본문과 같은 1280 에서 멈춥니다. -->
+    <div class="gnb__center">
+      <div class="gnb__segmented">
+        <div class="segmented" role="tablist" aria-label="모임 형태">
+          <span class="segmented__thumb" aria-hidden="true"></span>
+          <button class="segmented__item is-selected" role="tab" aria-selected="true">온라인</button>
+          <button class="segmented__item" role="tab" aria-selected="false">오프라인</button>
+        </div>
+      </div>
+      <nav class="gnb__menu" aria-label="주요 메뉴">
+        <button class="btn btn--ghost btn--medium"><span class="btn__label">모임</span></button>
+        <button class="btn btn--ghost btn--medium"><span class="btn__label">매칭</span></button>
+        <button class="btn btn--ghost btn--medium"><span class="btn__label">모임 후기</span></button>
+        <button class="btn btn--ghost btn--medium"><span class="btn__label">자주 묻는 질문</span></button>
+        <button class="btn btn--ghost btn--medium"><span class="btn__label">저널</span></button>
+      </nav>
+    </div>
+    <div class="gnb__side gnb__side--end">
+      <div class="gnb__actions">
+        <button class="btn btn--ghost btn--medium btn--icon-only gnb__notify" aria-label="알림">
+          <svg class="btn__icon" aria-hidden="true"><use href="#icon-notifications"></use></svg>
+          <span class="badge btn__badge"></span>
+        </button>
+        <button class="btn btn--blur btn--medium btn--icon-only" aria-label="메뉴 열기">
+          <svg class="btn__icon" aria-hidden="true"><use href="#icon-menu"></use></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <div class="detail-top">
+    <div class="detail-gallery">
+      <img src="./images/detail-gallery-1.jpg" alt="">
+      <img src="./images/detail-gallery-2.jpg" alt="">
+      <img src="./images/detail-gallery-3.jpg" alt="">
+      <img src="./images/detail-gallery-4.jpg" alt="">
+      <button class="btn btn--blur btn--medium btn--icon-only is-on detail-gallery__more" aria-label="사진 모두 보기">
+        <svg class="btn__icon" aria-hidden="true"><use href="#icon-window"></use></svg>
+      </button>
+    </div>
+
+    <div class="detail-info">
+      <header class="detail-info__header">
+        <div class="detail-info__title">
+          <h1 class="detail-info__name">12:12 티키타카 로테이션 소개팅</h1>
+          <p class="detail-info__lead">한 번의 참여로 여러 이성과 차례로 대화하는 대표 프로그램이예요.<br>1:1로 10분씩, 또래 6~12명과 차례로 마주 앉아 대화해요.<br>20개 이상 항목으로 정리된 프로필 카드를 함께 받아,<br>짧지만 충분히 알아갈 수 있어요.</p>
+        </div>
+        <div class="btn-group btn-group--horizontal">
+          <button class="btn btn--ghost btn--medium btn--icon-only" aria-label="공유하기">
+            <svg class="btn__icon" aria-hidden="true"><use href="#icon-share"></use></svg>
+          </button>
+          <button class="btn btn--ghost btn--medium btn--icon-only" aria-label="찜하기">
+            <svg class="btn__icon" aria-hidden="true"><use href="#icon-favorite"></use></svg>
+          </button>
+        </div>
+      </header>
+
+      <ul class="detail-info__facts">
+        <li class="detail-info__fact">
+          <img src="./images/detail-info-1.jpg" alt="">
+          <span class="detail-info__fact-text">
+            <b>최근 게스트 후기</b>
+            <span>“진행이 매끄러워서 처음인데도 어색하지 않았어요. 자리 배치가 좋았습니다.”</span>
+            <small>2026년 7월 31일</small>
+          </span>
+        </li>
+        <li class="detail-info__fact">
+          <img src="./images/detail-info-2.jpg" alt="">
+          <span class="detail-info__fact-text">
+            <b>약 120분 동안 진행</b>
+            <span>6~12명의 이성과 10분씩 돌아가며 1:1 대화를 나눠요</span>
+          </span>
+        </li>
+        <li class="detail-info__fact">
+          <img src="./images/detail-info-3.jpg" alt="">
+          <span class="detail-info__fact-text">
+            <b>포함 사항</b>
+            <span>커피, 차, 아이스티 등 음료 및 민트, 쿠키, 초콜릿 간식 제공</span>
+          </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="detail-body">
+    <div class="detail-main">
+      <nav class="tabs" aria-label="상세 정보">
+      <a class="tabs__item is-active" href="#" aria-current="true">모임 소개</a>
+      <a class="tabs__item" href="#">리뷰</a>
+      <a class="tabs__item" href="#">모임 디테일</a>
+      <a class="tabs__item" href="#">위치 및 정보</a>
+      <a class="tabs__item" href="#">안내사항</a>
+      </nav>
+
+      <div class="detail-intro">
+        <img src="./images/detail-intro.jpg" alt="12:12 티키타카 로테이션 소개팅 소개">
+        <div class="detail-intro__more">
+          <button class="btn btn--outlined btn--medium"><span class="btn__label">소개 전체 보기</span></button>
+        </div>
+      </div>
+
+      <section class="review">
+        <header class="review__header">
+          <p class="review__average">
+            <svg aria-hidden="true"><use href="#icon-eoSymbol"></use></svg>
+            <b>4.9</b>
+          </p>
+          <p class="review__label">모임 만족도</p>
+          <p class="review__lead">실제 참여자들이 남긴 후기와 평점을 바탕으로 했어요</p>
+        </header>
+
+        <ul class="review__list">
+      <li class="review__item">
+        <p class="review__rating">
+          <span class="review__stars" role="img" aria-label="5점 만점에 5점">
+          <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          </span>
+          <span>· 3일 전</span>
+        </p>
+        <p class="review__body">진행이 매끄러워서 처음인데도 어색하지 않았어요. 자리배치가 좋았습니다.</p>
+        <p class="review__profile"><span>김**</span><span>서울 강남</span><span>27세</span></p>
+      </li>
+      <li class="review__item">
+        <p class="review__rating">
+          <span class="review__stars" role="img" aria-label="5점 만점에 5점">
+          <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          </span>
+          <span>· 3일 전</span>
+        </p>
+        <p class="review__body">기대보다 훨씬 좋았습니다. 같은 관심사인 분들이라 대화가 잘 통했어요.</p>
+        <p class="review__profile"><span>O**</span><span>서울 강남</span><span>26세</span></p>
+      </li>
+      <li class="review__item">
+        <p class="review__rating">
+          <span class="review__stars" role="img" aria-label="5점 만점에 5점">
+          <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          </span>
+          <span>· 3일 전</span>
+        </p>
+        <p class="review__body">호스트가 분위기를 잘 잡아주셔서 편했어요. 다음에 또 참여하고 싶어요.</p>
+        <p class="review__profile"><span>최**</span><span>서울 강남</span><span>32세</span></p>
+      </li>
+      <li class="review__item">
+        <p class="review__rating">
+          <span class="review__stars" role="img" aria-label="5점 만점에 5점">
+          <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          </span>
+          <span>· 3일 전</span>
+        </p>
+        <p class="review__body">장소가 조용하고 깔끔했어요. 성비도 잘 맞아서 만족스러웠습니다.</p>
+        <p class="review__profile"><span>데**</span><span>서울 강남</span><span>33세</span></p>
+      </li>
+      <li class="review__item">
+        <p class="review__rating">
+          <span class="review__stars" role="img" aria-label="5점 만점에 5점">
+          <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          </span>
+          <span>· 3일 전</span>
+        </p>
+        <p class="review__body">호스트가 분위기를 잘 잡아주셔서 편했어요. 다음에 또 참여하고 싶어요.</p>
+        <p class="review__profile"><span>최**</span><span>서울 강남</span><span>32세</span></p>
+      </li>
+      <li class="review__item">
+        <p class="review__rating">
+          <span class="review__stars" role="img" aria-label="5점 만점에 5점">
+          <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          </span>
+          <span>· 3일 전</span>
+        </p>
+        <p class="review__body">장소가 조용하고 깔끔했어요. 성비도 잘 맞아서 만족스러웠습니다.</p>
+        <p class="review__profile"><span>데**</span><span>서울 강남</span><span>33세</span></p>
+      </li>
+        </ul>
+
+        <button class="btn btn--outlined btn--medium"><span class="btn__label">7개 후기 모두 보기</span></button>
+      </section>
+
+    </div>
+
+    <aside class="detail-side">
+      <div class="schedule">
+      <div class="schedule__group">
+        <p class="schedule__date">8월 22일(토요일)</p>
+        <ul class="schedule__options">
+        <li>
+          <label class="option-card">
+            <input class="sr-only" type="radio" name="schedule" checked>
+            <span class="option-card__main">
+              <span class="option-card__time">오후 2:00~5:30</span>
+              <span class="option-card__price"><b>35,000원~</b> <s>45,000원</s></span>
+              <span class="option-card__place">서울 강남</span>
+            </span>
+            <span class="option-card__aside">
+          <span class="tag tag--accent-pri">
+            <svg aria-hidden="true"><use href="#icon-scheduleFilled"></use></svg>
+            02:30:24
+          </span>
+              <span class="option-card__seats">남성 6 · 여성 5자리 남음</span>
+            </span>
+          </label>
+        </li>
+        <li>
+          <label class="option-card">
+            <input class="sr-only" type="radio" name="schedule">
+            <span class="option-card__main">
+              <span class="option-card__time">밤 10:00~12:30</span>
+              <span class="option-card__price"><b>28,000원</b> <s>38,000원</s></span>
+              <span class="option-card__place">서울 강남</span>
+            </span>
+            <span class="option-card__aside">
+              <span class="option-card__seats">남성 3자리 남음</span>
+            </span>
+          </label>
+        </li>
+        </ul>
+      </div>
+      <div class="schedule__group">
+        <p class="schedule__date">8월 23일(일요일)</p>
+        <ul class="schedule__options">
+        <li>
+          <label class="option-card">
+            <input class="sr-only" type="radio" name="schedule">
+            <span class="option-card__main">
+              <span class="option-card__time">저녁 7:00~9:30</span>
+              <span class="option-card__price"><b>46,000원</b> <s>56,000원</s></span>
+              <span class="option-card__place">서울 성수</span>
+            </span>
+            <span class="option-card__aside">
+              <span class="option-card__seats">여성 1자리 남음</span>
+            </span>
+          </label>
+        </li>
+        </ul>
+      </div>
+      <div class="schedule__group">
+        <p class="schedule__date">8월 25일(화요일)</p>
+        <ul class="schedule__options">
+        <li>
+          <label class="option-card">
+            <input class="sr-only" type="radio" name="schedule">
+            <span class="option-card__main">
+              <span class="option-card__time">저녁 7:00~9:30</span>
+              <span class="option-card__price"><b>35,000원</b> <s>45,000원</s></span>
+              <span class="option-card__place">경기 성남시</span>
+            </span>
+            <span class="option-card__aside">
+              <span class="option-card__seats">남성 2 · 여성 4자리 남음</span>
+            </span>
+          </label>
+        </li>
+        </ul>
+      </div>
+        <div class="schedule__actions">
+          <button class="btn btn--outlined btn--large"><span class="btn__label">원하는 일정이 없어요</span></button>
+          <button class="btn btn--filled btn--large"><span class="btn__label">신청하기</span></button>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <section class="detail-notice">
+    <h2 class="detail-notice__title">알아두어야 할 사항</h2>
+    <ul class="detail-notice__items">
+    <li class="detail-notice__item">
+      <svg aria-hidden="true"><use href="#icon-asterisk"></use></svg>
+      <span class="detail-notice__item-text">
+        <b>모임 참여 조건</b>
+        <span>본인 인증을 마친 회원만 신청할 수 있어요.</span>
+      </span>
+    </li>
+    <li class="detail-notice__item">
+      <svg aria-hidden="true"><use href="#icon-payments"></use></svg>
+      <span class="detail-notice__item-text">
+        <b>결제</b>
+        <span>현금으로 결제해요.</span>
+      </span>
+    </li>
+    <li class="detail-notice__item">
+      <svg aria-hidden="true"><use href="#icon-calendarClosed"></use></svg>
+      <span class="detail-notice__item-text">
+        <b>환불 정책</b>
+        <span>신청 취소 시 환불 규정에 따라 환불돼요.</span>
+        <a href="#">자세히 알아보기</a>
+      </span>
+    </li>
+    </ul>
+  </section>
+
+  <section class="product-card-section">
+    <header class="section-title">
+      <div class="section-title__content">
+        <h2 class="section-title__heading">비슷한 모임 더 보기</h2>
+        <p class="section-title__desc">같은 지역에서 열리는 다른 모임이에요</p>
+      </div>
+    </header>
+    <div class="product-card-group">
+          <article class="product-card">
+            <div class="product-card__media">
+              <img src="./images/meetup-lamp.jpg" alt="" loading="lazy">
+              <div class="product-card__tags">
+                <span class="tag">8월 22일 (토) 오후 2시</span>
+              </div>
+            </div>
+            <div class="product-card__info">
+              <h3 class="product-card__title">돌싱 로테이션 소개팅</h3>
+              <p class="product-card__desc">서울 강남 외 4개 지역 · 일정 5개</p>
+              <p class="product-card__price">42,000원~</p>
+            </div>
+          </article>
+          <article class="product-card">
+            <div class="product-card__media">
+              <img src="./images/meetup-couple.jpg" alt="" loading="lazy">
+              <div class="product-card__tags">
+                <span class="tag">8월 25일 (화) 저녁 7시</span><span class="tag tag--accent-pri">남성 2자리 남음</span><span class="tag tag--accent-sec">여성 마감</span>
+              </div>
+              <p class="product-card__status">
+                <span class="is-remaining">남성 2자리 남음</span>
+                <span class="is-closed">여성 마감</span>
+              </p>
+            </div>
+            <div class="product-card__info">
+              <h3 class="product-card__title">12:12 티키타카 로테이션 소개팅</h3>
+              <p class="product-card__desc">경기 성남시 외 4개 지역 · 일정 5개</p>
+              <p class="product-card__price"><b>할인가</b> 33,000원~</p>
+            </div>
+          </article>
+          <article class="product-card">
+            <div class="product-card__media">
+              <img src="./images/meetup-record.jpg" alt="" loading="lazy">
+              <div class="product-card__tags">
+                <span class="tag">8월 24일 (월) 저녁 2시</span>
+              </div>
+            </div>
+            <div class="product-card__info">
+              <h3 class="product-card__title">테마 로테이션 소개팅</h3>
+              <p class="product-card__desc">경기 성수 외 4개 지역 · 일정 5개</p>
+              <p class="product-card__price">42,000원~</p>
+            </div>
+          </article>
+          <a class="product-card-more" href="#">
+            <svg aria-hidden="true"><use href="#icon-arrowBack"></use></svg>
+            <span>더보기</span>
+          </a>
+      </div>
+  </section>
+</main>
+
+<div class="container">
+  <footer class="footer">
+    <div class="footer__info">
+      <p class="footer__links">
+        <span>Ⓒ 2026 Emotional 0ranges</span>
+        <a class="is-strong" href="#">개인정보 처리방침</a>
+        <a href="#">이용약관</a>
+        <a href="#">의견 보내기</a>
+      </p>
+      <p class="footer__meta">
+        <span>(주)감정적인오렌지들</span>
+        <span>경기도 남양주시 별내중앙로 34, 502호(별내동)</span>
+        <span>emotional0ranges@naver.com</span>
+        <span>개인정보보호책임자: {{이름}}</span>
+        <span>사업자 등록번호 000-00-00000</span>
+        <span>통신판매신고번호 2024-경기남양주-0000</span>
+        <span>고객센터 0505-1922-2274 (평일 10시-19시, 주말 및 공휴일 제외)</span>
+      </p>
+    </div>
+    <ul class="footer__sns">
+      <li><a class="is-instagram" href="https://www.instagram.com/emotional_0ranges" target="_blank" rel="noopener noreferrer" aria-label="인스타그램 (새 창)"><img src="./logo/sns/instagram.png" alt=""></a></li>
+      <li><a class="is-naver-blog" href="https://blog.naver.com/emotional0ranges" target="_blank" rel="noopener noreferrer" aria-label="네이버 블로그 (새 창)"><img src="./logo/sns/naver-blog.png" alt=""></a></li>
+      <li><a href="https://www.somoim.co.kr/4b897e56-f085-11ed-85ea-0a4f64b569631" target="_blank" rel="noopener noreferrer" aria-label="소모임 (새 창)"><img src="./logo/sns/somoim.png" alt=""></a></li>
+    </ul>
+  </footer>
+</div>
+
+<script type="module">
+  document.getElementById('sprite').innerHTML =
+    await (await fetch('./build/icons.svg')).text() + await (await fetch('./build/logo.svg')).text()
+</script>
