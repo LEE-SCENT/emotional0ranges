@@ -564,7 +564,7 @@ export const components = {
     "bg": "#FFFFFF",
     "rounded": "20px",
     "modalWidth": "600px",
-    "modalMaxHeight": "min(960px, 100dvh - 96px)",
+    "modalHeight": "min(960px, 100dvh - 96px)",
     "modalHeaderHeight": "76px",
     "modalPaddingInline": "4px",
     "maxWidth": "480px",

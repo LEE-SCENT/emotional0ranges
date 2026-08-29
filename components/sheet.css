@@ -197,7 +197,13 @@
 
   .sheet--modal .sheet__panel {
     max-inline-size: var(--_sheet-modal-width);
-    max-block-size: var(--_sheet-modal-max-height);
+    /* 최대가 아니라 고정입니다. 일정이 셋이든 열이든 상자 크기가 같아야, 날짜를
+       오가는 동안 모달이 커졌다 작아졌다 하지 않습니다. 목록이 짧으면 아래가
+       비고, 버튼은 늘 같은 자리에 있습니다. */
+    block-size: var(--_sheet-modal-height);
+    /* 바텀시트가 들고 있던 76dvh 상한을 풉니다. 그대로 두면 고정 높이가 그 값에서
+       잘려, 화면이 커져도 모달이 따라 커지지 않습니다. */
+    max-block-size: none;
     /* 안쪽 여백은 머리글·목록·버튼이 각자 가집니다. 판이 통째로 물고 있으면
        머리글이 줄 전체를 쓸 수 없습니다. */
     padding: 0;
@@ -209,6 +215,9 @@
 
   /* 목록·배너·버튼은 같은 세로선에서 시작합니다. */
   .sheet--modal[open] .schedule {
+    /* 판이 고정 높이라 남는 자리를 목록이 받아야 합니다. 그러지 않으면 내용만큼만
+       차지하고 버튼이 상자 한가운데에 뜹니다. */
+    flex: 1 1 auto;
     gap: 0;
     padding-block: 0;
   }
