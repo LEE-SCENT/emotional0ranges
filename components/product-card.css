@@ -159,8 +159,12 @@
 .product-card-group::-webkit-scrollbar { display: none; }
 
 .product-card-group > .product-card {
-  /* 세 장이 딱 맞게 들어가고 나머지는 넘칩니다. */
-  flex: 0 0 calc((100% - 2 * var(--spacing-50)) / 3);
+  /* 넓은 화면에서는 세 장이 딱 맞게 들어가고 나머지는 넘칩니다. 좁아지면 1/3 이
+     minWidth 아래로 내려가는데, 그때는 세 장을 포기하고 312 를 지킵니다 — 카드가
+     그보다 좁아지면 태그 두 개가 이미지 밖으로 밀립니다.
+
+     전환점은 레일 폭 940 입니다: (940 - 4) / 3 = 312. */
+  flex: 0 0 max(var(--_product-card-min-width), (100% - 2 * var(--spacing-50)) / 3);
   scroll-snap-align: start;
 }
 
@@ -194,7 +198,10 @@
   align-items: center;
   justify-content: center;
   gap: var(--spacing-200);
-  block-size: calc((100cqw - 2 * var(--spacing-50)) / 3 / var(--_product-card-image-ratio));
+  block-size: calc(
+    max(var(--_product-card-min-width), (100cqw - 2 * var(--spacing-50)) / 3)
+    / var(--_product-card-image-ratio)
+  );
   padding-inline: var(--spacing-600);
   color: var(--_product-card-more-fg);
   text-decoration: none;

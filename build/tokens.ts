@@ -410,6 +410,7 @@ export const components = {
   "productCard": {
     "rounded": "12px",
     "imageRatio": 1.4444,
+    "minWidth": "312px",
     "scrim": {
       "from": "#000000A6",
       "height": "160px"
