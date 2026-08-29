@@ -152,7 +152,9 @@
     /* 화면 아래 고정 요소(앱바·전환)는 10 입니다. 헤더가 그 위로 지나갑니다. */
     z-index: 20;
     /* ⚠️ Figma 에 전환 시간이 없어 코드에서 정했습니다. 한 번에 튀면 거슬립니다. */
-    transition: padding-block var(--_duration-fast) var(--_easing-standard);
+    transition:
+      padding-block var(--_duration-fast) var(--_easing-standard),
+      translate var(--_duration-base) var(--_easing-standard);
   }
 
   .gnb__logo {
@@ -162,6 +164,9 @@
   }
 
   .gnb.is-sticky { padding-block: var(--spacing-200); }
+
+  /* 아래로 읽어 내려가는 동안에는 물러나 있습니다. 위로 올리면 바로 돌아옵니다. */
+  .gnb.is-hidden { translate: 0 -100%; }
 
   .gnb.is-sticky .gnb__logo {
     inline-size: var(--_gnb-logo-sticky-width);

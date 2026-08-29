@@ -25,6 +25,12 @@
   justify-content: center;
   /* 좌우 빈 자리는 아래 콘텐츠가 받아야 합니다. 안쪽에서 다시 켭니다. */
   pointer-events: none;
+  transition: translate var(--_duration-base) var(--_easing-standard);
+}
+
+/* 앱바와 함께 물러납니다. 앱바 위에 떠 있어 자기 키만큼 내려가서는 화면에 걸립니다. */
+.mobile-switch.is-hidden {
+  translate: 0 calc(100% + var(--_app-bar-height) + var(--spacing-600));
 }
 
 .mobile-switch__inner {

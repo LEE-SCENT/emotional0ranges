@@ -69,7 +69,11 @@
   inset-block-end: 0;
   inset-inline: 0;
   z-index: 10;
+  transition: translate var(--_duration-base) var(--_easing-standard);
 }
+
+/* 아래로 읽어 내려가는 동안에는 화면 밖으로 내려갑니다. */
+.app-bar--fixed.is-hidden { translate: 0 100%; }
 
 @media (min-width: 961px) {
   .app-bar--fixed { display: none; }

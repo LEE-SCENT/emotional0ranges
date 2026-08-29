@@ -22,10 +22,10 @@
   background: var(--_tooltip-bg);
   color: var(--_tooltip-fg);
   font-family: var(--_font-family-pretendard);
-  font-size: var(--typography-body-m-medium-font-size);
-  font-weight: var(--typography-body-m-medium-font-weight);
-  line-height: var(--typography-body-m-medium-line-height);
-  letter-spacing: var(--typography-body-m-medium-letter-spacing);
+  font-size: var(--typography-body-s-regular-font-size);
+  font-weight: var(--typography-body-s-regular-font-weight);
+  line-height: var(--typography-body-s-regular-line-height);
+  letter-spacing: var(--typography-body-s-regular-letter-spacing);
 }
 
 .tooltip--has-close { padding-inline-end: var(--spacing-150); }
