@@ -346,3 +346,12 @@
   font-size: var(--typography-body-m-regular-font-size);
   line-height: var(--typography-body-m-regular-line-height);
 }
+
+/* 이 화면에서는 컨테이너가 이미 폭을 정합니다. 카드 섹션과 푸터가 스스로 1280 에서
+   한 번 더 멈추면, 1601 부터 컨테이너가 1440 으로 넓어질 때 위쪽 콘텐츠만 따라
+   넓어지고 아래 두 영역만 좁게 남습니다. 홈 화면은 main 이 --wide(1600)라 그
+   제한이 필요하지만 여기서는 아닙니다. */
+.detail-page .product-card-section,
+.detail-page .footer {
+  max-inline-size: none;
+}
