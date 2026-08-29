@@ -1,0 +1,36 @@
+{
+  "components": {
+    "appBar": {
+      "$description": "모바일 하단 탭. 다섯 갈래로 화면을 나눕니다. 선택된 항목만 채워진(Filled) 아이콘과 브랜드 색을 씁니다.",
+      "bg": {
+        "$type": "color",
+        "$value": "{semantic.colors.bg}"
+      },
+      "fg": {
+        "$type": "color",
+        "$value": "{semantic.colors.fg-low}",
+        "$description": "선택되지 않은 항목의 아이콘·글자."
+      },
+      "fgActive": {
+        "$type": "color",
+        "$value": "{semantic.colors.fg-brand}"
+      },
+      "iconSize": {
+        "$type": "dimension",
+        "$value": "{primitive.dimension}",
+        "$extensions": { "scale": 6 }
+      },
+      "itemMinWidth": {
+        "$type": "dimension",
+        "$value": "{primitive.dimension}",
+        "$extensions": { "scale": 14 },
+        "$description": "항목 하나가 이보다 좁아지지 않습니다. 56px."
+      },
+      "topLine": {
+        "$type": "color",
+        "$value": "#0000000D",
+        "$description": "본문과 앱바를 가르는 윗선. 5% → 0D. ⚠️ Figma 에 변수로 없습니다 — inset 그림자 값에서 읽었습니다."
+      }
+    }
+  }
+}

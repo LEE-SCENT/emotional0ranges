@@ -1,0 +1,63 @@
+/**
+ * AppBar — 모바일 하단 탭.
+ *
+ *   <nav class="app-bar" aria-label="주요 메뉴">
+ *     <a class="app-bar__item is-active" href="#" aria-current="page">
+ *       <svg class="app-bar__icon" aria-hidden="true"><use href="#icon-homeFilled"></use></svg>
+ *       <span class="app-bar__label">홈</span>
+ *     </a>
+ *     <a class="app-bar__item" href="#">
+ *       <svg class="app-bar__icon" aria-hidden="true"><use href="#icon-explorer"></use></svg>
+ *       <span class="app-bar__label">모임</span>
+ *     </a>
+ *     …
+ *   </nav>
+ *
+ * 선택 여부에 따라 아이콘 모양 자체가 달라집니다(explorer ↔ explorerFilled). 색만
+ * 바꾸면 흑백 화면이나 색을 구분하기 어려운 눈에는 어느 탭에 있는지 보이지 않습니다.
+ * 아이콘 교체는 마크업이 하고, 여기서는 색과 배치만 맡습니다.
+ *
+ * 윗선은 border 가 아니라 inset 그림자입니다. border 를 쓰면 앱바가 1px 높아져
+ * 아래에 깔리는 안전영역 계산이 어긋납니다.
+ */
+
+.app-bar {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  inline-size: 100%;
+  min-inline-size: 360px;
+  background: var(--_app-bar-bg);
+  box-shadow: inset 0 1px 0 0 var(--_app-bar-top-line);
+  font-family: var(--_font-family-pretendard);
+}
+
+.app-bar__item {
+  flex: 1 0 0;
+  min-inline-size: var(--_app-bar-item-min-width);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-50);
+  padding-block: var(--spacing-200);
+  color: var(--_app-bar-fg);
+  text-decoration: none;
+}
+
+.app-bar__item.is-active { color: var(--_app-bar-fg-active); }
+
+.app-bar__icon {
+  display: block;
+  flex: none;
+  inline-size: var(--_app-bar-icon-size);
+  block-size: var(--_app-bar-icon-size);
+}
+
+.app-bar__label {
+  font-size: var(--typography-body-xs-medium-font-size);
+  font-weight: var(--typography-body-xs-medium-font-weight);
+  line-height: var(--typography-body-xs-medium-line-height);
+  letter-spacing: var(--typography-body-xs-medium-letter-spacing);
+  text-align: center;
+  font-feature-settings: 'lnum' 1;
+}

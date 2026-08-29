@@ -337,6 +337,14 @@ export const typography = {
  * @internal 컴포넌트 구현 전용입니다. 화면 작업에서는 semantic / typography 를 쓰세요.
  */
 export const components = {
+  "appBar": {
+    "bg": "#FFFFFF",
+    "fg": "#686666",
+    "fgActive": "#F75D15",
+    "iconSize": "24px",
+    "itemMinWidth": "56px",
+    "topLine": "#0000000D"
+  },
   "badge": {
     "bg": "#F75D15",
     "border": "#FFFFFF",

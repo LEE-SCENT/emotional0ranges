@@ -131,6 +131,12 @@
   --spacing-4500: calc(var(--_dimension) * 45);
 
   /* ---- components (내부용) ---- */
+  --_app-bar-bg: var(--colors-bg);
+  --_app-bar-fg: var(--colors-fg-low);
+  --_app-bar-fg-active: var(--colors-fg-brand);
+  --_app-bar-icon-size: calc(var(--_dimension) * 6);
+  --_app-bar-item-min-width: calc(var(--_dimension) * 14);
+  --_app-bar-top-line: #0000000D;
   --_badge-bg: var(--_colors-twist-orange-500);
   --_badge-border: var(--_colors-white);
   --_badge-size-m: calc(var(--_dimension) * 2);
