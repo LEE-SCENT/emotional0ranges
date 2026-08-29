@@ -314,21 +314,21 @@ export const typography = {
     "fontFamily": "\"Pretendard Variable\", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, \"Helvetica Neue\", \"Segoe UI\", \"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", sans-serif",
     "fontSize": "10px",
     "fontWeight": 600,
-    "lineHeight": "130%",
+    "lineHeight": "140%",
     "letterSpacing": "0em"
   },
   "body-xs-medium": {
     "fontFamily": "\"Pretendard Variable\", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, \"Helvetica Neue\", \"Segoe UI\", \"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", sans-serif",
     "fontSize": "10px",
     "fontWeight": 500,
-    "lineHeight": "130%",
+    "lineHeight": "140%",
     "letterSpacing": "0em"
   },
   "body-xs-regular": {
     "fontFamily": "\"Pretendard Variable\", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, \"Helvetica Neue\", \"Segoe UI\", \"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", sans-serif",
     "fontSize": "10px",
     "fontWeight": 400,
-    "lineHeight": "130%",
+    "lineHeight": "140%",
     "letterSpacing": "0em"
   }
 } as const

@@ -169,7 +169,7 @@
             "fontFamily": "{primitive.fontFamily.pretendard}",
             "fontSize": "{primitive.fontSize.100}",
             "fontWeight": "{primitive.fontWeight.semibold-600}",
-            "lineHeight": "{primitive.lineHeight.130}",
+            "lineHeight": "{primitive.lineHeight.140}",
             "letterSpacing": "{primitive.letterSpacing.0}"
           }
         },
@@ -178,7 +178,7 @@
             "fontFamily": "{primitive.fontFamily.pretendard}",
             "fontSize": "{primitive.fontSize.100}",
             "fontWeight": "{primitive.fontWeight.medium-500}",
-            "lineHeight": "{primitive.lineHeight.130}",
+            "lineHeight": "{primitive.lineHeight.140}",
             "letterSpacing": "{primitive.letterSpacing.0}"
           }
         },
@@ -187,7 +187,7 @@
             "fontFamily": "{primitive.fontFamily.pretendard}",
             "fontSize": "{primitive.fontSize.100}",
             "fontWeight": "{primitive.fontWeight.regular-400}",
-            "lineHeight": "{primitive.lineHeight.130}",
+            "lineHeight": "{primitive.lineHeight.140}",
             "letterSpacing": "{primitive.letterSpacing.0}"
           }
         }
