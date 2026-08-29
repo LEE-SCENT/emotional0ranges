@@ -70,6 +70,16 @@
             "lineHeight": "{primitive.lineHeight.140}",
             "letterSpacing": "{primitive.letterSpacing.0}"
           }
+        },
+        "xs-medium": {
+          "$value": {
+            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontSize": "{primitive.fontSize.500}",
+            "fontWeight": "{primitive.fontWeight.medium-500}",
+            "lineHeight": "{primitive.lineHeight.140}",
+            "letterSpacing": "{primitive.letterSpacing.0}"
+          },
+          "$description": "heading 크기에 medium 굵기가 필요한 자리. 리뷰 평점 아래 라벨이 그렇습니다. Figma heading-xs-medium."
         }
       },
       "body": {

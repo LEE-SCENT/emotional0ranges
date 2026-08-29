@@ -240,6 +240,13 @@ export const typography = {
     "lineHeight": "140%",
     "letterSpacing": "0em"
   },
+  "heading-xs-medium": {
+    "fontFamily": "\"Pretendard Variable\", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, \"Helvetica Neue\", \"Segoe UI\", \"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", sans-serif",
+    "fontSize": "20px",
+    "fontWeight": 500,
+    "lineHeight": "140%",
+    "letterSpacing": "0em"
+  },
   "body-xl-semibold": {
     "fontFamily": "\"Pretendard Variable\", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, \"Helvetica Neue\", \"Segoe UI\", \"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", sans-serif",
     "fontSize": "20px",

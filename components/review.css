@@ -40,10 +40,10 @@
   gap: var(--spacing-200);
   margin: 0;
   color: var(--colors-fg);
-  font-size: var(--typography-display-m-semibold-font-size);
-  font-weight: var(--typography-display-m-semibold-font-weight);
-  line-height: var(--typography-display-m-semibold-line-height);
-  letter-spacing: var(--typography-display-m-semibold-letter-spacing);
+  font-size: var(--typography-display-xl-semibold-font-size);
+  font-weight: var(--typography-display-xl-semibold-font-weight);
+  line-height: var(--typography-display-xl-semibold-line-height);
+  letter-spacing: var(--typography-display-xl-semibold-letter-spacing);
   font-feature-settings: 'lnum' 1;
 }
 
@@ -58,16 +58,16 @@
 .review__label {
   margin: 0;
   color: var(--colors-fg);
-  font-size: var(--typography-body-l-medium-font-size);
-  font-weight: var(--typography-body-l-medium-font-weight);
-  line-height: var(--typography-body-l-medium-line-height);
+  font-size: var(--typography-heading-xs-medium-font-size);
+  font-weight: var(--typography-heading-xs-medium-font-weight);
+  line-height: var(--typography-heading-xs-medium-line-height);
 }
 
 .review__lead {
   margin: 0;
   color: var(--colors-fg-lower);
-  font-size: var(--typography-body-m-regular-font-size);
-  line-height: var(--typography-body-m-regular-line-height);
+  font-size: var(--typography-body-l-regular-font-size);
+  line-height: var(--typography-body-l-regular-line-height);
 }
 
 /* 두 열로 놓습니다. 후기가 짧아 한 열로 세우면 세로로만 길어집니다. */
@@ -144,3 +144,7 @@
   padding-inline-end: var(--spacing-100);
   pointer-events: none;
 }
+
+/* "소개 전체 보기"와 같은 폭입니다. 같은 자리에서 같은 역할을 하는 버튼이 서로
+   다른 폭이면 페이지가 정돈되어 보이지 않습니다. */
+.review > .btn { inline-size: min(518px, 100%); }

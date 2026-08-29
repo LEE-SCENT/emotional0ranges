@@ -301,6 +301,11 @@
   --typography-heading-xs-semibold-font-weight: var(--_font-weight-semibold-600);
   --typography-heading-xs-semibold-line-height: var(--_line-height-140);
   --typography-heading-xs-semibold-letter-spacing: var(--_letter-spacing-0);
+  --typography-heading-xs-medium-font-family: var(--_font-family-pretendard);
+  --typography-heading-xs-medium-font-size: var(--_font-size-500);
+  --typography-heading-xs-medium-font-weight: var(--_font-weight-medium-500);
+  --typography-heading-xs-medium-line-height: var(--_line-height-140);
+  --typography-heading-xs-medium-letter-spacing: var(--_letter-spacing-0);
   --typography-body-xl-semibold-font-family: var(--_font-family-pretendard);
   --typography-body-xl-semibold-font-size: var(--_font-size-500);
   --typography-body-xl-semibold-font-weight: var(--_font-weight-semibold-600);
@@ -417,6 +422,13 @@
   font-weight: var(--typography-heading-xs-semibold-font-weight);
   line-height: var(--typography-heading-xs-semibold-line-height);
   letter-spacing: var(--typography-heading-xs-semibold-letter-spacing);
+}
+.typography-heading-xs-medium {
+  font-family: var(--typography-heading-xs-medium-font-family);
+  font-size: var(--typography-heading-xs-medium-font-size);
+  font-weight: var(--typography-heading-xs-medium-font-weight);
+  line-height: var(--typography-heading-xs-medium-line-height);
+  letter-spacing: var(--typography-heading-xs-medium-letter-spacing);
 }
 .typography-body-xl-semibold {
   font-family: var(--typography-body-xl-semibold-font-family);

@@ -281,11 +281,14 @@
 
 /* ---- 안내 사항 ---------------------------------------------------------- */
 
+/* 위아래 선으로 앞뒤 섹션과 갈라둡니다. 배경색이 같아 선이 없으면 리뷰와 비슷한
+   모임 사이에 그냥 떠 있는 것처럼 보입니다. */
 .detail-notice {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-800);
   padding-block: var(--spacing-1200);
+  border-block: 1px solid var(--colors-border);
   font-family: var(--_font-family-pretendard);
 }
 
