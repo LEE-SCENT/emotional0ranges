@@ -172,7 +172,7 @@
   --_notice-icon-size: calc(var(--_dimension) * 8);
   --_notice-icon-fg: var(--colors-fg-brand);
   --_product-card-rounded: var(--_rounded-l);
-  --_product-card-image-ratio: 1.4497;
+  --_product-card-image-ratio: 1.4444;
   --_product-card-scrim-from: #000000A6;
   --_product-card-scrim-height: 160px;
   --_section-title-fg: var(--colors-fg);

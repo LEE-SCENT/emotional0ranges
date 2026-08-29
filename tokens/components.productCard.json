@@ -5,12 +5,12 @@
       "rounded": {
         "$type": "dimension",
         "$value": "{primitive.rounded.l}",
-        "$description": "카드 그룹의 바깥쪽 모서리에만 적용됩니다. 안쪽은 각지게 두어 띠처럼 이어 보이게 합니다."
+        "$description": "카드 이미지의 네 모서리. 카드 사이가 20px 벌어져 각 카드가 독립적으로 둥급니다."
       },
       "imageRatio": {
         "$type": "number",
-        "$value": 1.4497,
-        "$description": "Figma 는 398.67×275 고정입니다. 카드 폭이 유동적이어야 해 비율(398.6667/275)로 옮겼습니다."
+        "$value": 1.4444,
+        "$description": "Figma 는 398.67×276 고정입니다. 카드 폭이 유동적이어야 해 비율로 옮겼습니다."
       },
       "scrim": {
         "$description": "이미지 상단의 어둠. tag 가 밝은 사진 위에서도 읽히게 합니다. ⚠️ Figma 에 색 변수로는 없습니다.",
