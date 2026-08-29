@@ -343,6 +343,7 @@ export const components = {
     "fgActive": "#F75D15",
     "iconSize": "24px",
     "itemMinWidth": "56px",
+    "minWidth": "360px",
     "topLine": "#0000000D"
   },
   "badge": {
@@ -426,7 +427,7 @@ export const components = {
     "status": {
       "bg": "#00000099",
       "fgRemaining": "#F75D15",
-      "fgClosed": "#CCCCCC",
+      "fgClosed": "#FFFFFF",
       "blurRadius": "12px"
     },
     "more": {

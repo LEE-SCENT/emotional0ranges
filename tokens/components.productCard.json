@@ -43,8 +43,8 @@
         },
         "fgClosed": {
           "$type": "color",
-          "$value": "#CCCCCC",
-          "$description": "마감된 성별과 가운뎃점. ⚠️ Figma 에 색 변수로는 없습니다."
+          "$value": "{semantic.colors.fg-contrast}",
+          "$description": "마감된 성별과 가운뎃점. tag 의 fgAccent 와 같은 토큰입니다 — 어두운 배경 위 글자라는 점이 같습니다."
         },
         "blurRadius": {
           "$type": "dimension",

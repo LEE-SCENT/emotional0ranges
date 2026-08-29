@@ -136,6 +136,7 @@
   --_app-bar-fg-active: var(--colors-fg-brand);
   --_app-bar-icon-size: calc(var(--_dimension) * 6);
   --_app-bar-item-min-width: calc(var(--_dimension) * 14);
+  --_app-bar-min-width: calc(var(--_dimension) * 90);
   --_app-bar-top-line: #0000000D;
   --_badge-bg: var(--_colors-twist-orange-500);
   --_badge-border: var(--_colors-white);
@@ -184,7 +185,7 @@
   --_product-card-scrim-height: 160px;
   --_product-card-status-bg: #00000099;
   --_product-card-status-fg-remaining: var(--colors-fg-brand);
-  --_product-card-status-fg-closed: #CCCCCC;
+  --_product-card-status-fg-closed: var(--colors-fg-contrast);
   --_product-card-status-blur-radius: 12px;
   --_product-card-more-fg: var(--colors-fg);
   --_product-card-more-min-width: 108px;

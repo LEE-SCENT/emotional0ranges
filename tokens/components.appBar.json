@@ -18,13 +18,25 @@
       "iconSize": {
         "$type": "dimension",
         "$value": "{primitive.dimension}",
-        "$extensions": { "scale": 6 }
+        "$extensions": {
+          "scale": 6
+        }
       },
       "itemMinWidth": {
         "$type": "dimension",
         "$value": "{primitive.dimension}",
-        "$extensions": { "scale": 14 },
+        "$extensions": {
+          "scale": 14
+        },
         "$description": "항목 하나가 이보다 좁아지지 않습니다. 56px."
+      },
+      "minWidth": {
+        "$type": "dimension",
+        "$value": "{primitive.dimension}",
+        "$extensions": {
+          "scale": 90
+        },
+        "$description": "앱바 전체가 이보다 좁아지지 않습니다. 360px — 항목 다섯 × 72."
       },
       "topLine": {
         "$type": "color",
