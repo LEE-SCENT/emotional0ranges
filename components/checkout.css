@@ -37,9 +37,9 @@
 .checkout__header h1 {
   margin: 0;
   color: var(--colors-fg);
-  font-size: var(--typography-heading-s-semibold-font-size);
-  font-weight: var(--typography-heading-s-semibold-font-weight);
-  line-height: var(--typography-heading-s-semibold-line-height);
+  font-size: var(--typography-heading-l-semibold-font-size);
+  font-weight: var(--typography-heading-l-semibold-font-weight);
+  line-height: var(--typography-heading-l-semibold-line-height);
 }
 
 /* ---- 두 단 ------------------------------------------------------------
@@ -143,11 +143,20 @@
   gap: var(--spacing-400);
 }
 
+/* 동의 문장과 펼침 화살표가 한 줄에 섭니다. 화살표는 줄 맨 위에 맞춥니다 —
+   문장이 두 줄로 접혀도 누르는 자리가 내려가지 않아야 합니다. */
 .checkout__agree-head {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-300);
+}
+
+.checkout__agree-text {
+  flex: 1 1 0;
+  min-inline-size: 0;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-100);
-  cursor: pointer;
 }
 
 .checkout__agree-head b {
@@ -157,7 +166,7 @@
   line-height: var(--typography-body-m-medium-line-height);
 }
 
-.checkout__agree-head span {
+.checkout__agree-text > span {
   color: var(--colors-fg-low);
   font-size: var(--typography-body-s-regular-font-size);
   line-height: var(--typography-body-s-regular-line-height);
@@ -197,17 +206,39 @@
    처음부터 펼쳐진 채입니다 — 읽을 수 없는 것보다 긴 편이 낫습니다. */
 .checkout__agree.is-collapsed .checkout__terms { display: none; }
 
+/* 화살표 하나가 버튼입니다.
+   ⚠️ 스프라이트에는 chevronDown 만 있습니다. 펼쳐진 상태의 chevronUp 은 같은 모양을
+   뒤집은 것이라 180 도 돌려 씁니다 — 도는 동안 방향이 바뀌는 것이 보여, 두 그림을
+   갈아끼우는 것보다 무엇이 열리고 닫히는지 분명합니다. */
 .checkout__terms-toggle {
-  align-self: flex-start;
+  position: relative;
+  flex: none;
+  display: flex;
   padding: 0;
   border: 0;
   background: none;
-  color: var(--colors-fg-low);
-  font-family: inherit;
-  font-size: var(--typography-body-s-regular-font-size);
-  line-height: var(--typography-body-s-regular-line-height);
-  text-decoration: underline;
+  color: var(--colors-fg-lowest);
   cursor: pointer;
+}
+
+.checkout__terms-toggle svg {
+  inline-size: var(--_button-icon-size-m);
+  block-size: var(--_button-icon-size-m);
+  transition: rotate var(--_duration-base) var(--_easing-standard);
+}
+
+.checkout__terms-toggle[aria-expanded='true'] svg { rotate: 180deg; }
+
+/* 24 는 손가락이 겨냥하기에 작습니다. 보이는 크기는 그대로 두고 눌리는 자리만
+   넓힙니다. */
+.checkout__terms-toggle::before {
+  content: '';
+  position: absolute;
+  inset: calc(-1 * var(--spacing-200));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .checkout__terms-toggle svg { transition: none; }
 }
 
 /* ---- 결제 버튼 ---------------------------------------------------------

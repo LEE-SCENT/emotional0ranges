@@ -25,8 +25,8 @@
 <link rel="stylesheet" href="./components/option-card.css?v=bab39e79">
 <link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
 <link rel="stylesheet" href="./components/checkbox.css?v=67340959">
-<link rel="stylesheet" href="./components/summary-card.css?v=af02bebe">
-<link rel="stylesheet" href="./components/checkout.css?v=84f5b5de">
+<link rel="stylesheet" href="./components/summary-card.css?v=02b74114">
+<link rel="stylesheet" href="./components/checkout.css?v=082c8891">
 <link rel="stylesheet" href="./components/bottom-cta.css?v=8c0377aa">
 <link rel="stylesheet" href="./components/sheet.css?v=3a404ddc">
 <link rel="stylesheet" href="./components/top-bar.css?v=3528f9ff">
@@ -88,7 +88,7 @@
 
 <main class="container checkout">
   <header class="checkout__header">
-    <a class="btn btn--ghost btn--medium btn--icon-only" href="./detail.html" aria-label="상세로 돌아가기">
+    <a class="btn btn--blur btn--medium btn--icon-only" href="./detail.html" aria-label="상세로 돌아가기">
       <svg class="btn__icon" aria-hidden="true"><use href="#icon-arrowBack"></use></svg>
     </a>
     <h1>신청하기</h1>
@@ -113,10 +113,18 @@
         </label>
 
         <div class="checkout__agree-body">
-          <span class="checkout__agree-head">
-            <b>[필수] 참석 약속 및 취소·환불 규정에 동의합니다</b>
-            <span>참석이 어렵다면 모임 시작 전에 취소하거나 고객센터로 알려주세요</span>
-          </span>
+          <div class="checkout__agree-head">
+            <span class="checkout__agree-text">
+              <b>[필수] 참석 약속 및 취소·환불 규정에 동의합니다</b>
+              <span>참석이 어렵다면 모임 시작 전에 취소하거나 고객센터로 알려주세요</span>
+            </span>
+            <!-- 스크립트가 규정을 접고 이 버튼을 켭니다. 스크립트가 오지 않으면
+                 규정은 펼쳐진 채이고 이 버튼은 할 일이 없습니다. -->
+            <button class="checkout__terms-toggle" type="button" aria-expanded="true"
+                    aria-label="규정 접기">
+              <svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg>
+            </button>
+          </div>
 
           <div class="checkout__terms">
             <section>
@@ -138,9 +146,6 @@
             </section>
           </div>
 
-          <!-- 스크립트가 규정을 접고 이 버튼을 켭니다. 스크립트가 오지 않으면
-               규정은 펼쳐진 채이고 이 버튼은 할 일이 없습니다. -->
-          <button class="checkout__terms-toggle" type="button" aria-expanded="true">규정 접기</button>
         </div>
       </section>
 
@@ -219,7 +224,7 @@
         <dt data-price-label="discount">할인</dt>
         <dd class="is-discount" data-price="discount"></dd>
         <dt data-price-label="extra">추가 옵션</dt>
-        <dd class="is-discount" data-price="extra"></dd>
+        <dd data-price="extra"></dd>
         <dt class="is-total" data-price-label="total">총 결제 금액</dt>
         <dd class="is-total" data-price="total"></dd>
       </dl>
@@ -303,6 +308,6 @@
   initStickyGnb()
   const { initSheets } = await import('./components/sheet.js?v=4abbc8c4')
   initSheets()
-  const { initCheckout } = await import('./components/checkout.js?v=1acfda8f')
+  const { initCheckout } = await import('./components/checkout.js?v=0531b9e0')
   initCheckout()
 </script>

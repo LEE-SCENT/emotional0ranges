@@ -17,6 +17,9 @@
 <symbol id="icon-check" viewBox="0 0 20 20" fill="none">
   <path d="M7.95833 15L3.20833 10.25L4.39583 9.0625L7.95833 12.625L15.6042 4.97917L16.7917 6.16667L7.95833 15Z" fill="currentColor"/>
 </symbol>
+<symbol id="icon-chevronDown" viewBox="0 0 24 24" fill="none">
+  <path d="M12.3937 13.2462L16.9937 8.64619L18.0475 9.69994L12.3937 15.3537L6.73998 9.69994L7.79373 8.64619L12.3937 13.2462Z" fill="currentColor"/>
+</symbol>
 <symbol id="icon-chevronLeft" viewBox="0 0 24 24" fill="none">
   <path d="M10.3575 11.9999L14.9575 7.39994L13.9038 6.34619L8.25 11.9999L13.9038 17.6537L14.9575 16.5999L10.3575 11.9999Z" fill="currentColor"/>
 </symbol>

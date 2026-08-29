@@ -87,6 +87,9 @@ export function initCheckout(scope = document) {
   const toggle = scope.querySelector('.checkout__terms-toggle')
   const buttons = [...scope.querySelectorAll('[data-pay]')]
 
+  /** 지금 결제될 금액. render 가 구하고 lock 이 버튼에 적습니다. */
+  let due = 0
+
   /** 금액 줄 하나. 없으면 만들지 않고, 있던 것이 필요 없어지면 지웁니다. */
   const row = (key) => price?.querySelector(`[data-price="${key}"]`)
 
@@ -127,16 +130,27 @@ export function initCheckout(scope = document) {
     setRow('extra', `+${won(add)}`, add > 0)
     setRow('total', won(total), true)
 
-    // 버튼 글자는 총액에서 바로 만듭니다. 두 곳에서 따로 계산하면 언젠가 갈립니다.
-    for (const btn of buttons) {
-      const label = btn.querySelector('.btn__label')
-      if (label) label.textContent = `${won(total)} 결제하기`
-    }
+    due = total
+    lock()
   }
 
+  /**
+   * 동의 여부에 따라 버튼을 잠그고 글자를 정합니다.
+   *
+   * 잠긴 동안에는 금액을 적지 않습니다. 버튼의 금액은 "이 값이 지금 빠져나간다"는
+   * 말인데, 눌리지 않는 버튼에 적혀 있으면 무엇을 말하는지 알 수 없습니다. 동의를
+   * 마쳐 실제로 결제할 수 있게 된 순간에 금액이 붙습니다.
+   *
+   * 금액은 render 가 구해둔 값을 그대로 씁니다 — 총액과 버튼이 같은 수여야 한다는
+   * 것은, 두 번 계산할 방법을 남겨두지 않는 것으로 지킵니다.
+   */
   const lock = () => {
     const ok = !!agree?.checked
-    for (const btn of buttons) btn.disabled = !ok
+    for (const btn of buttons) {
+      btn.disabled = !ok
+      const label = btn.querySelector('.btn__label')
+      if (label) label.textContent = ok ? `${won(due)} 결제하기` : '결제하기'
+    }
   }
 
   for (const el of options) el.addEventListener('change', render)
@@ -151,7 +165,9 @@ export function initCheckout(scope = document) {
     const paint = () => {
       agreeRow.classList.toggle('is-collapsed', !open)
       toggle.setAttribute('aria-expanded', String(open))
-      toggle.textContent = open ? '규정 접기' : '규정 자세히 보기'
+      // 화살표만 있는 버튼이라 이름은 aria-label 이 전합니다. 방향이 바뀌는 것은
+      // 눈으로만 알 수 있고, 화면을 읽어주는 쪽에는 이 글자가 전부입니다.
+      toggle.setAttribute('aria-label', open ? '규정 접기' : '규정 자세히 보기')
     }
     toggle.addEventListener('click', () => {
       open = !open
@@ -174,5 +190,4 @@ export function initCheckout(scope = document) {
   }
 
   render()
-  lock()
 }

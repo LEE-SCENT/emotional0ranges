@@ -247,7 +247,9 @@
   line-height: var(--typography-body-s-regular-line-height);
 }
 
-/* 할인과 추가 옵션은 총액을 움직인 값이라 색으로 구분합니다. */
+/* 할인만 색이 붙습니다. 깎인 값이라 눈이 먼저 닿아야 합니다.
+   추가 옵션은 더 내기로 한 돈이라 강조할 이유가 없습니다 — 색까지 얹으면 깎인 것과
+   더한 것이 같은 무게로 읽혀 총액이 어느 쪽으로 움직였는지 흐려집니다. */
 .summary-card__price .is-discount { color: var(--colors-fg-brand); }
 
 /* 총 결제 금액. 이름은 그대로 12 이고 숫자만 20 으로 커집니다 — 이 카드에서
