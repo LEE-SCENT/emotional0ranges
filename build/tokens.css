@@ -276,7 +276,7 @@
   --_sheet-bg: var(--colors-bg);
   --_sheet-rounded: var(--_rounded-2xl);
   --_sheet-modal-width: 600px;
-  --_sheet-modal-height: min(960px, 100dvh - 96px);
+  --_sheet-modal-margin: var(--spacing-800);
   --_sheet-modal-header-height: 76px;
   --_sheet-modal-padding-inline: var(--spacing-600);
   --_sheet-max-width: 480px;
