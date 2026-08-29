@@ -138,6 +138,11 @@
 .sheet[open] .schedule__group,
 .sheet[open] .schedule__options { gap: var(--spacing-200); }
 
+/* 시트에서는 타이머만 보여줍니다. 24 시간이 넘게 남아 날짜로만 알리는 태그는
+   여기서 뺍니다 — 고르는 자리라 급한 것과 급하지 않은 것이 섞여 있으면, 태그가
+   붙었다는 사실만으로 무언가 급해 보입니다. 초를 세는 것만 남습니다. */
+.sheet[open] .option-card__deadline.tag--accent-sec { display: none; }
+
 /* 날짜도 한 단계 작습니다 — 시트에서는 카드가 주인공입니다. */
 .sheet[open] .schedule__date {
   font-size: var(--typography-body-m-medium-font-size);

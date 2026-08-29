@@ -23,13 +23,14 @@
 <link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
 <link rel="stylesheet" href="./components/footer.css?v=b6122ba5">
 <link rel="stylesheet" href="./components/option-card.css?v=bab39e79">
+<link rel="stylesheet" href="./components/schedule.css?v=c79a8691">
 <link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
 <link rel="stylesheet" href="./components/checkbox.css?v=67340959">
 <link rel="stylesheet" href="./components/summary-card.css?v=38648332">
 <link rel="stylesheet" href="./components/checkout.css?v=f5c72476">
 <link rel="stylesheet" href="./components/roll.css?v=2f044986">
 <link rel="stylesheet" href="./components/bottom-cta.css?v=8c0377aa">
-<link rel="stylesheet" href="./components/sheet.css?v=47100927">
+<link rel="stylesheet" href="./components/sheet.css?v=f71a9980">
 <link rel="stylesheet" href="./components/top-bar.css?v=8d2c027b">
 <style>
   body {
@@ -342,6 +343,21 @@
                 </span>
               </label>
             </li>
+            <li>
+              <label class="option-card option-card--wait" data-date-in="1"
+                     data-time="저녁 7시" data-where="수원 광교 · 27-38세"
+                     data-price="45000" data-discount="0">
+                <input class="sr-only" type="radio" name="schedule" value="s5">
+                <span class="option-card__main">
+                  <span class="option-card__time">저녁 7:00~9:30</span>
+                  <span class="option-card__price"><b>45,000원</b></span>
+                  <span class="option-card__place">수원 광교</span>
+                </span>
+                <span class="option-card__aside">
+                  <span class="option-card__seats">대기 가능</span>
+                </span>
+              </label>
+            </li>
           </ul>
         </div>
         <div class="schedule__group">
@@ -365,9 +381,11 @@
           </ul>
         </div>
       </div>
+      <!-- 고른다고 바뀌지 않습니다. 이 버튼을 눌러야 적용됩니다 — 지금 일정이
+           그대로면 누를 것이 없으므로 잠겨 있습니다. -->
       <div class="schedule__actions">
-        <button class="btn btn--filled btn--large" data-sheet-close="schedule-sheet">
-          <span class="btn__label">이 일정으로 변경</span>
+        <button class="btn btn--filled btn--large" data-apply-schedule disabled>
+          <span class="btn__label">일정 변경</span>
         </button>
       </div>
     </div>
@@ -383,6 +401,6 @@
   initSchedule()
   const { initSheets } = await import('./components/sheet.js?v=4abbc8c4')
   initSheets()
-  const { initCheckout } = await import('./components/checkout.js?v=43a893e8')
+  const { initCheckout } = await import('./components/checkout.js?v=91453c76')
   initCheckout()
 </script>

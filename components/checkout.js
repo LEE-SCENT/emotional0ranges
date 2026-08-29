@@ -51,6 +51,15 @@ export function initCheckout(scope = document) {
   /** 지금 결제될 금액. render 가 구하고 lock 이 버튼에 적습니다. */
   let due = 0
 
+  /**
+   * 지금 적용된 일정. 시트 안에서 고른 것과 다릅니다 — 고르는 것과 바꾸는 것을
+   * 갈라두어야 "고르기만 하고 닫으면 그대로"가 성립합니다.
+   */
+  let applied = options.find((el) => el.checked)?.value ?? options[0]?.value
+
+  const sheet = scope.querySelector('#schedule-sheet')
+  const apply = scope.querySelector('[data-apply-schedule]')
+
   /** 금액 줄 하나. 없으면 만들지 않고, 있던 것이 필요 없어지면 지웁니다. */
   const row = (key) => price?.querySelector(`[data-price="${key}"]`)
 
@@ -66,7 +75,7 @@ export function initCheckout(scope = document) {
   }
 
   const render = () => {
-    const card = options.find((el) => el.checked)?.closest('.option-card')
+    const card = options.find((el) => el.value === applied)?.closest('.option-card')
     if (!card) return
 
     const at = dateOf(card)
@@ -129,14 +138,63 @@ export function initCheckout(scope = document) {
      ?schedule=s2 처럼 붙어 옵니다. 상세 화면에서 고른 일정 그대로 시작해야, 여기서
      한 번 더 고르게 하지 않습니다. 목록에 없는 값이면 마크업의 기본 선택을 둡니다. */
   const wanted = new URLSearchParams(location.search).get('schedule')
-  if (wanted) {
-    const found = options.find((el) => el.value === wanted)
-    if (found) found.checked = true
-  }
+  if (wanted && options.some((el) => el.value === wanted)) applied = wanted
+  for (const el of options) el.checked = el.value === applied
 
-  for (const el of options) el.addEventListener('change', render)
   extra?.addEventListener('change', render)
   agree?.addEventListener('change', lock)
+
+  /* ---- 일정 변경 --------------------------------------------------------
+     시트 안에서 고르는 것은 아직 정해진 것이 아닙니다. 테두리만 옮겨 다니고,
+     아래 버튼을 눌러야 적용됩니다 — 목록을 훑다 손이 스친 카드로 금액이 바뀌어
+     있으면, 무엇을 결제하는지 다시 확인해야 합니다.
+
+     지금 일정 그대로면 버튼은 잠겨 있습니다. 아무것도 달라지지 않는 버튼이
+     눌리면 눌러본 사람은 무슨 일이 있었는지 알 수 없습니다. */
+
+  const draft = () => options.find((el) => el.checked)?.value ?? applied
+
+  const markDraft = () => {
+    if (apply) apply.disabled = draft() === applied
+  }
+
+  for (const el of options) el.addEventListener('change', markDraft)
+
+  apply?.addEventListener('click', () => {
+    if (apply.disabled) return
+    const next = draft()
+    if (next === applied) return
+    applied = next
+
+    // 날짜가 달라지면 환불 조건도 달라집니다. 이전 일정 기준으로 읽고 누른 동의를
+    // 그대로 들고 가면, 동의한 적 없는 조건에 동의한 것이 됩니다.
+    if (agree?.checked) {
+      agree.checked = false
+      agree.dispatchEvent(new Event('change', { bubbles: true }))
+    }
+
+    render()
+    sheet?.close()
+  })
+
+  /* 시트를 그냥 닫으면 고르던 것은 없던 일이 됩니다. 열 때마다 지금 일정에서
+     다시 시작하고, 그 카드가 보이는 자리로 목록을 옮겨둡니다 — 다섯 번째 일정을
+     쓰고 있는데 목록이 첫 줄에서 시작하면 지금 무엇이 골라져 있는지 안 보입니다. */
+  const syncSheet = () => {
+    for (const el of options) el.checked = el.value === applied
+    markDraft()
+    options
+      .find((el) => el.value === applied)
+      ?.closest('.option-card')
+      ?.scrollIntoView({ block: 'center' })
+  }
+
+  if (sheet) {
+    new MutationObserver(() => {
+      if (sheet.open) syncSheet()
+    }).observe(sheet, { attributes: true, attributeFilter: ['open'] })
+    sheet.addEventListener('close', syncSheet)
+  }
 
   /* ---- 미리보기 전환 ----------------------------------------------------
      이 화면에만 있습니다. 실제로는 회원의 직장 등록 여부가 상태를 정합니다.
