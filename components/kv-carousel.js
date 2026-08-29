@@ -128,12 +128,7 @@ export function initKvCarousel(group) {
     const next = Math.round(pos)
     if (next === current) return
     current = next
-    items.forEach((el, i) => {
-      el.classList.toggle('is-current', i === next)
-      // 줄 순서가 바뀌므로 몇 번째인지도 그때그때 다시 씁니다.
-      const at = el.querySelector('.kv__pagination b')
-      if (at) at.textContent = String(i + 1)
-    })
+    items.forEach((el, i) => el.classList.toggle('is-current', i === next))
     plan()
   }
 
