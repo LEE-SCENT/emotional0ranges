@@ -144,12 +144,14 @@
       </header>
 
       <ul class="detail-info__facts">
-        <li class="detail-info__fact">
+        <!-- 글과 날짜는 아래 후기 목록의 첫 항목에서 옮겨 적습니다. 여기에 따로
+             적어두면 언젠가 두 곳이 갈립니다 — 실제로 갈려 있었습니다. -->
+        <li class="detail-info__fact" data-latest-review>
           <img src="./images/detail-info-1.png" alt="">
           <span class="detail-info__fact-text">
             <b>최근 게스트 후기</b>
-            <span>“진행이 매끄러워서 처음인데도 어색하지 않았어요. 자리 배치가 좋았습니다.”</span>
-            <small>2026년 7월 31일</small>
+            <span data-latest-review-body>“진행이 매끄러워서 처음인데도 어색하지 않았어요. 자리배치가 좋았습니다.”</span>
+            <small><time data-latest-review-date>2026년 8월 27일</time></small>
           </span>
         </li>
         <li class="detail-info__fact">
@@ -204,7 +206,7 @@
         </header>
 
         <ul class="review__list">
-      <li class="review__item">
+      <li class="review__item" data-days-ago="3">
         <p class="review__rating">
           <span class="review__stars" role="img" aria-label="5점 만점에 5점">
           <svg aria-hidden="true"><use href="#icon-star"></use></svg>
@@ -213,12 +215,12 @@
           <svg aria-hidden="true"><use href="#icon-star"></use></svg>
           <svg aria-hidden="true"><use href="#icon-star"></use></svg>
           </span>
-          <span>· 3일 전</span>
+          <span>· <time class="review__ago">3일 전</time></span>
         </p>
         <p class="review__body">진행이 매끄러워서 처음인데도 어색하지 않았어요. 자리배치가 좋았습니다.</p>
         <p class="review__profile"><span>김**</span><span>서울 강남</span><span>27세</span></p>
       </li>
-      <li class="review__item">
+      <li class="review__item" data-days-ago="4">
         <p class="review__rating">
           <span class="review__stars" role="img" aria-label="5점 만점에 5점">
           <svg aria-hidden="true"><use href="#icon-star"></use></svg>
@@ -227,12 +229,12 @@
           <svg aria-hidden="true"><use href="#icon-star"></use></svg>
           <svg aria-hidden="true"><use href="#icon-star"></use></svg>
           </span>
-          <span>· 3일 전</span>
+          <span>· <time class="review__ago">3일 전</time></span>
         </p>
         <p class="review__body">기대보다 훨씬 좋았습니다. 같은 관심사인 분들이라 대화가 잘 통했어요.</p>
         <p class="review__profile"><span>O**</span><span>서울 강남</span><span>26세</span></p>
       </li>
-      <li class="review__item">
+      <li class="review__item" data-days-ago="5">
         <p class="review__rating">
           <span class="review__stars" role="img" aria-label="5점 만점에 5점">
           <svg aria-hidden="true"><use href="#icon-star"></use></svg>
@@ -241,12 +243,12 @@
           <svg aria-hidden="true"><use href="#icon-star"></use></svg>
           <svg aria-hidden="true"><use href="#icon-star"></use></svg>
           </span>
-          <span>· 3일 전</span>
+          <span>· <time class="review__ago">3일 전</time></span>
         </p>
         <p class="review__body">호스트가 분위기를 잘 잡아주셔서 편했어요. 다음에 또 참여하고 싶어요.</p>
         <p class="review__profile"><span>최**</span><span>서울 강남</span><span>32세</span></p>
       </li>
-      <li class="review__item">
+      <li class="review__item" data-days-ago="6">
         <p class="review__rating">
           <span class="review__stars" role="img" aria-label="5점 만점에 5점">
           <svg aria-hidden="true"><use href="#icon-star"></use></svg>
@@ -255,12 +257,12 @@
           <svg aria-hidden="true"><use href="#icon-star"></use></svg>
           <svg aria-hidden="true"><use href="#icon-star"></use></svg>
           </span>
-          <span>· 3일 전</span>
+          <span>· <time class="review__ago">3일 전</time></span>
         </p>
         <p class="review__body">장소가 조용하고 깔끔했어요. 성비도 잘 맞아서 만족스러웠습니다.</p>
         <p class="review__profile"><span>데**</span><span>서울 강남</span><span>33세</span></p>
       </li>
-      <li class="review__item">
+      <li class="review__item" data-days-ago="7">
         <p class="review__rating">
           <span class="review__stars" role="img" aria-label="5점 만점에 5점">
           <svg aria-hidden="true"><use href="#icon-star"></use></svg>
@@ -269,12 +271,12 @@
           <svg aria-hidden="true"><use href="#icon-star"></use></svg>
           <svg aria-hidden="true"><use href="#icon-star"></use></svg>
           </span>
-          <span>· 3일 전</span>
+          <span>· <time class="review__ago">3일 전</time></span>
         </p>
         <p class="review__body">호스트가 분위기를 잘 잡아주셔서 편했어요. 다음에 또 참여하고 싶어요.</p>
         <p class="review__profile"><span>최**</span><span>서울 강남</span><span>32세</span></p>
       </li>
-      <li class="review__item">
+      <li class="review__item" data-days-ago="8">
         <p class="review__rating">
           <span class="review__stars" role="img" aria-label="5점 만점에 5점">
           <svg aria-hidden="true"><use href="#icon-star"></use></svg>
@@ -283,7 +285,7 @@
           <svg aria-hidden="true"><use href="#icon-star"></use></svg>
           <svg aria-hidden="true"><use href="#icon-star"></use></svg>
           </span>
-          <span>· 3일 전</span>
+          <span>· <time class="review__ago">3일 전</time></span>
         </p>
         <p class="review__body">장소가 조용하고 깔끔했어요. 성비도 잘 맞아서 만족스러웠습니다.</p>
         <p class="review__profile"><span>데**</span><span>서울 강남</span><span>33세</span></p>
@@ -633,6 +635,8 @@
   initStickyGnb()
   const { initSchedule } = await import('./components/schedule.js?v=6d625718')
   initSchedule()
+  const { initRecentReview } = await import('./components/recent-review.js?v=417e597f')
+  initRecentReview()
   const { initConfirms } = await import('./components/confirm.js?v=126eea7a')
   initConfirms()
   const { initWaitlist } = await import('./components/waitlist.js?v=de56f668')
