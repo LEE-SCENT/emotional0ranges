@@ -67,12 +67,16 @@
   gap: var(--spacing-100);
 }
 
+/* Figma 는 제목·설명을 Heading 이라는 한 겹으로 더 묶고, 그 안에서는 간격이 0
+   입니다. 4px 는 Heading 과 가격 사이에만 붙습니다. 마크업을 한 겹 더 두는 대신
+   간격을 0 으로 두고 가격에만 위 여백을 줍니다 — 결과가 같고 DOM 이 얕습니다. */
 .product-card__info {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-100);
+  gap: 0;
   min-inline-size: 0;
 }
+
 
 .product-card__title,
 .product-card__desc,
@@ -112,6 +116,8 @@
 }
 
 .product-card__price {
+  /* 제목·설명과 가격 사이의 4px. 공용 margin:0 리셋보다 뒤에 있어야 살아남습니다. */
+  margin-block-start: var(--spacing-100);
   display: flex;
   align-items: center;
   gap: var(--spacing-150);
