@@ -27,7 +27,9 @@
   min-inline-size: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-150);
+  /* Figma 는 6(spacing-150)이지만 줄상자 여백이 위아래로 더해져 실제로는 더 벌어
+     보입니다. 눈에 보이는 간격을 맞추려고 4 로 줄였습니다. */
+  gap: var(--spacing-100);
 }
 
 .section-title__heading,
@@ -67,4 +69,11 @@
   margin-inline: auto;
   /* 앞 섹션과의 간격. Figma 기준 KV 하단 590 → 섹션 상단 622. */
   margin-block-start: var(--spacing-800);
+}
+
+/* 섹션이 연달아 놓일 때는 바깥 여백 대신 안쪽 여백으로 위아래 48 을 둡니다.
+   Figma 에서 섹션끼리 맞닿아 있고 각자 48 씩 품고 있어, 섹션 사이는 96 이 됩니다. */
+.product-card-section--stacked {
+  margin-block-start: 0;
+  padding-block: var(--spacing-1200);
 }

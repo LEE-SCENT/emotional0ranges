@@ -84,13 +84,15 @@
   content: '·';
   /* 점 뒤 여백. 점 앞 여백은 flex gap 이 담당합니다. */
   padding-inline-end: var(--spacing-100);
+  /* 점은 뒤따르는 링크의 ::before 라 링크 상자 안에 들어갑니다. 구분자일 뿐이니
+     클릭·hover 범위에서는 빼둡니다. */
+  pointer-events: none;
 }
 
 .footer__links a {
   color: inherit;
   text-decoration: none;
 }
-.footer__links a:hover { text-decoration: underline; }
 
 /* 강조되는 링크만 semibold 입니다 (Figma: 개인정보 처리방침). */
 .footer__links .is-strong {
