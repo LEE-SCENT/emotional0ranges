@@ -163,6 +163,7 @@
   display: block;
   inline-size: 100%;
   block-size: auto;
+  border-radius: var(--_image-viewer-rounded);
   transition: scale var(--_duration-base) var(--_easing-standard);
 }
 
@@ -295,6 +296,10 @@
 ::view-transition-group(viewer-photo) {
   animation-duration: var(--_duration-base);
   animation-timing-function: var(--_easing-standard);
+  /* 모서리는 오가는 그림이 아니라 이 틀이 잘라냅니다. 아래에서 두 그림의 반지름을
+     0 으로 두는 것과 짝입니다 — 자세한 이유는 그쪽에 적었습니다. */
+  border-radius: var(--_image-viewer-rounded);
+  overflow: clip;
 }
 
 ::view-transition-old(viewer-photo),
@@ -306,6 +311,20 @@
   inline-size: 100%;
   object-fit: cover;
 }
+
+/* 오가는 동안에는 사진 자체의 모서리를 없앱니다.
+   전환에 쓰이는 두 그림은 찍힌 그림이라, 반지름도 그림에 그려진 채로 함께 늘고
+   줄어듭니다. 917 폭에서 찍은 20 짜리 모서리를 353 으로 줄이면 8 이 되고, 반대로
+   키우면 52 가 됩니다 — 모서리가 커졌다 작아졌다 합니다.
+
+   그래서 그림에서는 빼고 위의 틀이 20 으로 잘라내게 둡니다. 틀은 그림이 아니라
+   상자라 크기가 변해도 반지름이 그대로입니다.
+
+   목록 쪽 사진에도 반지름을 적어두는 것은 이 클래스가 붙지 않은 평소를 위해서입니다.
+   버튼이 이미 잘라내고 있지만, 사진에도 같은 값이 있어야 전환이 끝나고 클래스가
+   빠지는 순간 모서리가 튀지 않습니다. */
+.image-viewer.is-morphing .image-viewer__single img,
+.image-viewer.is-morphing .image-viewer__thumb img { border-radius: 0; }
 
 /* 나머지 화면(상단 바의 제목 ↔ 장수)은 짧게 교차시킵니다. */
 ::view-transition-group(root) {

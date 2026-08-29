@@ -117,9 +117,13 @@ export function initImageViewer(dialog) {
 
     const pair = [single, photos[index]]
     for (const el of pair) el.style.viewTransitionName = 'viewer-photo'
+    // 찍히기 전에 붙어야 합니다. 첫 장면은 startViewTransition 을 부르는 그 자리에서
+    // 바로 찍히므로, 한 줄이라도 뒤에 두면 모서리가 그림에 그려진 채로 남습니다.
+    dialog.classList.add('is-morphing')
     const done = () => {
       // 이름을 남겨두면 다음 전환에서 엉뚱한 요소끼리 이어집니다.
       for (const el of pair) el.style.viewTransitionName = ''
+      dialog.classList.remove('is-morphing')
     }
     document.startViewTransition(update).finished.then(done, done)
   }
