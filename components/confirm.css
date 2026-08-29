@@ -45,6 +45,8 @@
 .confirm::backdrop { background: var(--_confirm-backdrop); }
 
 .confirm__panel {
+  /* 닫기 버튼이 얹힐 기준점입니다. */
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--_confirm-gap);
@@ -64,7 +66,7 @@
   gap: var(--_confirm-text-gap);
 }
 
-.confirm__text h2 {
+.confirm__panel h2 {
   margin: 0;
   color: var(--colors-fg);
   font-size: var(--typography-heading-xs-semibold-font-size);
@@ -122,4 +124,40 @@
   .confirm__panel { transition: none; }
 
   .confirm:not([open]) .confirm__panel { scale: 1; }
+}
+
+/* ---- 읽고 닫는 창 --------------------------------------------------------
+   묻지 않고 알려주기만 하는 창입니다(환불 정책 같은 것). 고를 것이 없으므로 아래
+   버튼 줄 대신 오른쪽 위에 닫기 하나만 둡니다.
+
+   닫기를 글의 흐름에서 빼내 얹는 것은, 제목이 줄 가운데로 밀리지 않게 하기
+   위해서입니다 — 제목은 왼쪽 첫 글자에서 시작해야 읽기 시작하는 자리가 분명합니다.
+*/
+
+.confirm__close {
+  position: absolute;
+  inset-block-start: var(--spacing-400);
+  inset-inline-end: var(--spacing-200);
+}
+
+.confirm__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-150);
+  font-size: var(--typography-body-m-regular-font-size);
+  line-height: var(--typography-body-m-regular-line-height);
+}
+
+/* 앞머리 한 줄은 무엇을 기준으로 계산하는지를 말합니다 — 규정 자체가 아니라
+   규정을 읽는 법이라 한 단계 옅게 둡니다. */
+.confirm__body p {
+  margin: 0;
+  color: var(--colors-fg-low);
+}
+
+.confirm__body ul {
+  margin: 0;
+  /* <ul> 기본 들여쓰기는 40 입니다. 디자인의 글머리 기호는 21 에서 시작합니다. */
+  padding-inline-start: 21px;
+  color: var(--colors-fg);
 }

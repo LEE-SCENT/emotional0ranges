@@ -27,7 +27,7 @@
 <link rel="stylesheet" href="./components/tabs.css?v=77e05f5c">
 <link rel="stylesheet" href="./components/option-card.css?v=dc5cfd48">
 <link rel="stylesheet" href="./components/schedule.css?v=6094ad80">
-<link rel="stylesheet" href="./components/confirm.css?v=9dbd820b">
+<link rel="stylesheet" href="./components/confirm.css?v=badfd826">
 <link rel="stylesheet" href="./components/review.css?v=e6a76bd1">
 <link rel="stylesheet" href="./components/detail.css?v=0f2e70f5">
 <link rel="stylesheet" href="./components/favorite.css?v=7b27f284">
@@ -436,7 +436,7 @@
       <span class="detail-notice__item-text">
         <b>환불 정책</b>
         <span>신청 취소 시 환불 규정에 따라 환불돼요.</span>
-        <a href="#">자세히 알아보기</a>
+        <a href="#refund-policy" data-confirm-open="refund-policy">자세히 알아보기</a>
       </span>
     </li>
     </ul>
@@ -530,6 +530,27 @@
   </footer>
 </div>
 
+
+<!-- 안내 사항의 "자세히 알아보기"가 엽니다. 묻는 창이 아니라 읽고 닫는 창이라
+     아래 버튼 줄 없이 오른쪽 위에 닫기만 둡니다. -->
+<dialog class="confirm" id="refund-policy" aria-labelledby="refund-policy-title">
+  <div class="confirm__panel">
+    <h2 id="refund-policy-title">환불 정책</h2>
+    <div class="confirm__body">
+      <p>환불 금액은 모임 시작일과 실제 결제금액을 기준으로 계산됩니다.</p>
+      <ul>
+        <li>10일 전까지: 결제금액 100% 환불</li>
+        <li>7~9일 전: 결제금액 70% 환불</li>
+        <li>5~6일 전: 결제금액 50% 환불</li>
+        <li>4일 전부터 당일까지: 환불 불가</li>
+      </ul>
+    </div>
+    <button class="btn btn--ghost btn--medium btn--icon-only confirm__close" type="button"
+            data-confirm-close aria-label="닫기">
+      <svg class="btn__icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+    </button>
+  </div>
+</dialog>
 
 <!-- 대기는 결제가 아니라 순서를 잡아두는 일입니다. 무엇이 일어나고 무엇이
      일어나지 않는지 먼저 말합니다. -->
