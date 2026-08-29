@@ -205,6 +205,9 @@ export function initKvCarousel(group) {
     }
 
     const from = Math.round(track.scrollLeft / size)
+    // 줄을 옮겼으면 크기도 그 자리에서 다시 잡습니다. 스크롤 이벤트를 기다리면
+    // 방금 옮겨온 장이 한동안 원래 크기로 남아, 줄어들지 않은 채 옆에 붙어 있습니다.
+    mark()
     // 줄을 옮긴 직후에는 스냅이 자리를 다시 잡습니다. 같은 프레임에 스크롤을 걸면
     // 그 재조정에 밀려 사라지므로 한 프레임 뒤에 겁니다.
     requestAnimationFrame(() => {

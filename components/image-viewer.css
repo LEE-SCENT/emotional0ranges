@@ -21,8 +21,11 @@
   /* dialog 의 기본값(가운데 정렬된 작은 상자)을 전부 지웁니다. */
   inline-size: 100%;
   max-inline-size: 100%;
-  block-size: 100%;
-  max-block-size: 100%;
+  /* 100% 가 아니라 100dvh 입니다. iOS 사파리에서 모달의 기준이 되는 상자는 주소창
+     ·툴바가 덮은 자리까지 포함해, 100% 로 두면 상자가 화면보다 커집니다. 아래에
+     붙는 것(시트의 신청 버튼)이 툴바 뒤로 들어가 보이지 않았습니다. */
+  block-size: 100dvh;
+  max-block-size: 100dvh;
   padding: 0;
   border: 0;
   background: var(--colors-bg);
