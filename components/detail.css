@@ -285,12 +285,14 @@
   min-inline-size: 0;
 }
 
+/* 홈 배너의 아이콘은 브랜드색이지만 여기는 fg 입니다. 신뢰 요소를 알리는 자리가
+   아니라 읽고 넘어가는 안내라, 색으로 끌어당길 이유가 없습니다. */
 .detail-notice__item svg {
   display: block;
   flex: none;
   inline-size: 32px;
   block-size: 32px;
-  color: var(--colors-fg-brand);
+  color: var(--colors-fg);
 }
 
 .detail-notice__item-text {
