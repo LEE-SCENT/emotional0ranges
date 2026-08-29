@@ -43,7 +43,7 @@
    글자 뒤로 비칩니다. */
 .detail-main .tabs {
   position: sticky;
-  inset-block-start: 72px;
+  inset-block-start: var(--detail-sticky-top);
   /* GNB(20) 아래, 본문 위. */
   z-index: 10;
   margin-block-end: var(--spacing-500);
@@ -63,11 +63,17 @@
   inline-size: 380px;
 }
 
-/* 일정은 읽어 내려가는 동안 따라옵니다 — 어느 대목을 보든 신청은 바로 옆에 있어야
-   합니다. GNB 가 붙어 있는 만큼 아래로 내려 잡습니다. */
+/* 탭과 일정은 함께 따라오고, 붙는 자리도 같아야 합니다. 값을 두 곳에 따로 적으면
+   한쪽만 고쳐져 24 씩 어긋납니다 — 실제로 그랬습니다.
+
+   ⚠️ 72 는 GNB 높이입니다. Figma 에 변수로 없어 프레임에서 읽었습니다. */
+.detail-body { --detail-sticky-top: 72px; }
+
+/* 일정은 읽어 내려가는 동안 따라옵니다 — 어느 대목을 보든 신청은 바로 옆에
+   있어야 합니다. */
 .detail-side {
   position: sticky;
-  inset-block-start: calc(72px + var(--spacing-600));
+  inset-block-start: var(--detail-sticky-top);
 }
 
 @media (max-width: 960px) {
@@ -385,3 +391,7 @@
     min-inline-size: 0;
   }
 }
+
+/* 비슷한 모임과 푸터 사이. 섹션이 스스로 품은 48 로는 목록과 사업자 정보가 한
+   덩어리처럼 붙어 보입니다. 페이지가 여기서 끝난다는 것을 여백으로 알립니다. */
+.detail-page .product-card-section { padding-block-end: var(--spacing-2000); }
