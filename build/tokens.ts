@@ -412,7 +412,16 @@ export const components = {
       "height": "40px",
       "stickyWidth": "96px",
       "stickyHeight": "30px"
-    }
+    },
+    "maxContentWidthLg": "1440px"
+  },
+  "imageViewer": {
+    "maxImageWidth": "1000px",
+    "bottomGap": "4px",
+    "listMaxWidth": "1280px",
+    "listGap": "4px",
+    "navGap": "4px",
+    "rounded": "20px"
   },
   "kv": {
     "rounded": {

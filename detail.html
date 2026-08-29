@@ -12,14 +12,14 @@
 <meta name="theme-color" content="#FFFFFF">
 <title>12:12 티키타카 로테이션 소개팅 — 감정적인 오렌지들</title>
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
-<link rel="stylesheet" href="./build/tokens.css?v=b09ccbba">
+<link rel="stylesheet" href="./build/tokens.css?v=0a94ad6a">
 <link rel="stylesheet" href="./components/container.css?v=4a4dc1f9">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=04c0adfe">
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
 <link rel="stylesheet" href="./components/segmented-control.css?v=7a4a3de6">
 <link rel="stylesheet" href="./components/tooltip.css?v=d3d8dfa4">
-<link rel="stylesheet" href="./components/gnb.css?v=6ef67f69">
+<link rel="stylesheet" href="./components/gnb.css?v=3046ec8e">
 <link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
 <link rel="stylesheet" href="./components/product-card.css?v=afaede78">
 <link rel="stylesheet" href="./components/section-title.css?v=d1c6b1bc">
@@ -27,9 +27,10 @@
 <link rel="stylesheet" href="./components/tabs.css?v=77e05f5c">
 <link rel="stylesheet" href="./components/option-card.css?v=024f0052">
 <link rel="stylesheet" href="./components/review.css?v=81c08e9a">
-<link rel="stylesheet" href="./components/detail.css?v=e17e94ce">
+<link rel="stylesheet" href="./components/detail.css?v=aa720f90">
 <link rel="stylesheet" href="./components/favorite.css?v=7b27f284">
 <link rel="stylesheet" href="./components/app-bar.css?v=4709389e">
+<link rel="stylesheet" href="./components/image-viewer.css?v=6c95e9ca">
 <style>
   body {
     margin: 0;
@@ -88,11 +89,19 @@
 <main class="container detail-page">
   <div class="detail-top">
     <div class="detail-gallery">
-      <img src="./images/detail-gallery-1.jpg" alt="">
-      <img src="./images/detail-gallery-2.jpg" alt="">
-      <img src="./images/detail-gallery-3.jpg" alt="">
-      <img src="./images/detail-gallery-4.jpg" alt="">
-      <button class="btn btn--blur btn--medium btn--icon-only is-on detail-gallery__more" aria-label="사진 모두 보기">
+      <button class="detail-gallery__item" data-viewer-open="detail-photos" data-viewer-index="0" aria-label="1번째 사진 크게 보기">
+        <img src="./images/detail-photo-1.jpg" alt="조명이 놓인 테이블에서 마주 앉아 대화하는 두 사람">
+      </button>
+      <button class="detail-gallery__item" data-viewer-open="detail-photos" data-viewer-index="1" aria-label="2번째 사진 크게 보기">
+        <img src="./images/detail-photo-2.jpg" alt="턴테이블에 레코드를 올려둔 라운지 한켠">
+      </button>
+      <button class="detail-gallery__item" data-viewer-open="detail-photos" data-viewer-index="2" aria-label="3번째 사진 크게 보기">
+        <img src="./images/detail-photo-3.jpg" alt="기둥 사이 자리에서 이야기를 나누는 참가자들">
+      </button>
+      <button class="detail-gallery__item" data-viewer-open="detail-photos" data-viewer-index="3" aria-label="4번째 사진 크게 보기">
+        <img src="./images/detail-photo-4.jpg" alt="벽돌벽 앞 테이블에서 프로필 카드를 함께 보는 두 사람">
+      </button>
+      <button class="btn btn--blur btn--medium btn--icon-only is-on detail-gallery__more" data-viewer-open="detail-photos" aria-label="사진 모두 보기">
         <svg class="btn__icon" aria-hidden="true"><use href="#icon-window"></use></svg>
       </button>
     </div>
@@ -463,6 +472,59 @@
   </footer>
 </div>
 
+<dialog class="image-viewer" id="detail-photos" data-view="list" aria-label="12:12 티키타카 로테이션 소개팅 사진">
+  <div class="image-viewer__bar">
+    <button class="btn btn--ghost btn--medium btn--icon-only image-viewer__close" aria-label="닫기">
+      <svg class="btn__icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+    </button>
+    <p class="image-viewer__label image-viewer__title body-m-medium">12:12 티키타카 로테이션 소개팅</p>
+    <p class="image-viewer__label image-viewer__count body-m-medium" aria-live="polite">1 / 5</p>
+    <button class="btn btn--ghost btn--medium btn--icon-only image-viewer__to-list" aria-label="사진 목록 보기" hidden>
+      <svg class="btn__icon" aria-hidden="true"><use href="#icon-window"></use></svg>
+    </button>
+  </div>
+
+  <div class="image-viewer__body">
+    <ul class="image-viewer__list">
+        <li>
+          <button class="image-viewer__thumb" aria-label="1번째 사진 크게 보기">
+            <img src="./images/detail-photo-1.jpg" alt="조명이 놓인 테이블에서 마주 앉아 대화하는 두 사람" width="2000" height="1333" loading="lazy">
+          </button>
+        </li>
+        <li>
+          <button class="image-viewer__thumb" aria-label="2번째 사진 크게 보기">
+            <img src="./images/detail-photo-2.jpg" alt="턴테이블에 레코드를 올려둔 라운지 한켠" width="2000" height="1333" loading="lazy">
+          </button>
+        </li>
+        <li>
+          <button class="image-viewer__thumb" aria-label="3번째 사진 크게 보기">
+            <img src="./images/detail-photo-3.jpg" alt="기둥 사이 자리에서 이야기를 나누는 참가자들" width="1500" height="2000" loading="lazy">
+          </button>
+        </li>
+        <li>
+          <button class="image-viewer__thumb" aria-label="4번째 사진 크게 보기">
+            <img src="./images/detail-photo-4.jpg" alt="벽돌벽 앞 테이블에서 프로필 카드를 함께 보는 두 사람" width="2000" height="1332" loading="lazy">
+          </button>
+        </li>
+        <li>
+          <button class="image-viewer__thumb" aria-label="5번째 사진 크게 보기">
+            <img src="./images/detail-photo-5.jpg" alt="작은 조명 아래 음료를 두고 마주한 손" width="2000" height="1333" loading="lazy">
+          </button>
+        </li>
+    </ul>
+
+    <div class="image-viewer__single">
+      <button class="btn btn--blur btn--large btn--icon-only image-viewer__nav image-viewer__nav--prev" aria-label="이전 사진">
+        <svg class="btn__icon" aria-hidden="true"><use href="#icon-chevronLeft"></use></svg>
+      </button>
+      <img src="./images/detail-photo-1.jpg" alt="조명이 놓인 테이블에서 마주 앉아 대화하는 두 사람">
+      <button class="btn btn--blur btn--large btn--icon-only image-viewer__nav image-viewer__nav--next" aria-label="다음 사진">
+        <svg class="btn__icon" aria-hidden="true"><use href="#icon-chevronRight"></use></svg>
+      </button>
+    </div>
+  </div>
+</dialog>
+
 <script type="module">
   document.getElementById('sprite').innerHTML =
     await (await fetch('./build/icons.svg')).text() + await (await fetch('./build/logo.svg')).text()
@@ -476,4 +538,6 @@
   initDetailIntro()
   const { initTabs } = await import('./components/tabs.js?v=047f0e24')
   initTabs()
+  const { initImageViewers } = await import('./components/image-viewer.js?v=7bbf009f')
+  initImageViewers()
 </script>

@@ -36,6 +36,11 @@
           "$type": "dimension",
           "$value": "30px"
         }
+      },
+      "maxContentWidthLg": {
+        "$type": "dimension",
+        "$value": "{semantic.container.maxWidth.lg}",
+        "$description": "1601 부터의 가운데 블록 폭. 컨테이너가 그 폭에서 1440 으로 넓어지므로 GNB 도 따라갑니다 — 따로 두면 넓은 화면에서 메뉴와 본문 세로선이 어긋납니다."
       }
     }
   }

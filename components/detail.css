@@ -103,18 +103,29 @@
   gap: var(--spacing-50);
 }
 
-.detail-gallery img {
+/* 네 장이 각각 확대보기를 여는 버튼입니다. 모서리는 버튼에서 자르고 사진은 그
+   안을 채웁니다 — 사진에만 반지름을 주면 버튼의 초점 테두리가 각지게 남습니다. */
+.detail-gallery__item {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  border-radius: var(--_rounded-m);
+  overflow: hidden;
+}
+
+.detail-gallery__item img {
   display: block;
   inline-size: 100%;
   aspect-ratio: 1;
   object-fit: cover;
-  border-radius: var(--_rounded-m);
 }
 
-.detail-gallery img:nth-child(1) { border-start-start-radius: var(--_rounded-2xl); }
-.detail-gallery img:nth-child(2) { border-start-end-radius: var(--_rounded-2xl); }
-.detail-gallery img:nth-child(3) { border-end-start-radius: var(--_rounded-2xl); }
-.detail-gallery img:nth-child(4) { border-end-end-radius: var(--_rounded-2xl); }
+.detail-gallery__item:nth-child(1) { border-start-start-radius: var(--_rounded-2xl); }
+.detail-gallery__item:nth-child(2) { border-start-end-radius: var(--_rounded-2xl); }
+.detail-gallery__item:nth-child(3) { border-end-start-radius: var(--_rounded-2xl); }
+.detail-gallery__item:nth-child(4) { border-end-end-radius: var(--_rounded-2xl); }
 
 .detail-gallery__more {
   position: absolute;

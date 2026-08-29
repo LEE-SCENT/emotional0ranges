@@ -1,0 +1,174 @@
+/**
+ * 사진 확대보기 팝업을 열고, 목록 ↔ 개별 사진을 오갑니다.
+ *
+ *   <button data-viewer-open="detail-photos">사진 모두 보기</button>
+ *   <button data-viewer-open="detail-photos" data-viewer-index="2">…</button>
+ *
+ *   <dialog class="image-viewer" id="detail-photos" data-view="list"> … </dialog>
+ *
+ *   import { initImageViewers } from './components/image-viewer.js'
+ *   initImageViewers()
+ *
+ * data-viewer-index 가 있으면 그 사진 한 장으로, 없으면 목록으로 엽니다. 상세 화면의
+ * 2×2 그리드에서 사진을 고르면 그 사진이, 우측 아래 버튼을 누르면 전체 목록이 열리는
+ * 것이 이 차이입니다.
+ *
+ * 사진 목록은 HTML 에 이미 다 들어 있습니다. 여기서 만들어 넣지 않는 이유는 스크립트가
+ * 실패하거나 늦게 도착해도 사진이 문서에 남아 있어야 하기 때문입니다 — 검색 로봇과
+ * 스크린 리더가 읽는 것도 그 마크업입니다.
+ *
+ * 개별 화면의 <img> 는 한 장뿐이고 src 만 갈아끼웁니다. 다섯 장을 미리 깔아두고
+ * 감췄다 보였다 하면 브라우저가 다섯 장을 모두 디코딩해 들고 있어야 합니다. 목록에서
+ * 이미 받아둔 파일과 주소가 같아 갈아끼우는 순간 그대로 나타납니다.
+ */
+
+/** 팝업이 열려 있는 동안 뒤 페이지가 스크롤되지 않게 합니다. */
+const lock = (on) => {
+  document.documentElement.style.overflow = on ? 'hidden' : ''
+}
+
+const wantsLessMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches
+
+/** 사진이 흐려지는 시간. 숫자를 여기 다시 적으면 CSS 와 어긋납니다. */
+const fadeMs = () =>
+  parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--_duration-fast')) || 0
+
+const wait = (ms) => new Promise((r) => setTimeout(r, ms))
+
+export function initImageViewer(dialog) {
+  if (dialog.dataset.viewerReady) return
+  dialog.dataset.viewerReady = '1'
+
+  const thumbs = [...dialog.querySelectorAll('.image-viewer__thumb')]
+  if (!thumbs.length) return
+
+  const photos = thumbs.map((btn) => btn.querySelector('img'))
+  const single = dialog.querySelector('.image-viewer__single img')
+  const count = dialog.querySelector('.image-viewer__count')
+  const toList = dialog.querySelector('.image-viewer__to-list')
+
+  dialog.dataset.count = String(photos.length)
+
+  let at = 0
+  /** 목록에서 어느 사진으로 들어왔는지. 돌아갈 때 그 자리에 초점을 되돌립니다. */
+  let cameFrom = null
+  /**
+   * 마지막으로 시작한 교체가 몇 번째인지. 화살표를 연달아 누르면 앞선 교체가 아직
+   * 흐려지는 중일 수 있는데, 그 뒤늦은 결과가 나중 사진을 덮어쓰면 안 됩니다.
+   */
+  let turn = 0
+
+  const show = (i, instant = false) => {
+    at = (i + photos.length) % photos.length
+    if (count) count.textContent = `${at + 1} / ${photos.length}`
+    if (!single) return
+
+    const from = photos[at]
+    const src = from.currentSrc || from.src
+    const mine = ++turn
+
+    if (instant || wantsLessMotion()) {
+      single.classList.remove('is-swapping')
+      single.src = src
+      single.alt = from.alt
+      return
+    }
+
+    // 흐려진 다음에 갈아끼웁니다. 같은 프레임에 바꾸면 옛 사진은 사라진 적이 없고
+    // 새 사진만 슬며시 나타나, 넘긴 것이 아니라 늦게 뜬 것처럼 보입니다.
+    single.classList.add('is-swapping')
+    wait(fadeMs())
+      .then(() => {
+        if (mine !== turn) return
+        single.src = src
+        single.alt = from.alt
+        // 디코딩이 끝나기 전에 보이면 첫 프레임이 빈칸으로 지나갑니다.
+        return single.decode().catch(() => {})
+      })
+      .then(() => {
+        if (mine !== turn) return
+        single.classList.remove('is-swapping')
+      })
+  }
+
+  const view = (name) => {
+    dialog.dataset.view = name
+    if (toList) toList.hidden = name === 'list'
+  }
+
+  const openList = () => {
+    view('list')
+    // 방금 보던 사진이 화면 밖이면 목록이 엉뚱한 자리에서 시작합니다.
+    thumbs[at]?.scrollIntoView({ block: 'nearest' })
+  }
+
+  /* ---- 여는 쪽 --------------------------------------------------------- */
+
+  const open = (index) => {
+    if (index == null) {
+      view('list')
+    } else {
+      show(index, true)
+      view('single')
+    }
+    if (!dialog.open) {
+      dialog.showModal()
+      lock(true)
+    }
+  }
+
+  document.addEventListener('click', (e) => {
+    const trigger = e.target.closest(`[data-viewer-open="${dialog.id}"]`)
+    if (!trigger) return
+    e.preventDefault()
+    const raw = trigger.dataset.viewerIndex
+    open(raw == null || raw === '' ? null : Number(raw))
+  })
+
+  /* ---- 팝업 안 ---------------------------------------------------------- */
+
+  dialog.addEventListener('click', (e) => {
+    const thumb = e.target.closest('.image-viewer__thumb')
+    if (thumb) {
+      cameFrom = thumb
+      show(thumbs.indexOf(thumb), true)
+      view('single')
+      // 사진이 바뀌었으니 다음 사진 버튼에 초점을 둡니다. 계속 넘겨 보게 됩니다.
+      dialog.querySelector('.image-viewer__nav--next')?.focus()
+      return
+    }
+
+    const nav = e.target.closest('.image-viewer__nav')
+    if (nav) {
+      show(at + (nav.classList.contains('image-viewer__nav--prev') ? -1 : 1))
+      return
+    }
+
+    if (e.target.closest('.image-viewer__to-list')) {
+      openList()
+      // 들어올 때 눌렀던 사진으로 돌아갑니다. 어디에 있었는지 잃지 않습니다.
+      ;(cameFrom ?? thumbs[at])?.focus()
+      return
+    }
+
+    if (e.target.closest('.image-viewer__close')) dialog.close()
+  })
+
+  dialog.addEventListener('keydown', (e) => {
+    if (dialog.dataset.view !== 'single') return
+    if (e.key === 'ArrowRight') show(at + 1)
+    else if (e.key === 'ArrowLeft') show(at - 1)
+    else return
+    e.preventDefault()
+  })
+
+  // Esc 로 닫는 것은 <dialog> 가 알아서 합니다. 뒤처리만 합니다.
+  dialog.addEventListener('close', () => lock(false))
+
+  view(dialog.dataset.view || 'list')
+  show(0, true)
+}
+
+export function initImageViewers(scope = document) {
+  for (const el of scope.querySelectorAll('.image-viewer')) initImageViewer(el)
+}

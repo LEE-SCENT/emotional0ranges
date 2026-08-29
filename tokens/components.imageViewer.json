@@ -1,0 +1,37 @@
+{
+  "components": {
+    "imageViewer": {
+      "$description": "상세 화면의 사진을 화면 전체에 펼쳐 보는 팝업. 목록(미리보기)과 개별 사진, 두 가지 상태를 오갑니다.",
+      "maxImageWidth": {
+        "$type": "dimension",
+        "$value": "1000px",
+        "$description": "가로 사진의 최대 폭. Figma 프레임 이름에 적힌 값이자 요청받은 값입니다 — 변수로는 없습니다. 이보다 크게 두면 넓은 화면에서 사진이 시야를 넘어가 한눈에 들어오지 않습니다."
+      },
+      "bottomGap": {
+        "$type": "dimension",
+        "$value": "{semantic.spacing.1000}",
+        "$description": "사진 아래 여백. 사진 높이는 화면에서 topBar 와 이 값을 뺀 만큼입니다."
+      },
+      "listMaxWidth": {
+        "$type": "dimension",
+        "$value": "{semantic.container.maxWidth.md}",
+        "$description": "목록의 최대 폭. 1280 을 세 칸으로 나누고 사이를 16 씩 띄우면 디자인의 416 이 나옵니다."
+      },
+      "listGap": {
+        "$type": "dimension",
+        "$value": "{semantic.spacing.400}",
+        "$description": "목록에서 사진과 사진 사이."
+      },
+      "navGap": {
+        "$type": "dimension",
+        "$value": "{semantic.spacing.600}",
+        "$description": "사진과 좌우 이동 버튼 사이. 버튼이 사진에 얹히지 않고 바깥에 섭니다."
+      },
+      "rounded": {
+        "$type": "dimension",
+        "$value": "{primitive.rounded.2xl}",
+        "$description": "사진 모서리. 목록과 개별 화면이 같습니다."
+      }
+    }
+  }
+}
