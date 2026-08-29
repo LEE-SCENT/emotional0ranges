@@ -203,7 +203,7 @@
   --_option-card-border-selected: var(--_colors-serious-gray-900);
   --_option-card-border-width: 1px;
   --_option-card-border-width-selected: 2px;
-  --_option-card-rounded: var(--_rounded-xl);
+  --_option-card-rounded: var(--_rounded-l);
   --_option-card-price-fg: var(--colors-fg-brand);
   --_option-card-price-strike-fg: var(--colors-fg-lowest);
   --_option-card-bg-soldout: var(--colors-bg-disabled);

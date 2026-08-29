@@ -26,7 +26,7 @@
       },
       "rounded": {
         "$type": "dimension",
-        "$value": "{primitive.rounded.xl}"
+        "$value": "{primitive.rounded.l}"
       },
       "priceFg": {
         "$type": "color",

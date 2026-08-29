@@ -457,7 +457,7 @@ export const components = {
     "borderSelected": "#272625",
     "borderWidth": "1px",
     "borderWidthSelected": "2px",
-    "rounded": "16px",
+    "rounded": "12px",
     "priceFg": "#F75D15",
     "priceStrikeFg": "#A6A4A3",
     "bgSoldout": "#FDFBFA",

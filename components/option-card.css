@@ -27,7 +27,7 @@
   gap: var(--spacing-400);
   inline-size: 100%;
   block-size: var(--_option-card-height);
-  padding: var(--spacing-400) var(--spacing-600);
+  padding: var(--spacing-400) var(--spacing-500);
   border: var(--_option-card-border-width) solid var(--_option-card-border);
   border-radius: var(--_option-card-rounded);
   background: var(--_option-card-bg);
@@ -40,7 +40,7 @@
   border-width: var(--_option-card-border-width-selected);
   border-color: var(--_option-card-border-selected);
   /* 테두리가 1 굵어진 만큼 여백에서 뺍니다. 높이가 흔들리지 않습니다. */
-  padding: calc(var(--spacing-400) - 1px) calc(var(--spacing-600) - 1px);
+  padding: calc(var(--spacing-400) - 1px) calc(var(--spacing-500) - 1px);
 }
 
 .option-card__main {
