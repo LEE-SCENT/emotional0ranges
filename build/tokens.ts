@@ -425,7 +425,7 @@ export const components = {
     },
     "status": {
       "bg": "#00000099",
-      "fgRemaining": "#FF6400",
+      "fgRemaining": "#F75D15",
       "fgClosed": "#CCCCCC",
       "blurRadius": "12px"
     },

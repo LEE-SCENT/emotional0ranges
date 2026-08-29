@@ -38,8 +38,8 @@
         },
         "fgRemaining": {
           "$type": "color",
-          "$value": "#FF6400",
-          "$description": "자리가 남은 성별. ⚠️ Figma 에 색 변수로는 없고 브랜드색(#F75D15)과도 다릅니다."
+          "$value": "{semantic.colors.fg-brand}",
+          "$description": "자리가 남은 성별. Figma 는 여기만 #FF6400 을 쓰지만 태그의 잔여석과 같은 뜻이라 브랜드색으로 맞췄습니다."
         },
         "fgClosed": {
           "$type": "color",
