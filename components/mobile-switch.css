@@ -28,9 +28,11 @@
   transition: translate var(--_duration-base) var(--_easing-standard);
 }
 
-/* 앱바와 함께 물러납니다. 앱바 위에 떠 있어 자기 키만큼 내려가서는 화면에 걸립니다. */
-.mobile-switch.is-hidden {
-  translate: 0 calc(100% + var(--_app-bar-height) + var(--spacing-600));
+/* 앱바는 읽어 내려가는 동안 물러나지만 이 전환은 남습니다 — 어디까지 내려갔든
+   온라인/오프라인은 바꿀 수 있어야 합니다. 대신 앱바가 비운 자리만큼 내려앉아,
+   화면 아래에 빈 띠가 생기지 않게 합니다. */
+body:has(.app-bar--fixed.is-hidden) .mobile-switch {
+  translate: 0 var(--_app-bar-height);
 }
 
 .mobile-switch__inner {
