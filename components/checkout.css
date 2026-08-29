@@ -277,13 +277,37 @@
 
 @media (max-width: 960px) {
   .checkout {
-    padding-block: var(--spacing-500) var(--spacing-1200);
+    /* 제목이 topBar 바로 아래에서 시작합니다. */
+    padding-block: 0 var(--spacing-1200);
   }
 
+  /* 넓은 화면에서는 제목 왼쪽 바깥에 뒤로 가기가 서지만, 좁은 화면에서는 그 일을
+     위쪽 topBar 의 닫기가 합니다. 나가는 길이 한 화면에 둘 있을 이유가 없습니다. */
+  .checkout__header > .btn { display: none; }
+
+  .checkout__header h1 {
+    font-size: var(--typography-heading-m-semibold-font-size);
+    font-weight: var(--typography-heading-m-semibold-font-weight);
+    line-height: var(--typography-heading-m-semibold-line-height);
+  }
+
+  /* 이 화면에만 있는 미리보기 전환은 좁은 화면에서 제목 아래 줄로 내려갑니다.
+     옆에 두면 제목이 밀려 두 줄로 접힙니다. */
+  .checkout__header { flex-wrap: wrap; }
+
+  .checkout__demo {
+    flex-basis: 100%;
+    margin-inline-start: 0;
+  }
+
+  /* 카드 사이가 한 단계 좁습니다. 옆 단이 없어 위아래로만 이어지는데, 20 씩 띄우면
+     한 화면에 두 장밖에 들어오지 않습니다. */
   .checkout__body {
     flex-direction: column;
-    gap: var(--spacing-600);
+    gap: var(--spacing-300);
   }
+
+  .checkout__main { gap: var(--spacing-300); }
 
   .checkout .summary-card {
     position: static;

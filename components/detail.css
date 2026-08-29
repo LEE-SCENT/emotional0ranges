@@ -95,28 +95,12 @@
   .detail-side { position: static; }
 }
 
-/* ---- 좁은 화면의 머리 ----------------------------------------------------
-   GNB 를 내리고 topBar 를 올립니다. 상세 화면에서 필요한 것은 사이트 메뉴가 아니라
-   왔던 곳으로 돌아가는 길입니다 — 좁은 화면의 GNB 는 로고와 햄버거뿐이라, 여기서는
-   그 둘 다 지금 하려는 일과 상관이 없습니다.
+/* ---- 좁은 화면 ----------------------------------------------------------
+   머리(GNB → topBar)는 top-bar.css 가 바꿉니다. 여기서는 이 화면에만 해당하는
+   것들만 남깁니다.
 */
 
-/* .top-bar 가 display:flex 를 들고 있고 이 파일보다 뒤에 실립니다. 클래스 하나로는
-   덮이지 않아 둘을 함께 겁니다. */
-.top-bar.detail-topbar { display: none; }
-
 @media (max-width: 960px) {
-  body:has(.detail-page) > .gnb { display: none; }
-
-  .top-bar.detail-topbar {
-    display: flex;
-    /* 읽어 내려가는 동안 남습니다. 돌아가는 길이 화면 밖으로 나가면 다시 위까지
-       올라가야 합니다. */
-    position: sticky;
-    inset-block-start: 0;
-    z-index: 20;
-  }
-
   /* 공유·찜은 topBar 로 올라갔습니다. 제목 아래에 한 벌 더 두면 같은 것이 한 화면에
      둘이 됩니다. */
   .detail-info__header > .btn-group { display: none; }

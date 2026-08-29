@@ -27,10 +27,10 @@
 <link rel="stylesheet" href="./components/tabs.css?v=77e05f5c">
 <link rel="stylesheet" href="./components/option-card.css?v=bab39e79">
 <link rel="stylesheet" href="./components/review.css?v=e6a76bd1">
-<link rel="stylesheet" href="./components/detail.css?v=ddf65880">
+<link rel="stylesheet" href="./components/detail.css?v=2e15a1b6">
 <link rel="stylesheet" href="./components/favorite.css?v=7b27f284">
 <link rel="stylesheet" href="./components/app-bar.css?v=4709389e">
-<link rel="stylesheet" href="./components/top-bar.css?v=3528f9ff">
+<link rel="stylesheet" href="./components/top-bar.css?v=8d2c027b">
 <link rel="stylesheet" href="./components/image-viewer.css?v=6b3bbe17">
 <link rel="stylesheet" href="./components/bottom-cta.css?v=8c0377aa">
 <link rel="stylesheet" href="./components/sheet.css?v=47100927">
@@ -91,7 +91,7 @@
 
 <!-- 좁은 화면에서 GNB 를 대신합니다. 상세 화면에서 필요한 것은 메뉴가 아니라 왔던
      곳으로 돌아가는 길과, 이 모임을 공유하거나 찜하는 것입니다. -->
-<header class="top-bar detail-topbar">
+<header class="top-bar top-bar--page detail-topbar">
   <button class="btn btn--ghost btn--medium btn--icon-only" aria-label="뒤로">
     <svg class="btn__icon" aria-hidden="true"><use href="#icon-arrowBack"></use></svg>
   </button>
@@ -387,7 +387,7 @@
         <!-- 목록 아래에 "모든 날짜 보기"가 붙는 자리입니다. 지금은 일정이 몇 개
              없어 더 볼 것이 없으므로 두지 않습니다. -->
         <div class="schedule__actions">
-          <a class="btn btn--filled btn--large" href="./checkout.html"><span class="btn__label">신청하기</span></a>
+          <a class="btn btn--filled btn--large" href="./checkout.html?schedule=s1"><span class="btn__label">신청하기</span></a>
         </div>
       </div>
       </aside>

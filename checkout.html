@@ -26,11 +26,11 @@
 <link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
 <link rel="stylesheet" href="./components/checkbox.css?v=67340959">
 <link rel="stylesheet" href="./components/summary-card.css?v=38648332">
-<link rel="stylesheet" href="./components/checkout.css?v=d77b5af8">
+<link rel="stylesheet" href="./components/checkout.css?v=cac139c5">
 <link rel="stylesheet" href="./components/roll.css?v=2f044986">
 <link rel="stylesheet" href="./components/bottom-cta.css?v=8c0377aa">
 <link rel="stylesheet" href="./components/sheet.css?v=47100927">
-<link rel="stylesheet" href="./components/top-bar.css?v=3528f9ff">
+<link rel="stylesheet" href="./components/top-bar.css?v=8d2c027b">
 <style>
   body {
     margin: 0;
@@ -86,6 +86,14 @@
   </div>
 </header>
 
+
+<!-- 좁은 화면에서 GNB 를 대신합니다. 신청을 하다 그만두는 길만 있으면 되므로
+     닫기 하나입니다 — 여기서 메뉴로 새는 길을 열어둘 이유가 없습니다. -->
+<header class="top-bar top-bar--page">
+  <a class="btn btn--ghost btn--medium btn--icon-only" href="./detail.html" aria-label="닫기">
+    <svg class="btn__icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+  </a>
+</header>
 
 <main class="container checkout">
   <header class="checkout__header">
