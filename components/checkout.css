@@ -62,7 +62,9 @@
   min-inline-size: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-600);
+  /* 카드 · 카드 · 버튼 사이가 모두 같은 20 입니다. 셋이 한 줄기로 이어지는 순서라,
+     어디서 끊긴다는 표시를 여백으로 주지 않습니다. */
+  gap: var(--spacing-500);
 }
 
 .checkout .summary-card {
