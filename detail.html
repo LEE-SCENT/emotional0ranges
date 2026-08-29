@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
 <link rel="stylesheet" href="./components/segmented-control.css?v=7a4a3de6">
 <link rel="stylesheet" href="./components/tooltip.css?v=d3d8dfa4">
-<link rel="stylesheet" href="./components/gnb.css?v=5bdc7e5d">
+<link rel="stylesheet" href="./components/gnb.css?v=6ef67f69">
 <link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
 <link rel="stylesheet" href="./components/product-card.css?v=afaede78">
 <link rel="stylesheet" href="./components/section-title.css?v=d1c6b1bc">
@@ -22,7 +22,8 @@
 <link rel="stylesheet" href="./components/tabs.css?v=9bb14377">
 <link rel="stylesheet" href="./components/option-card.css?v=186a0f67">
 <link rel="stylesheet" href="./components/review.css?v=78bfe9ae">
-<link rel="stylesheet" href="./components/detail.css?v=294510f4">
+<link rel="stylesheet" href="./components/detail.css?v=69d9027d">
+<link rel="stylesheet" href="./components/favorite.css?v=baa7ccdf">
 <link rel="stylesheet" href="./components/app-bar.css?v=4709389e">
 <style>
   body {
@@ -101,7 +102,7 @@
           <button class="btn btn--ghost btn--medium btn--icon-only" aria-label="공유하기">
             <svg class="btn__icon" aria-hidden="true"><use href="#icon-share"></use></svg>
           </button>
-          <button class="btn btn--ghost btn--medium btn--icon-only" aria-label="찜하기">
+          <button class="btn btn--ghost btn--medium btn--icon-only" data-favorite aria-label="찜하기">
             <svg class="btn__icon" aria-hidden="true"><use href="#icon-favorite"></use></svg>
           </button>
         </div>
@@ -269,7 +270,7 @@
             <span class="option-card__aside">
           <span class="tag tag--accent-pri">
             <svg aria-hidden="true"><use href="#icon-scheduleFilled"></use></svg>
-            02:30:24
+            <time class="countdown" data-countdown="9024">02:30:24</time>
           </span>
               <span class="option-card__seats">남성 6 · 여성 5자리 남음</span>
             </span>
@@ -451,4 +452,10 @@
 <script type="module">
   document.getElementById('sprite').innerHTML =
     await (await fetch('./build/icons.svg')).text() + await (await fetch('./build/logo.svg')).text()
+  const { initStickyGnb } = await import('./components/gnb.js?v=ca09b963')
+  initStickyGnb()
+  const { initCountdowns } = await import('./components/countdown.js?v=49896f10')
+  initCountdowns()
+  const { initFavorites } = await import('./components/favorite.js?v=159043a9')
+  initFavorites()
 </script>

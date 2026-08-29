@@ -28,6 +28,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  /* 어느 폭에서든 화면 위에 붙어 따라옵니다. 페이지가 길어 스크롤 도중에도
+     로고와 알림이 손 닿는 곳에 있어야 합니다. 배경이 불투명해 아래 글을 가립니다. */
+  position: sticky;
+  inset-block-start: 0;
+  /* 화면 아래 고정 요소(앱바·전환)는 10 입니다. 헤더가 그 위로 지나갑니다. */
+  z-index: 20;
   box-sizing: border-box;
   inline-size: 100%;
   /* 초광폭 화면에서 로고와 액션이 끝없이 벌어지지 않도록 잡습니다. */
@@ -147,10 +153,6 @@
 
 @media (max-width: 960px) {
   .gnb {
-    position: sticky;
-    inset-block-start: 0;
-    /* 화면 아래 고정 요소(앱바·전환)는 10 입니다. 헤더가 그 위로 지나갑니다. */
-    z-index: 20;
     /* ⚠️ Figma 에 전환 시간이 없어 코드에서 정했습니다. 한 번에 튀면 거슬립니다. */
     transition:
       padding-block var(--_duration-fast) var(--_easing-standard),

@@ -1,0 +1,13 @@
+/**
+ * 찜 버튼의 켜짐 상태.
+ *
+ *   <button class="btn btn--ghost btn--medium btn--icon-only" data-favorite aria-label="찜하기">
+ *     <svg class="btn__icon"><use href="#icon-favorite"></use></svg>
+ *   </button>
+ *
+ * 켜지면 아이콘이 빈 하트에서 채워진 하트로 바뀝니다 — 모양이 바뀌므로 색을
+ * 구분하기 어려운 눈에도, 흑백 화면에서도 상태가 보입니다. 아이콘 교체는
+ * favorite.js 가 하고 여기서는 색만 맡습니다.
+ */
+
+.btn.is-favorite .btn__icon { color: var(--colors-fg-brand); }

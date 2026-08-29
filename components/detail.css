@@ -144,7 +144,9 @@
   flex-direction: column;
   gap: var(--spacing-600);
   margin: 0;
-  padding-block: var(--spacing-800);
+  /* 좌우 0 을 함께 적습니다. ul 은 브라우저가 왼쪽에 40 을 기본으로 넣어두어,
+     padding-block 만 쓰면 그 40 이 남아 줄이 밀리고 글줄까지 좁아집니다. */
+  padding: var(--spacing-800) 0;
   list-style: none;
 }
 
@@ -219,10 +221,13 @@
 
 /* ---- 일정 -------------------------------------------------------------- */
 
+/* 위쪽 12 는 탭의 안쪽 여백과 같은 값입니다. 탭 글자와 첫 날짜가 같은 줄에서
+   시작해야 두 단이 한 화면처럼 읽힙니다 — 상자끼리 맞추면 탭 글자만 12 내려갑니다. */
 .schedule {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-600);
+  padding-block-start: var(--spacing-300);
   font-family: var(--_font-family-pretendard);
 }
 
