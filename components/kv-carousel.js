@@ -19,6 +19,14 @@
  * 넘기는 방법은 둘입니다. 좁은 화면에서는 손가락으로 끌고, 961 부터는 좌우 화살표를
  * 씁니다. 화살표는 마크업에 늘 있고 어느 폭에서 보일지는 CSS 가 정합니다.
  *
+ * 끝에서 어떻게 되는지는 폭이 정합니다.
+ *
+ *   961~   첫 장을 줄 끝에 붙여 계속 앞으로 갑니다. 화살표로 넘기는 자리라
+ *          끝이 있는 것보다 이어지는 편이 자연스럽습니다.
+ *   ~960   순환하지 않습니다. 두 장이면 한 번 넘겨 끝이고, 남는 것은 이전뿐입니다.
+ *          손가락으로 미는 자리에서 줄이 스스로 다시 짜이면, 방금 지나온 장이
+ *          어디 있는지 알 수 없게 됩니다.
+ *
  * 자동 전환은 사진 장에만 겁니다. 영상 장은 반복 재생하며 그 자리에 머뭅니다.
  * 마우스가 올라가 있거나 키보드가 안에 들어와 있는 동안에는 멈춥니다 — 읽고 있는
  * 것이 눈앞에서 사라지면 안 됩니다.
@@ -185,6 +193,9 @@ export function initKvCarousel(group) {
    * 생깁니다. 되감듯 왼쪽으로 돌아가면 "다음"이라는 말과 어긋납니다.
    * 처음에서 이전을 누를 때는 반대로 합니다.
    */
+  /** 끝에서 이어 붙일지. 화살표로 넘기는 폭에서만 그렇습니다. */
+  const loops = () => matchMedia('(min-width: 961px)').matches
+
   const move = (dir) => {
     const items = list()
     const n = items.length
@@ -195,6 +206,10 @@ export function initKvCarousel(group) {
     // 부드러운 스크롤도 함께 끊깁니다.
     const at = Math.round(track.scrollLeft / size)
     track.scrollLeft = at * size
+
+    const atEnd = (dir > 0 && at === n - 1) || (dir < 0 && at === 0)
+    // 순환하지 않는 폭에서는 끝에서 멈춥니다. 갈 곳이 없으면 아무 일도 하지 않습니다.
+    if (atEnd && !loops()) return
 
     if (dir > 0 && at === n - 1) {
       track.append(items[0])
@@ -226,6 +241,8 @@ export function initKvCarousel(group) {
     const slide = list()[current]
     // 영상 장은 반복 재생하며 머뭅니다. 넘기는 것은 사람이 합니다.
     if (!slide || slide.querySelector('[data-youtube]')) return
+    // 순환하지 않는 폭에서는 마지막 장에 이르면 자동 전환도 거기서 끝납니다.
+    if (!loops() && current === count - 1) return
     timer = setTimeout(() => move(1), IMAGE_DURATION)
   }
 
