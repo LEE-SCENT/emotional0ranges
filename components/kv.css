@@ -124,17 +124,26 @@
 
 /* ---- 페이지네이션 (~960) ----------------------------------------------- */
 
-/* 숫자 인디케이터는 노출하지 않습니다 — PC 는 화살표, 모바일은 스와이프로
-   넘깁니다. 마크업에는 남겨 스크린 리더가 몇 번째인지 읽을 수 있게 합니다. */
+/* 숫자 인디케이터는 좁은 화면에만 둡니다. 961 부터는 좌우 화살표가 그 역할을
+   하므로 아래 미디어 쿼리에서 감춥니다. 한 장뿐일 때도 감춥니다 — "1 / 1" 은
+   알려주는 것이 없습니다. */
 .kv__pagination {
-  position: absolute;
+  position: relative;
+  box-sizing: border-box;
+  z-index: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--spacing-50);
   margin: 0;
-  inline-size: 1px;
-  block-size: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
+  inline-size: 100%;
+  max-inline-size: 640px;
+  padding: var(--spacing-300) var(--spacing-500);
+  font-size: var(--typography-body-m-regular-font-size);
+  line-height: var(--typography-body-m-regular-line-height);
 }
+
+.kv-group[data-slides='1'] .kv__pagination { display: none; }
 .kv__pagination b { font-weight: var(--typography-body-m-semibold-font-weight); }
 
 /* ---- 441~960 ----------------------------------------------------------- */
@@ -167,6 +176,9 @@
   }
 
   .kv__title { align-items: center; text-align: center; }
+
+  /* 넓은 화면에서는 좌우 화살표가 자리를 알려줍니다. */
+  .kv__pagination { display: none; }
 
   /* 961~1600 구간에서 헤드라인이 44 → 52 로 자랍니다. Figma 가 같은 티어의
      1024 프레임과 1600 프레임에 각각 44 / 52 를 그려두어 유동 스케일로 읽었습니다.
