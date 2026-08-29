@@ -440,7 +440,12 @@ export const components = {
         "height": "160px"
       },
       "moreIconSize": "24px",
-      "moreFg": "#FFFFFF"
+      "moreFg": "#FFFFFF",
+      "locked": {
+        "blur": "16px",
+        "iconSize": "32px",
+        "fg": "#FFFFFF"
+      }
     }
   },
   "sectionTitle": {

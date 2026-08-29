@@ -223,6 +223,53 @@
   scale: -1 1;
 }
 
+/* ---- promotion · 잠금 (블랙 인증 전) --------------------------------------
+   사진만 가리고 제목·설명·가격은 그대로 둡니다. 전부 덮으면 무엇이 잠겨 있는지
+   알 수 없어 인증할 이유가 생기지 않습니다.
+
+     <article class="product-card product-card--promotion is-locked">
+       <div class="product-card__media">
+         … main / tiles / tags …
+         <p class="product-card__lock"><svg…>블랙 인증 후 공개</p>
+       </div>
+       …
+
+   ⚠️ 이 상태는 Figma 에 없어 흐림 정도와 아이콘을 코드에서 정했습니다.
+*/
+
+.product-card--promotion.is-locked .product-card__main img,
+.product-card--promotion.is-locked .product-card__tile img {
+  filter: blur(var(--_product-card-promotion-locked-blur));
+  /* 흐림이 가장자리에서 번져 투명해지므로 조금 키워 덮습니다. */
+  scale: 1.08;
+}
+
+/* 잠긴 상태에서 더보기는 누를 것이 없습니다. */
+.product-card--promotion.is-locked .product-card__more-label { display: none; }
+
+.product-card__lock {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-200);
+  margin: 0;
+  color: var(--_product-card-promotion-locked-fg);
+  text-align: center;
+  font-size: var(--typography-body-l-medium-font-size);
+  font-weight: var(--typography-body-l-medium-font-weight);
+  line-height: var(--typography-body-l-medium-line-height);
+}
+
+.product-card__lock svg {
+  display: block;
+  inline-size: var(--_product-card-promotion-locked-icon-size);
+  block-size: var(--_product-card-promotion-locked-icon-size);
+}
+
 /* ---- category ----------------------------------------------------------
    정사각 썸네일 + 제목 + 모임 수. 가격이 없습니다.
 
