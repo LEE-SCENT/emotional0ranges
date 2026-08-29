@@ -131,7 +131,7 @@
       <header class="detail-info__header">
         <div class="detail-info__title">
           <h1 class="detail-info__name" data-product-title>12:12 티키타카 로테이션 소개팅</h1>
-          <p class="detail-info__lead">한 번의 참여로 여러 이성과 차례로 대화하는 대표 프로그램이예요.<br>1:1로 10분씩, 또래 6~12명과 차례로 마주 앉아 대화해요.<br>20개 이상 항목으로 정리된 프로필 카드를 함께 받아,<br>짧지만 충분히 알아갈 수 있어요.</p>
+          <p class="detail-info__lead" data-product-lead>한 번의 참여로 여러 이성과 차례로 대화하는 대표 프로그램이예요.<br>1:1로 10분씩, 또래 6~12명과 차례로 마주 앉아 대화해요.<br>20개 이상 항목으로 정리된 프로필 카드를 함께 받아,<br>짧지만 충분히 알아갈 수 있어요.</p>
         </div>
         <div class="btn-group btn-group--horizontal">
           <button class="btn btn--ghost btn--medium btn--icon-only" aria-label="공유하기">
@@ -156,16 +156,16 @@
         </li>
         <li class="detail-info__fact">
           <img src="./images/detail-info-2.png" alt="">
-          <span class="detail-info__fact-text">
+          <span class="detail-info__fact-text" data-product-fact="duration">
             <b>약 120분 동안 진행</b>
-            <span>6~12명의 이성과 10분씩 돌아가며 1:1 대화를 나눠요</span>
+            <span data-product-fact-body>6~12명의 이성과 10분씩 돌아가며 1:1 대화를 나눠요</span>
           </span>
         </li>
         <li class="detail-info__fact">
           <img src="./images/detail-info-3.png" alt="">
-          <span class="detail-info__fact-text">
+          <span class="detail-info__fact-text" data-product-fact="included">
             <b>포함 사항</b>
-            <span>커피, 차, 아이스티 등 음료 및 민트, 쿠키, 초콜릿 간식 제공</span>
+            <span data-product-fact-body>커피, 차, 아이스티 등 음료 및 민트, 쿠키, 초콜릿 간식 제공</span>
           </span>
         </li>
       </ul>
@@ -656,10 +656,12 @@
     await (await fetch('./build/icons.svg')).text() + await (await fetch('./build/logo.svg')).text()
   const { initStickyGnb } = await import('./components/gnb.js?v=ca09b963')
   initStickyGnb()
+  // 일정·후기를 읽는 스크립트들보다 먼저 돕니다. 그들이 세어둔 뒤에 목록을
+  // 갈아끼우면 서로 다른 것을 보게 됩니다.
+  const { initProduct } = await import('./components/product.js?v=a9a9f1f3')
+  initProduct()
   const { initSchedule } = await import('./components/schedule.js?v=6d625718')
   initSchedule()
-  const { initProduct } = await import('./components/product.js?v=d6cb9709')
-  initProduct()
   // 상세는 목록에서 들어오는 화면이라 뒤로가 곧 목록입니다. 열자마자 눌렀다면
   // 돌아갈 곳이 없으므로 홈으로 보냅니다.
   document.querySelector('[data-back]')?.addEventListener('click', () => {
