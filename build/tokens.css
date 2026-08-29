@@ -170,6 +170,10 @@
   --_gnb-fg: var(--colors-fg);
   --_gnb-max-content-width: var(--container-max-width-md);
   --_gnb-max-width: 1920px;
+  --_gnb-logo-width: 126px;
+  --_gnb-logo-height: 40px;
+  --_gnb-logo-sticky-width: 96px;
+  --_gnb-logo-sticky-height: 30px;
   --_kv-rounded-base: var(--_rounded-l);
   --_kv-rounded-md: var(--_rounded-2xl);
   --_kv-scrim: var(--_colors-serious-gray-alpha900-8);

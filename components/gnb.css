@@ -72,8 +72,8 @@
 .gnb__logo {
   flex: none;
   display: block;
-  block-size: 40px;
-  inline-size: 126px;
+  block-size: var(--_gnb-logo-height);
+  inline-size: var(--_gnb-logo-width);
   color: inherit;
 }
 
@@ -117,4 +117,47 @@
 /* ---- large (1601px~) --------------------------------------------------- */
 @media (min-width: 1601px) {
   .gnb__notify { display: inline-flex; }
+}
+
+/* ---- 스티키 (small) -----------------------------------------------------
+   좁은 화면에서는 GNB 가 화면 위에 붙어 따라옵니다. 스크롤이 시작되면 한 단계
+   작아집니다 — 로고 96×30, 바 높이 56.
+
+   `is-sticky` 는 gnb.js 가 붙입니다. CSS 만으로는 "붙어 있는 중"을 알 수 없습니다.
+
+   붙은 상태에서는 알림만 남고 메뉴 버튼이 빠집니다. 화면 아래 앱바가 이미 이동을
+   담당하고 있어, 위쪽에는 지금 볼 것(알림)만 둡니다. ⚠️ Figma 22:11662 가 그렇게
+   되어 있습니다 — 평소 small 과 버튼이 뒤바뀌므로 확인이 필요합니다.
+*/
+
+@media (max-width: 960px) {
+  .gnb {
+    position: sticky;
+    inset-block-start: 0;
+    /* 화면 아래 고정 요소(앱바·전환)는 10 입니다. 헤더가 그 위로 지나갑니다. */
+    z-index: 20;
+    /* ⚠️ Figma 에 전환 시간이 없어 코드에서 정했습니다. 한 번에 튀면 거슬립니다. */
+    transition: padding-block var(--_duration-fast) var(--_easing-standard);
+  }
+
+  .gnb__logo {
+    transition:
+      inline-size var(--_duration-fast) var(--_easing-standard),
+      block-size var(--_duration-fast) var(--_easing-standard);
+  }
+
+  .gnb.is-sticky { padding-block: var(--spacing-200); }
+
+  .gnb.is-sticky .gnb__logo {
+    inline-size: var(--_gnb-logo-sticky-width);
+    block-size: var(--_gnb-logo-sticky-height);
+  }
+
+  .gnb.is-sticky .gnb__notify { display: inline-flex; }
+  .gnb.is-sticky .gnb__actions .btn--blur { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gnb,
+  .gnb__logo { transition: none; }
 }

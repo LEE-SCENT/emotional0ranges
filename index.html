@@ -6,14 +6,14 @@
 <meta name="format-detection" content="telephone=no">
 <title>감정적인 오렌지들</title>
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
-<link rel="stylesheet" href="./build/tokens.css?v=1f045124">
+<link rel="stylesheet" href="./build/tokens.css?v=f29d47c0">
 <link rel="stylesheet" href="./components/container.css?v=4a4dc1f9">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=b84ee9e0">
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
 <link rel="stylesheet" href="./components/segmented-control.css?v=6f478c07">
 <link rel="stylesheet" href="./components/tooltip.css?v=4939da06">
-<link rel="stylesheet" href="./components/gnb.css?v=49081eb3">
+<link rel="stylesheet" href="./components/gnb.css?v=61eac126">
 <link rel="stylesheet" href="./components/kv.css?v=018ae87a">
 <link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
 <link rel="stylesheet" href="./components/product-card.css?v=afaede78">
@@ -62,6 +62,7 @@
       <div class="gnb__actions">
         <button class="btn btn--ghost btn--medium btn--icon-only gnb__notify" aria-label="알림">
           <svg class="btn__icon" aria-hidden="true"><use href="#icon-notifications"></use></svg>
+          <span class="badge btn__badge"></span>
         </button>
         <button class="btn btn--blur btn--medium btn--icon-only" aria-label="메뉴 열기">
           <svg class="btn__icon" aria-hidden="true"><use href="#icon-menu"></use></svg>
@@ -348,4 +349,6 @@
   initSegmentedControls()
   const { initKvVideo } = await import('./components/kv.js?v=d2d085a7')
   initKvVideo()
+  const { initStickyGnb } = await import('./components/gnb.js?v=ca09b963')
+  initStickyGnb()
 </script>

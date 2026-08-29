@@ -16,6 +16,26 @@
         "$type": "dimension",
         "$value": "1920px",
         "$description": "GNB 자체의 한계 폭. 이보다 넓은 화면에서는 가운데 정렬됩니다."
+      },
+      "logo": {
+        "$description": "로고 크기. 스티키 상태에서 한 단계 작아집니다.",
+        "width": {
+          "$type": "dimension",
+          "$value": "126px"
+        },
+        "height": {
+          "$type": "dimension",
+          "$value": "40px"
+        },
+        "stickyWidth": {
+          "$type": "dimension",
+          "$value": "96px",
+          "$description": "Figma 22:11662."
+        },
+        "stickyHeight": {
+          "$type": "dimension",
+          "$value": "30px"
+        }
       }
     }
   }

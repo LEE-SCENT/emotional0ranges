@@ -398,7 +398,13 @@ export const components = {
   "gnb": {
     "fg": "#000000",
     "maxContentWidth": "1280px",
-    "maxWidth": "1920px"
+    "maxWidth": "1920px",
+    "logo": {
+      "width": "126px",
+      "height": "40px",
+      "stickyWidth": "96px",
+      "stickyHeight": "30px"
+    }
   },
   "kv": {
     "rounded": {
