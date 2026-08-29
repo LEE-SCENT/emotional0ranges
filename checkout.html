@@ -25,8 +25,9 @@
 <link rel="stylesheet" href="./components/option-card.css?v=bab39e79">
 <link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
 <link rel="stylesheet" href="./components/checkbox.css?v=67340959">
-<link rel="stylesheet" href="./components/summary-card.css?v=87c65d33">
-<link rel="stylesheet" href="./components/checkout.css?v=90205d0f">
+<link rel="stylesheet" href="./components/summary-card.css?v=38648332">
+<link rel="stylesheet" href="./components/checkout.css?v=d77b5af8">
+<link rel="stylesheet" href="./components/roll.css?v=2f044986">
 <link rel="stylesheet" href="./components/bottom-cta.css?v=8c0377aa">
 <link rel="stylesheet" href="./components/sheet.css?v=3a404ddc">
 <link rel="stylesheet" href="./components/top-bar.css?v=3528f9ff">
@@ -92,6 +93,16 @@
       <svg class="btn__icon" aria-hidden="true"><use href="#icon-arrowBack"></use></svg>
     </a>
     <h1>신청하기</h1>
+
+    <!-- 이 화면에만 있는 미리보기 전환입니다. 실제 서비스에서는 회원의 직장 등록
+         여부가 상태를 정하므로 고를 것이 없습니다. -->
+    <p class="checkout__demo">
+      <span>미리보기</span>
+      <button class="btn btn--filled btn--small" type="button" data-case="verified"
+              aria-pressed="true"><span class="btn__label">직장 인증 완료</span></button>
+      <button class="btn btn--outlined btn--small" type="button" data-case="none"
+              aria-pressed="false"><span class="btn__label">직장 미등록</span></button>
+    </p>
   </header>
 
   <div class="checkout__body">
@@ -151,12 +162,12 @@
 
       <div class="checkout__pay">
         <button class="btn btn--filled btn--large" data-pay disabled>
-          <span class="btn__label">결제하기</span>
+          <span class="btn__label"><span class="roll" data-amount aria-hidden="true"></span>결제하기</span>
         </button>
       </div>
     </div>
 
-    <aside class="summary-card" aria-label="주문 요약">
+    <aside class="summary-card" data-workplace="verified" aria-label="주문 요약">
       <p class="summary-card__banner" hidden>
         <svg aria-hidden="true"><use href="#icon-error"></use></svg>
         당일 신청 상품은 취소·환불이 불가합니다
@@ -164,7 +175,7 @@
 
       <div class="summary-card__product">
         <img src="./images/detail-photo-1.jpg" alt="">
-        <p>[서울 한남] 테마 로테이션 소개팅 &lt;생활운동인 특집&gt;</p>
+        <p>12:12 티키타카 로테이션 소개팅</p>
       </div>
 
       <div class="summary-card__row">
@@ -186,22 +197,31 @@
         <span class="summary-card__label">
           <b>아는 사람 확인</b>
           <span class="summary-card__value">
-            <span class="summary-card__result">현재 같은 직장 사람이 없어요</span>
-            <span class="summary-card__guide">
+            <span class="summary-card__result" data-workplace-only="verified">현재 같은 직장 사람이 없어요</span>
+            <span class="summary-card__guide" data-workplace-only="verified">
               <svg aria-hidden="true"><use href="#icon-infoCircle"></use></svg>
               <span>
                 등록된 직장 정보 기준으로 확인했어요
                 <a href="#">확인 기준 보기</a>
               </span>
             </span>
+            <span class="summary-card__guide" data-workplace-only="none">
+              <svg aria-hidden="true"><use href="#icon-infoCircle"></use></svg>
+              <span>직장을 등록하면 같은 회사 사람이 참여하는지 확인할 수 있어요</span>
+            </span>
           </span>
         </span>
-        <button class="btn btn--blur btn--small"><span class="btn__label">직장 정보 변경</span></button>
+        <button class="btn btn--blur btn--small" data-workplace-only="verified">
+          <span class="btn__label">직장 정보 변경</span>
+        </button>
+        <button class="btn btn--filled btn--small" data-workplace-only="none">
+          <span class="btn__label">직장 등록하기</span>
+        </button>
       </div>
 
       <!-- 직장을 등록한 사람에게만 보입니다. 등록 전에는 확인할 것이 없어
            이어서 확인할 것도 없습니다. -->
-      <label class="summary-card__option">
+      <label class="summary-card__option" data-workplace-only="verified">
         <span class="checkbox">
           <input type="checkbox" data-extra-option="10000"
                  aria-label="모임 전까지 계속 확인하기, 10,000원 추가">
@@ -235,7 +255,7 @@
 <!-- 좁은 화면에서만 보입니다. 왼쪽 단의 결제하기와 같은 버튼입니다. -->
 <div class="bottom-cta">
   <button class="btn btn--filled btn--large" data-pay disabled>
-    <span class="btn__label">결제하기</span>
+    <span class="btn__label"><span class="roll" data-amount aria-hidden="true"></span>결제하기</span>
   </button>
 </div>
 
@@ -245,50 +265,86 @@
     <div class="schedule">
       <div class="schedule__list">
         <div class="schedule__group">
-          <p class="schedule__date">신청 가능한 일정</p>
+          <time class="schedule__date"></time>
           <ul class="schedule__options">
-        <li>
-          <label class="option-card" data-date-in="0" data-time="저녁 7시"
-                 data-where="서울 강남 · 27-38세" data-price="45000" data-discount="3000">
-            <input class="sr-only" type="radio" name="schedule" checked>
-            <span class="option-card__main">
-              <span class="option-card__time">저녁 7:00~9:30</span>
-              <span class="option-card__price"><b>42,000원</b> <s>45,000원</s></span>
-              <span class="option-card__place">서울 강남 · 27-38세</span>
-            </span>
-            <span class="option-card__aside">
-              <span class="option-card__seats">남성 6 · 여성 5자리 남음</span>
-            </span>
-          </label>
-        </li>
-        <li>
-          <label class="option-card" data-date-in="3" data-time="저녁 7시"
-                 data-where="서울 성수 · 27-38세" data-price="45000" data-discount="0">
-            <input class="sr-only" type="radio" name="schedule">
-            <span class="option-card__main">
-              <span class="option-card__time">저녁 7:00~9:30</span>
-              <span class="option-card__price"><b>45,000원</b></span>
-              <span class="option-card__place">서울 성수 · 27-38세</span>
-            </span>
-            <span class="option-card__aside">
-              <span class="option-card__seats">여성 1자리 남음</span>
-            </span>
-          </label>
-        </li>
-        <li>
-          <label class="option-card" data-date-in="5" data-time="밤 10시"
-                 data-where="경기 성남 · 30-42세" data-price="38000" data-discount="3000">
-            <input class="sr-only" type="radio" name="schedule">
-            <span class="option-card__main">
-              <span class="option-card__time">밤 10:00~12:30</span>
-              <span class="option-card__price"><b>35,000원</b> <s>38,000원</s></span>
-              <span class="option-card__place">경기 성남 · 30-42세</span>
-            </span>
-            <span class="option-card__aside">
-              <span class="option-card__seats">남성 3 · 여성 4자리 남음</span>
-            </span>
-          </label>
-        </li>
+            <li>
+              <label class="option-card" data-date-in="0" data-discount-in="9024"
+                     data-time="오후 2시" data-where="서울 강남 · 27-38세"
+                     data-price="45000" data-discount="10000">
+                <input class="sr-only" type="radio" name="schedule" value="s1" checked>
+                <span class="option-card__main">
+                  <span class="option-card__time">오후 2:00~5:30</span>
+                  <span class="option-card__price"><b>35,000원</b> <s>45,000원</s></span>
+                  <span class="option-card__place">서울 강남</span>
+                </span>
+                <span class="option-card__aside">
+                  <span class="tag tag--accent-pri option-card__deadline">
+                    <svg aria-hidden="true"><use href="#icon-scheduleFilled"></use></svg>
+                    <time class="countdown">02:30:24</time>
+                  </span>
+                  <span class="option-card__seats">남성 6 · 여성 5자리 남음</span>
+                </span>
+              </label>
+            </li>
+            <li>
+              <label class="option-card" data-date-in="0" data-discount-in="284400"
+                     data-time="밤 10시" data-where="서울 강남 · 27-38세"
+                     data-price="38000" data-discount="10000">
+                <input class="sr-only" type="radio" name="schedule" value="s2">
+                <span class="option-card__main">
+                  <span class="option-card__time">밤 10:00~12:30</span>
+                  <span class="option-card__price"><b>28,000원</b> <s>38,000원</s></span>
+                  <span class="option-card__place">서울 강남</span>
+                </span>
+                <span class="option-card__aside">
+                  <span class="tag tag--accent-sec option-card__deadline">
+                    <svg aria-hidden="true"><use href="#icon-scheduleFilled"></use></svg>
+                    <time class="countdown">9월 2일까지 할인</time>
+                  </span>
+                  <span class="option-card__seats">남성 3자리 남음</span>
+                </span>
+              </label>
+            </li>
+          </ul>
+        </div>
+        <div class="schedule__group">
+          <time class="schedule__date"></time>
+          <ul class="schedule__options">
+            <li>
+              <label class="option-card" data-date-in="1"
+                     data-time="저녁 7시" data-where="서울 성수 · 27-38세"
+                     data-price="56000" data-discount="10000">
+                <input class="sr-only" type="radio" name="schedule" value="s3">
+                <span class="option-card__main">
+                  <span class="option-card__time">저녁 7:00~9:30</span>
+                  <span class="option-card__price"><b>46,000원</b> <s>56,000원</s></span>
+                  <span class="option-card__place">서울 성수</span>
+                </span>
+                <span class="option-card__aside">
+                  <span class="option-card__seats">여성 1자리 남음</span>
+                </span>
+              </label>
+            </li>
+          </ul>
+        </div>
+        <div class="schedule__group">
+          <time class="schedule__date"></time>
+          <ul class="schedule__options">
+            <li>
+              <label class="option-card" data-date-in="3"
+                     data-time="저녁 7시" data-where="경기 성남 · 30-42세"
+                     data-price="45000" data-discount="10000">
+                <input class="sr-only" type="radio" name="schedule" value="s4">
+                <span class="option-card__main">
+                  <span class="option-card__time">저녁 7:00~9:30</span>
+                  <span class="option-card__price"><b>35,000원</b> <s>45,000원</s></span>
+                  <span class="option-card__place">경기 성남</span>
+                </span>
+                <span class="option-card__aside">
+                  <span class="option-card__seats">남성 2 · 여성 4자리 남음</span>
+                </span>
+              </label>
+            </li>
           </ul>
         </div>
       </div>
@@ -306,8 +362,10 @@
     await (await fetch('./build/icons.svg')).text() + await (await fetch('./build/logo.svg')).text()
   const { initStickyGnb } = await import('./components/gnb.js?v=ca09b963')
   initStickyGnb()
+  const { initSchedule } = await import('./components/schedule.js?v=5b9beb2d')
+  initSchedule()
   const { initSheets } = await import('./components/sheet.js?v=4abbc8c4')
   initSheets()
-  const { initCheckout } = await import('./components/checkout.js?v=0531b9e0')
+  const { initCheckout } = await import('./components/checkout.js?v=43a893e8')
   initCheckout()
 </script>

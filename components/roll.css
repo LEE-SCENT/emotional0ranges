@@ -1,0 +1,40 @@
+/**
+ * Roll — 숫자가 바뀔 때 자릿수가 굴러가는 자리.
+ *
+ *   <span class="roll" data-roll></span>
+ *
+ * 칸마다 0~9 를 세로로 세워두고 띠를 위로 밀어 올립니다. 칸의 높이가 정확히 1em
+ * 이어야 한 칸이 한 숫자와 맞아떨어집니다 — 그래서 이 안에서만 줄 높이를 1 로
+ * 되돌립니다.
+ */
+
+.roll {
+  display: inline-flex;
+  /* 숫자 폭이 자리마다 달라지면 굴러가는 동안 칸이 들썩입니다. */
+  font-feature-settings: 'lnum' 1, 'tnum' 1;
+}
+
+.roll__col {
+  display: inline-block;
+  block-size: 1em;
+  line-height: 1;
+  overflow: hidden;
+  /* 글자의 기준선에 맞춰 내립니다. 그러지 않으면 숫자만 위로 떠 보입니다. */
+  vertical-align: baseline;
+}
+
+.roll__strip {
+  display: block;
+  transition: translate var(--_duration-slow) var(--_easing-standard);
+}
+
+.roll__strip i {
+  display: block;
+  block-size: 1em;
+  line-height: 1;
+  font-style: normal;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .roll__strip { transition: none; }
+}

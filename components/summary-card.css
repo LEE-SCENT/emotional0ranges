@@ -54,9 +54,9 @@
   border-radius: var(--_summary-card-banner-rounded);
   background: var(--_summary-card-banner-bg);
   color: var(--_summary-card-banner-fg);
-  font-size: var(--typography-body-s-medium-font-size);
-  font-weight: var(--typography-body-s-medium-font-weight);
-  line-height: var(--typography-body-s-medium-line-height);
+  font-size: var(--typography-body-s-regular-font-size);
+  font-weight: var(--typography-body-s-regular-font-weight);
+  line-height: var(--typography-body-s-regular-line-height);
 }
 
 .summary-card__banner svg {
@@ -111,11 +111,13 @@
   gap: var(--spacing-100);
 }
 
+/* 항목 이름입니다. <b> 로 감싼 것은 뜻(이 줄이 무엇에 대한 것인가) 때문이지 굵기
+   때문이 아니라, 브라우저 기본값(bolder)을 토큰 무게로 되돌립니다. */
 .summary-card__label > b {
   color: var(--colors-fg);
-  font-size: var(--typography-body-s-medium-font-size);
-  font-weight: var(--typography-body-s-medium-font-weight);
-  line-height: var(--typography-body-s-medium-line-height);
+  font-size: var(--typography-body-s-regular-font-size);
+  font-weight: var(--typography-body-s-regular-font-weight);
+  line-height: var(--typography-body-s-regular-line-height);
 }
 
 .summary-card__value {
@@ -266,3 +268,15 @@
   font-weight: var(--typography-body-xl-semibold-font-weight);
   line-height: var(--typography-body-xl-semibold-line-height);
 }
+
+/* ---- 직장 등록 여부 ------------------------------------------------------
+   등록을 마친 사람에게는 확인 결과와 이어서 확인하는 유료 옵션을, 아직 등록하지
+   않은 사람에게는 등록하러 가는 길을 보여줍니다.
+
+   두 벌을 문서에 두고 하나만 그립니다. 확인할 것이 없는 사람에게 이어서 확인할지
+   묻는 옵션은 자리도 차지하지 않습니다 — 켤 수 없는 선택지가 남아 있으면 왜 켜지지
+   않는지부터 알아내야 합니다.
+*/
+
+.summary-card[data-workplace='verified'] [data-workplace-only='none'],
+.summary-card[data-workplace='none'] [data-workplace-only='verified'] { display: none; }

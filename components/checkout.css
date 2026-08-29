@@ -30,8 +30,21 @@
 .checkout__header {
   display: flex;
   align-items: center;
-  gap: var(--spacing-400);
+  gap: var(--spacing-600);
   margin-block-end: var(--spacing-600);
+}
+
+/* 이 화면에만 있는 미리보기 전환. 회원의 직장 등록 여부에 따라 요약 카드가 달라지는데,
+   정적인 화면에서는 그 상태를 만들 방법이 없어 직접 고릅니다. */
+.checkout__demo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-200);
+  margin: 0;
+  margin-inline-start: auto;
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-s-regular-font-size);
+  line-height: var(--typography-body-s-regular-line-height);
 }
 
 .checkout__header h1 {
@@ -75,8 +88,8 @@
 }
 
 @media (min-width: 961px) {
-  /* 뒤로 가기 버튼(56) + 간격(16) 만큼. 제목이 시작하는 자리와 같습니다. */
-  .checkout__body { padding-inline-start: calc(56px + var(--spacing-400)); }
+  /* 뒤로 가기 버튼(56) + 간격(24) 만큼. 제목이 시작하는 자리와 같습니다. */
+  .checkout__body { padding-inline-start: calc(56px + var(--spacing-600)); }
 }
 
 /* ---- 카드 -------------------------------------------------------------- */

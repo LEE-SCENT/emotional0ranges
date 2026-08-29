@@ -300,87 +300,92 @@
       <aside class="detail-side">
       <div class="schedule">
       <div class="schedule__list">
-      <div class="schedule__group">
-        <p class="schedule__date">8월 22일(토요일)</p>
-        <ul class="schedule__options">
-        <li>
-          <!-- 마감이 2 시간 30 분 뒤 — 24 시간 안쪽이라 초까지 셉니다. -->
-          <label class="option-card" data-discount-in="9024">
-            <input class="sr-only" type="radio" name="schedule" checked>
-            <span class="option-card__main">
-              <span class="option-card__time">오후 2:00~5:30</span>
-              <span class="option-card__price"><b>35,000원~</b> <s>45,000원</s></span>
-              <span class="option-card__place">서울 강남</span>
-            </span>
-            <span class="option-card__aside">
-              <span class="tag tag--accent-pri option-card__deadline">
-                <svg aria-hidden="true"><use href="#icon-scheduleFilled"></use></svg>
-                <time class="countdown">02:30:24</time>
-              </span>
-              <span class="option-card__seats">남성 6 · 여성 5자리 남음</span>
-            </span>
-          </label>
-        </li>
-        <li>
-          <!-- 마감이 사흘 뒤 — 하루보다 멀어 날짜로만 알립니다. 선택된 카드가
-               아니어도 조건을 만족하면 그대로 붙습니다. -->
-          <label class="option-card" data-discount-in="284400">
-            <input class="sr-only" type="radio" name="schedule">
-            <span class="option-card__main">
-              <span class="option-card__time">밤 10:00~12:30</span>
-              <span class="option-card__price"><b>28,000원</b> <s>38,000원</s></span>
-              <span class="option-card__place">서울 강남</span>
-            </span>
-            <span class="option-card__aside">
-              <span class="tag tag--accent-sec option-card__deadline">
-                <svg aria-hidden="true"><use href="#icon-scheduleFilled"></use></svg>
-                <time class="countdown">9월 1일까지 할인</time>
-              </span>
-              <span class="option-card__seats">남성 3자리 남음</span>
-            </span>
-          </label>
-        </li>
-        </ul>
-      </div>
-      <div class="schedule__group">
-        <p class="schedule__date">8월 23일(일요일)</p>
-        <ul class="schedule__options">
-        <li>
-          <label class="option-card">
-            <input class="sr-only" type="radio" name="schedule">
-            <span class="option-card__main">
-              <span class="option-card__time">저녁 7:00~9:30</span>
-              <span class="option-card__price"><b>46,000원</b> <s>56,000원</s></span>
-              <span class="option-card__place">서울 성수</span>
-            </span>
-            <span class="option-card__aside">
-              <span class="option-card__seats">여성 1자리 남음</span>
-            </span>
-          </label>
-        </li>
-        </ul>
-      </div>
-      <div class="schedule__group">
-        <p class="schedule__date">8월 25일(화요일)</p>
-        <ul class="schedule__options">
-        <li>
-          <label class="option-card">
-            <input class="sr-only" type="radio" name="schedule">
-            <span class="option-card__main">
-              <span class="option-card__time">저녁 7:00~9:30</span>
-              <span class="option-card__price"><b>35,000원</b> <s>45,000원</s></span>
-              <span class="option-card__place">경기 성남시</span>
-            </span>
-            <span class="option-card__aside">
-              <span class="option-card__seats">남성 2 · 여성 4자리 남음</span>
-            </span>
-          </label>
-        </li>
-        </ul>
-      </div>
+        <div class="schedule__group">
+          <time class="schedule__date"></time>
+          <ul class="schedule__options">
+            <li>
+              <label class="option-card" data-date-in="0" data-discount-in="9024"
+                     data-time="오후 2시" data-where="서울 강남 · 27-38세"
+                     data-price="45000" data-discount="10000">
+                <input class="sr-only" type="radio" name="schedule" value="s1" checked>
+                <span class="option-card__main">
+                  <span class="option-card__time">오후 2:00~5:30</span>
+                  <span class="option-card__price"><b>35,000원</b> <s>45,000원</s></span>
+                  <span class="option-card__place">서울 강남</span>
+                </span>
+                <span class="option-card__aside">
+                  <span class="tag tag--accent-pri option-card__deadline">
+                    <svg aria-hidden="true"><use href="#icon-scheduleFilled"></use></svg>
+                    <time class="countdown">02:30:24</time>
+                  </span>
+                  <span class="option-card__seats">남성 6 · 여성 5자리 남음</span>
+                </span>
+              </label>
+            </li>
+            <li>
+              <label class="option-card" data-date-in="0" data-discount-in="284400"
+                     data-time="밤 10시" data-where="서울 강남 · 27-38세"
+                     data-price="38000" data-discount="10000">
+                <input class="sr-only" type="radio" name="schedule" value="s2">
+                <span class="option-card__main">
+                  <span class="option-card__time">밤 10:00~12:30</span>
+                  <span class="option-card__price"><b>28,000원</b> <s>38,000원</s></span>
+                  <span class="option-card__place">서울 강남</span>
+                </span>
+                <span class="option-card__aside">
+                  <span class="tag tag--accent-sec option-card__deadline">
+                    <svg aria-hidden="true"><use href="#icon-scheduleFilled"></use></svg>
+                    <time class="countdown">9월 2일까지 할인</time>
+                  </span>
+                  <span class="option-card__seats">남성 3자리 남음</span>
+                </span>
+              </label>
+            </li>
+          </ul>
+        </div>
+        <div class="schedule__group">
+          <time class="schedule__date"></time>
+          <ul class="schedule__options">
+            <li>
+              <label class="option-card" data-date-in="1"
+                     data-time="저녁 7시" data-where="서울 성수 · 27-38세"
+                     data-price="56000" data-discount="10000">
+                <input class="sr-only" type="radio" name="schedule" value="s3">
+                <span class="option-card__main">
+                  <span class="option-card__time">저녁 7:00~9:30</span>
+                  <span class="option-card__price"><b>46,000원</b> <s>56,000원</s></span>
+                  <span class="option-card__place">서울 성수</span>
+                </span>
+                <span class="option-card__aside">
+                  <span class="option-card__seats">여성 1자리 남음</span>
+                </span>
+              </label>
+            </li>
+          </ul>
+        </div>
+        <div class="schedule__group">
+          <time class="schedule__date"></time>
+          <ul class="schedule__options">
+            <li>
+              <label class="option-card" data-date-in="3"
+                     data-time="저녁 7시" data-where="경기 성남 · 30-42세"
+                     data-price="45000" data-discount="10000">
+                <input class="sr-only" type="radio" name="schedule" value="s4">
+                <span class="option-card__main">
+                  <span class="option-card__time">저녁 7:00~9:30</span>
+                  <span class="option-card__price"><b>35,000원</b> <s>45,000원</s></span>
+                  <span class="option-card__place">경기 성남</span>
+                </span>
+                <span class="option-card__aside">
+                  <span class="option-card__seats">남성 2 · 여성 4자리 남음</span>
+                </span>
+              </label>
+            </li>
+          </ul>
+        </div>
+        </div>
         <!-- 목록 아래에 "모든 날짜 보기"가 붙는 자리입니다. 지금은 일정이 몇 개
              없어 더 볼 것이 없으므로 두지 않습니다. -->
-        </div>
         <div class="schedule__actions">
           <a class="btn btn--filled btn--large" href="./checkout.html"><span class="btn__label">신청하기</span></a>
         </div>
@@ -571,6 +576,8 @@
     await (await fetch('./build/icons.svg')).text() + await (await fetch('./build/logo.svg')).text()
   const { initStickyGnb } = await import('./components/gnb.js?v=ca09b963')
   initStickyGnb()
+  const { initSchedule } = await import('./components/schedule.js?v=5b9beb2d')
+  initSchedule()
   const { initDiscounts } = await import('./components/discount.js?v=852f7b20')
   initDiscounts()
   const { initFavorites } = await import('./components/favorite.js?v=c0bbee77')

@@ -4,12 +4,14 @@
  *   import { initCheckout } from './components/checkout.js'
  *   initCheckout()
  *
- * 하는 일은 넷입니다.
+ * 하는 일은 다섯입니다.
  *
- *   일정      고른 일정에 따라 요약의 날짜·장소·금액을 다시 씁니다.
+ *   일정      고른 일정에 따라 요약의 날짜·장소·금액을 다시 씁니다. 상세 화면에서
+ *             고르고 온 일정(?schedule=)이 있으면 그것으로 시작합니다.
  *   당일 배너 고른 일정이 오늘이면 환불되지 않는다는 줄을 카드 맨 위에 올립니다.
  *   금액      상품 금액 − 할인 + 추가 옵션. 총액과 버튼 글자는 언제나 같은 수입니다.
  *   동의      필수 동의를 켜야 결제 버튼이 눌립니다.
+ *   미리보기  직장 등록 여부에 따라 요약이 달라지는 두 경우를 눈으로 견줍니다.
  *
  * 값은 전부 마크업이 들고 있습니다. 일정 카드에 금액과 날짜가 적혀 있고 여기서는
  * 고른 것을 읽어 더하기만 합니다. 스크립트 안에 금액을 적어두면 화면에 보이는 값과
@@ -19,54 +21,13 @@
  * 둘을 늘 같게 두라는 것은, 다르게 만들 방법이 있으면 언젠가 달라지기 때문입니다.
  */
 
-const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토']
+import { dateOf, isToday, dateText } from './schedule.js'
+import { roll } from './roll.js'
 
 const won = (n) => `${n.toLocaleString('ko-KR')}원`
 
-/**
- * 오늘(한국 시간)의 날짜.
- *
- * 기기 시계가 어느 지역에 맞춰져 있든 서비스 운영 기준으로 판단해야 합니다. 해외에
- * 있는 사람이 "오늘"이 아니라고 안내받고 결제한 뒤, 서버는 당일로 보고 환불을
- * 막는 일이 생깁니다.
- */
-function todayInSeoul() {
-  const parts = new Intl.DateTimeFormat('en-CA', {
-    timeZone: 'Asia/Seoul',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  }).format(new Date())
-  const [y, m, d] = parts.split('-').map(Number)
-  return { y, m, d }
-}
-
-/**
- * 일정 카드가 가리키는 날짜.
- *
- * data-date(YYYY-MM-DD)가 실제 값입니다. 서버가 없는 이 화면에서는 data-date-in
- * (오늘부터 며칠 뒤)도 받습니다 — 어느 날 열어도 당일 배너가 붙은 카드와 붙지 않은
- * 카드를 함께 볼 수 있어야 하기 때문입니다.
- */
-function dateOf(el) {
-  const raw = el.dataset.date
-  if (raw) {
-    const [y, m, d] = raw.split('-').map(Number)
-    return new Date(y, m - 1, d)
-  }
-  const days = Number(el.dataset.dateIn)
-  if (!Number.isFinite(days)) return null
-  const t = todayInSeoul()
-  return new Date(t.y, t.m - 1, t.d + days)
-}
-
-const isToday = (at) => {
-  const t = todayInSeoul()
-  return at.getFullYear() === t.y && at.getMonth() + 1 === t.m && at.getDate() === t.d
-}
-
-const dateText = (at) =>
-  `${at.getFullYear()}년 ${at.getMonth() + 1}월 ${at.getDate()}일 (${WEEKDAY[at.getDay()]})`
+/** 굴릴 것은 숫자뿐입니다. "원"과 그 뒤 글자는 그대로 둡니다. */
+const digits = (n) => n.toLocaleString('ko-KR')
 
 export function initCheckout(scope = document) {
   const root = scope.querySelector('.checkout')
@@ -148,14 +109,57 @@ export function initCheckout(scope = document) {
     const ok = !!agree?.checked
     for (const btn of buttons) {
       btn.disabled = !ok
-      const label = btn.querySelector('.btn__label')
-      if (label) label.textContent = ok ? `${won(due)} 결제하기` : '결제하기'
+      // 굴러가는 칸에는 0~9 가 세 벌씩 들어 있습니다. 화면을 읽어주는 쪽에는 그
+      // 서른 글자가 아니라 지금 값 하나가 가야 합니다.
+      btn.setAttribute('aria-label', ok ? `${won(due)} 결제하기` : '결제하기')
+      const amount = btn.querySelector('[data-amount]')
+      if (!amount) continue
+      // 잠겨 있는 동안에는 금액 자리를 비웁니다. 굴릴 것도 없습니다.
+      if (!ok) {
+        amount.replaceChildren()
+        amount.nextSibling && (amount.nextSibling.textContent = '결제하기')
+        continue
+      }
+      roll(amount, digits(due))
+      if (amount.nextSibling) amount.nextSibling.textContent = '원 결제하기'
     }
+  }
+
+  /* ---- 상세에서 고르고 온 일정 -----------------------------------------
+     ?schedule=s2 처럼 붙어 옵니다. 상세 화면에서 고른 일정 그대로 시작해야, 여기서
+     한 번 더 고르게 하지 않습니다. 목록에 없는 값이면 마크업의 기본 선택을 둡니다. */
+  const wanted = new URLSearchParams(location.search).get('schedule')
+  if (wanted) {
+    const found = options.find((el) => el.value === wanted)
+    if (found) found.checked = true
   }
 
   for (const el of options) el.addEventListener('change', render)
   extra?.addEventListener('change', render)
   agree?.addEventListener('change', lock)
+
+  /* ---- 미리보기 전환 ----------------------------------------------------
+     이 화면에만 있습니다. 실제로는 회원의 직장 등록 여부가 상태를 정합니다.
+
+     미등록으로 바꾸면 유료 옵션이 사라지므로 선택도 함께 풀어야 합니다. 보이지 않는
+     체크가 남아 총액에 10,000 이 얹혀 있으면 어디서 온 돈인지 알 길이 없습니다. */
+  const cases = [...scope.querySelectorAll('[data-case]')]
+  for (const btn of cases) {
+    btn.addEventListener('click', () => {
+      const name = btn.dataset.case
+      summary.dataset.workplace = name
+      for (const el of cases) {
+        const on = el === btn
+        // 고른 쪽은 채운 버튼, 나머지는 테두리만. outlined 의 is-on 은 글자를 흰색으로
+        // 바꾸는데 배경은 그대로 흰색이라 이 자리에서는 글자가 사라집니다.
+        el.classList.toggle('btn--filled', on)
+        el.classList.toggle('btn--outlined', !on)
+        el.setAttribute('aria-pressed', String(on))
+      }
+      if (name !== 'verified' && extra) extra.checked = false
+      render()
+    })
+  }
 
   /* ---- 규정 펼치기 ------------------------------------------------------
      마크업에는 펼쳐진 채로 들어 있고 여기서 접습니다. 반대로 하면 스크립트가 오지
