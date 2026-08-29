@@ -190,9 +190,6 @@
   justify-content: center;
   gap: var(--spacing-200);
   block-size: calc((100cqw - 2 * var(--spacing-50)) / 3 / var(--_product-card-image-ratio));
-  /* 레일은 2px 로 붙어 있지만 더보기는 레일 밖의 요소라 20px 를 띄웁니다.
-     gap 이 이미 2px 를 주므로 그만큼 뺍니다. */
-  margin-inline-start: calc(var(--spacing-500) - var(--spacing-50));
   padding-inline: var(--spacing-600);
   color: var(--_product-card-more-fg);
   text-decoration: none;
@@ -209,5 +206,3 @@
   /* arrowBack 을 뒤집어 오른쪽 화살표로 씁니다. */
   scale: -1 1;
 }
-
-.product-card-more:hover { text-decoration: underline; }
