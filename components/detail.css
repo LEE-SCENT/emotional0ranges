@@ -354,6 +354,10 @@
   line-height: var(--typography-body-l-medium-line-height);
 }
 
+/* 세로로 쌓는 통 안이라 링크가 줄 전체로 늘어납니다. 누르는 자리와 초점 테두리가
+   글자 너비에서 끝나야, 어디를 눌러야 하는지가 보이는 대로입니다. */
+.detail-notice__item a { align-self: flex-start; }
+
 .detail-notice__item span,
 .detail-notice__item a {
   color: var(--colors-fg-lower);
