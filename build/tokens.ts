@@ -413,6 +413,10 @@ export const components = {
     "scrim": {
       "from": "#000000A6",
       "height": "160px"
+    },
+    "more": {
+      "fg": "#000000",
+      "iconSize": "24px"
     }
   },
   "sectionTitle": {

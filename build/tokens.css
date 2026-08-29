@@ -175,6 +175,8 @@
   --_product-card-image-ratio: 1.4444;
   --_product-card-scrim-from: #000000A6;
   --_product-card-scrim-height: 160px;
+  --_product-card-more-fg: var(--colors-fg);
+  --_product-card-more-icon-size: calc(var(--_dimension) * 6);
   --_section-title-fg: var(--colors-fg);
   --_section-title-fg-description: var(--colors-fg-lower);
   --_segmented-control-bg: var(--_colors-white);

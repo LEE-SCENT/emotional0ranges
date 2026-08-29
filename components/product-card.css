@@ -31,7 +31,6 @@
   position: relative;
   overflow: clip;
   aspect-ratio: var(--_product-card-image-ratio);
-  border-radius: var(--_product-card-rounded);
   background: var(--colors-bg-low);
 }
 
@@ -119,13 +118,13 @@
    카드 사이가 20px 벌어져 있어 각 카드가 독립적으로 둥급니다. 예전처럼 간격이
    2px 이라 띠처럼 보일 때는 레일에 마스크를 씌워야 했지만, 지금은 그럴 필요가
    없습니다 — 배경색에 기대지 않고, 카드가 한두 개뿐이어도 그대로 맞습니다.
+
+   grid 가 아니라 flex 인 이유는 마지막 "더보기" 때문입니다. grid 의 auto 열은
+   모두 같은 폭이라 더보기만 좁게 둘 수 없습니다.
 */
 
 .product-card-group {
-  display: grid;
-  grid-auto-flow: column;
-  /* 세 장이 딱 맞게 들어가고 나머지는 넘칩니다. */
-  grid-auto-columns: calc((100% - 2 * var(--spacing-500)) / 3);
+  display: flex;
   gap: var(--spacing-500);
   align-items: start;
   overflow-x: auto;
@@ -136,4 +135,58 @@
 
 .product-card-group::-webkit-scrollbar { display: none; }
 
-.product-card-group > .product-card { scroll-snap-align: start; }
+.product-card-group > .product-card {
+  /* 세 장이 딱 맞게 들어가고 나머지는 넘칩니다. */
+  flex: 0 0 calc((100% - 2 * var(--spacing-500)) / 3);
+  scroll-snap-align: start;
+}
+
+/* 목록의 처음과 마지막 상품만 바깥쪽 모서리를 둥글게 둡니다. DOM 순서에
+   고정되므로 스크롤해도 움직이지 않습니다 — 예전처럼 보이는 위치를 따라가게
+   하면 레일 한가운데에 둥근 모서리가 떠 보입니다.
+
+   :last-of-type 인 이유는 마지막 자식이 더보기 링크(<a>)이기 때문입니다. */
+.product-card-group > .product-card:first-of-type .product-card__media {
+  border-start-start-radius: var(--_product-card-rounded);
+  border-end-start-radius: var(--_product-card-rounded);
+}
+
+.product-card-group > .product-card:last-of-type .product-card__media {
+  border-start-end-radius: var(--_product-card-rounded);
+  border-end-end-radius: var(--_product-card-rounded);
+}
+
+/* ---- 더보기 -----------------------------------------------------------
+   목록 끝에 붙습니다. 높이를 썸네일과 맞춰야 하는데, 그 높이는 카드 "폭"에서
+   나옵니다. block-size 의 100% 는 높이 기준으로 풀리므로 폭을 가리키는
+   컨테이너 쿼리 단위를 씁니다.
+*/
+
+.product-card-section { container-type: inline-size; }
+
+.product-card-more {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-200);
+  block-size: calc((100cqw - 2 * var(--spacing-500)) / 3 / var(--_product-card-image-ratio));
+  padding-inline: var(--spacing-600);
+  color: var(--_product-card-more-fg);
+  text-decoration: none;
+  font-family: var(--_font-family-pretendard);
+  font-size: var(--typography-body-m-regular-font-size);
+  line-height: var(--typography-body-m-regular-line-height);
+  white-space: nowrap;
+}
+
+.product-card-more svg {
+  display: block;
+  inline-size: var(--_product-card-more-icon-size);
+  block-size: var(--_product-card-more-icon-size);
+  /* arrowBack 을 뒤집어 오른쪽 화살표로 씁니다. */
+  scale: -1 1;
+}
+
+.product-card-more:hover { text-decoration: underline; }

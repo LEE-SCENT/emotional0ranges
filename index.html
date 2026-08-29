@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>감정적인 오렌지들</title>
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
-<link rel="stylesheet" href="./build/tokens.css?v=aa404ea3">
+<link rel="stylesheet" href="./build/tokens.css?v=c71c33e3">
 <link rel="stylesheet" href="./components/container.css?v=35013892">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=f74b9b87">
@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="./components/gnb.css?v=2aafdcea">
 <link rel="stylesheet" href="./components/kv.css?v=018ae87a">
 <link rel="stylesheet" href="./components/tag.css?v=b860fce1">
-<link rel="stylesheet" href="./components/product-card.css?v=6edfcaca">
+<link rel="stylesheet" href="./components/product-card.css?v=66994063">
 <link rel="stylesheet" href="./components/section-title.css?v=f24dbc53">
 <link rel="stylesheet" href="./components/notice.css?v=023ca316">
 <style>
@@ -96,14 +96,6 @@
         <h2 class="section-title__heading">금요일 저녁, 여섯 명의 온도</h2>
         <p class="section-title__desc">한 주의 끝, 새로운 만남의 시작</p>
       </div>
-      <div class="section-title__nav btn-group btn-group--horizontal">
-        <button class="btn btn--blur btn--medium btn--icon-only" aria-label="이전">
-          <svg class="btn__icon" aria-hidden="true"><use href="#icon-chevronLeft"></use></svg>
-        </button>
-        <button class="btn btn--blur btn--medium btn--icon-only" aria-label="다음">
-          <svg class="btn__icon" aria-hidden="true"><use href="#icon-chevronRight"></use></svg>
-        </button>
-      </div>
     </header>
     <div class="product-card-group">
           <article class="product-card">
@@ -184,6 +176,10 @@
               <p class="product-card__price"><b>할인가</b> 36,000원~</p>
             </div>
           </article>
+          <a class="product-card-more" href="#">
+            <svg aria-hidden="true"><use href="#icon-arrowBack"></use></svg>
+            <span>더보기</span>
+          </a>
       </div>
   </section>
 </main>
@@ -228,6 +224,4 @@
   initSegmentedControls()
   const { initKvVideo } = await import('./components/kv.js?v=d2d085a7')
   initKvVideo()
-  const { initProductCarousel } = await import('./components/product-card.js?v=6c32d5dd')
-  initProductCarousel()
 </script>
