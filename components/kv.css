@@ -80,7 +80,8 @@
   align-items: flex-start;
   gap: var(--spacing-600);
   inline-size: 100%;
-  padding: var(--spacing-800) var(--spacing-500);
+  /* 좁은 화면은 사방 32 입니다. 961 부터는 아래에서 좌우 40 만 남깁니다. */
+  padding: var(--spacing-800);
 }
 
 .kv__body {
@@ -138,13 +139,14 @@
   margin: 0;
   inline-size: 100%;
   max-inline-size: 640px;
-  padding: var(--spacing-300) var(--spacing-500);
-  font-size: var(--typography-body-m-regular-font-size);
-  line-height: var(--typography-body-m-regular-line-height);
+  /* 위쪽은 콘텐츠의 32 가 이미 띄워줍니다. 아래 12, 좌우 20 만 둡니다. */
+  padding: 0 var(--spacing-500) var(--spacing-300);
+  font-size: var(--typography-body-s-regular-font-size);
+  line-height: var(--typography-body-s-regular-line-height);
 }
 
 .kv-group[data-slides='1'] .kv__pagination { display: none; }
-.kv__pagination b { font-weight: var(--typography-body-m-semibold-font-weight); }
+.kv__pagination b { font-weight: var(--typography-body-s-semibold-font-weight); }
 
 /* ---- 441~960 ----------------------------------------------------------- */
 @media (min-width: 441px) {
