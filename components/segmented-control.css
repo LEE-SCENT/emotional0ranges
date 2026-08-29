@@ -59,16 +59,16 @@
   box-sizing: border-box;
   border: 0;
   margin: 0;
-  /* 좌우 12 는 두 크기가 같고, 위아래만 달라집니다 (small 8 / medium 16). */
-  padding: var(--spacing-200) var(--spacing-300);
+  /* 좌우 12 는 두 크기가 같고, 위아래만 달라집니다 (small 10 / medium 16). */
+  padding: var(--spacing-250) var(--spacing-300);
   border-radius: var(--_segmented-control-item-rounded);
   background: transparent;
   color: var(--_segmented-control-item-fg);
   font-family: var(--_font-family-pretendard);
-  font-size: var(--typography-body-l-medium-font-size);
-  font-weight: var(--typography-body-l-medium-font-weight);
-  line-height: var(--typography-body-l-medium-line-height);
-  letter-spacing: var(--typography-body-l-medium-letter-spacing);
+  font-size: var(--typography-body-m-medium-font-size);
+  font-weight: var(--typography-body-m-medium-font-weight);
+  line-height: var(--typography-body-m-medium-line-height);
+  letter-spacing: var(--typography-body-m-medium-letter-spacing);
   white-space: nowrap;
   cursor: pointer;
   /* 글자색은 thumb 이 도착하는 속도에 맞춰 함께 바뀝니다. */
@@ -76,7 +76,14 @@
               var(--_segmented-control-transition-easing);
 }
 
-.segmented--medium .segmented__item { padding-block: var(--spacing-400); }
+/* medium 은 글자도 한 단계 큽니다 (body-l-medium 16/1.5). */
+.segmented--medium .segmented__item {
+  padding-block: var(--spacing-400);
+  font-size: var(--typography-body-l-medium-font-size);
+  font-weight: var(--typography-body-l-medium-font-weight);
+  line-height: var(--typography-body-l-medium-line-height);
+  letter-spacing: var(--typography-body-l-medium-letter-spacing);
+}
 
 /* 고를 수 없는 항목. 배경은 그대로 두고 글자만 낮춥니다 — 자리를 지키고 있어야
    나머지 항목의 폭이 흔들리지 않습니다. */
