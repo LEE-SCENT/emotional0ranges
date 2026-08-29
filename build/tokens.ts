@@ -345,6 +345,15 @@ export const typography = {
  * @internal 컴포넌트 구현 전용입니다. 화면 작업에서는 semantic / typography 를 쓰세요.
  */
 export const components = {
+  "alertBanner": {
+    "bg": "#f75d151a",
+    "fg": "#F75D15",
+    "rounded": "8px",
+    "iconSize": "20px",
+    "paddingBlock": "4px",
+    "paddingInline": "4px",
+    "gap": "4px"
+  },
   "appBar": {
     "bg": "#FFFFFF",
     "fg": "#686666",
@@ -573,12 +582,6 @@ export const components = {
     "thumbnailSize": "108px",
     "thumbnailRounded": "12px",
     "divider": "#F3F1F0",
-    "banner": {
-      "bg": "#f75d151a",
-      "fg": "#F75D15",
-      "rounded": "8px",
-      "iconSize": "20px"
-    },
     "guideIconSize": "16px",
     "guideFg": "#7D7B7A",
     "optionBg": "#F8F6F5",

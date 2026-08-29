@@ -2,7 +2,7 @@
  * SummaryCard — 신청·결제 화면의 주문 요약.
  *
  *   <aside class="summary-card">
- *     <p class="summary-card__banner">…당일 안내…</p>
+ *     <p class="alert-banner">…당일 안내…</p>
  *     <div class="summary-card__product"> 사진 + 제목 </div>
  *     <div class="summary-card__row"> 선택한 일정 … [변경] </div>
  *     <hr class="summary-card__divider">
@@ -35,34 +35,6 @@
   background: var(--_summary-card-bg);
   color: var(--colors-fg);
   font-family: var(--_font-family-pretendard);
-}
-
-/* ---- 당일 배너 ----------------------------------------------------------
-   고른 일정이 오늘이면 환불이 되지 않습니다. 결제 버튼 옆이 아니라 카드 맨 위에
-   두는 것은, 무엇을 사는지 보기 전에 알아야 할 조건이기 때문입니다.
-
-   조건을 만족하지 않으면 감추지 않고 마크업에서 뺍니다 — 자리만 비어 있어도
-   레이아웃이 그만큼 달라 보입니다.
-*/
-
-.summary-card__banner {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-150);
-  margin: 0;
-  padding: var(--spacing-200) var(--spacing-300);
-  border-radius: var(--_summary-card-banner-rounded);
-  background: var(--_summary-card-banner-bg);
-  color: var(--_summary-card-banner-fg);
-  font-size: var(--typography-body-s-regular-font-size);
-  font-weight: var(--typography-body-s-regular-font-weight);
-  line-height: var(--typography-body-s-regular-line-height);
-}
-
-.summary-card__banner svg {
-  flex: none;
-  inline-size: var(--_summary-card-banner-icon-size);
-  block-size: var(--_summary-card-banner-icon-size);
 }
 
 /* ---- 상품 -------------------------------------------------------------- */

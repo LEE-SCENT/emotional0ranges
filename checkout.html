@@ -12,7 +12,7 @@
 <meta name="theme-color" content="#FFFFFF">
 <title>신청하기 — 감정적인 오렌지들</title>
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
-<link rel="stylesheet" href="./build/tokens.css?v=d0af1fcb">
+<link rel="stylesheet" href="./build/tokens.css?v=bc61e229">
 <link rel="stylesheet" href="./components/container.css?v=55694a09">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=445ba00a">
@@ -26,7 +26,8 @@
 <link rel="stylesheet" href="./components/schedule.css?v=6094ad80">
 <link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
 <link rel="stylesheet" href="./components/checkbox.css?v=67340959">
-<link rel="stylesheet" href="./components/summary-card.css?v=8a1cd5d2">
+<link rel="stylesheet" href="./components/alert-banner.css?v=90e24d38">
+<link rel="stylesheet" href="./components/summary-card.css?v=7225c8b3">
 <link rel="stylesheet" href="./components/checkout.css?v=fd5f58d2">
 <link rel="stylesheet" href="./components/roll.css?v=2f044986">
 <link rel="stylesheet" href="./components/bottom-cta.css?v=8c0377aa">
@@ -177,7 +178,7 @@
     </div>
 
     <aside class="summary-card" data-workplace="verified" aria-label="주문 요약">
-      <p class="summary-card__banner" hidden>
+      <p class="alert-banner" data-today-banner hidden>
         <svg aria-hidden="true"><use href="#icon-error"></use></svg>
         당일 신청 상품은 취소·환불이 불가합니다
       </p>
@@ -281,6 +282,12 @@
       </button>
     </div>
     <div class="schedule">
+      <!-- 목록 바깥입니다. 스크롤을 내려도 남아 있어야, 아래쪽 오늘 일정을 고른
+           뒤에도 무엇이 걸려 있는지 보입니다. -->
+      <p class="alert-banner" data-today-banner hidden>
+        <svg aria-hidden="true"><use href="#icon-error"></use></svg>
+        당일 신청 상품은 취소·환불이 불가합니다
+      </p>
       <div class="schedule__list">
         <!-- 신청 가능한 일정이 하나도 없을 때만 나옵니다. -->
         <p class="schedule__empty" hidden>변경 가능한 일정이 없어요</p>
@@ -405,6 +412,6 @@
   initDiscounts()
   const { initSheets } = await import('./components/sheet.js?v=4abbc8c4')
   initSheets()
-  const { initCheckout } = await import('./components/checkout.js?v=6fe05423')
+  const { initCheckout } = await import('./components/checkout.js?v=22df5b9f')
   initCheckout()
 </script>

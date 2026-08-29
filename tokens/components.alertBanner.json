@@ -1,0 +1,18 @@
+{
+  "components": {
+    "alertBanner": {
+      "$description": "지금 고른 것에 걸린 조건을 한 줄로 알리는 띠. 신청·결제 화면의 요약 카드와 일정 변경 시트가 같은 것을 씁니다 — 같은 사실을 두 자리에서 다르게 말할 이유가 없습니다.",
+      "bg": {
+        "$type": "color",
+        "$value": "#f75d151a",
+        "$description": "⚠️ Figma 에 변수로 없습니다 (rgba(247,93,21,0.1)). fg-brand 를 10% 로 깐 값이라 색 자체는 브랜드색과 같습니다."
+      },
+      "fg": { "$type": "color", "$value": "{semantic.colors.fg-brand}" },
+      "rounded": { "$type": "dimension", "$value": "{primitive.rounded.m}" },
+      "iconSize": { "$type": "dimension", "$value": "20px" },
+      "paddingBlock": { "$type": "dimension", "$value": "{semantic.spacing.200}" },
+      "paddingInline": { "$type": "dimension", "$value": "{semantic.spacing.300}" },
+      "gap": { "$type": "dimension", "$value": "{semantic.spacing.150}" }
+    }
+  }
+}

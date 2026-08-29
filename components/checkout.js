@@ -37,7 +37,13 @@ export function initCheckout(scope = document) {
   const options = [...scope.querySelectorAll('[name="schedule"]')]
   if (!summary || !options.length) return
 
-  const banner = summary.querySelector('.summary-card__banner')
+  /**
+   * 당일 환불 불가 띠. 요약 카드와 시트에 하나씩 있습니다.
+   *
+   * 요약 쪽은 적용된 일정을, 시트 쪽은 지금 고르고 있는 일정을 따릅니다 — 시트에서
+   * 오늘 일정에 손을 얹는 순간 알아야 하지, 적용하고 나서 알면 늦습니다.
+   */
+  const summaryBanner = summary.querySelector('[data-today-banner]')
   const when = summary.querySelector('.summary-card__when')
   const where = summary.querySelector('.summary-card__where')
   const extra = summary.querySelector('[data-extra-option]')
@@ -87,7 +93,7 @@ export function initCheckout(scope = document) {
     /* ---- 당일 배너 ----------------------------------------------------
        일정을 바꿀 때마다 다시 판단합니다. 한 번 붙인 뒤 그대로 두면, 당일 일정에서
        다른 날로 옮긴 사람이 환불되지 않는다는 말을 계속 보게 됩니다. */
-    if (banner) banner.hidden = !(at && isToday(at))
+    if (summaryBanner) summaryBanner.hidden = !(at && isToday(at))
 
     /* ---- 금액 ---------------------------------------------------------- */
     const base = Number(card.dataset.price) || 0
@@ -159,8 +165,19 @@ export function initCheckout(scope = document) {
 
   const draft = () => options.find((el) => el.checked)?.value ?? applied
 
+  const sheetBanner = sheet?.querySelector('[data-today-banner]')
+
+  /** 고르고 있는 일정이 오늘인지. 시트 안의 띠는 이것만 봅니다. */
+  const paintSheetBanner = () => {
+    if (!sheetBanner) return
+    const card = options.find((el) => el.value === draft())?.closest('.option-card')
+    const at = card && dateOf(card)
+    sheetBanner.hidden = !(at && isToday(at))
+  }
+
   const markDraft = () => {
     if (apply) apply.disabled = draft() === applied
+    paintSheetBanner()
   }
 
   for (const el of options) el.addEventListener('change', markDraft)

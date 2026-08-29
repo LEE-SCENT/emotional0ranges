@@ -11,16 +11,6 @@
       "thumbnailSize": { "$type": "dimension", "$value": "108px" },
       "thumbnailRounded": { "$type": "dimension", "$value": "{primitive.rounded.l}" },
       "divider": { "$type": "color", "$value": "{semantic.colors.divider-low}" },
-      "banner": {
-        "bg": {
-          "$type": "color",
-          "$value": "#f75d151a",
-          "$description": "⚠️ Figma 에 변수로 없습니다 (rgba(247,93,21,0.1)). fg-brand 를 10% 로 깐 값이라 색 자체는 브랜드색과 같습니다."
-        },
-        "fg": { "$type": "color", "$value": "{semantic.colors.fg-brand}" },
-        "rounded": { "$type": "dimension", "$value": "{primitive.rounded.m}" },
-        "iconSize": { "$type": "dimension", "$value": "20px" }
-      },
       "guideIconSize": { "$type": "dimension", "$value": "16px" },
       "guideFg": { "$type": "color", "$value": "{semantic.colors.fg-lower}" },
       "optionBg": { "$type": "color", "$value": "{semantic.colors.bg-low}" },

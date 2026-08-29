@@ -132,6 +132,13 @@
   --spacing-4500: calc(var(--_dimension) * 45);
 
   /* ---- components (내부용) ---- */
+  --_alert-banner-bg: #f75d151a;
+  --_alert-banner-fg: var(--colors-fg-brand);
+  --_alert-banner-rounded: var(--_rounded-m);
+  --_alert-banner-icon-size: 20px;
+  --_alert-banner-padding-block: var(--spacing-200);
+  --_alert-banner-padding-inline: var(--spacing-300);
+  --_alert-banner-gap: var(--spacing-150);
   --_app-bar-bg: var(--colors-bg);
   --_app-bar-fg: var(--colors-fg-low);
   --_app-bar-fg-active: var(--colors-fg-brand);
@@ -285,10 +292,6 @@
   --_summary-card-thumbnail-size: 108px;
   --_summary-card-thumbnail-rounded: var(--_rounded-l);
   --_summary-card-divider: var(--colors-divider-low);
-  --_summary-card-banner-bg: #f75d151a;
-  --_summary-card-banner-fg: var(--colors-fg-brand);
-  --_summary-card-banner-rounded: var(--_rounded-m);
-  --_summary-card-banner-icon-size: 20px;
   --_summary-card-guide-icon-size: 16px;
   --_summary-card-guide-fg: var(--colors-fg-lower);
   --_summary-card-option-bg: var(--colors-bg-low);
