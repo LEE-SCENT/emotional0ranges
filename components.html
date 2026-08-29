@@ -413,7 +413,10 @@ const LINKS = ['Ⓒ 2026 Emotional 0ranges', ['개인정보 처리방침', true]
 const META = ['(주)감정적인오렌지들', '경기도 남양주시 별내중앙로 34, 502호(별내동)',
   'emotional0ranges@naver.com', '개인정보보호책임자: {{이름}}', '사업자 등록번호 000-00-00000',
   '통신판매신고번호 2024-경기남양주-0000', '고객센터 0505-1922-2274 (평일 10시-19시, 주말 및 공휴일 제외)']
-const SNS = [['instagram','인스타그램','is-instagram'], ['naver-blog','네이버 블로그','is-naver-blog'], ['somoim','소모임','']]
+const SNS = [
+  ['instagram','인스타그램','is-instagram','https://www.instagram.com/emotional_0ranges'],
+  ['naver-blog','네이버 블로그','is-naver-blog','https://blog.naver.com/emotional0ranges'],
+  ['somoim','소모임','','https://www.somoim.co.kr/4b897e56-f085-11ed-85ea-0a4f64b569631']]
 document.getElementById('footer-host').innerHTML = `
 <footer class="footer">
   <div class="footer__info">
@@ -422,8 +425,8 @@ document.getElementById('footer-host').innerHTML = `
       : (l.startsWith('Ⓒ') ? `<span>${l}</span>` : `<a href="#">${l}</a>`)).join('')}</p>
     <p class="footer__meta">${META.map(m => `<span>${m.replace(/[<>]/g,'')}</span>`).join('')}</p>
   </div>
-  <ul class="footer__sns">${SNS.map(([f,label,cls]) =>
-    `<li><a class="${cls.trim()}" href="#" aria-label="${label}"><img src="./logo/sns/${f}.png" alt=""></a></li>`).join('')}</ul>
+  <ul class="footer__sns">${SNS.map(([f,label,cls,url]) =>
+    `<li><a class="${cls.trim()}" href="${url}" target="_blank" rel="noopener noreferrer" aria-label="${label} (새 창)"><img src="./logo/sns/${f}.png" alt=""></a></li>`).join('')}</ul>
 </footer>`
 
 const MENU = ['모임','매칭','모임 후기','자주 묻는 질문','저널']

@@ -9,7 +9,9 @@
  *
  *   data-slides   장 수. 한 장이면 CSS 가 페이지네이션을 감춥니다.
  *   is-current    지금 보고 있는 장. 나머지는 작게 물러납니다.
- *   좌우 버튼     넓은 화면의 ‹ › 를 스크롤에 연결합니다.
+ *
+ * 넘기는 버튼은 두지 않습니다 — 손가락과 트랙패드로 넘기고, 지금 몇 번째인지는
+ * 페이지네이션이 알려줍니다.
  *
  * 스크롤 위치를 장 폭으로 나눠 반올림합니다. 눈에 보이는 비율을 재는 방법도 있지만,
  * 장이 스냅으로 멈추므로 나눗셈이면 충분하고 결과가 흔들리지 않습니다.
@@ -53,14 +55,6 @@ export function initKvCarousel(group) {
     },
     { passive: true },
   )
-
-  // 좌우 버튼은 장마다 들어 있습니다. 어느 것을 눌러도 트랙을 한 장씩 옮깁니다.
-  group.addEventListener('click', (e) => {
-    const nav = e.target.closest('.kv__nav')
-    if (!nav || !group.contains(nav)) return
-    const back = nav.getAttribute('aria-label')?.includes('이전')
-    track.scrollBy({ left: back ? -step(track) : step(track), behavior: 'smooth' })
-  })
 
   new ResizeObserver(mark).observe(track)
   mark()

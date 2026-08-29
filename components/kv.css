@@ -140,15 +140,6 @@
 }
 .kv__pagination b { font-weight: var(--typography-body-m-semibold-font-weight); }
 
-/* ---- 좌우 이동 버튼 (961~) ---------------------------------------------
-   버튼 컴포넌트를 그대로 씁니다 — .btn--blur.btn--medium.btn--icon-only.is-on.
-   영상 위에 놓이므로 blur 타입이고, 어두운 화면 위라 반전 상태(is-on)입니다.
-   배경(whiteAlpha 15%)·글자색·backdrop-filter 를 버튼이 이미 갖고 있어
-   여기서 색을 덮어쓸 일이 없습니다.
-*/
-
-.kv__nav { display: none; }
-
 /* ---- 441~960 ----------------------------------------------------------- */
 @media (min-width: 441px) {
   .kv { min-block-size: var(--_kv-min-height-sm); }
@@ -191,25 +182,9 @@
   }
 
   .kv__cta { inline-size: 320px; }
-  .kv__pagination { display: none; }
-
-  /* 인디케이터는 평소에 숨어 있다가 KV 위에 마우스를 올릴 때 나타납니다.
-     display 를 껐다 켜면 가운데 텍스트 폭이 흔들리므로 opacity 만 바꿉니다 —
-     자리는 항상 차지하고 있습니다.
-     :focus-within 이 함께 있어야 키보드로 탭 이동할 때도 보입니다. */
-  .kv__nav {
-    display: inline-flex;
-    opacity: 0;
-    transition: opacity var(--_duration-fast) var(--_easing-standard);
-  }
-  .kv:hover .kv__nav,
-  .kv:focus-within .kv__nav {
-    opacity: 1;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .kv__nav,
   .kv__media { transition: none; }
 }
 

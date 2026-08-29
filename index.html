@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="./components/segmented-control.css?v=7a4a3de6">
 <link rel="stylesheet" href="./components/tooltip.css?v=d3d8dfa4">
 <link rel="stylesheet" href="./components/gnb.css?v=5bdc7e5d">
-<link rel="stylesheet" href="./components/kv.css?v=55b2b606">
+<link rel="stylesheet" href="./components/kv.css?v=3f6a1528">
 <link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
 <link rel="stylesheet" href="./components/product-card.css?v=afaede78">
 <link rel="stylesheet" href="./components/section-title.css?v=d1c6b1bc">
@@ -81,9 +81,6 @@
       <div class="kv__scrim"></div>
 
       <div class="kv__content">
-        <button class="btn btn--blur btn--medium btn--icon-only is-on kv__nav" aria-label="이전 슬라이드">
-          <svg class="btn__icon" aria-hidden="true"><use href="#icon-chevronLeft"></use></svg>
-        </button>
 
         <div class="kv__body">
           <div class="kv__title">
@@ -95,10 +92,6 @@
             <button class="btn btn--blur btn--large is-on"><span class="btn__label">매칭 방법 보기</span></button>
           </div>
         </div>
-
-        <button class="btn btn--blur btn--medium btn--icon-only is-on kv__nav" aria-label="다음 슬라이드">
-          <svg class="btn__icon" aria-hidden="true"><use href="#icon-chevronRight"></use></svg>
-        </button>
       </div>
 
       <p class="kv__pagination"><b>1</b> <span aria-hidden="true">/</span> <span class="sr-only">중</span> 2</p>
@@ -110,9 +103,6 @@
       <div class="kv__scrim"></div>
 
       <div class="kv__content">
-        <button class="btn btn--blur btn--medium btn--icon-only is-on kv__nav" aria-label="이전 슬라이드">
-          <svg class="btn__icon" aria-hidden="true"><use href="#icon-chevronLeft"></use></svg>
-        </button>
 
         <div class="kv__body">
           <div class="kv__title">
@@ -123,10 +113,6 @@
             <button class="btn btn--filled btn--large is-on"><span class="btn__label">테마 보러 가기</span></button>
           </div>
         </div>
-
-        <button class="btn btn--blur btn--medium btn--icon-only is-on kv__nav" aria-label="다음 슬라이드">
-          <svg class="btn__icon" aria-hidden="true"><use href="#icon-chevronRight"></use></svg>
-        </button>
       </div>
 
       <p class="kv__pagination"><b>2</b> <span aria-hidden="true">/</span> <span class="sr-only">중</span> 2</p>
@@ -332,9 +318,9 @@
       </p>
     </div>
     <ul class="footer__sns">
-      <li><a class="is-instagram" href="#" aria-label="인스타그램"><img src="./logo/sns/instagram.png" alt=""></a></li>
-      <li><a class="is-naver-blog" href="#" aria-label="네이버 블로그"><img src="./logo/sns/naver-blog.png" alt=""></a></li>
-      <li><a href="#" aria-label="소모임"><img src="./logo/sns/somoim.png" alt=""></a></li>
+      <li><a class="is-instagram" href="https://www.instagram.com/emotional_0ranges" target="_blank" rel="noopener noreferrer" aria-label="인스타그램 (새 창)"><img src="./logo/sns/instagram.png" alt=""></a></li>
+      <li><a class="is-naver-blog" href="https://blog.naver.com/emotional0ranges" target="_blank" rel="noopener noreferrer" aria-label="네이버 블로그 (새 창)"><img src="./logo/sns/naver-blog.png" alt=""></a></li>
+      <li><a href="https://www.somoim.co.kr/4b897e56-f085-11ed-85ea-0a4f64b569631" target="_blank" rel="noopener noreferrer" aria-label="소모임 (새 창)"><img src="./logo/sns/somoim.png" alt=""></a></li>
     </ul>
   </footer>
 </div>
@@ -385,7 +371,7 @@
   initSegmentedControls()
   const { initKvVideo } = await import('./components/kv.js?v=d2d085a7')
   initKvVideo()
-  const { initKvCarousels } = await import('./components/kv-carousel.js?v=bf6a6c33')
+  const { initKvCarousels } = await import('./components/kv-carousel.js?v=3926d3c0')
   initKvCarousels()
   const { initStickyGnb } = await import('./components/gnb.js?v=ca09b963')
   initStickyGnb()
