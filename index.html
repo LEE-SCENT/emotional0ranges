@@ -4,7 +4,7 @@
 <title>감정적인 오렌지들</title>
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
 <link rel="stylesheet" href="./build/tokens.css?v=c71c33e3">
-<link rel="stylesheet" href="./components/container.css?v=35013892">
+<link rel="stylesheet" href="./components/container.css?v=4a4dc1f9">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=f74b9b87">
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
@@ -13,7 +13,8 @@
 <link rel="stylesheet" href="./components/kv.css?v=018ae87a">
 <link rel="stylesheet" href="./components/tag.css?v=b860fce1">
 <link rel="stylesheet" href="./components/product-card.css?v=0ff21c86">
-<link rel="stylesheet" href="./components/section-title.css?v=f24dbc53">
+<link rel="stylesheet" href="./components/section-title.css?v=324c0527">
+<link rel="stylesheet" href="./components/footer.css?v=882c0a53">
 <link rel="stylesheet" href="./components/notice.css?v=023ca316">
 <style>
   body { margin: 0; background: var(--colors-bg); color: var(--colors-fg); }
@@ -180,6 +181,33 @@
   </div>
 </section>
 
+
+<div class="container">
+  <footer class="footer">
+    <div class="footer__info">
+      <p class="footer__links">
+        <span>Ⓒ 2026 Emotional 0ranges</span>
+        <a class="is-strong" href="#">개인정보 처리방침</a>
+        <a href="#">이용약관</a>
+        <a href="#">의견 보내기</a>
+      </p>
+      <p class="footer__meta">
+        <span>(주)감정적인오렌지들</span>
+        <span>경기도 남양주시 별내중앙로 34, 502호(별내동)</span>
+        <span>emotional0ranges@naver.com</span>
+        <span>개인정보보호책임자: {{이름}}</span>
+        <span>사업자 등록번호 000-00-00000</span>
+        <span>통신판매신고번호 2024-경기남양주-0000</span>
+        <span>고객센터 0505-1922-2274 (평일 10시-19시, 주말 및 공휴일 제외)</span>
+      </p>
+    </div>
+    <ul class="footer__sns">
+      <li><a class="is-instagram" href="#" aria-label="인스타그램"><img src="./logo/sns/instagram.png" alt=""></a></li>
+      <li><a class="is-naver-blog" href="#" aria-label="네이버 블로그"><img src="./logo/sns/naver-blog.png" alt=""></a></li>
+      <li><a href="#" aria-label="소모임"><img src="./logo/sns/somoim.png" alt=""></a></li>
+    </ul>
+  </footer>
+</div>
 
 <script type="module">
   document.getElementById('sprite').innerHTML =

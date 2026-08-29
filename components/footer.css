@@ -14,17 +14,36 @@
  * 붙어 다녀 그 문제가 생기지 않습니다.
  */
 
+/* small(~960)에서는 SNS 가 사업자 정보 아래로 내려갑니다. 가로로 두면 긴 사업자
+   정보가 좁은 폭에서 여러 줄로 접히며 아이콘만 위에 덩그러니 남습니다.
+   아래 여백 160 은 모바일에서 하단 고정 요소에 가리지 않게 두는 자리입니다. */
 .footer {
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
   gap: var(--spacing-600);
-  padding-block: var(--spacing-500) var(--spacing-1200);
+  padding-block: var(--spacing-500) var(--spacing-4000);
+  /* 디자인은 1280 고정입니다. .container 가 1601 이상에서 1440 까지 넓어지므로
+     카드 섹션과 같은 방식으로 여기서 한 번 더 묶어 세로선을 맞춥니다. */
+  inline-size: 100%;
+  max-inline-size: var(--container-max-width-md);
+  margin-inline: auto;
   border-block-start: 1px solid var(--colors-border);
   font-family: var(--_font-family-pretendard);
 }
 
+@media (min-width: 961px) {
+  .footer {
+    flex-direction: row;
+    padding-block-end: var(--spacing-1200);
+  }
+
+  .footer__info { flex: 1 0 0; }
+}
+
 .footer__info {
-  flex: 1 0 0;
+  /* small 은 세로 배치라 flex-basis 대신 100% 로 폭을 씁니다. */
+  flex: 1 0 100%;
   min-inline-size: 0;
   display: flex;
   flex-direction: column;

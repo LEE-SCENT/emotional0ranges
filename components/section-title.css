@@ -60,7 +60,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-500);
-  /* 컨테이너가 --wide 로 1600 까지 넓어져도 카드 섹션은 1200 에서 멈춥니다.
+  /* 컨테이너가 --wide 로 1600 까지 넓어져도 카드 섹션은 1280 에서 멈춥니다.
      넓은 폭은 KV 만의 것이고, 카드가 그만큼 늘어나면 이미지가 과하게 커집니다. */
   inline-size: 100%;
   max-inline-size: var(--container-max-width-md);
