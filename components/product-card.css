@@ -167,18 +167,20 @@
 
 .product-card-rail::before {
   inset-inline-start: 0;
+  /* 좌상단: 호의 중심은 12×12 상자의 우하단, 좌하단: 우상단.
+     중심에서 반지름 안쪽은 비우고 바깥만 배경색으로 덮어 모서리를 깎습니다. */
   background:
-    radial-gradient(circle var(--rail-corner) at right top,
-      transparent calc(100% - 1px), var(--colors-bg)) left top / 100% var(--rail-corner) no-repeat,
     radial-gradient(circle var(--rail-corner) at right bottom,
-      transparent calc(100% - 1px), var(--colors-bg)) left bottom / 100% var(--rail-corner) no-repeat;
+      transparent calc(100% - 0.5px), var(--colors-bg)) left top / 100% var(--rail-corner) no-repeat,
+    radial-gradient(circle var(--rail-corner) at right top,
+      transparent calc(100% - 0.5px), var(--colors-bg)) left bottom / 100% var(--rail-corner) no-repeat;
 }
 
 .product-card-rail::after {
   inset-inline-end: 0;
   background:
-    radial-gradient(circle var(--rail-corner) at left top,
-      transparent calc(100% - 1px), var(--colors-bg)) right top / 100% var(--rail-corner) no-repeat,
     radial-gradient(circle var(--rail-corner) at left bottom,
-      transparent calc(100% - 1px), var(--colors-bg)) right bottom / 100% var(--rail-corner) no-repeat;
+      transparent calc(100% - 0.5px), var(--colors-bg)) right top / 100% var(--rail-corner) no-repeat,
+    radial-gradient(circle var(--rail-corner) at left top,
+      transparent calc(100% - 0.5px), var(--colors-bg)) right bottom / 100% var(--rail-corner) no-repeat;
 }
