@@ -40,7 +40,7 @@
       "maxContentWidthLg": {
         "$type": "dimension",
         "$value": "{semantic.container.maxWidth.lg}",
-        "$description": "1601 부터의 가운데 블록 폭. 컨테이너가 그 폭에서 1440 으로 넓어지므로 GNB 도 따라갑니다 — 따로 두면 넓은 화면에서 메뉴와 본문 세로선이 어긋납니다."
+        "$description": "1601 부터의 가운데 블록 폭. 값을 여기 적지 않고 컨테이너의 lg 를 그대로 봅니다 — 본문이 넓어지거나 좁아질 때 GNB 가 따라가지 않으면 넓은 화면에서 메뉴와 본문의 세로선이 어긋납니다."
       }
     }
   }

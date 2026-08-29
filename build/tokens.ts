@@ -159,7 +159,7 @@ export const semantic = {
     },
     "maxWidth": {
       "md": "1280px",
-      "lg": "1440px",
+      "lg": "1280px",
       "wide": "1600px"
     }
   },
@@ -413,7 +413,7 @@ export const components = {
       "stickyWidth": "96px",
       "stickyHeight": "30px"
     },
-    "maxContentWidthLg": "1440px"
+    "maxContentWidthLg": "1280px"
   },
   "imageViewer": {
     "maxImageWidth": "1000px",
