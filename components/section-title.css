@@ -67,13 +67,7 @@
   inline-size: 100%;
   max-inline-size: var(--container-max-width-md);
   margin-inline: auto;
-  /* 앞 섹션과의 간격. Figma 기준 KV 하단 590 → 섹션 상단 622. */
-  margin-block-start: var(--spacing-800);
-}
-
-/* 섹션이 연달아 놓일 때는 바깥 여백 대신 안쪽 여백으로 위아래 48 을 둡니다.
-   Figma 에서 섹션끼리 맞닿아 있고 각자 48 씩 품고 있어, 섹션 사이는 96 이 됩니다. */
-.product-card-section--stacked {
-  margin-block-start: 0;
+  /* 섹션은 위아래 48 을 스스로 품습니다. Figma 에서 섹션끼리, 그리고 KV·배너와
+     맞닿아 있고 간격은 전부 이 안쪽 여백에서 나옵니다 — 섹션 사이는 48+48=96. */
   padding-block: var(--spacing-1200);
 }

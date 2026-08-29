@@ -16,8 +16,7 @@
 
 .notice {
   box-sizing: border-box;
-  /* 앞 섹션과의 간격. Figma 기준 카드 섹션 하단 1062 → Notice 상단 1110. */
-  margin-block-start: var(--spacing-1200);
+  /* 앞 카드 섹션이 아래쪽 48 을 품고 있어 여기서는 띄우지 않습니다. */
   padding: var(--spacing-800) var(--spacing-600);
   background: var(--_notice-bg);
   font-family: var(--_font-family-pretendard);
@@ -112,8 +111,15 @@
   line-height: var(--typography-body-m-regular-line-height);
 }
 
-/* 좁은 화면에서는 3열 그리드가 성립하지 않습니다. */
+/* 좁은 화면에서는 3열 그리드가 성립하지 않습니다. 머리말이 위로 올라가고
+   항목 셋은 2열로 접힙니다 — 한 줄에 하나씩 세우면 배너가 지나치게 길어집니다. */
 @media (max-width: 960px) {
   .notice__inner { grid-template-columns: 1fr; }
-  .notice__items { grid-column: 1; flex-direction: column; gap: var(--spacing-600); }
+
+  .notice__items {
+    grid-column: 1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-800);
+  }
 }

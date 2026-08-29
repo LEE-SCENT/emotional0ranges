@@ -397,7 +397,7 @@ export const components = {
     },
     "scrim": "#27262514",
     "minHeight": {
-      "base": "548px",
+      "base": "534px",
       "sm": "616px",
       "md": "518px"
     }

@@ -3,19 +3,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>감정적인 오렌지들</title>
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
-<link rel="stylesheet" href="./build/tokens.css?v=fbe22b3e">
+<link rel="stylesheet" href="./build/tokens.css?v=bec349ae">
 <link rel="stylesheet" href="./components/container.css?v=4a4dc1f9">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=b84ee9e0">
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
 <link rel="stylesheet" href="./components/segmented-control.css?v=6f478c07">
+<link rel="stylesheet" href="./components/tooltip.css?v=4939da06">
 <link rel="stylesheet" href="./components/gnb.css?v=152b429a">
 <link rel="stylesheet" href="./components/kv.css?v=018ae87a">
 <link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
 <link rel="stylesheet" href="./components/product-card.css?v=e1489947">
-<link rel="stylesheet" href="./components/section-title.css?v=1ab26fc2">
+<link rel="stylesheet" href="./components/section-title.css?v=d1c6b1bc">
 <link rel="stylesheet" href="./components/footer.css?v=6092471f">
-<link rel="stylesheet" href="./components/notice.css?v=3dd0d86e">
+<link rel="stylesheet" href="./components/notice.css?v=de267cbf">
+<link rel="stylesheet" href="./components/mobile-switch.css?v=54720806">
 <style>
   body { margin: 0; background: var(--colors-bg); color: var(--colors-fg); }
   /* 화면에는 안 보이지만 스크린리더는 읽는 텍스트 */
@@ -183,7 +185,7 @@
 
 
 <div class="container">
-  <section class="product-card-section product-card-section--stacked">
+  <section class="product-card-section">
     <header class="section-title">
       <div class="section-title__content">
         <h2 class="section-title__heading">어떤 만남을 찾고 있나요?</h2>
@@ -222,7 +224,7 @@
     </div>
   </section>
 
-  <section class="product-card-section product-card-section--stacked">
+  <section class="product-card-section">
     <header class="section-title">
       <div class="section-title__content">
         <h2 class="section-title__heading">조용한 라운지에서, 깊은 대화</h2>
@@ -289,6 +291,19 @@
       <li><a href="#" aria-label="소모임"><img src="./logo/sns/somoim.png" alt=""></a></li>
     </ul>
   </footer>
+</div>
+
+<div class="mobile-switch">
+  <div class="mobile-switch__inner">
+    <div class="tooltip tooltip--top mobile-switch__tip">
+      <span class="tooltip__label">온라인 매칭 지금 보러 가기</span>
+    </div>
+    <div class="segmented segmented--medium" role="tablist" aria-label="모임 형태">
+      <span class="segmented__thumb" aria-hidden="true"></span>
+      <button class="segmented__item is-selected" role="tab" aria-selected="true">오프라인</button>
+      <button class="segmented__item" role="tab" aria-selected="false">온라인</button>
+    </div>
+  </div>
 </div>
 
 <script type="module">

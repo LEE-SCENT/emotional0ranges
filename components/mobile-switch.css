@@ -1,0 +1,47 @@
+/**
+ * MobileSwitch — 좁은 화면 하단에 떠 있는 온라인/오프라인 전환.
+ *
+ *   <div class="mobile-switch">
+ *     <div class="mobile-switch__inner">
+ *       <div class="tooltip tooltip--top mobile-switch__tip">
+ *         <span class="tooltip__label">온라인 매칭 지금 보러 가기</span>
+ *       </div>
+ *       <div class="segmented segmented--medium" role="tablist"> … </div>
+ *     </div>
+ *   </div>
+ *
+ * GNB 의 segmentedControl 은 961 미만에서 숨습니다. 그 폭에서는 이 전환을 화면
+ * 아래에 고정해 대신합니다 — 스크롤을 어디까지 내렸든 손가락이 닿는 자리입니다.
+ * 푸터가 아래쪽에 160 을 비워두는 것도 이 요소에 가리지 않기 위해서입니다.
+ */
+
+.mobile-switch {
+  position: fixed;
+  inset-block-end: var(--spacing-600);
+  inset-inline: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  /* 좌우 빈 자리는 아래 콘텐츠가 받아야 합니다. 안쪽에서 다시 켭니다. */
+  pointer-events: none;
+}
+
+.mobile-switch__inner {
+  position: relative;
+  pointer-events: auto;
+}
+
+/* 꼬리가 말풍선 가운데에 붙어 있으므로, 말풍선 가운데를 두 번째 옵션 가운데
+   (전환 폭의 75%)에 맞추면 꼬리가 "온라인"을 가리킵니다. */
+.mobile-switch__tip {
+  position: absolute;
+  inset-block-end: calc(100% + var(--spacing-300));
+  inset-inline-start: 75%;
+  translate: -50% 0;
+  white-space: nowrap;
+}
+
+/* 961 부터는 GNB 안의 segmentedControl 이 다시 보이므로 필요 없습니다. */
+@media (min-width: 961px) {
+  .mobile-switch { display: none; }
+}

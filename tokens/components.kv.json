@@ -21,8 +21,8 @@
       "minHeight": {
         "$type": "dimension",
         "base": {
-          "$value": "548px",
-          "$description": "~440"
+          "$value": "534px",
+          "$description": "~440 Figma 13:4169(430) 기준 534."
         },
         "sm": {
           "$value": "616px",
