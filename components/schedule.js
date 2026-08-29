@@ -87,20 +87,26 @@ export function initSchedule(scope = document) {
   /* ---- 고른 일정을 다음 화면으로 -------------------------------------- */
 
   const options = [...scope.querySelectorAll('[name="schedule"]')]
-  const links = [...scope.querySelectorAll('.schedule__actions a[href]')]
-  if (!options.length || !links.length) return
+  if (!options.length) return
 
-  const stamp = () => {
-    const picked = options.find((el) => el.checked)?.value
-    if (!picked) return
-    for (const a of links) {
-      const url = new URL(a.getAttribute('href'), location.href)
-      url.searchParams.set('schedule', picked)
-      // 주소창에 보이는 것은 상대 경로 그대로가 낫습니다.
-      a.setAttribute('href', `${url.pathname.split('/').pop()}${url.search}`)
-    }
+  for (const el of options) el.addEventListener('change', () => stampScheduleLinks(scope))
+  stampScheduleLinks(scope)
+}
+
+/**
+ * 신청하기 링크에 고른 일정을 붙입니다.
+ *
+ * 밖으로 내는 것은 대기 플로우 때문입니다. 대기 일정을 고르면 그 링크에서 href 를
+ * 아예 걷어냈다가 보통 일정으로 돌아올 때 되돌리는데, 그때 붙일 일정을 그쪽에서
+ * 다시 계산하면 두 곳이 같은 규칙을 각자 들고 있게 됩니다.
+ */
+export function stampScheduleLinks(scope = document) {
+  const picked = [...scope.querySelectorAll('[name="schedule"]')].find((el) => el.checked)?.value
+  if (!picked) return
+  for (const a of scope.querySelectorAll('.schedule__actions a[href]')) {
+    const url = new URL(a.getAttribute('href'), location.href)
+    url.searchParams.set('schedule', picked)
+    // 주소창에 보이는 것은 상대 경로 그대로가 낫습니다.
+    a.setAttribute('href', `${url.pathname.split('/').pop()}${url.search}`)
   }
-
-  for (const el of options) el.addEventListener('change', stamp)
-  stamp()
 }

@@ -12,7 +12,7 @@
 <meta name="theme-color" content="#FFFFFF">
 <title>12:12 티키타카 로테이션 소개팅 — 감정적인 오렌지들</title>
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
-<link rel="stylesheet" href="./build/tokens.css?v=c91b5272">
+<link rel="stylesheet" href="./build/tokens.css?v=2c3740d2">
 <link rel="stylesheet" href="./components/container.css?v=55694a09">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=445ba00a">
@@ -25,8 +25,9 @@
 <link rel="stylesheet" href="./components/section-title.css?v=d1c6b1bc">
 <link rel="stylesheet" href="./components/footer.css?v=b6122ba5">
 <link rel="stylesheet" href="./components/tabs.css?v=77e05f5c">
-<link rel="stylesheet" href="./components/option-card.css?v=bab39e79">
+<link rel="stylesheet" href="./components/option-card.css?v=dc5cfd48">
 <link rel="stylesheet" href="./components/schedule.css?v=6094ad80">
+<link rel="stylesheet" href="./components/confirm.css?v=9dbd820b">
 <link rel="stylesheet" href="./components/review.css?v=e6a76bd1">
 <link rel="stylesheet" href="./components/detail.css?v=0f2e70f5">
 <link rel="stylesheet" href="./components/favorite.css?v=7b27f284">
@@ -373,7 +374,7 @@
                   <span class="option-card__place">수원 광교</span>
                 </span>
                 <span class="option-card__aside">
-                  <span class="option-card__seats">대기 가능</span>
+                  <span class="option-card__seats"><svg aria-hidden="true"><use href="#icon-wait"></use></svg>대기 가능</span>
                 </span>
               </label>
             </li>
@@ -528,6 +529,44 @@
 </div>
 
 
+<!-- 대기는 결제가 아니라 순서를 잡아두는 일입니다. 무엇이 일어나고 무엇이
+     일어나지 않는지 먼저 말합니다. -->
+<dialog class="confirm" id="waitlist-apply" aria-labelledby="waitlist-apply-title">
+  <div class="confirm__panel">
+    <div class="confirm__text">
+      <h2 id="waitlist-apply-title">자리가 생기면 순서대로 알려드릴게요</h2>
+      <p>대기 신청 시 결제되지 않아요.<br>안내받은 시간 내 결제하면 참여가 확정돼요.</p>
+    </div>
+    <div class="confirm__actions">
+      <button class="btn btn--outlined btn--large" type="button" data-confirm-close>
+        <span class="btn__label">닫기</span>
+      </button>
+      <button class="btn btn--filled btn--large" type="button" data-confirm-accept>
+        <span class="btn__label">대기 신청하기</span>
+      </button>
+    </div>
+  </div>
+</dialog>
+
+<!-- 되돌릴 수 없는 쪽(대기 취소)이 왼쪽에 섭니다. 큰 버튼을 무심코 눌렀을 때
+     아무 일도 일어나지 않아야 합니다. -->
+<dialog class="confirm" id="waitlist-cancel" aria-labelledby="waitlist-cancel-title">
+  <div class="confirm__panel">
+    <div class="confirm__text">
+      <h2 id="waitlist-cancel-title">대기 신청을 취소할까요?</h2>
+      <p>취소하면 현재 대기 순서가 사라져요.<br>다시 신청해도 이전 순서는 유지되지 않아요.</p>
+    </div>
+    <div class="confirm__actions">
+      <button class="btn btn--outlined btn--large" type="button" data-confirm-accept>
+        <span class="btn__label">대기 취소</span>
+      </button>
+      <button class="btn btn--filled btn--large" type="button" data-confirm-close>
+        <span class="btn__label">계속 대기</span>
+      </button>
+    </div>
+  </div>
+</dialog>
+
 <!-- 좁은 화면에서만 보입니다. 누르면 위의 일정 목록이 시트로 올라옵니다. -->
 <div class="bottom-cta">
   <button class="btn btn--filled btn--large" data-sheet-open="apply-sheet">
@@ -592,8 +631,12 @@
     await (await fetch('./build/icons.svg')).text() + await (await fetch('./build/logo.svg')).text()
   const { initStickyGnb } = await import('./components/gnb.js?v=ca09b963')
   initStickyGnb()
-  const { initSchedule } = await import('./components/schedule.js?v=5b9beb2d')
+  const { initSchedule } = await import('./components/schedule.js?v=6d625718')
   initSchedule()
+  const { initConfirms } = await import('./components/confirm.js?v=126eea7a')
+  initConfirms()
+  const { initWaitlist } = await import('./components/waitlist.js?v=de56f668')
+  initWaitlist()
   const { initDiscounts } = await import('./components/discount.js?v=20ec859b')
   initDiscounts()
   const { initFavorites } = await import('./components/favorite.js?v=c0bbee77')

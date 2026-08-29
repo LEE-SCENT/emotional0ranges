@@ -12,7 +12,7 @@
 <meta name="theme-color" content="#FFFFFF">
 <title>신청하기 — 감정적인 오렌지들</title>
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
-<link rel="stylesheet" href="./build/tokens.css?v=c91b5272">
+<link rel="stylesheet" href="./build/tokens.css?v=2c3740d2">
 <link rel="stylesheet" href="./components/container.css?v=55694a09">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=445ba00a">
@@ -22,7 +22,7 @@
 <link rel="stylesheet" href="./components/gnb.css?v=3046ec8e">
 <link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
 <link rel="stylesheet" href="./components/footer.css?v=b6122ba5">
-<link rel="stylesheet" href="./components/option-card.css?v=bab39e79">
+<link rel="stylesheet" href="./components/option-card.css?v=dc5cfd48">
 <link rel="stylesheet" href="./components/schedule.css?v=6094ad80">
 <link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
 <link rel="stylesheet" href="./components/checkbox.css?v=67340959">
@@ -406,12 +406,12 @@
     await (await fetch('./build/icons.svg')).text() + await (await fetch('./build/logo.svg')).text()
   const { initStickyGnb } = await import('./components/gnb.js?v=ca09b963')
   initStickyGnb()
-  const { initSchedule } = await import('./components/schedule.js?v=5b9beb2d')
+  const { initSchedule } = await import('./components/schedule.js?v=6d625718')
   initSchedule()
   const { initDiscounts } = await import('./components/discount.js?v=20ec859b')
   initDiscounts()
   const { initSheets } = await import('./components/sheet.js?v=1db2480c')
   initSheets()
-  const { initCheckout } = await import('./components/checkout.js?v=22df5b9f')
+  const { initCheckout } = await import('./components/checkout.js?v=7624cede')
   initCheckout()
 </script>

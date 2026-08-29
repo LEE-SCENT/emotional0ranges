@@ -11,7 +11,7 @@
 <meta name="theme-color" content="#FFFFFF">
 <title>emotional oranges — 상품 카드 정책</title>
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
-<link rel="stylesheet" href="./build/tokens.css?v=c91b5272">
+<link rel="stylesheet" href="./build/tokens.css?v=2c3740d2">
 <link rel="stylesheet" href="./components/container.css?v=55694a09">
 <style>
   body { margin: 0; background: var(--colors-bg); color: var(--colors-fg);
@@ -144,6 +144,19 @@
     <tr><th>변경 시트 안</th><td>시트 맨 위에도 같은 띠가 있고, <b>고르고 있는 일정</b>을 따릅니다 — 오늘 일정에 손을 얹는 순간 알아야지 적용하고 나서 알면 늦습니다. 목록 바깥이라 스크롤해도 남습니다</td></tr>
     <tr><th>고르는 동안</th><td>시트의 띠만 즉시 바뀌고 <b>요약은 그대로</b>입니다. 적용해야 요약에도 같은 띠가 붙고, 적용하지 않고 닫으면 기존 일정과 기존 띠 상태가 유지됩니다</td></tr>
     <tr><th>4일 전 규정</th><td>별개입니다. 필수 동의의 <b>환불 기준</b>에서 안내합니다</td></tr>
+  </table>
+
+  <h3>대기 가능 일정</h3>
+  <p class="note">대기는 자리를 잡아주는 일이 아니라 순서를 잡아두는 일입니다. 그 차이가 화면에서 흐려지면 참여가 확정된 줄 알고 기다립니다.</p>
+  <table>
+    <tr><th>노출</th><td><b>상세에서만</b>. 결제 화면의 일정 변경 목록에서는 뺍니다</td></tr>
+    <tr><th>라벨</th><td>아이콘 + <code>대기 가능</code>. 잔여석은 숫자라 글자로 충분하지만 대기는 상태라 앞에서 한 번 알려줍니다</td></tr>
+    <tr><th>CTA</th><td>그 일정을 고르면 <code>대기 신청하기</code>. 결제 화면으로 가지 않습니다 — 링크에서 주소 자체를 걷어냅니다</td></tr>
+    <tr><th>확인</th><td>묻는 창을 거칩니다. <b>결제되지 않는다는 것</b>과 <b>안내받은 시간 내 결제해야 확정된다는 것</b>을 먼저 말합니다</td></tr>
+    <tr><th>신청 후</th><td>일정 상태가 <code>대기 신청 완료</code>, CTA 가 <code>대기 취소</code>로 바뀝니다. 브랜드색은 거둡니다 — 이제 고르라는 말이 아닙니다</td></tr>
+    <tr><th>순서</th><td>자리가 생기면 순서대로 결제 안내. 제한 시간 내 결제하면 참여 확정, 넘기면 <b>다음 대기자</b>에게 갑니다</td></tr>
+    <tr><th>취소</th><td>묻는 창에서 <b>되돌릴 수 없는 쪽이 왼쪽</b>(<code>대기 취소</code>), 안전한 쪽이 오른쪽(<code>계속 대기</code>)입니다. 큰 버튼을 무심코 눌렀을 때 아무 일도 일어나지 않아야 합니다</td></tr>
+    <tr><th>취소 후</th><td>대기 순서는 <b>사라집니다</b>. 다시 신청해도 복구되지 않습니다</td></tr>
   </table>
 
   <h3>일정 변경 시트</h3>

@@ -1,0 +1,28 @@
+{
+  "components": {
+    "confirm": {
+      "$description": "되돌리기 어려운 일을 하기 전에 한 번 묻는 작은 창. 무엇이 일어나는지 한 줄로 말하고, 나가는 길과 하는 길을 나란히 둡니다.",
+      "width": { "$type": "dimension", "$value": "440px" },
+      "padding": { "$type": "dimension", "$value": "{semantic.spacing.600}" },
+      "gap": {
+        "$type": "dimension",
+        "$value": "{semantic.spacing.600}",
+        "$description": "글과 버튼 사이. 글을 다 읽고 나서 고르도록 한 번 끊어줍니다."
+      },
+      "textGap": { "$type": "dimension", "$value": "{semantic.spacing.300}" },
+      "actionGap": { "$type": "dimension", "$value": "{semantic.spacing.200}" },
+      "rounded": { "$type": "dimension", "$value": "{primitive.rounded.2xl}" },
+      "bg": { "$type": "color", "$value": "{semantic.colors.bg}" },
+      "backdrop": {
+        "$type": "color",
+        "$value": "#00000040",
+        "$description": "⚠️ Figma 에 변수로 없습니다. 시트와 같은 값입니다 — 뒤를 가리는 정도가 창마다 다를 이유가 없습니다."
+      },
+      "shadow": {
+        "$type": "shadow",
+        "$value": "0 -4px 24px #0000001a",
+        "$description": "⚠️ Figma 에 변수로 없습니다 (drop-shadow 0 -4px 24px rgba(0,0,0,0.1))."
+      }
+    }
+  }
+}

@@ -24,6 +24,11 @@
         "$value": "2px",
         "$description": "⚠️ Figma 에 변수로 없습니다. stroke 두께에서 읽었습니다."
       },
+      "statusIconSize": {
+        "$type": "dimension",
+        "$value": "16px",
+        "$description": "대기 상태 앞에 붙는 아이콘."
+      },
       "rounded": {
         "$type": "dimension",
         "$value": "{primitive.rounded.l}"

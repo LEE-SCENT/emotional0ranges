@@ -181,6 +181,15 @@
   --_button-icon-size-l: calc(var(--_dimension) * 7);
   --_button-border-width: 1px;
   --_button-blur-radius: 7.5px;
+  --_confirm-width: 440px;
+  --_confirm-padding: var(--spacing-600);
+  --_confirm-gap: var(--spacing-600);
+  --_confirm-text-gap: var(--spacing-300);
+  --_confirm-action-gap: var(--spacing-200);
+  --_confirm-rounded: var(--_rounded-2xl);
+  --_confirm-bg: var(--colors-bg);
+  --_confirm-backdrop: #00000040;
+  --_confirm-shadow: 0 -4px 24px #0000001a;
   --_control-size: 24px;
   --_control-icon-size: 20px;
   --_control-rounded: var(--_rounded-xs);
@@ -220,6 +229,7 @@
   --_option-card-border-selected: var(--_colors-serious-gray-900);
   --_option-card-border-width: 1px;
   --_option-card-border-width-selected: 2px;
+  --_option-card-status-icon-size: 16px;
   --_option-card-rounded: var(--_rounded-l);
   --_option-card-price-fg: var(--colors-fg-brand);
   --_option-card-price-strike-fg: var(--colors-fg-lowest);

@@ -418,6 +418,17 @@ export const components = {
     "borderWidth": "1px",
     "blurRadius": "7.5px"
   },
+  "confirm": {
+    "width": "440px",
+    "padding": "4px",
+    "gap": "4px",
+    "textGap": "4px",
+    "actionGap": "4px",
+    "rounded": "20px",
+    "bg": "#FFFFFF",
+    "backdrop": "#00000040",
+    "shadow": "0 -4px 24px #0000001a"
+  },
   "control": {
     "size": "24px",
     "iconSize": "20px",
@@ -478,6 +489,7 @@ export const components = {
     "borderSelected": "#272625",
     "borderWidth": "1px",
     "borderWidthSelected": "2px",
+    "statusIconSize": "16px",
     "rounded": "12px",
     "priceFg": "#F75D15",
     "priceStrikeFg": "#A6A4A3",

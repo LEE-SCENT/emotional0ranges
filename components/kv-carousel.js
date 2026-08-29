@@ -12,6 +12,9 @@
  *   --kv-slide-scale
  *                 장마다의 크기. 스크롤 위치에서 바로 계산해 매 프레임 넣습니다.
  *                 CSS 전환에 맡기면 스냅이 끝난 뒤 한 번에 커져 툭 튀어 보입니다.
+ *   --kv-slide-origin
+ *                 줄어드는 축. 왼쪽에 있는 장은 오른쪽 변을, 오른쪽에 있는 장은
+ *                 왼쪽 변을 붙듭니다 — 화면을 향한 변이 제자리라야 그만큼 보입니다.
  *
  * 넘기는 방법은 둘입니다. 좁은 화면에서는 손가락으로 끌고, 961 부터는 좌우 화살표를
  * 씁니다. 화살표는 마크업에 늘 있고 어느 폭에서 보일지는 CSS 가 정합니다.
@@ -118,6 +121,9 @@ export function initKvCarousel(group) {
       // 지금 자리에서 한 장 이상 떨어지면 완전히 줄어든 크기입니다.
       const away = Math.min(1, Math.abs(pos - i))
       target.set(el, idle + (1 - idle) * (1 - away))
+      // 화면 쪽을 향한 변을 붙들어야 줄어든 장이 그만큼 보입니다. 왼쪽에 있는 장은
+      // 오른쪽 변을, 오른쪽에 있는 장은 왼쪽 변을 축으로 삼습니다.
+      el.style.setProperty('--kv-slide-origin', i < pos ? 'right' : 'left')
     })
 
     if (!running) {

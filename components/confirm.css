@@ -1,0 +1,125 @@
+/**
+ * Confirm — 되돌리기 어려운 일을 하기 전에 한 번 묻는 작은 창.
+ *
+ *   <dialog class="confirm" id="waitlist-apply">
+ *     <div class="confirm__panel">
+ *       <div class="confirm__text">
+ *         <h2>자리가 생기면 순서대로 알려드릴게요</h2>
+ *         <p>대기 신청 시 결제되지 않아요.<br>안내받은 시간 내 결제하면 참여가 확정돼요.</p>
+ *       </div>
+ *       <div class="confirm__actions">
+ *         <button class="btn btn--outlined btn--large" data-confirm-close>닫기</button>
+ *         <button class="btn btn--filled btn--large" data-confirm-accept>대기 신청하기</button>
+ *       </div>
+ *     </div>
+ *   </dialog>
+ *
+ * 나가는 길이 왼쪽, 하는 길이 오른쪽입니다. 나가는 쪽은 글자만큼만 넓고 하는 쪽이
+ * 남은 자리를 다 씁니다 — 어느 쪽이 이 창의 목적인지가 폭으로 드러납니다.
+ *
+ * 되돌리기 어려운 일이 왼쪽에 오는 경우도 있습니다(대기 취소). 그때는 "계속 대기"가
+ * 오른쪽에 서서, 아무 생각 없이 큰 버튼을 눌렀을 때 아무 일도 일어나지 않습니다.
+ *
+ * 시트와 달리 어느 폭에서든 화면 가운데에 뜹니다. 묻는 창은 짧고, 짧은 것이 화면
+ * 아래에서 올라오면 무엇을 묻는지 읽기 전에 손이 먼저 움직입니다.
+ */
+
+.confirm {
+  inline-size: 100%;
+  max-inline-size: 100%;
+  block-size: 100%;
+  max-block-size: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  overflow: clip;
+}
+
+.confirm[open] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-500);
+}
+
+.confirm::backdrop { background: var(--_confirm-backdrop); }
+
+.confirm__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--_confirm-gap);
+  box-sizing: border-box;
+  inline-size: 100%;
+  max-inline-size: var(--_confirm-width);
+  padding: var(--_confirm-padding);
+  border-radius: var(--_confirm-rounded);
+  background: var(--_confirm-bg);
+  box-shadow: var(--_confirm-shadow);
+  font-family: var(--_font-family-pretendard);
+}
+
+.confirm__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--_confirm-text-gap);
+}
+
+.confirm__text h2 {
+  margin: 0;
+  color: var(--colors-fg);
+  font-size: var(--typography-heading-xs-semibold-font-size);
+  font-weight: var(--typography-heading-xs-semibold-font-weight);
+  line-height: var(--typography-heading-xs-semibold-line-height);
+}
+
+.confirm__text p {
+  margin: 0;
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-l-regular-font-size);
+  line-height: var(--typography-body-l-regular-line-height);
+}
+
+.confirm__actions {
+  display: flex;
+  gap: var(--_confirm-action-gap);
+}
+
+/* 나가는 쪽은 글자만큼, 하는 쪽은 남은 자리를 다 씁니다. */
+.confirm__actions .btn { flex: none; }
+.confirm__actions .btn--filled { flex: 1 1 0; min-inline-size: 0; }
+
+/* ---- 여닫기 ------------------------------------------------------------
+   그 자리에서 살짝 커지며 나타납니다. 묻는 창은 지금 누른 것에 대한 대답이라,
+   어디에서 왔는지가 아니라 여기 있다는 것만 보이면 됩니다. */
+
+.confirm,
+.confirm::backdrop {
+  transition:
+    opacity var(--_duration-base) var(--_easing-standard),
+    display var(--_duration-base) allow-discrete,
+    overlay var(--_duration-base) allow-discrete;
+}
+
+.confirm__panel {
+  transition: scale var(--_duration-base) var(--_easing-standard);
+}
+
+.confirm { opacity: 0; }
+.confirm[open] { opacity: 1; }
+.confirm::backdrop { opacity: 0; }
+.confirm[open]::backdrop { opacity: 1; }
+.confirm:not([open]) .confirm__panel { scale: 0.98; }
+
+@starting-style {
+  .confirm[open] { opacity: 0; }
+  .confirm[open]::backdrop { opacity: 0; }
+  .confirm[open] .confirm__panel { scale: 0.98; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .confirm,
+  .confirm::backdrop,
+  .confirm__panel { transition: none; }
+
+  .confirm:not([open]) .confirm__panel { scale: 1; }
+}

@@ -117,6 +117,33 @@
 
 .option-card--wait .option-card__seats { color: var(--_option-card-fg-wait); }
 
+/* 라벨 앞의 아이콘. 잔여석은 숫자라 글자만으로 충분하지만, 대기는 상태라 무엇을
+   말하는지 한 글자 앞에서 알려줍니다. */
+.option-card__seats svg {
+  display: none;
+  flex: none;
+  inline-size: var(--_option-card-status-icon-size);
+  block-size: var(--_option-card-status-icon-size);
+}
+
+.option-card--wait .option-card__seats,
+.option-card--waiting .option-card__seats {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacing-50);
+}
+
+.option-card--wait .option-card__seats svg,
+.option-card--waiting .option-card__seats svg { display: block; }
+
+/* ---- 대기 신청 완료 ----------------------------------------------------
+   대기를 걸어둔 일정입니다. 브랜드색을 거두는 것은 이제 고르라는 말이 아니기
+   때문입니다 — 걸어둔 상태를 알리는 자리이지 부르는 자리가 아닙니다.
+*/
+
+.option-card--waiting .option-card__seats { color: var(--colors-fg-lower); }
+
 /* ---- 마감 --------------------------------------------------------------
    카드를 목록에서 지우지 않습니다. 그 시간대가 있었다는 사실이 남아야 다음 일정을
    고를 때 판단이 됩니다. 대신 고를 수 없다는 것이 분명해야 합니다.
