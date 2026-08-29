@@ -35,7 +35,7 @@
 .section-title__heading,
 .section-title__desc {
   margin: 0;
-  font-feature-settings: 'lnum' 1, 'tnum' 1;
+  font-feature-settings: 'lnum' 1;
 }
 
 .section-title__heading {

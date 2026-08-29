@@ -25,7 +25,7 @@
   line-height: var(--typography-body-s-medium-line-height);
   letter-spacing: var(--typography-body-s-medium-letter-spacing);
   white-space: nowrap;
-  font-feature-settings: 'lnum' 1, 'tnum' 1;
+  font-feature-settings: 'lnum' 1;
 }
 
 .tag--accent-pri {

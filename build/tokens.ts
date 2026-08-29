@@ -442,9 +442,7 @@ export const components = {
       "moreIconSize": "24px",
       "moreFg": "#FFFFFF",
       "locked": {
-        "blur": "16px",
-        "iconSize": "32px",
-        "fg": "#FFFFFF"
+        "fg": "#7D7B7A"
       }
     }
   },

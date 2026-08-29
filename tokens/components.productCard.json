@@ -127,22 +127,11 @@
           "$value": "{semantic.colors.fg-contrast}"
         },
         "locked": {
-          "$description": "블랙 인증 전 상태. 사진만 가리고 제목·가격은 남깁니다. ⚠️ Figma 에 이 상태의 디자인이 없어 값을 코드에서 정했습니다.",
-          "blur": {
-            "$type": "dimension",
-            "$value": "16px",
-            "$description": "사진을 알아볼 수 없을 만큼만 흐립니다."
-          },
-          "iconSize": {
-            "$type": "dimension",
-            "$value": "{primitive.dimension}",
-            "$extensions": {
-              "scale": 8
-            }
-          },
+          "$description": "블랙 인증 전 상태. 사진은 그대로 두고 가격 자리에 안내 문구가 들어갑니다. ⚠️ Figma 에 이 상태의 디자인이 없어 글자색을 코드에서 정했습니다.",
           "fg": {
             "$type": "color",
-            "$value": "{semantic.colors.fg-contrast}"
+            "$value": "{semantic.colors.fg-lower}",
+            "$description": "가격이 아니라는 걸 보이려고 한 단계 낮춥니다."
           }
         }
       }

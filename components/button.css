@@ -42,7 +42,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   /* 숫자 폭을 고정해 레이블이 바뀌어도 버튼이 흔들리지 않게 한다 (Figma 의 lnum/tnum). */
-  font-feature-settings: 'lnum' 1, 'tnum' 1;
+  font-feature-settings: 'lnum' 1;
 }
 
 .btn__icon {

@@ -193,9 +193,7 @@
   --_product-card-promotion-scrim-height: 160px;
   --_product-card-promotion-more-icon-size: calc(var(--_dimension) * 6);
   --_product-card-promotion-more-fg: var(--colors-fg-contrast);
-  --_product-card-promotion-locked-blur: 16px;
-  --_product-card-promotion-locked-icon-size: calc(var(--_dimension) * 8);
-  --_product-card-promotion-locked-fg: var(--colors-fg-contrast);
+  --_product-card-promotion-locked-fg: var(--colors-fg-lower);
   --_section-title-fg: var(--colors-fg);
   --_section-title-fg-description: var(--colors-fg-lower);
   --_segmented-control-bg: var(--_colors-white);
