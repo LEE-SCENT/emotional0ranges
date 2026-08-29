@@ -48,6 +48,17 @@
   font-feature-settings: 'lnum' 1;
 }
 
+/* 좁은 화면에서는 한 단계 작습니다. 44 여도 화면 폭의 반을 넘지 않아 숫자가
+   제목처럼 읽히고, 아래 "모임 만족도"와 눈에 띄게 층이 집니다. */
+@media (max-width: 960px) {
+  .review__average {
+    font-size: var(--typography-display-m-semibold-font-size);
+    font-weight: var(--typography-display-m-semibold-font-weight);
+    line-height: var(--typography-display-m-semibold-line-height);
+    letter-spacing: var(--typography-display-m-semibold-letter-spacing);
+  }
+}
+
 /* 숫자를 <b> 로 감싼 것은 뜻(강조) 때문이지 굵기 때문이 아닙니다. 브라우저 기본값이
    bolder 라 부모의 600 위에 한 단계 더 얹혀 800 으로 그려집니다. */
 .review__average b { font-weight: inherit; }
@@ -88,6 +99,11 @@
 
 @media (max-width: 960px) {
   .review__list { grid-template-columns: 1fr; }
+
+  /* 넷째부터는 접어둡니다. 한 열로 세워지면서 여섯 개가 화면 두 개 반 분량이 되어,
+     아래 안내 사항까지 내려가기 전에 같은 말이 반복되는 구간이 길어집니다. 나머지는
+     "후기 모두 보기"가 맡습니다. */
+  .review__item:nth-child(n + 4) { display: none; }
 }
 
 .review__item {
