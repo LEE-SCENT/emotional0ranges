@@ -114,7 +114,9 @@
 
 .sheet[open] .schedule {
   min-block-size: 0;
-  gap: var(--spacing-600);
+  /* 버튼 위가 12 이고, 아래도 판의 여백이 같은 12 입니다. 목록과 버튼은 한 덩어리로
+     읽혀야 합니다 — 사이를 넓게 띄우면 버튼이 시트에 얹힌 다른 것처럼 보입니다. */
+  gap: var(--spacing-300);
   /* 시트가 이미 위아래를 비워두었습니다. */
   padding-block: 0;
 }
