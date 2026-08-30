@@ -17,21 +17,20 @@
  * 실패하거나 늦게 도착해도 사진이 문서에 남아 있어야 하기 때문입니다 — 검색 로봇과
  * 스크린 리더가 읽는 것도 그 마크업입니다.
  *
- * 개별 화면의 <img> 는 한 장뿐이고 src 만 갈아끼웁니다. 다섯 장을 미리 깔아두고
- * 감췄다 보였다 하면 브라우저가 다섯 장을 모두 디코딩해 들고 있어야 합니다. 목록에서
- * 이미 받아둔 파일과 주소가 같아 갈아끼우는 순간 그대로 나타납니다.
+ * 개별 화면의 사진은 다섯 장이 옆으로 나란히 서 있고, 넘기는 것은 스크롤입니다.
+ * 한 장을 두고 src 만 갈아끼우던 때에는 넘기는 동안 볼 것이 없어 한 번 깜빡였고,
+ * 손가락을 따라오지도 않았습니다. 여기서 하는 일은 어디로 세울지 정하는 것과, 지금
+ * 몇 번째인지 읽는 것뿐입니다 — 미끄러지는 것은 브라우저가 합니다.
+ *
+ * 줄이라서 끝에서 멈춥니다. 마지막 다음이 처음으로 이어지지 않는 것은, 손가락으로
+ * 미는 자리에서 줄이 스스로 다시 짜이면 방금 지나온 사진이 어디 있는지 알 수 없게
+ * 되기 때문입니다. 끝에 닿으면 그쪽 버튼이 꺼집니다.
  */
 
 import { lockScroll, unlockScroll } from './scroll-lock.js'
 import { initDialogFocus } from './dialog-focus.js'
 
 const wantsLessMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches
-
-/** 사진이 흐려지는 시간. 숫자를 여기 다시 적으면 CSS 와 어긋납니다. */
-const fadeMs = () =>
-  parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--_duration-fast')) || 0
-
-const wait = (ms) => new Promise((r) => setTimeout(r, ms))
 
 export function initImageViewer(dialog) {
   if (dialog.dataset.viewerReady) return
@@ -41,9 +40,12 @@ export function initImageViewer(dialog) {
   if (!thumbs.length) return
 
   const photos = thumbs.map((btn) => btn.querySelector('img'))
-  const single = dialog.querySelector('.image-viewer__single img')
+  const strip = dialog.querySelector('.image-viewer__strip')
+  const shots = strip ? [...strip.querySelectorAll('.image-viewer__frame img')] : []
   const count = dialog.querySelector('.image-viewer__count')
   const toList = dialog.querySelector('.image-viewer__to-list')
+  const prev = dialog.querySelector('.image-viewer__nav--prev')
+  const next = dialog.querySelector('.image-viewer__nav--next')
 
   dialog.dataset.count = String(photos.length)
 
@@ -53,44 +55,54 @@ export function initImageViewer(dialog) {
   let at = 0
   /** 목록에서 어느 사진으로 들어왔는지. 돌아갈 때 그 자리에 초점을 되돌립니다. */
   let cameFrom = null
-  /**
-   * 마지막으로 시작한 교체가 몇 번째인지. 화살표를 연달아 누르면 앞선 교체가 아직
-   * 흐려지는 중일 수 있는데, 그 뒤늦은 결과가 나중 사진을 덮어쓰면 안 됩니다.
-   */
-  let turn = 0
+  let queued = false
 
-  const show = (i, instant = false) => {
-    at = (i + photos.length) % photos.length
+  /** 한 장을 넘기는 데 필요한 스크롤 거리. 사진 한 장이 줄의 폭을 그대로 씁니다. */
+  const span = () => strip?.clientWidth || 0
+
+  /** 지금 몇 번째인지를 화면에 옮겨 적습니다. 끝에 닿으면 그쪽 버튼을 끕니다. */
+  const mark = () => {
     if (count) count.textContent = `${at + 1} / ${photos.length}`
-    if (!single) return
-
-    const from = photos[at]
-    const src = from.currentSrc || from.src
-    const mine = ++turn
-
-    if (instant || wantsLessMotion()) {
-      single.classList.remove('is-swapping')
-      single.src = src
-      single.alt = from.alt
-      return
-    }
-
-    // 흐려진 다음에 갈아끼웁니다. 같은 프레임에 바꾸면 옛 사진은 사라진 적이 없고
-    // 새 사진만 슬며시 나타나, 넘긴 것이 아니라 늦게 뜬 것처럼 보입니다.
-    single.classList.add('is-swapping')
-    wait(fadeMs())
-      .then(() => {
-        if (mine !== turn) return
-        single.src = src
-        single.alt = from.alt
-        // 디코딩이 끝나기 전에 보이면 첫 프레임이 빈칸으로 지나갑니다.
-        return single.decode().catch(() => {})
-      })
-      .then(() => {
-        if (mine !== turn) return
-        single.classList.remove('is-swapping')
-      })
+    if (prev) prev.disabled = at === 0
+    if (next) next.disabled = at === photos.length - 1
   }
+
+  /**
+   * i 번째 사진을 보여줍니다.
+   *
+   * 줄이라서 끝에서 멈춥니다 — 없는 자리를 부르면 있는 자리 중 가까운 쪽입니다.
+   * instant 는 목록에서 막 들어왔을 때처럼 미끄러질 이유가 없는 경우입니다.
+   */
+  const show = (i, instant = false) => {
+    at = Math.max(0, Math.min(photos.length - 1, i))
+    mark()
+    if (!strip) return
+    strip.scrollTo({
+      left: at * span(),
+      behavior: instant || wantsLessMotion() ? 'auto' : 'smooth',
+    })
+  }
+
+  // 손가락으로 밀어 넘긴 것도 여기서 읽습니다 — 어디에 섰는지는 스크롤만 압니다.
+  strip?.addEventListener(
+    'scroll',
+    () => {
+      if (queued) return
+      queued = true
+      requestAnimationFrame(() => {
+        queued = false
+        const w = span()
+        const now = w ? Math.round(strip.scrollLeft / w) : 0
+        if (now === at) return
+        at = now
+        mark()
+      })
+    },
+    { passive: true },
+  )
+
+  // 화면이 돌아가면 한 장의 폭이 달라집니다. 보던 사진이 그대로 남아야 합니다.
+  if (strip) new ResizeObserver(() => (strip.scrollLeft = at * span())).observe(strip)
 
   const view = (name) => {
     dialog.dataset.view = name
@@ -113,10 +125,13 @@ export function initImageViewer(dialog) {
    */
   const morph = (index, update) => {
     const canMorph =
-      typeof document.startViewTransition === 'function' && !wantsLessMotion() && photos[index]
+      typeof document.startViewTransition === 'function' &&
+      !wantsLessMotion() &&
+      photos[index] &&
+      shots[index]
     if (!canMorph) return update()
 
-    const pair = [single, photos[index]]
+    const pair = [shots[index], photos[index]]
     for (const el of pair) el.style.viewTransitionName = 'viewer-photo'
     // 찍히기 전에 붙어야 합니다. 첫 장면은 startViewTransition 을 부르는 그 자리에서
     // 바로 찍히므로, 한 줄이라도 뒤에 두면 모서리가 그림에 그려진 채로 남습니다.
@@ -140,16 +155,17 @@ export function initImageViewer(dialog) {
   /* ---- 여는 쪽 --------------------------------------------------------- */
 
   const open = (index) => {
-    if (index == null) {
-      view('list')
-    } else {
-      show(index, true)
-      view('single')
-    }
+    // 줄을 세우려면 폭을 알아야 하고, 폭은 화면에 올라온 뒤에야 생깁니다.
     if (!dialog.open) {
       dialog.showModal()
       lockScroll()
     }
+    if (index == null) {
+      view('list')
+      return
+    }
+    view('single')
+    show(index, true)
   }
 
   document.addEventListener('click', (e) => {
@@ -168,8 +184,8 @@ export function initImageViewer(dialog) {
       cameFrom = thumb
       const i = thumbs.indexOf(thumb)
       morph(i, () => {
-        show(i, true)
         view('single')
+        show(i, true)
       })
       // 사진이 바뀌었으니 다음 사진 버튼에 초점을 둡니다. 계속 넘겨 보게 됩니다.
       dialog.querySelector('.image-viewer__nav--next')?.focus()
@@ -192,16 +208,16 @@ export function initImageViewer(dialog) {
     if (e.target.closest('.image-viewer__close')) dialog.close()
   })
 
-  /* ---- 손가락으로 넘기기 -------------------------------------------------
-     좁은 화면에는 좌우 버튼이 없습니다(image-viewer.css). 사진이 화면을 다 쓰는
-     자리라 버튼을 얹으면 넘기려다 사진을 가립니다. 대신 밀어서 넘깁니다.
+  /* ---- 아래로 끌어 목록으로 ----------------------------------------------
+     좌우로 미는 것은 줄이 알아서 합니다(위 참고). 여기서는 아래로 끄는 것만 봅니다 —
+     사진을 내려놓으면 사진을 고르던 자리로 돌아갑니다. 위로 미는 것에는 아무 뜻도
+     두지 않았습니다: 목록은 아래에 있지 않고, 닫기는 왼쪽 위에 있습니다.
 
-     방향이 곧 뜻입니다. 좌우는 옆 사진, 아래는 목록 — 사진을 내려놓으면 사진을
-     고르던 자리로 돌아갑니다. 위로 미는 것에는 아무 뜻도 두지 않았습니다: 목록은
-     아래에 있지 않고, 닫기는 왼쪽 위에 있습니다.
+     가로가 더 길면 넘기려던 손입니다. 그쪽은 줄이 이미 처리했으므로 여기서는
+     아무 일도 하지 않습니다.
 
      40 은 눌렀다 뗄 때 손가락이 저절로 미끄러지는 거리보다 넉넉히 길어, 누르기와
-     밀기가 섞이지 않는 값으로 잡았습니다. */
+     끌기가 섞이지 않는 값으로 잡았습니다. */
 
   const SWIPE = 40
   let held = null
@@ -226,11 +242,7 @@ export function initImageViewer(dialog) {
       const y = clientY - held.y
       held = null
       // 어느 쪽으로 그었는지는 더 길게 간 축이 정합니다.
-      if (Math.abs(x) > Math.abs(y)) {
-        // 왼쪽으로 밀면 다음 사진이 따라 들어옵니다.
-        if (Math.abs(x) >= SWIPE) show(at + (x < 0 ? 1 : -1))
-        return
-      }
+      if (Math.abs(x) > Math.abs(y)) return
       if (y >= SWIPE) openList()
     },
     { passive: true },
@@ -252,7 +264,7 @@ export function initImageViewer(dialog) {
   dialog.addEventListener('close', () => unlockScroll())
 
   view(dialog.dataset.view || 'list')
-  show(0, true)
+  mark()
 }
 
 export function initImageViewers(scope = document) {

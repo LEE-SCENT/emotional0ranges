@@ -178,27 +178,49 @@
   padding-inline: var(--spacing-400);
 }
 
-.image-viewer__single img {
-  display: block;
+/* ---- 사진을 세운 줄 ------------------------------------------------------
+   사진은 다섯 장이 옆으로 나란히 서 있고, 넘기는 것은 스크롤입니다. 한 장을 두고
+   src 만 갈아끼우면 넘기는 동안 볼 것이 없어 한 번 깜빡이고, 손가락을 따라오지도
+   않습니다. 옆 장이 이미 옆에 서 있으면 미는 만큼 따라 들어옵니다.
+
+   다섯 장을 한꺼번에 들고 있어도 되는 것은 목록이 이미 같은 파일을 받아두었기
+   때문입니다 — 주소가 같아 다시 받지 않습니다. */
+
+.image-viewer__strip {
   /* flex 항목은 기본적으로 제 내용보다 작아지지 않습니다. 풀어주지 않으면 좁은
      창에서 사진이 버튼을 밀어냅니다. */
+  flex: 1 1 auto;
   min-inline-size: 0;
+  display: flex;
+  block-size: 100%;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  /* 옆으로 끝까지 민 뒤에도 계속 밀면 그 힘이 뒤 페이지로 넘어갑니다. 팝업 안에서
+     끝내야 합니다. */
+  overscroll-behavior-x: contain;
+}
+
+.image-viewer__strip::-webkit-scrollbar { display: none; }
+
+.image-viewer__frame {
+  flex: 0 0 100%;
+  scroll-snap-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  block-size: 100%;
+}
+
+.image-viewer__frame img {
+  display: block;
   inline-size: auto;
   block-size: auto;
-  max-inline-size: var(--_image-viewer-max-image-width);
+  max-inline-size: min(100%, var(--_image-viewer-max-image-width));
   max-block-size: 100%;
   border-radius: var(--_image-viewer-rounded);
   object-fit: contain;
 }
-
-/* 넘길 때 새 사진이 잠깐 흐려졌다 또렷해집니다. 같은 자리에서 그림만 갈리면
-   눌렀는지 아닌지 알기 어렵습니다. 스크립트가 사진을 바꾸며 is-swapping 을 한 프레임
-   붙였다 뗍니다. */
-.image-viewer__single img {
-  transition: opacity var(--_duration-fast) var(--_easing-standard);
-}
-
-.image-viewer__single img.is-swapping { opacity: 0; }
 
 .image-viewer__nav { flex: none; }
 
@@ -234,7 +256,7 @@
 
   /* 화면 폭을 끝까지 쓰는 사진에는 모서리를 두지 않습니다. 둥근 모서리는 사진이
      무엇인가의 안에 담겨 있다는 표시인데, 여기서는 담을 바깥이 없습니다. */
-  .image-viewer__single img { border-radius: 0; }
+  .image-viewer__frame img { border-radius: 0; }
 }
 
 /* 사진 한 장만 있으면 넘길 곳이 없습니다. */
@@ -248,8 +270,10 @@
 @media (prefers-reduced-motion: reduce) {
   .image-viewer,
   .image-viewer::backdrop,
-  .image-viewer__thumb img,
-  .image-viewer__single img { transition: none; }
+  .image-viewer__thumb img { transition: none; }
+
+  /* 줄이 미끄러지는 것도 멈춥니다. 넘기는 것 자체는 그대로입니다. */
+  .image-viewer__strip { scroll-behavior: auto; }
 
   .image-viewer { scale: 1; }
   .image-viewer__thumb:hover img,
@@ -295,7 +319,7 @@
    목록 쪽 사진에도 반지름을 적어두는 것은 이 클래스가 붙지 않은 평소를 위해서입니다.
    버튼이 이미 잘라내고 있지만, 사진에도 같은 값이 있어야 전환이 끝나고 클래스가
    빠지는 순간 모서리가 튀지 않습니다. */
-.image-viewer.is-morphing .image-viewer__single img,
+.image-viewer.is-morphing .image-viewer__frame img,
 .image-viewer.is-morphing .image-viewer__thumb img { border-radius: 0; }
 
 /* 나머지 화면(상단 바의 제목 ↔ 장수)은 짧게 교차시킵니다. */

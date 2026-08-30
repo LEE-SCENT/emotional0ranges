@@ -33,7 +33,7 @@
 <link rel="stylesheet" href="./components/favorite.css?v=7b27f284">
 <link rel="stylesheet" href="./components/app-bar.css?v=4709389e">
 <link rel="stylesheet" href="./components/top-bar.css?v=8d2c027b">
-<link rel="stylesheet" href="./components/image-viewer.css?v=6883ada8">
+<link rel="stylesheet" href="./components/image-viewer.css?v=f525c651">
 <link rel="stylesheet" href="./components/bottom-cta.css?v=320a66ef">
 <link rel="stylesheet" href="./components/sheet.css?v=0f3f5810">
 <style>
@@ -643,7 +643,15 @@
       <button class="btn btn--blur btn--large btn--icon-only image-viewer__nav image-viewer__nav--prev" aria-label="이전 사진">
         <svg class="btn__icon" aria-hidden="true"><use href="#icon-chevronLeft"></use></svg>
       </button>
-      <img src="./images/detail-photo-1.jpg" alt="조명이 놓인 테이블에서 마주 앉아 대화하는 두 사람">
+      <!-- 옆으로 미끄러져 넘어가려면 다음 장이 이미 옆에 서 있어야 합니다. 목록과 같은
+           파일이라 새로 받지 않고, 미끄러지는 것은 브라우저의 스크롤이 합니다. -->
+      <div class="image-viewer__strip">
+        <div class="image-viewer__frame"><img src="./images/detail-photo-1.jpg" alt="조명이 놓인 테이블에서 마주 앉아 대화하는 두 사람"></div>
+        <div class="image-viewer__frame"><img src="./images/detail-photo-2.jpg" alt="턴테이블에 레코드를 올려둔 라운지 한켠"></div>
+        <div class="image-viewer__frame"><img src="./images/detail-photo-3.jpg" alt="기둥 사이 자리에서 이야기를 나누는 참가자들"></div>
+        <div class="image-viewer__frame"><img src="./images/detail-photo-4.jpg" alt="벽돌벽 앞 테이블에서 프로필 카드를 함께 보는 두 사람"></div>
+        <div class="image-viewer__frame"><img src="./images/detail-photo-5.jpg" alt="작은 조명 아래 음료를 두고 마주한 손"></div>
+      </div>
       <button class="btn btn--blur btn--large btn--icon-only image-viewer__nav image-viewer__nav--next" aria-label="다음 사진">
         <svg class="btn__icon" aria-hidden="true"><use href="#icon-chevronRight"></use></svg>
       </button>
@@ -680,7 +688,7 @@
   initDetailIntro()
   const { initTabs } = await import('./components/tabs.js?v=3a928a3e')
   initTabs()
-  const { initImageViewers } = await import('./components/image-viewer.js?v=dae512ef')
+  const { initImageViewers } = await import('./components/image-viewer.js?v=4f6cef9c')
   initImageViewers()
   const { initSheets } = await import('./components/sheet.js?v=046068b5')
   initSheets()
