@@ -196,9 +196,12 @@ export function initImageViewer(dialog) {
      좁은 화면에는 좌우 버튼이 없습니다(image-viewer.css). 사진이 화면을 다 쓰는
      자리라 버튼을 얹으면 넘기려다 사진을 가립니다. 대신 밀어서 넘깁니다.
 
-     가로가 세로보다 길 때만 넘깁니다 — 세로로 그은 손은 넘기려는 것이 아니라
-     화면을 훑는 손입니다. 40 은 눌렀다 뗄 때 손가락이 저절로 미끄러지는 거리보다
-     넉넉히 길어, 누르기와 밀기가 섞이지 않는 값으로 잡았습니다. */
+     방향이 곧 뜻입니다. 좌우는 옆 사진, 아래는 목록 — 사진을 내려놓으면 사진을
+     고르던 자리로 돌아갑니다. 위로 미는 것에는 아무 뜻도 두지 않았습니다: 목록은
+     아래에 있지 않고, 닫기는 왼쪽 위에 있습니다.
+
+     40 은 눌렀다 뗄 때 손가락이 저절로 미끄러지는 거리보다 넉넉히 길어, 누르기와
+     밀기가 섞이지 않는 값으로 잡았습니다. */
 
   const SWIPE = 40
   let held = null
@@ -222,9 +225,13 @@ export function initImageViewer(dialog) {
       const x = clientX - held.x
       const y = clientY - held.y
       held = null
-      if (Math.abs(x) < SWIPE || Math.abs(x) <= Math.abs(y)) return
-      // 왼쪽으로 밀면 다음 사진이 따라 들어옵니다.
-      show(at + (x < 0 ? 1 : -1))
+      // 어느 쪽으로 그었는지는 더 길게 간 축이 정합니다.
+      if (Math.abs(x) > Math.abs(y)) {
+        // 왼쪽으로 밀면 다음 사진이 따라 들어옵니다.
+        if (Math.abs(x) >= SWIPE) show(at + (x < 0 ? 1 : -1))
+        return
+      }
+      if (y >= SWIPE) openList()
     },
     { passive: true },
   )
