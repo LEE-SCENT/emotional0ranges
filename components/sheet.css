@@ -163,6 +163,12 @@
   /* 버튼 위 12. 아래는 판의 여백이 같은 12 로 맡고 있어, 고정된 버튼 줄이 위아래로
      같은 만큼 숨을 쉽니다. */
   padding-block-start: var(--spacing-300);
+  /* 잘린 자리에 긋는 선은 이 줄의 위변입니다. 줄이 판의 좌우 여백 안에 있으면 선도
+     그만큼 짧아져, 화면을 가로지르는 경계가 아니라 버튼 위에 놓인 짧은 막대가
+     됩니다. 좌우로 여백만큼 넓혀 선을 화면 끝까지 긋고, 같은 만큼 안쪽 여백으로
+     되돌려 버튼은 제자리에 둡니다. */
+  margin-inline: calc(-1 * var(--_sheet-padding-inline));
+  padding-inline: var(--_sheet-padding-inline);
 }
 
 .sheet[open] .schedule__group,
@@ -259,6 +265,9 @@
   }
 
   .sheet--modal[open] .schedule__actions {
+    /* 가운데 뜬 상자는 판이 좌우 여백을 갖지 않아 줄이 이미 상자 폭을 다 씁니다.
+       위에서 넓혀둔 만큼을 되돌리지 않으면 상자 밖으로 삐져나갑니다. */
+    margin-inline: 0;
     padding: var(--spacing-300) var(--_sheet-modal-padding-inline);
   }
 
