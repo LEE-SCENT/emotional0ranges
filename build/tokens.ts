@@ -512,6 +512,7 @@ export const components = {
     "border": "#E7E5E4",
     "fg": "#000000",
     "separator": "#F3F1F0",
+    "separatorHeight": "14px",
     "rounded": "8px",
     "iconSize": "20px",
     "blurRadius": "12px",

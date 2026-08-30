@@ -44,12 +44,17 @@ const el = (tag, className, text) => {
 function summaryBlock(o) {
   const { m, f } = peopleOf(o)
   const wrap = el('span', 'option-card__participants')
+  // 접힐 때 잘려나갈 자리. 여백과 선까지 이 안에 들어갑니다.
+  const inner = el('span', 'option-card__participants-inner')
+  inner.append(el('span', 'option-card__participants-divider'))
+  wrap.append(inner)
+
   const row = el('span', 'option-card__participants-row')
   row.append(el('span', 'option-card__participants-label', '참여자 구성'))
 
   if (!m.length && !f.length) {
     row.append(el('span', 'option-card__participants-empty', EMPTY))
-    wrap.append(row)
+    inner.append(row)
     return wrap
   }
 
@@ -65,7 +70,7 @@ function summaryBlock(o) {
   button.dataset.participants = o.v
   button.append(el('span', 'btn__label', '전체 참여자 구성 보기'))
 
-  wrap.append(row, button)
+  inner.append(row, button)
   return wrap
 }
 
@@ -92,10 +97,13 @@ function column(name, list) {
   const ul = el('ul', 'participants__list')
   for (const person of list) {
     const li = el('li', `participant participant--${name === '남성' ? 'm' : 'f'}`)
-    li.append(
+    const content = el('span', 'participant__content')
+    content.append(
       el('span', 'participant__age', person.age),
+      el('span', 'participant__sep'),
       el('span', 'participant__job', person.job),
     )
+    li.append(content)
     ul.append(li)
   }
   col.append(ul)

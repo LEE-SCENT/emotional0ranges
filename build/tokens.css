@@ -246,6 +246,7 @@
   --_participant-border: var(--colors-border);
   --_participant-fg: var(--colors-fg);
   --_participant-separator: var(--_colors-serious-gray-200);
+  --_participant-separator-height: 14px;
   --_participant-rounded: var(--_rounded-m);
   --_participant-icon-size: calc(var(--_dimension) * 5);
   --_participant-blur-radius: 12px;

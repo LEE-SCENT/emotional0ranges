@@ -128,15 +128,27 @@
 
 .participant--m::before { background: var(--_gender-indicator-male); }
 
+/* 연령대 · 선 · 직업군. 셋의 간격이 12 라 선을 글자에 border 로 붙이지 않고 따로
+   둡니다 — border 는 글자의 줄 높이(19.6)만큼 길어져 항목보다 커 보입니다. */
+.participant__content {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-300);
+  min-inline-size: 0;
+}
+
 .participant__age { flex: none; }
 
-/* 연령대와 직업군 사이의 세로선. 여백(12)과 선(1)을 합쳐 Figma 의 12·1·12 가 됩니다. */
+.participant__sep {
+  flex: none;
+  inline-size: 1px;
+  block-size: var(--_participant-separator-height);
+  background: var(--_participant-separator);
+}
+
 .participant__job {
   min-inline-size: 0;
   overflow: hidden;
-  margin-inline-start: var(--spacing-300);
-  padding-inline-start: var(--spacing-300);
-  border-inline-start: 1px solid var(--_participant-separator);
   text-overflow: ellipsis;
   white-space: nowrap;
 }

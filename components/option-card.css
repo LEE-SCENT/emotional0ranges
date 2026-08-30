@@ -29,7 +29,9 @@
   flex-wrap: wrap;
   gap: var(--spacing-400);
   inline-size: 100%;
-  block-size: var(--_option-card-height);
+  /* 높이는 92 에서 시작하고 내용이 넘치면 늘어납니다. 붙박이로 92 를 주면 참여자
+     구성이 펼쳐질 자리가 없고, 그 전에도 글자가 상자보다 1 남짓 컸습니다. */
+  min-block-size: var(--_option-card-height);
   padding: var(--spacing-400) var(--spacing-500);
   border: var(--_option-card-border-width) solid var(--_option-card-border);
   border-radius: var(--_option-card-rounded);
@@ -154,7 +156,9 @@
      <label class="option-card">
        …
        <span class="option-card__participants">
-         <span class="option-card__participants-row">
+         <span class="option-card__participants-inner">
+           <span class="option-card__participants-divider"></span>
+           <span class="option-card__participants-row">
            <span class="option-card__participants-label">참여자 구성</span>
            <span class="option-card__participants-summary">
              <span class="option-card__participants-count">남 <b>6</b> · 여 <b>3</b></span>
@@ -166,25 +170,50 @@
 
    위 줄과는 선으로 끊습니다. 같은 카드 안이지만 하나는 이 일정이 무엇인지이고
    다른 하나는 누가 있는지라, 이어 읽히면 자리 수와 사람 수가 뒤섞입니다.
+
+   펼쳐질 때는 미끄러지듯 열립니다. 다른 카드를 누를 때마다 목록이 순간이동하면
+   방금 무엇을 눌렀는지, 아래 카드가 어디로 갔는지 눈이 놓칩니다.
+
+   높이를 재지 않고 grid 의 0fr -> 1fr 로 엽니다 — 사람 수에 따라 늘어나는 자리라
+   열어보기 전에는 얼마나 높아질지 알 수 없습니다.
+
+   ⚠️ Figma 에 이 모션이 없어 시간과 곡선을 코드에서 정했습니다.
 */
 
 .option-card__participants {
   /* 앞의 두 칸(시간·잔여석) 다음 줄을 통째로 씁니다. */
   flex: 0 0 100%;
-  display: none;
-  flex-direction: column;
-  gap: var(--spacing-400);
-  padding-block-start: var(--spacing-400);
-  border-block-start: 1px solid var(--colors-divider);
+  display: grid;
+  grid-template-rows: 0fr;
   cursor: default;
+  transition: grid-template-rows var(--_duration-base) var(--_easing-standard);
 }
 
-/* 고른 카드만 펼칩니다. 높이도 그만큼 늘어나야 해서 92 를 최소값으로 내립니다. */
-.option-card:has(:checked) .option-card__participants { display: flex; }
+.option-card:has(:checked) .option-card__participants { grid-template-rows: 1fr; }
 
-.option-card:has(:checked):has(.option-card__participants) {
-  block-size: auto;
-  min-block-size: var(--_option-card-height);
+/* 접힌 동안 안쪽을 잘라내는 자리입니다. 여백과 선도 모두 이 안에 있어야 합니다 —
+   바깥에 두면 접힌 카드에도 그만큼의 빈 줄과 선이 남습니다. */
+.option-card__participants-inner {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-400);
+}
+
+/* 선 위의 16 은 이 선의 margin 입니다. 상자의 padding 으로 두면 접혀도 그만큼이
+   남습니다 — padding 은 잘려나가는 내용이 아니라 상자 자신의 크기입니다. */
+.option-card__participants-divider {
+  margin-block-start: var(--spacing-400);
+  block-size: 1px;
+  background: var(--colors-divider);
+}
+
+/* 줄 사이 간격은 0 입니다. 접힌 상자가 자리를 차지하지 않아야 카드가 제 높이로
+   남습니다 — 펼쳐졌을 때의 16 은 안쪽 선의 margin 이 만듭니다. */
+.option-card:has(.option-card__participants) { row-gap: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .option-card__participants { transition: none; }
 }
 
 .option-card__participants-row {
