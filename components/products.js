@@ -26,7 +26,7 @@ const photo = (src, w, h, alt) => ({ src: `./images/${src}`, w, h, alt })
    0 은 그 성별의 마감입니다. 값이 없는 성별은 애초에 자리가 없는 것이고, seats 가
    통째로 없으면 대기만 받는 일정입니다(wait). */
 
-/** 한 성별씩 [키, 이름] — 적는 순서이기도 합니다. */
+/** 한 성별씩 [키, 이름]. 태그의 순서는 급한 차례가 정합니다(seatTags). */
 const GENDERS = [
   ['m', '남성'],
   ['f', '여성'],
@@ -61,16 +61,32 @@ export function seatsText(o) {
  *   마감          →  마감이라고 알립니다.
  *   3자리 이상    →  아무 말도 하지 않습니다 — 급하지 않은 것을 급해 보이게 하지
  *                    않으려는 것이고, 그래야 태그가 붙은 카드가 실제로 급합니다.
+ *
+ * 남녀가 같은 수로 임박했으면 한 장으로 합칩니다. 같은 말을 두 번 하는 동안 태그는
+ * 네 개가 되어 가장 좁은 카드에서 두 줄로 내려갑니다.
+ *
+ * 순서는 급한 차례입니다 — 1자리, 2자리, 그 다음이 마감. 성별 순으로 세우면 "여성
+ * 1자리 남음"이 "남성 마감" 뒤에 서서, 카드를 넘기며 훑는 눈에 늦게 걸립니다.
  */
 export function seatTags(o) {
   if (o.wait) return []
-  const tags = []
+  const near = []
+  const closed = []
   for (const [key, name] of GENDERS) {
     const left = o.seats?.[key]
-    if (left === 0) tags.push({ text: `${name} 마감`, closed: true })
-    else if (left === 1 || left === 2) tags.push({ text: `${name} ${left}자리 남음`, closed: false })
+    if (left === 0) closed.push({ name })
+    else if (left === 1 || left === 2) near.push({ name, left })
   }
-  return tags
+  // 둘 다 임박했고 수까지 같을 때만 합칩니다. 수가 다르면 각각이 제 숫자를 말해야
+  // 합니다 — 합쳐 적을 숫자가 없습니다.
+  if (near.length === 2 && near[0].left === near[1].left) {
+    return [{ text: `남·여 각 ${near[0].left}자리 남음`, closed: false }]
+  }
+  near.sort((a, b) => a.left - b.left)
+  return [
+    ...near.map(({ name, left }) => ({ text: `${name} ${left}자리 남음`, closed: false })),
+    ...closed.map(({ name }) => ({ text: `${name} 마감`, closed: true })),
+  ]
 }
 
 export const PRODUCTS = {
