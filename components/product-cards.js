@@ -58,16 +58,19 @@ const areaOf = (s) => s.place.split(' · ')[0]
 /**
  * 지역과 일정 수 한 줄. policy.html 의 "장소 · 일정 문구"를 그대로 옮겼습니다.
  *
- *   한 곳    서울 강남
- *   두 곳    서울 강남 · 수원 광교      — 둘까지는 이름을 다 부릅니다.
- *   세 곳~   서울 강남 외 4개 지역      — 그 위로는 세어서 줄입니다.
+ *   한 곳     서울 강남
+ *   두 곳~    서울 강남 외 1개 지역 · 서울 강남 외 4개 지역
+ *
+ * 두 곳부터는 몇 곳이든 같은 모양입니다. 이름을 다 부르면 카드마다 줄 길이가
+ * 들쭉날쭉해지고, 목록을 훑는 눈이 지역 이름을 하나씩 읽게 됩니다 — 여기서 필요한
+ * 것은 어디에서 여는지가 아니라 여러 곳에서 연다는 사실입니다. 어디인지는 상세의
+ * 일정 목록이 말합니다.
  *
  * 일정이 하나뿐이면 개수를 적지 않습니다. "일정 1개"는 세어줄 것이 없다는 말입니다.
  */
 function placeText(schedule) {
   const areas = [...new Set(schedule.map(areaOf))]
-  const where =
-    areas.length <= 2 ? areas.join(' · ') : `${areas[0]} 외 ${areas.length - 1}개 지역`
+  const where = areas.length > 1 ? `${areas[0]} 외 ${areas.length - 1}개 지역` : areas[0]
   return schedule.length > 1 ? `${where} · 일정 ${schedule.length}개` : where
 }
 
