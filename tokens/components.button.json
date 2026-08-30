@@ -55,7 +55,8 @@
         "$type": "color",
         "$description": "이미지·영상 위에 올리는 반투명 버튼. 배경이 비쳐야 하므로 alpha 토큰을 씁니다.",
         "fg": {
-          "$value": "{primitive.colors.seriousGray.700}"
+          "$value": "{primitive.colors.seriousGray.800}",
+          "$description": "Figma 가 700 에서 800 으로 내렸습니다. 배경이 4% 밖에 안 되는 버튼이라 글자가 한 단계 진해야 면과 구분됩니다."
         },
         "bg": {
           "$value": "{primitive.colors.seriousGray.alpha900.4}"

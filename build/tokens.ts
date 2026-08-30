@@ -403,7 +403,7 @@ export const components = {
       "fg-on": "#FFFFFF"
     },
     "blur": {
-      "fg": "#686666",
+      "fg": "#494746",
       "bg": "#2726250A",
       "fg-on": "#FFFFFF",
       "bg-on": "#FFFFFF26"
@@ -498,6 +498,21 @@ export const components = {
     "fgWait": "#F75D15",
     "soldoutOpacity": 0.3,
     "height": "92px"
+  },
+  "participant": {
+    "bg": "#FFFFFF",
+    "border": "#E7E5E4",
+    "fg": "#000000",
+    "separator": "#F3F1F0",
+    "rounded": "8px",
+    "dotSize": "8px",
+    "dotMale": "#195EFF",
+    "dotFemale": "#F75D15",
+    "iconSize": "20px",
+    "blurRadius": "12px",
+    "modalWidth": "600px",
+    "colGap": "4px",
+    "itemGap": "4px"
   },
   "productCard": {
     "rounded": "12px",

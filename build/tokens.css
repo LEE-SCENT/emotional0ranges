@@ -170,7 +170,7 @@
   --_button-outlined-border-on: var(--_colors-serious-gray-300);
   --_button-ghost-fg: var(--_colors-serious-gray-700);
   --_button-ghost-fg-on: var(--_colors-white);
-  --_button-blur-fg: var(--_colors-serious-gray-700);
+  --_button-blur-fg: var(--_colors-serious-gray-800);
   --_button-blur-bg: var(--_colors-serious-gray-alpha900-4);
   --_button-blur-fg-on: var(--_colors-white);
   --_button-blur-bg-on: var(--_colors-white-alpha-15);
@@ -238,6 +238,19 @@
   --_option-card-fg-wait: var(--colors-fg-brand);
   --_option-card-soldout-opacity: 0.3;
   --_option-card-height: 92px;
+  --_participant-bg: var(--colors-bg);
+  --_participant-border: var(--colors-border);
+  --_participant-fg: var(--colors-fg);
+  --_participant-separator: var(--_colors-serious-gray-200);
+  --_participant-rounded: var(--_rounded-m);
+  --_participant-dot-size: calc(var(--_dimension) * 2);
+  --_participant-dot-male: #195EFF;
+  --_participant-dot-female: var(--_colors-twist-orange-500);
+  --_participant-icon-size: calc(var(--_dimension) * 5);
+  --_participant-blur-radius: 12px;
+  --_participant-modal-width: 600px;
+  --_participant-col-gap: var(--spacing-400);
+  --_participant-item-gap: var(--spacing-200);
   --_product-card-rounded: var(--_rounded-l);
   --_product-card-image-ratio: 1.4444;
   --_product-card-min-width: 312px;
