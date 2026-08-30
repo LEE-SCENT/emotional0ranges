@@ -42,6 +42,7 @@
   --_colors-accent-green-50: #E5F7E8;
   --_colors-accent-green-400: #34C759;
   --_colors-accent-green-500: #00BC37;
+  --_colors-accent-blue-400: #195EFF;
   --_dimension: 4px;
   --_duration-fast: 120ms;
   --_duration-base: 240ms;
@@ -199,6 +200,9 @@
   --_control-bg-checked: var(--colors-fg);
   --_control-fg-checked: var(--colors-bg);
   --_footer-sns-icon-size: calc(var(--_dimension) * 5);
+  --_gender-indicator-male: var(--_colors-accent-blue-400);
+  --_gender-indicator-female: var(--colors-fg-brand);
+  --_gender-indicator-size: calc(var(--_dimension) * 2);
   --_gnb-fg: var(--colors-fg);
   --_gnb-max-content-width: var(--container-max-width-md);
   --_gnb-max-width: 1920px;
@@ -243,9 +247,6 @@
   --_participant-fg: var(--colors-fg);
   --_participant-separator: var(--_colors-serious-gray-200);
   --_participant-rounded: var(--_rounded-m);
-  --_participant-dot-size: calc(var(--_dimension) * 2);
-  --_participant-dot-male: #195EFF;
-  --_participant-dot-female: var(--_colors-twist-orange-500);
   --_participant-icon-size: calc(var(--_dimension) * 5);
   --_participant-blur-radius: 12px;
   --_participant-modal-width: 600px;

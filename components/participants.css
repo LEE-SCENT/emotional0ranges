@@ -120,13 +120,13 @@
 .participant::before {
   content: '';
   flex: none;
-  inline-size: var(--_participant-dot-size);
-  block-size: var(--_participant-dot-size);
+  inline-size: var(--_gender-indicator-size);
+  block-size: var(--_gender-indicator-size);
   border-radius: var(--_rounded-full);
-  background: var(--_participant-dot-female);
+  background: var(--_gender-indicator-female);
 }
 
-.participant--m::before { background: var(--_participant-dot-male); }
+.participant--m::before { background: var(--_gender-indicator-male); }
 
 .participant__age { flex: none; }
 

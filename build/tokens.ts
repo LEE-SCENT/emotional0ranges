@@ -56,6 +56,9 @@ export const primitive = {
       "50": "#E5F7E8",
       "400": "#34C759",
       "500": "#00BC37"
+    },
+    "accentBlue": {
+      "400": "#195EFF"
     }
   },
   "dimension": "4px",
@@ -442,6 +445,11 @@ export const components = {
   "footer": {
     "snsIconSize": "20px"
   },
+  "genderIndicator": {
+    "male": "#195EFF",
+    "female": "#F75D15",
+    "size": "8px"
+  },
   "gnb": {
     "fg": "#000000",
     "maxContentWidth": "1280px",
@@ -505,9 +513,6 @@ export const components = {
     "fg": "#000000",
     "separator": "#F3F1F0",
     "rounded": "8px",
-    "dotSize": "8px",
-    "dotMale": "#195EFF",
-    "dotFemale": "#F75D15",
     "iconSize": "20px",
     "blurRadius": "12px",
     "modalWidth": "600px",
