@@ -142,9 +142,16 @@ function renderReviews(scope, reviews) {
 export function initProduct(scope = document) {
   const slug = currentProduct()
 
-  // 상품이 정해져 있으면 다음 화면으로도 들고 갑니다. 갈아끼울 것이 없어도 이건 합니다.
+  // 상품이 정해져 있으면 다음 화면으로도, 돌아가는 길로도 들고 갑니다. 갈아끼울 것이
+  // 없어도 이건 합니다.
+  //
+  // 돌아가는 길에서 대상을 data-back 으로 좁히는 것은, 상세 화면의 "비슷한 모임"도
+  // detail.html 을 가리키기 때문입니다 — 그쪽은 이미 제 상품을 달고 있어, 싸잡아
+  // 덮어쓰면 어느 카드를 눌러도 지금 보던 모임으로 갑니다.
   if (slug) {
-    for (const a of scope.querySelectorAll('a[href*="checkout.html"]')) {
+    for (const a of scope.querySelectorAll(
+      'a[href*="checkout.html"], a[data-back][href*="detail.html"]',
+    )) {
       const url = new URL(a.getAttribute('href'), location.href)
       url.searchParams.set('product', slug)
       a.setAttribute('href', `${url.pathname.split('/').pop()}${url.search}`)

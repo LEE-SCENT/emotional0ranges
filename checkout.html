@@ -92,14 +92,14 @@
 <!-- 좁은 화면에서 GNB 를 대신합니다. 신청을 하다 그만두는 길만 있으면 되므로
      닫기 하나입니다 — 여기서 메뉴로 새는 길을 열어둘 이유가 없습니다. -->
 <header class="top-bar top-bar--page">
-  <a class="btn btn--ghost btn--medium btn--icon-only" href="./detail.html" aria-label="닫기">
+  <a class="btn btn--ghost btn--medium btn--icon-only" data-back href="./detail.html" aria-label="닫기">
     <svg class="btn__icon" aria-hidden="true"><use href="#icon-close"></use></svg>
   </a>
 </header>
 
 <main class="container checkout has-bottom-cta">
   <header class="checkout__header">
-    <a class="btn btn--blur btn--medium btn--icon-only" href="./detail.html" aria-label="상세로 돌아가기">
+    <a class="btn btn--blur btn--medium btn--icon-only" data-back href="./detail.html" aria-label="상세로 돌아가기">
       <svg class="btn__icon" aria-hidden="true"><use href="#icon-arrowBack"></use></svg>
     </a>
     <h1>신청하기</h1>
@@ -406,7 +406,7 @@
   initStickyGnb()
   const { initSchedule } = await import('./components/schedule.js?v=6d625718')
   initSchedule()
-  const { initProduct } = await import('./components/product.js?v=a9a9f1f3')
+  const { initProduct } = await import('./components/product.js?v=20868387')
   initProduct()
   const { initDiscounts } = await import('./components/discount.js?v=b7c8b9e1')
   initDiscounts()
@@ -414,4 +414,8 @@
   initSheets()
   const { initCheckout } = await import('./components/checkout.js?v=7624cede')
   initCheckout()
+  // 닫기와 뒤로는 상세로 돌아갑니다. 링크로 새로 열면 상세가 한 벌 더 쌓여, 그
+  // 상세에서 뒤로를 누를 때 방금 나온 결제로 되돌아갑니다.
+  const { initBack } = await import('./components/back.js?v=c6d259cc')
+  initBack()
 </script>

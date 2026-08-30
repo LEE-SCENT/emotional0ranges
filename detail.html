@@ -94,7 +94,7 @@
 <!-- 좁은 화면에서 GNB 를 대신합니다. 상세 화면에서 필요한 것은 메뉴가 아니라 왔던
      곳으로 돌아가는 길과, 이 모임을 공유하거나 찜하는 것입니다. -->
 <header class="top-bar top-bar--page detail-topbar">
-  <button class="btn btn--ghost btn--medium btn--icon-only" type="button" data-back aria-label="뒤로">
+  <button class="btn btn--ghost btn--medium btn--icon-only" type="button" data-back="./index.html" aria-label="뒤로">
     <svg class="btn__icon" aria-hidden="true"><use href="#icon-arrowBack"></use></svg>
   </button>
   <div class="btn-group btn-group--horizontal">
@@ -658,16 +658,14 @@
   initStickyGnb()
   // 일정·후기를 읽는 스크립트들보다 먼저 돕니다. 그들이 세어둔 뒤에 목록을
   // 갈아끼우면 서로 다른 것을 보게 됩니다.
-  const { initProduct } = await import('./components/product.js?v=a9a9f1f3')
+  const { initProduct } = await import('./components/product.js?v=20868387')
   initProduct()
   const { initSchedule } = await import('./components/schedule.js?v=6d625718')
   initSchedule()
   // 상세는 목록에서 들어오는 화면이라 뒤로가 곧 목록입니다. 열자마자 눌렀다면
-  // 돌아갈 곳이 없으므로 홈으로 보냅니다.
-  document.querySelector('[data-back]')?.addEventListener('click', () => {
-    if (history.length > 1) history.back()
-    else location.href = './index.html'
-  })
+  // 돌아갈 곳이 없으므로 홈으로 보냅니다 — 그 길은 data-back 에 적혀 있습니다.
+  const { initBack } = await import('./components/back.js?v=c6d259cc')
+  initBack()
   const { initRecentReview } = await import('./components/recent-review.js?v=417e597f')
   initRecentReview()
   const { initConfirms } = await import('./components/confirm.js?v=f0f28b06')
