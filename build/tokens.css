@@ -233,10 +233,10 @@
   --_option-card-rounded: var(--_rounded-l);
   --_option-card-price-fg: var(--colors-fg-brand);
   --_option-card-price-strike-fg: var(--colors-fg-lowest);
-  --_option-card-bg-soldout: var(--colors-bg-disabled);
+  --_option-card-bg-soldout: var(--_colors-serious-gray-100);
   --_option-card-fg-soldout: var(--colors-fg-disabled);
   --_option-card-fg-wait: var(--colors-fg-brand);
-  --_option-card-soldout-opacity: 0.25;
+  --_option-card-soldout-opacity: 0.3;
   --_option-card-height: 92px;
   --_product-card-rounded: var(--_rounded-l);
   --_product-card-image-ratio: 1.4444;

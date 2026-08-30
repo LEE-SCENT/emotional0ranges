@@ -493,10 +493,10 @@ export const components = {
     "rounded": "12px",
     "priceFg": "#F75D15",
     "priceStrikeFg": "#A6A4A3",
-    "bgSoldout": "#FDFBFA",
+    "bgSoldout": "#F8F6F5",
     "fgSoldout": "#C5C3C2",
     "fgWait": "#F75D15",
-    "soldoutOpacity": 0.25,
+    "soldoutOpacity": 0.3,
     "height": "92px"
   },
   "productCard": {

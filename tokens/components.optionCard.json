@@ -44,8 +44,8 @@
       },
       "bgSoldout": {
         "$type": "color",
-        "$value": "{semantic.colors.bg-disabled}",
-        "$description": "마감된 일정. 카드를 지우지 않고 눌러 죽입니다 — 그 시간대가 있었다는 사실은 남아야 다음 일정을 고를 때 판단이 됩니다."
+        "$value": "{primitive.colors.seriousGray.100}",
+        "$description": "마감된 일정. 카드를 지우지 않고 눌러 죽입니다 — 그 시간대가 있었다는 사실은 남아야 다음 일정을 고를 때 판단이 됩니다. Figma 가 semantic/bg-disabled(gray 50) 에서 한 단계 내려 gray 100 을 직접 물려두었습니다 — 흰 배경 위에서 50 은 거의 흰색이라 마감이 아니라 그냥 카드로 보였습니다."
       },
       "fgSoldout": {
         "$type": "color",
@@ -58,8 +58,8 @@
       },
       "soldoutOpacity": {
         "$type": "number",
-        "$value": 0.25,
-        "$description": "마감 카드의 왼쪽 내용. ⚠️ Figma 에 변수로 없습니다 — opacity 25% 에서 읽었습니다."
+        "$value": 0.3,
+        "$description": "마감 카드의 왼쪽 내용. ⚠️ Figma 에 변수로 없습니다 — opacity 30% 에서 읽었습니다. 배경이 한 단계 진해진 만큼 글자도 함께 올려야 같은 만큼 읽힙니다."
       },
       "height": {
         "$type": "dimension",
