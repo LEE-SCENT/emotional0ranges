@@ -668,7 +668,7 @@
   // 갈아끼우면 서로 다른 것을 보게 됩니다.
   const { initProduct } = await import('./components/product.js?v=20868387')
   initProduct()
-  const { initSchedule } = await import('./components/schedule.js?v=6d625718')
+  const { initSchedule } = await import('./components/schedule.js?v=1b0a6faf')
   initSchedule()
   // 상세는 목록에서 들어오는 화면이라 뒤로가 곧 목록입니다. 열자마자 눌렀다면
   // 돌아갈 곳이 없으므로 홈으로 보냅니다 — 그 길은 data-back 에 적혀 있습니다.
@@ -684,6 +684,9 @@
   initDiscounts()
   const { initFavorites } = await import('./components/favorite.js?v=59fe0f4a')
   initFavorites()
+  // 비슷한 모임 카드도 목록과 같은 데이터에서 지역·일정 수를 받습니다.
+  const { initProductCards } = await import('./components/product-cards.js?v=0e9be8b5')
+  initProductCards()
   const { initDetailIntro } = await import('./components/detail-intro.js?v=c2d2bd44')
   initDetailIntro()
   const { initTabs } = await import('./components/tabs.js?v=3a928a3e')

@@ -43,6 +43,12 @@ export function todayInSeoul() {
   return { y, m, d }
 }
 
+/** 오늘부터 며칠 뒤의 날짜. */
+export function dateAfter(days) {
+  const t = todayInSeoul()
+  return new Date(t.y, t.m - 1, t.d + days)
+}
+
 /** 일정 카드가 가리키는 날짜. */
 export function dateOf(el) {
   const raw = el.dataset.date
@@ -52,8 +58,7 @@ export function dateOf(el) {
   }
   const days = Number(el.dataset.dateIn)
   if (!Number.isFinite(days)) return null
-  const t = todayInSeoul()
-  return new Date(t.y, t.m - 1, t.d + days)
+  return dateAfter(days)
 }
 
 export function isToday(at) {
@@ -64,6 +69,10 @@ export function isToday(at) {
 /** 목록의 날짜 머리글: 8월 30일(일요일) */
 export const groupText = (at) =>
   `${at.getMonth() + 1}월 ${at.getDate()}일(${WEEKDAY[at.getDay()]}요일)`
+
+/** 목록 카드의 한 줄: 8월 30일 (일) — 목록에서는 올해 안의 일정만 보여줍니다. */
+export const dayText = (at) =>
+  `${at.getMonth() + 1}월 ${at.getDate()}일 (${WEEKDAY[at.getDay()]})`
 
 /** 요약의 한 줄: 2026년 8월 30일 (일) */
 export const dateText = (at) =>

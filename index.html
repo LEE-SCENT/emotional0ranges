@@ -410,4 +410,7 @@
   initStickyGnb()
   const { initAutoHide } = await import('./components/auto-hide.js?v=ef9c163a')
   initAutoHide()
+  // 카드의 날짜·잔여석·가격은 상세와 같은 데이터에서 나옵니다. 적어두면 어긋납니다.
+  const { initProductCards } = await import('./components/product-cards.js?v=0e9be8b5')
+  initProductCards()
 </script>
