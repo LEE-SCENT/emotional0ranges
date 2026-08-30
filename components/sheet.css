@@ -133,9 +133,10 @@
 
 .sheet[open] .schedule {
   min-block-size: 0;
-  /* 목록의 마지막 카드와 버튼 사이 24. 목록이 버튼 밑으로 이어지는 자리라, 너무
-     붙으면 잘린 카드가 버튼에 눌린 것처럼 보입니다. */
-  gap: var(--spacing-600);
+  /* 목록과 버튼 줄은 맞닿습니다 — 잘린 자리에 긋는 선이 곧 그 경계입니다. 사이를
+     띄우면 선이 목록에서 떨어져 나와, 어디가 잘린 자리인지가 아니라 버튼 위에 그은
+     줄로 보입니다. 마지막 카드와의 거리는 목록이 안쪽 여백으로 냅니다. */
+  gap: 0;
   /* 시트가 이미 위아래를 비워두었습니다. */
   padding-block: 0;
 }
@@ -152,9 +153,17 @@
   /* 시트 안에서는 간격이 한 단계씩 좁습니다. 본문 옆에 설 때는 왼쪽 단의 긴 글과
      보조를 맞춰야 하지만, 여기서는 고르는 것만 있어 촘촘한 편이 한눈에 들어옵니다. */
   gap: var(--spacing-400);
+  /* 다 내렸을 때 마지막 카드가 선에 닿지 않도록 목록 안쪽에 24 를 둡니다. 바깥에
+     두면 스크롤이 그 여백 위에서 끝나, 잘린 카드와 선 사이가 늘 벌어져 있습니다. */
+  padding-block-end: var(--spacing-600);
 }
 
-.sheet[open] .schedule__actions { flex: none; }
+.sheet[open] .schedule__actions {
+  flex: none;
+  /* 버튼 위 12. 아래는 판의 여백이 같은 12 로 맡고 있어, 고정된 버튼 줄이 위아래로
+     같은 만큼 숨을 쉽니다. */
+  padding-block-start: var(--spacing-300);
+}
 
 .sheet[open] .schedule__group,
 .sheet[open] .schedule__options { gap: var(--spacing-200); }
