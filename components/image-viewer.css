@@ -95,6 +95,10 @@
    기준으로 잡아, 주소창이 펼쳐져 있으면 사진 아래가 잘립니다.
 */
 
+/* 초점은 본문이 받습니다(image-viewer.js) — 열자마자 닫기에 테가 둘리지 않게 하려는
+   것이라, 본문에 대신 테를 두르면 아무것도 나아지지 않습니다. */
+.image-viewer__body:focus { outline: none; }
+
 .image-viewer__body {
   flex: 1 1 auto;
   min-block-size: 0;
@@ -207,8 +211,10 @@
 .image-viewer[data-view='single'] .image-viewer__title { display: none; }
 
 /* ---- 좁은 화면 ----------------------------------------------------------
-   961 미만에서는 좌우 버튼이 사진 위로 올라옵니다. 바깥에 세우면 버튼 두 개와
-   그 여백(168)이 폭을 그만큼 먹어, 정작 보러 온 사진이 작아집니다.
+   961 미만에서는 사진이 화면 폭을 그대로 씁니다. 좌우 버튼을 둘 자리가 없습니다 —
+   바깥에 세우면 버튼 두 개와 그 여백(168)이 폭을 먹어 정작 보러 온 사진이 작아지고,
+   사진 위에 얹으면 넘기려다 사진을 가립니다. 넘기는 것은 손가락이 합니다
+   (image-viewer.js).
 
    목록도 세 칸은 너무 좁아 두 칸으로 줄입니다.
 */
@@ -220,27 +226,15 @@
   }
 
   .image-viewer__single {
-    position: relative;
     gap: 0;
     padding-inline: 0;
   }
 
-  .image-viewer__nav {
-    position: absolute;
-    inset-block-start: 50%;
-    translate: 0 -50%;
-  }
+  .image-viewer__nav { display: none; }
 
-  .image-viewer__nav--prev { inset-inline-start: var(--spacing-400); }
-  .image-viewer__nav--next { inset-inline-end: var(--spacing-400); }
-
-  /* 사진 위로 올라오면 흰 바탕에 맞춘 회색 화살표가 어두운 사진에 묻힙니다.
-     blur 버튼이 사진 위에 얹힐 때 쓰는 반전 토큰으로 갈아끼웁니다 — 상세 화면의
-     "사진 모두 보기" 버튼이 is-on 으로 쓰는 것과 같은 값입니다. */
-  .image-viewer__nav.btn--blur {
-    background: var(--_button-blur-bg-on);
-    color: var(--_button-blur-fg-on);
-  }
+  /* 화면 폭을 끝까지 쓰는 사진에는 모서리를 두지 않습니다. 둥근 모서리는 사진이
+     무엇인가의 안에 담겨 있다는 표시인데, 여기서는 담을 바깥이 없습니다. */
+  .image-viewer__single img { border-radius: 0; }
 }
 
 /* 사진 한 장만 있으면 넘길 곳이 없습니다. */

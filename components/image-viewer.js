@@ -23,6 +23,7 @@
  */
 
 import { lockScroll, unlockScroll } from './scroll-lock.js'
+import { initDialogFocus } from './dialog-focus.js'
 
 const wantsLessMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -45,6 +46,9 @@ export function initImageViewer(dialog) {
   const toList = dialog.querySelector('.image-viewer__to-list')
 
   dialog.dataset.count = String(photos.length)
+
+  // 열자마자 닫기에 테가 둘리지 않도록 초점은 본문이 받습니다.
+  initDialogFocus(dialog, dialog.querySelector('.image-viewer__body'))
 
   let at = 0
   /** 목록에서 어느 사진으로 들어왔는지. 돌아갈 때 그 자리에 초점을 되돌립니다. */
@@ -186,6 +190,47 @@ export function initImageViewer(dialog) {
     }
 
     if (e.target.closest('.image-viewer__close')) dialog.close()
+  })
+
+  /* ---- 손가락으로 넘기기 -------------------------------------------------
+     좁은 화면에는 좌우 버튼이 없습니다(image-viewer.css). 사진이 화면을 다 쓰는
+     자리라 버튼을 얹으면 넘기려다 사진을 가립니다. 대신 밀어서 넘깁니다.
+
+     가로가 세로보다 길 때만 넘깁니다 — 세로로 그은 손은 넘기려는 것이 아니라
+     화면을 훑는 손입니다. 40 은 눌렀다 뗄 때 손가락이 저절로 미끄러지는 거리보다
+     넉넉히 길어, 누르기와 밀기가 섞이지 않는 값으로 잡았습니다. */
+
+  const SWIPE = 40
+  let held = null
+
+  dialog.addEventListener(
+    'touchstart',
+    (e) => {
+      held =
+        dialog.dataset.view === 'single' && e.touches.length === 1
+          ? { x: e.touches[0].clientX, y: e.touches[0].clientY }
+          : null
+    },
+    { passive: true },
+  )
+
+  dialog.addEventListener(
+    'touchend',
+    (e) => {
+      if (!held) return
+      const { clientX, clientY } = e.changedTouches[0]
+      const x = clientX - held.x
+      const y = clientY - held.y
+      held = null
+      if (Math.abs(x) < SWIPE || Math.abs(x) <= Math.abs(y)) return
+      // 왼쪽으로 밀면 다음 사진이 따라 들어옵니다.
+      show(at + (x < 0 ? 1 : -1))
+    },
+    { passive: true },
+  )
+
+  dialog.addEventListener('touchcancel', () => {
+    held = null
   })
 
   dialog.addEventListener('keydown', (e) => {
