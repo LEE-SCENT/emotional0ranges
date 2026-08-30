@@ -248,6 +248,8 @@
 
    접힌 높이는 Figma 의 소개 프레임 높이(688)를 따릅니다. 지금 들어 있는 소개가
    딱 그 높이라 눈에 띄게 잘리지는 않지만, 글과 사진이 더 붙으면 여기서 멈춥니다.
+   좁은 화면은 그 값이 화면 한 판이라 따로 잡습니다 — 아래 미디어 쿼리에 이유를
+   적었습니다.
 
    접는 것은 detail-intro.js 가 붙이는 is-collapsed 입니다. 마크업은 펼쳐진 채로
    두고 스크립트가 접습니다 — 반대로 두면 스크립트가 없을 때 소개가 잘린 채 남고
@@ -263,6 +265,13 @@
 .detail-intro.is-collapsed .detail-intro__content {
   max-block-size: 688px;
   overflow: clip;
+}
+
+/* 좁은 화면에서는 688 이 화면 한 판입니다 — 그 높이에서 잘리는 소개가 없어 접어도
+   접히지 않고 "소개 전체 보기"가 나오지 않았습니다. 손안의 화면에서 소개가 차지할
+   만한 높이인 280 에서 멈춥니다. 나머지는 눌러서 폅니다. */
+@media (max-width: 960px) {
+  .detail-intro.is-collapsed .detail-intro__content { max-block-size: 280px; }
 }
 
 .detail-intro img {
