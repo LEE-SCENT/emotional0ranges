@@ -59,14 +59,20 @@ export function initTabs(scope = document) {
       if (!target) return
 
       e.preventDefault()
+      const tabs = getComputedStyle(root)
       const stuck = root.getBoundingClientRect().height
       const top =
-        parseFloat(getComputedStyle(root).getPropertyValue('top')) ||
-        parseFloat(
-          getComputedStyle(root).getPropertyValue('inset-block-start'),
-        ) ||
+        parseFloat(tabs.getPropertyValue('top')) ||
+        parseFloat(tabs.getPropertyValue('inset-block-start')) ||
         0
-      const y = target.getBoundingClientRect().top + window.scrollY - stuck - top
+      /* 섹션이 평소 앞 내용과 두는 만큼은 남겨둡니다. 탭 바로 밑에 딱 붙여 세우면
+         사진이 탭에 얹힌 것처럼 보이고, 눌러서 온 자리가 원래 그 자리와 달라집니다.
+
+         자기 위 여백(margin)을 가진 섹션은 그만큼, 없는 섹션은 탭이 아래로 비워둔
+         만큼입니다 — 소개는 탭이 띄워주고 리뷰는 스스로 띄웁니다(detail.css). */
+      const own = parseFloat(getComputedStyle(target).marginBlockStart) || 0
+      const room = own || parseFloat(tabs.marginBlockEnd) || 0
+      const y = target.getBoundingClientRect().top + window.scrollY - stuck - top - room
       window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' })
     })
 
