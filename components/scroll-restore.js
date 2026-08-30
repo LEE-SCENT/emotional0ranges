@@ -17,6 +17,21 @@
 
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual'
 
+/**
+ * 맨 위로. 한 번으로 끝나지 않습니다.
+ *
+ * 사파리는 얼려둔 화면을 되살리면서 스크롤을 pageshow 뒤에 되돌려 놓기도 합니다.
+ * 그 자리에서 한 번만 올려두면 곧바로 아래로 되돌려져, 아무 일도 하지 않은 것과
+ * 같아집니다. 다음 프레임과 그 조금 뒤에 한 번씩 더 올려 그 되돌림을 지웁니다.
+ *
+ * 여러 번 불러도 이미 맨 위면 아무 일도 일어나지 않습니다.
+ */
+function toTop() {
+  scrollTo(0, 0)
+  requestAnimationFrame(() => scrollTo(0, 0))
+  setTimeout(() => scrollTo(0, 0), 60)
+}
+
 addEventListener('pageshow', (e) => {
-  if (e.persisted) scrollTo(0, 0)
+  if (e.persisted) toTop()
 })
