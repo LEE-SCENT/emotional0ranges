@@ -91,6 +91,21 @@ export function initSheet(dialog) {
   })
 }
 
+/* ---- 뒤로 돌아왔을 때 -----------------------------------------------------
+   브라우저는 떠나는 화면을 통째로 얼려두었다가 뒤로 올 때 그대로 되살립니다. 시트를
+   열어 일정을 고르고 결제로 넘어갔다가 돌아오면, 떠날 때 열려 있던 시트가 그대로
+   다시 떠 있습니다 — 결제까지 갔다 온 사람에게는 방금 한 일이 없던 것처럼 보이고,
+   뒤로가 한 번 더 필요한 화면이 됩니다.
+
+   되살아난 화면에서는 닫아둡니다. 새로 그려진 화면(persisted 가 아닌 경우)에는 열려
+   있는 시트가 없으므로 아무 일도 하지 않습니다.
+
+   listener 는 모듈에 하나만 답니다. 시트마다 달면 같은 일을 시트 수만큼 합니다. */
+addEventListener('pageshow', (e) => {
+  if (!e.persisted) return
+  for (const el of document.querySelectorAll('.sheet[open]')) el.close()
+})
+
 export function initSheets(scope = document) {
   for (const el of scope.querySelectorAll('.sheet')) initSheet(el)
 }
