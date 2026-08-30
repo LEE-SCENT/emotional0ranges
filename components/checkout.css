@@ -23,8 +23,15 @@
   /* ⚠️ 72 는 GNB 높이입니다. Figma 에 변수로 없어 프레임에서 읽었습니다.
      상세 화면도 같은 값을 각자 들고 있습니다. */
   --checkout-sticky-top: 72px;
-  padding-block: var(--spacing-800) var(--spacing-2000);
+  padding-block-start: var(--spacing-800);
   font-family: var(--_font-family-pretendard);
+}
+
+/* 아래 여백은 폭마다 다른 것이 끝냅니다. 좁은 화면에서는 화면 아래 결제 버튼이
+   자리를 비우므로(has-bottom-cta) 여기서 함께 잡으면 둘 중 어느 쪽이 이겼는지에
+   따라 마지막 카드가 버튼 뒤로 들어갑니다. */
+@media (min-width: 961px) {
+  .checkout { padding-block-end: var(--spacing-2000); }
 }
 
 .checkout__header {
@@ -270,8 +277,8 @@
 
 @media (max-width: 960px) {
   .checkout {
-    /* 제목이 topBar 바로 아래에서 시작합니다. */
-    padding-block: 0 var(--spacing-1200);
+    /* 제목이 topBar 바로 아래에서 시작합니다. 아래는 has-bottom-cta 가 비웁니다. */
+    padding-block-start: 0;
   }
 
   /* 넓은 화면에서는 제목 왼쪽 바깥에 뒤로 가기가 서지만, 좁은 화면에서는 그 일을

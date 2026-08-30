@@ -42,9 +42,15 @@
   .bottom-cta { display: none; }
 }
 
-/* 고정된 만큼 본문 끝을 가립니다. 페이지가 스스로 그 높이만큼 자리를 비웁니다. */
+/* 고정된 만큼 본문 끝을 가립니다. 페이지가 스스로 그 높이만큼 자리를 비웁니다.
+
+   높이에 24 를 더합니다. 딱 높이만큼만 비우면 마지막 내용이 버튼의 경계선에 그대로
+   맞닿아, 다 내렸는데도 아직 가려진 것이 남은 것처럼 보입니다 — 실제로 결제 화면의
+   필수 동의가 그렇게 잘려 보였습니다. 끝났다는 것이 보이려면 사이가 떠 있어야 합니다. */
 @media (max-width: 960px) {
   .has-bottom-cta {
-    padding-block-end: calc(var(--_bottom-cta-height) + env(safe-area-inset-bottom));
+    padding-block-end: calc(
+      var(--_bottom-cta-height) + var(--spacing-600) + env(safe-area-inset-bottom)
+    );
   }
 }
