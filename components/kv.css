@@ -213,10 +213,16 @@
 
      <section class="kv-group">
        <div class="kv-group__track">
-         <article class="kv is-current"> … </article>
-         <article class="kv">             … </article>
+         <div class="kv-group__slide"><article class="kv is-current"> … </article></div>
+         <div class="kv-group__slide"><article class="kv">             … </article></div>
        </div>
      </section>
+
+   넘기는 칸(__slide)과 소재(.kv)를 나눠둔 것은 크기 때문입니다. 브라우저는 스냅
+   자리를 "줄어든 뒤"의 상자로 재는데, 줄어드는 것이 곧 스냅 대상이면 그 자리가
+   장마다 달라집니다 — 왼쪽 장은 오른쪽 변을 붙들고 줄어 왼쪽 변이 안으로 들어와,
+   뒤로 넘기면 한 장에 못 미친 곳에 서고 한 번 더 밀어야 했습니다. 칸은 제자리에
+   두고 그 안의 소재만 줄입니다.
 
    is-current 와 장 수(data-slides)는 kv-carousel.js 가 붙입니다. 한 장뿐이면
    페이지네이션을 감춥니다 — "1 / 1" 은 알려주는 것이 없습니다.
@@ -235,7 +241,8 @@
 
 .kv-group__track::-webkit-scrollbar { display: none; }
 
-.kv-group .kv {
+/* 넘기는 단위는 칸입니다. 칸은 줄어들지 않으므로 스냅 자리도 움직이지 않습니다. */
+.kv-group__slide {
   flex: 0 0 100%;
   scroll-snap-align: start;
 }

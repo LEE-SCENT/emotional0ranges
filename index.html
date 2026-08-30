@@ -20,7 +20,7 @@
 <link rel="stylesheet" href="./components/segmented-control.css?v=7a4a3de6">
 <link rel="stylesheet" href="./components/tooltip.css?v=d3d8dfa4">
 <link rel="stylesheet" href="./components/gnb.css?v=3046ec8e">
-<link rel="stylesheet" href="./components/kv.css?v=8c2a7f3b">
+<link rel="stylesheet" href="./components/kv.css?v=72819fde">
 <link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
 <link rel="stylesheet" href="./components/product-card.css?v=66da8215">
 <link rel="stylesheet" href="./components/section-title.css?v=d1c6b1bc">
@@ -81,6 +81,9 @@
 <main class="container container--wide">
   <section class="kv-group" aria-roledescription="캐러셀" aria-label="주요 소식">
     <div class="kv-group__track">
+    <!-- 넘기는 자리는 이 칸입니다. 안의 소재가 줄어들어도 칸은 그대로여야, 브라우저가
+         재는 스냅 자리가 흔들리지 않습니다 — kv.css 에 이유를 적었습니다. -->
+    <div class="kv-group__slide">
     <article class="kv is-current">
       <div class="kv__media" data-youtube="9fRsFJAS1-Y" data-title="감정적인 오렌지들 소개 영상"></div>
       <div class="kv__scrim"></div>
@@ -109,8 +112,10 @@
 
       <p class="kv__pagination"><b>1</b> <span aria-hidden="true">/</span> <span class="sr-only">중</span> 2</p>
     </article>
+    </div>
 
     <!-- ⚠️ 두 번째 장은 동작 확인용입니다. 사진과 문구 모두 임시입니다. -->
+    <div class="kv-group__slide">
     <article class="kv">
       <div class="kv__media"><img src="./images/meetup-record.jpg" alt=""></div>
       <div class="kv__scrim"></div>
@@ -140,6 +145,7 @@
 
       <p class="kv__pagination"><b>2</b> <span aria-hidden="true">/</span> <span class="sr-only">중</span> 2</p>
     </article>
+    </div>
     </div>
   </section>
 
@@ -398,7 +404,7 @@
   initSegmentedControls()
   const { initKvVideo } = await import('./components/kv.js?v=d2d085a7')
   initKvVideo()
-  const { initKvCarousels } = await import('./components/kv-carousel.js?v=950936fc')
+  const { initKvCarousels } = await import('./components/kv-carousel.js?v=f72a0dce')
   initKvCarousels()
   const { initStickyGnb } = await import('./components/gnb.js?v=ca09b963')
   initStickyGnb()
