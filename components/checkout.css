@@ -130,9 +130,7 @@
 .checkout__method {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-200);
-  /* <p> 의 기본 위아래 여백은 1em 입니다. 그대로 두면 카드가 100 이 아니라 138 이
-     됩니다 — 카드 간격은 gap 이 정합니다. */
+  gap: var(--spacing-150);
   margin: 0;
 }
 
@@ -140,8 +138,16 @@
    이기 때문입니다. */
 .checkout__card:has(.checkout__method) { gap: var(--spacing-300); }
 
-/* 고를 것이 하나뿐이라 누르는 것이 아닙니다. 손가락 모양이 바뀌면 눌러보게 됩니다. */
-.checkout__method .btn { cursor: default; }
+/* 고른 수단만 채워집니다. 버튼 두 모습(outlined -> filled)을 그대로 쓰고, 무엇이
+   골라졌는지는 안에 든 라디오가 들고 있습니다 — 클래스를 갈아끼우는 스크립트 없이
+   키보드 화살표와 폼 값이 함께 따라옵니다.
+
+   테두리는 inset 그림자로 그려져 있어 채울 때 함께 지웁니다. */
+.checkout__method .btn:has(:checked) {
+  background: var(--_button-filled-bg);
+  color: var(--_button-filled-fg);
+  box-shadow: none;
+}
 
 /* ---- 필수 동의 ---------------------------------------------------------
    체크박스는 줄 맨 위에 두고 글이 그 옆에서 흐릅니다. 가운데에 맞추면 규정이
