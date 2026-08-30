@@ -137,7 +137,9 @@ export function initWaitlist(scope = document) {
     if (!card || !label) return
     card.classList.remove('option-card--wait')
     card.classList.add('option-card--soldout')
-    label.textContent = '대기 마감'
+    // 마감 카드에 적히는 말은 하나입니다. 대기로 닫혔든 자리가 다 찼든, 고를 수 없다는
+    // 사실은 같습니다 — 어느 길로 닫혔는지는 고르는 사람이 알 일이 아닙니다.
+    label.textContent = '마감'
     el.checked = false
     el.disabled = true
   }

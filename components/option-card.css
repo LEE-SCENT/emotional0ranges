@@ -151,6 +151,12 @@
 
 .option-card--soldout {
   background: var(--_option-card-bg-soldout);
+  /* 테두리를 지웁니다. 선이 남아 있으면 회색으로 가라앉은 카드도 여전히 고를 수 있는
+     것처럼 보입니다 — 선은 고를 수 있는 카드의 표시입니다.
+
+     border 를 빼지 않고 색만 지우는 것은 자리 때문입니다. 없애면 안쪽 여백이 1 씩
+     늘어 글자가 밀리고, 높이 92 를 붙들어 둔 계산도 어긋납니다. */
+  border-color: transparent;
   cursor: not-allowed;
 }
 
