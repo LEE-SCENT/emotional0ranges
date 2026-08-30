@@ -21,10 +21,17 @@
 
 .btn.is-favorite .btn__icon { color: var(--colors-fg-brand); }
 
-/* 누르고 있는 동안 움츠립니다. 떼면 위 전환을 타고 제 크기로 돌아옵니다. */
-.btn[data-favorite]:active .btn__icon { scale: 0.85; }
+/* 누르고 있는 동안 움츠립니다. 떼면 위 전환을 타고 제 크기로 돌아옵니다.
+
+   :active 하나로는 손가락에 반응하지 않습니다 — 사파리는 터치에서 그 상태를 잘
+   주지 않아, 마우스로는 움츠리던 하트가 폰에서는 색만 바뀌었습니다. 그래서
+   favorite.js 가 손이 닿는 동안 is-pressing 을 붙여줍니다. 두 자리에 같은 값을
+   적는 것은 어느 한쪽만 되는 기기가 없게 하려는 것입니다. */
+.btn[data-favorite]:active .btn__icon,
+.btn[data-favorite].is-pressing .btn__icon { scale: 0.85; }
 
 @media (prefers-reduced-motion: reduce) {
   .btn[data-favorite] .btn__icon { transition: none; }
-  .btn[data-favorite]:active .btn__icon { scale: 1; }
+  .btn[data-favorite]:active .btn__icon,
+  .btn[data-favorite].is-pressing .btn__icon { scale: 1; }
 }
