@@ -18,10 +18,14 @@
  */
 
 import { lockScroll, unlockScroll } from './scroll-lock.js'
+import { initDialogFocus } from './dialog-focus.js'
 
 export function initConfirm(dialog) {
   if (dialog.dataset.confirmReady) return
   dialog.dataset.confirmReady = '1'
+
+  // 열자마자 닫기나 확인에 테가 둘리지 않도록 초점은 판이 받습니다.
+  initDialogFocus(dialog, dialog.querySelector('.confirm__panel'))
 
   document.addEventListener('click', (e) => {
     if (!e.target.closest(`[data-confirm-open="${dialog.id}"]`)) return

@@ -33,10 +33,16 @@
  *
  * 스크롤 위치를 장 폭으로 나눠 반올림합니다. 눈에 보이는 비율을 재는 방법도 있지만,
  * 장이 스냅으로 멈추므로 나눗셈이면 충분하고 결과가 흔들리지 않습니다.
+ *
+ * 크기와 함께 scroll-margin 도 넣습니다. 브라우저는 스냅 자리를 "줄어든 뒤"의 상자로
+ * 재는데, 왼쪽 장은 오른쪽 변을 붙들고 줄어 왼쪽 변이 그만큼 안으로 들어와 있습니다.
+ * 뒤로 넘기면 그 들어온 변에 맞춰 멈추므로, 장이 다시 커진 뒤에는 한 장에 못 미친
+ * 자리에 서서 한 번 더 밀어야 제자리에 옵니다. 줄어든 만큼(= (1 - 크기) × 폭)을
+ * 왼쪽 여백으로 돌려주면 스냅 자리가 줄어들기 전과 같아집니다.
  */
 
 /**
- * 한 장을 넘기는 데 필요한 스크롤 거리.
+ * 한 장을 넘기는 데 필요한 스크롤 거리(size)와 장 하나의 폭(width).
  *
  * offsetWidth 를 쓰는 이유는 장이 scale 로 줄어 있기 때문입니다. 화면에 보이는
  * 폭(getBoundingClientRect)을 재면 줄어든 값이 나와, 그 값으로 다시 크기를
@@ -45,11 +51,11 @@
  * 스크롤 중에는 부르지 않습니다 — offsetWidth 와 getComputedStyle 은 그 자리에서
  * 레이아웃을 다시 계산하게 만들어, 매 프레임 부르면 그만큼 프레임이 밀립니다.
  */
-function step(track) {
+function metrics(track) {
   const first = track.querySelector('.kv')
-  if (!first) return 0
+  if (!first) return { size: 0, width: 0 }
   const gap = parseFloat(getComputedStyle(track).columnGap) || 0
-  return first.offsetWidth + gap
+  return { size: first.offsetWidth + gap, width: first.offsetWidth }
 }
 
 /**
@@ -60,6 +66,14 @@ function step(track) {
 const IMAGE_DURATION = 5000
 
 const wantsLessMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches
+
+/**
+ * 지금 장이 실제로 줄어드는지.
+ *
+ * 크기가 변하는 것은 좁은 화면뿐이고, 움직임을 줄이도록 설정한 경우에는 그마저도
+ * 하지 않습니다(kv.css). 줄어들지 않으면 스냅 자리를 보정할 것도 없습니다.
+ */
+const shrinks = () => matchMedia('(max-width: 960px)').matches && !wantsLessMotion()
 
 export function initKvCarousel(group) {
   if (group.dataset.kvReady) return
@@ -94,18 +108,21 @@ export function initKvCarousel(group) {
   let queued = false
   let running = false
   let size = 0
+  let width = 0
   let settle = 0
 
   // 순서가 바뀌어도 값이 따라다니도록 번호가 아니라 요소로 기억합니다.
   const target = new Map()
   const value = new Map()
+  const origin = new Map()
 
   const measure = () => {
-    size = step(track)
+    ;({ size, width } = metrics(track))
   }
 
   const draw = () => {
     let moving = false
+    const fix = shrinks()
     for (const el of list()) {
       const to = target.get(el) ?? 1
       const from = value.get(el) ?? to
@@ -114,6 +131,9 @@ export function initKvCarousel(group) {
       if (next !== to) moving = true
       value.set(el, next)
       el.style.setProperty('--kv-slide-scale', next.toFixed(4))
+      // 줄어든 만큼 밀려난 스냅 자리를 되돌립니다 — 위 주석 참고.
+      el.style.scrollMarginInlineStart =
+        fix && origin.get(el) === 'right' ? `${((1 - next) * width).toFixed(2)}px` : '0px'
     }
 
     running = moving
@@ -131,7 +151,9 @@ export function initKvCarousel(group) {
       target.set(el, idle + (1 - idle) * (1 - away))
       // 화면 쪽을 향한 변을 붙들어야 줄어든 장이 그만큼 보입니다. 왼쪽에 있는 장은
       // 오른쪽 변을, 오른쪽에 있는 장은 왼쪽 변을 축으로 삼습니다.
-      el.style.setProperty('--kv-slide-origin', i < pos ? 'right' : 'left')
+      const side = i < pos ? 'right' : 'left'
+      origin.set(el, side)
+      el.style.setProperty('--kv-slide-origin', side)
     })
 
     if (!running) {
@@ -276,6 +298,8 @@ export function initKvCarousel(group) {
     const to = target.get(el) ?? 1
     value.set(el, to)
     el.style.setProperty('--kv-slide-scale', to.toFixed(4))
+    el.style.scrollMarginInlineStart =
+      shrinks() && origin.get(el) === 'right' ? `${((1 - to) * width).toFixed(2)}px` : '0px'
   }
   plan()
 }

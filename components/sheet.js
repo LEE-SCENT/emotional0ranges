@@ -17,6 +17,7 @@
  */
 
 import { lockScroll, unlockScroll } from './scroll-lock.js'
+import { initDialogFocus } from './dialog-focus.js'
 
 /**
  * 지금 이 요소가 시트로 동작하는지.
@@ -31,6 +32,9 @@ const isSheet = (el) =>
 export function initSheet(dialog) {
   if (dialog.dataset.sheetReady) return
   dialog.dataset.sheetReady = '1'
+
+  // 열자마자 목록의 첫 칸이나 버튼에 테가 둘리지 않도록 초점은 판이 받습니다.
+  initDialogFocus(dialog, dialog.querySelector('.sheet__panel'))
 
   const open = () => {
     if (!isSheet(dialog) || dialog.open) return

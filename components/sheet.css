@@ -75,6 +75,10 @@
   box-shadow: var(--_sheet-shadow);
 }
 
+/* 초점은 판이 받습니다(sheet.js) — 열자마자 목록의 첫 칸이나 버튼에 테가 둘리지
+   않게 하려는 것이라, 판에 대신 테를 두르면 아무것도 나아지지 않습니다. */
+.sheet__panel:focus { outline: none; }
+
 /* ---- 여닫는 모션 --------------------------------------------------------
    아래에서 올라옵니다. 어디에서 온 것인지가 곧 어디로 닫히는지라, 눌렀던 버튼
    쪽에서 자라나야 닫을 방향도 짐작이 됩니다.
@@ -113,6 +117,19 @@
 
    [open] 에 거는 것은 --inline 때문입니다. 넓은 화면에서 자리에 빠져 있는 그
    목록은 열린 적이 없어 이 규칙들을 받지 않습니다. */
+
+/* 상세 화면은 일정을 <aside class="detail-side"> 로 감싸 본문 옆에 세웁니다. 시트가
+   되면 그 aside 가 판과 목록 사이에 남는데, 옆 단에 설 때의 flex:none 을 그대로 들고
+   있어 내용만큼 자랍니다 — 판이 멈춘 자리 아래로 목록이 흘러넘치고 신청 버튼이 화면
+   밖으로 밀려납니다. 시트 안에서는 판의 높이 제약을 목록까지 그대로 내려보냅니다.
+   따라다니는 것(sticky)도 시트 안에서는 할 일이 없습니다. */
+.sheet[open] .detail-side {
+  position: static;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-block-size: 0;
+}
 
 .sheet[open] .schedule {
   min-block-size: 0;

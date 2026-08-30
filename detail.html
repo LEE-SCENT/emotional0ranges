@@ -27,7 +27,7 @@
 <link rel="stylesheet" href="./components/tabs.css?v=77e05f5c">
 <link rel="stylesheet" href="./components/option-card.css?v=dc5cfd48">
 <link rel="stylesheet" href="./components/schedule.css?v=6094ad80">
-<link rel="stylesheet" href="./components/confirm.css?v=72ac9e98">
+<link rel="stylesheet" href="./components/confirm.css?v=5552762d">
 <link rel="stylesheet" href="./components/review.css?v=e6a76bd1">
 <link rel="stylesheet" href="./components/detail.css?v=fcc49a17">
 <link rel="stylesheet" href="./components/favorite.css?v=7b27f284">
@@ -35,7 +35,7 @@
 <link rel="stylesheet" href="./components/top-bar.css?v=8d2c027b">
 <link rel="stylesheet" href="./components/image-viewer.css?v=338633f3">
 <link rel="stylesheet" href="./components/bottom-cta.css?v=8c0377aa">
-<link rel="stylesheet" href="./components/sheet.css?v=2fef8e1b">
+<link rel="stylesheet" href="./components/sheet.css?v=0f3f5810">
 <style>
   body {
     margin: 0;
@@ -305,7 +305,7 @@
      <div class="sheet__panel">
       <aside class="detail-side">
       <div class="schedule">
-      <div class="schedule__list">
+      <div class="schedule__list" data-sheet-scroll>
         <div class="schedule__group">
           <time class="schedule__date"></time>
           <ul class="schedule__options">
@@ -670,7 +670,7 @@
   })
   const { initRecentReview } = await import('./components/recent-review.js?v=417e597f')
   initRecentReview()
-  const { initConfirms } = await import('./components/confirm.js?v=517cc9a3')
+  const { initConfirms } = await import('./components/confirm.js?v=f0f28b06')
   initConfirms()
   const { initWaitlist } = await import('./components/waitlist.js?v=35237412')
   initWaitlist()
@@ -678,12 +678,12 @@
   initDiscounts()
   const { initFavorites } = await import('./components/favorite.js?v=c0bbee77')
   initFavorites()
-  const { initDetailIntro } = await import('./components/detail-intro.js?v=0e1ce781')
+  const { initDetailIntro } = await import('./components/detail-intro.js?v=c2d2bd44')
   initDetailIntro()
   const { initTabs } = await import('./components/tabs.js?v=3a928a3e')
   initTabs()
   const { initImageViewers } = await import('./components/image-viewer.js?v=10466713')
   initImageViewers()
-  const { initSheets } = await import('./components/sheet.js?v=e2639981')
+  const { initSheets } = await import('./components/sheet.js?v=046068b5')
   initSheets()
 </script>
