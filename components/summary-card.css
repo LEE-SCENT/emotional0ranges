@@ -228,8 +228,13 @@
 .summary-card__price .is-discount { color: var(--colors-fg-brand); }
 
 /* 총 결제 금액. 이름은 그대로 12 이고 숫자만 20 으로 커집니다 — 이 카드에서
-   하나만 크게 남긴다면 지금 결제될 금액입니다. */
+   하나만 크게 남긴다면 지금 결제될 금액입니다.
+
+   이 줄만 윗변을 맞춥니다. 다른 줄은 글자 크기가 같아 밑선을 맞추면 그대로 한 줄로
+   읽히지만, 여기서는 12 와 20 이 만나 밑선을 맞추면 이름이 숫자 아래로 내려앉은 것처럼
+   보입니다. 이름은 그 숫자가 무엇인지 먼저 말하는 자리라 위에서 시작해야 합니다. */
 .summary-card__price .is-total {
+  align-self: start;
   font-size: var(--typography-body-s-medium-font-size);
   font-weight: var(--typography-body-s-medium-font-weight);
   line-height: var(--typography-body-s-medium-line-height);
