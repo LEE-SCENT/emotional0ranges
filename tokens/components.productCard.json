@@ -53,22 +53,16 @@
         }
       },
       "more": {
-        "$description": "목록 끝에 붙는 더보기. 높이는 상품 썸네일과 같습니다.",
+        "$description": "목록 끝에 붙는 더보기. 높이는 상품 썸네일과 같습니다. 화살표는 blur 버튼(small · iconOnly)을 그대로 쓰므로 아이콘 크기와 색 토큰은 components.button 에 있습니다.",
         "fg": {
           "$type": "color",
-          "$value": "{semantic.colors.fg}"
+          "$value": "{semantic.colors.fg}",
+          "$description": "더보기 글자. Figma 의 semantic/fg 입니다."
         },
         "minWidth": {
           "$type": "dimension",
           "$value": "108px",
           "$description": "더보기가 이보다 좁아지지 않습니다. Figma 의 moreCardButton 도 최소 폭으로 잡혀 있습니다(최대 폭이 아닙니다)."
-        },
-        "iconSize": {
-          "$type": "dimension",
-          "$value": "{primitive.dimension}",
-          "$extensions": {
-            "scale": 6
-          }
         }
       },
       "category": {

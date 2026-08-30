@@ -515,8 +515,7 @@ export const components = {
     },
     "more": {
       "fg": "#000000",
-      "minWidth": "108px",
-      "iconSize": "24px"
+      "minWidth": "108px"
     },
     "category": {
       "imageRatio": 1,
@@ -625,6 +624,18 @@ export const components = {
     "bgBlackTo": "#666666",
     "fgBlack": "#EEEEEE",
     "iconSize": "16px"
+  },
+  "toast": {
+    "bg": "#000000D9",
+    "fg": "#FFFFFF",
+    "fgAccent": "#F75D15",
+    "fgCritical": "#FF383C",
+    "rounded": "8px",
+    "iconSize": "20px",
+    "width": "390px",
+    "minHeight": "52px",
+    "blurRadius": "4px",
+    "duration": "2500ms"
   },
   "tooltip": {
     "fg": "#FFFFFF",

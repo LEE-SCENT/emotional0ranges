@@ -12,7 +12,7 @@
 <meta name="theme-color" content="#FFFFFF">
 <title>12:12 티키타카 로테이션 소개팅 — 감정적인 오렌지들</title>
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
-<link rel="stylesheet" href="./build/tokens.css?v=2c3740d2">
+<link rel="stylesheet" href="./build/tokens.css?v=17a1c925">
 <link rel="stylesheet" href="./components/container.css?v=55694a09">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=445ba00a">
@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="./components/tooltip.css?v=d3d8dfa4">
 <link rel="stylesheet" href="./components/gnb.css?v=3046ec8e">
 <link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
-<link rel="stylesheet" href="./components/product-card.css?v=b8fad36f">
+<link rel="stylesheet" href="./components/product-card.css?v=603e6641">
 <link rel="stylesheet" href="./components/section-title.css?v=d1c6b1bc">
 <link rel="stylesheet" href="./components/footer.css?v=b6122ba5">
 <link rel="stylesheet" href="./components/tabs.css?v=77e05f5c">
@@ -31,6 +31,7 @@
 <link rel="stylesheet" href="./components/review.css?v=e6a76bd1">
 <link rel="stylesheet" href="./components/detail.css?v=e1271fad">
 <link rel="stylesheet" href="./components/favorite.css?v=8148f536">
+<link rel="stylesheet" href="./components/toast.css?v=654c8975">
 <link rel="stylesheet" href="./components/app-bar.css?v=4709389e">
 <link rel="stylesheet" href="./components/top-bar.css?v=8d2c027b">
 <link rel="stylesheet" href="./components/image-viewer.css?v=f525c651">
@@ -592,6 +593,25 @@
   </div>
 </dialog>
 
+<!-- 찜은 계정에 남는 것이라 로그인한 사람만 할 수 있습니다. 누른 자리에서 바로
+     로그인 화면으로 보내지 않고 한 번 묻습니다 — 읽던 자리를 잃지 않고 돌아설 수
+     있어야 합니다. 비로그인 상태는 detail.html?login=guest 로 볼 수 있습니다. -->
+<dialog class="confirm" id="favorite-login" aria-labelledby="favorite-login-title">
+  <div class="confirm__panel">
+    <div class="confirm__text">
+      <h2 id="favorite-login-title">찜한 모임을 저장하려면<br>로그인이 필요해요</h2>
+    </div>
+    <div class="confirm__actions">
+      <button class="btn btn--outlined btn--large" type="button" data-confirm-close>
+        <span class="btn__label">취소</span>
+      </button>
+      <button class="btn btn--filled btn--large" type="button" data-confirm-accept>
+        <span class="btn__label">로그인하기</span>
+      </button>
+    </div>
+  </div>
+</dialog>
+
 <!-- 좁은 화면에서만 보입니다. 누르면 위의 일정 목록이 시트로 올라옵니다. -->
 <div class="bottom-cta">
   <button class="btn btn--filled btn--large" data-sheet-open="apply-sheet">
@@ -678,13 +698,13 @@
   initBack()
   const { initRecentReview } = await import('./components/recent-review.js?v=417e597f')
   initRecentReview()
-  const { initConfirms } = await import('./components/confirm.js?v=f0f28b06')
+  const { initConfirms } = await import('./components/confirm.js?v=b103e627')
   initConfirms()
-  const { initWaitlist } = await import('./components/waitlist.js?v=35237412')
+  const { initWaitlist } = await import('./components/waitlist.js?v=cf2b351f')
   initWaitlist()
   const { initDiscounts } = await import('./components/discount.js?v=b7c8b9e1')
   initDiscounts()
-  const { initFavorites } = await import('./components/favorite.js?v=59fe0f4a')
+  const { initFavorites } = await import('./components/favorite.js?v=798dc8b0')
   initFavorites()
   // 비슷한 모임 카드도 목록과 같은 데이터에서 지역·일정 수를 받습니다.
   const { initProductCards } = await import('./components/product-cards.js?v=75ed153d')

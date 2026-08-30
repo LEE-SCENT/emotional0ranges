@@ -20,6 +20,21 @@
 import { lockScroll, unlockScroll } from './scroll-lock.js'
 import { initDialogFocus } from './dialog-focus.js'
 
+/**
+ * 버튼을 거치지 않고 코드에서 여는 길입니다.
+ *
+ *   openConfirm('favorite-login')
+ *
+ * data-confirm-open 은 "이 버튼을 누르면 늘 이 창"이라는 뜻입니다. 찜하기처럼 눌린
+ * 뒤에야 물을지 말지가 정해지는 자리에서는 그 표시를 쓸 수 없습니다.
+ */
+export function openConfirm(dialog) {
+  const el = typeof dialog === 'string' ? document.getElementById(dialog) : dialog
+  if (!el || el.open) return
+  el.showModal()
+  lockScroll()
+}
+
 export function initConfirm(dialog) {
   if (dialog.dataset.confirmReady) return
   dialog.dataset.confirmReady = '1'
@@ -30,9 +45,7 @@ export function initConfirm(dialog) {
   document.addEventListener('click', (e) => {
     if (!e.target.closest(`[data-confirm-open="${dialog.id}"]`)) return
     e.preventDefault()
-    if (dialog.open) return
-    dialog.showModal()
-    lockScroll()
+    openConfirm(dialog)
   })
 
   dialog.addEventListener('click', (e) => {

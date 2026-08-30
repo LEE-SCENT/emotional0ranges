@@ -9,7 +9,7 @@
 <link rel="mask-icon" href="./favicon.svg" color="#F75D15">
 <meta name="theme-color" content="#FFFFFF">
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
-<link rel="stylesheet" href="./build/tokens.css?v=2c3740d2">
+<link rel="stylesheet" href="./build/tokens.css?v=17a1c925">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=445ba00a">
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
@@ -19,8 +19,9 @@
 <link rel="stylesheet" href="./components/container.css?v=55694a09">
 <link rel="stylesheet" href="./components/footer.css?v=b6122ba5">
 <link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
-<link rel="stylesheet" href="./components/product-card.css?v=b8fad36f">
+<link rel="stylesheet" href="./components/product-card.css?v=603e6641">
 <link rel="stylesheet" href="./components/app-bar.css?v=4709389e">
+<link rel="stylesheet" href="./components/toast.css?v=654c8975">
 <style>
   body { margin:0; padding:24px; background:var(--colors-bg); color:var(--colors-fg);
          font-family:var(--_font-family-pretendard); }
@@ -66,6 +67,29 @@
 <div class="row" id="r5"></div>
 <h2>Tooltip — bottom / top × 닫기버튼</h2>
 <div class="row" id="r6" style="gap:32px;row-gap:28px;padding:20px 0"></div>
+<h2>Toast — 저장 / 해제 / 오류 / 두 줄</h2>
+<div class="row" style="flex-direction:column;align-items:flex-start">
+  <div class="toast toast--accent">
+    <svg class="toast__icon" aria-hidden="true"><use href="#icon-favoriteFilled"></use></svg>
+    <p class="toast__label">찜한 모임에 저장했어요</p>
+  </div>
+  <div class="toast">
+    <p class="toast__label">찜을 해제했어요</p>
+  </div>
+  <div class="toast toast--critical">
+    <svg class="toast__icon" aria-hidden="true"><use href="#icon-error"></use></svg>
+    <p class="toast__label">대기 신청에 실패했어요. 잠시 후 다시 시도해 주세요.</p>
+  </div>
+  <div class="toast toast--critical">
+    <svg class="toast__icon" aria-hidden="true"><use href="#icon-error"></use></svg>
+    <p class="toast__label">대기 신청이 마감되었어요. 다른 일정을 확인해 주세요.</p>
+  </div>
+  <div class="toast">
+    <p class="toast__label">문구는 최대 두 줄입니다. 세 줄이 되면 다 읽기 전에 띠가 사라져 잘라냅니다</p>
+  </div>
+</div>
+<small>화면에서는 toast.js 가 아래에 고정해 띄웁니다 — PC 는 하단 가운데에서 32, 모바일은 신청 버튼 위 12. 여기서는 흐름 안에 그대로 놓고 봅니다.</small>
+
 <h2>ButtonGroup — vertical</h2>
 <div class="row" id="r7"></div>
 <h2>ButtonGroup — horizontal</h2>
@@ -254,7 +278,36 @@
       </div>
     </div>
     <div class="product-card__info">
-      <h3 class="product-card__title">상태가 다를 때 — 동시 노출</h3>
+      <h3 class="product-card__title">임박 + 마감 — 각각 분리</h3>
+      <p class="product-card__desc">서울 강남 · 일정 5개</p>
+      <p class="product-card__price">42,000원~</p>
+    </div>
+  </article>
+  <article class="product-card" style="inline-size:312px">
+    <div class="product-card__media">
+      <img src="./images/detail-photo-2.jpg" alt="">
+      <div class="product-card__tags">
+          <span class="tag">8월 25일 (화) 저녁 7시</span>
+          <span class="tag tag--accent-pri">남성 1자리 남음</span>
+          <span class="tag tag--accent-pri">여성 2자리 남음</span>
+      </div>
+    </div>
+    <div class="product-card__info">
+      <h3 class="product-card__title">둘 다 임박 · 수가 다름</h3>
+      <p class="product-card__desc">서울 강남 · 일정 5개</p>
+      <p class="product-card__price">42,000원~</p>
+    </div>
+  </article>
+  <article class="product-card" style="inline-size:312px">
+    <div class="product-card__media">
+      <img src="./images/detail-photo-3.jpg" alt="">
+      <div class="product-card__tags">
+          <span class="tag">8월 25일 (화) 저녁 7시</span>
+          <span class="tag tag--accent-pri">남·여 각 2자리 남음</span>
+      </div>
+    </div>
+    <div class="product-card__info">
+      <h3 class="product-card__title">둘 다 임박 · 수가 같음 — 한 장으로</h3>
       <p class="product-card__desc">서울 강남 · 일정 5개</p>
       <p class="product-card__price">42,000원~</p>
     </div>

@@ -249,7 +249,6 @@
   --_product-card-status-blur-radius: 12px;
   --_product-card-more-fg: var(--colors-fg);
   --_product-card-more-min-width: 108px;
-  --_product-card-more-icon-size: calc(var(--_dimension) * 6);
   --_product-card-category-image-ratio: 1;
   --_product-card-category-width: 198px;
   --_product-card-category-min-width: 108px;
@@ -327,6 +326,16 @@
   --_tag-bg-black-to: #666666;
   --_tag-fg-black: #EEEEEE;
   --_tag-icon-size: calc(var(--_dimension) * 4);
+  --_toast-bg: #000000D9;
+  --_toast-fg: var(--_colors-white);
+  --_toast-fg-accent: var(--_colors-twist-orange-500);
+  --_toast-fg-critical: var(--_colors-accent-red-500);
+  --_toast-rounded: var(--_rounded-m);
+  --_toast-icon-size: calc(var(--_dimension) * 5);
+  --_toast-width: 390px;
+  --_toast-min-height: 52px;
+  --_toast-blur-radius: 4px;
+  --_toast-duration: 2500ms;
   --_tooltip-fg: var(--_colors-white);
   --_tooltip-bg: var(--_colors-serious-gray-900);
   --_tooltip-rounded: var(--_rounded-m);

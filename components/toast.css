@@ -1,0 +1,120 @@
+/**
+ * Toast — 방금 무엇이 되었는지 잠깐 알리고 스스로 사라지는 띠.
+ *
+ *   <div class="toast-region" role="status" aria-live="polite">
+ *     <div class="toast toast--accent">
+ *       <svg class="toast__icon" aria-hidden="true"><use href="#icon-favoriteFilled"></use></svg>
+ *       <p class="toast__label">찜한 모임에 저장했어요</p>
+ *     </div>
+ *   </div>
+ *
+ * 아이콘 색은 tone 이 정합니다 — --accent(브랜드색·잘 된 일), --critical(붉은색·
+ * 뜻대로 되지 않은 일), 없으면 글자와 같은 흰색.
+ *
+ * 띠는 toast.js 가 만들어 넣습니다. 화면마다 빈 상자를 미리 적어둘 필요가 없습니다.
+ *
+ * 누를 것이 없습니다 — 확인 버튼을 달면 사라지는 일을 사용자가 책임져야 하는데,
+ * 되돌릴 것이 없는 알림에는 책임질 것이 없습니다. 정해진 시간이 지나면 스스로
+ * 물러납니다.
+ *
+ * 자리는 화면 아래입니다. 방금 손이 닿은 곳(하트·신청 버튼)에서 가장 가깝고,
+ * 위쪽의 제목이나 사진을 가리지 않습니다.
+ */
+
+.toast-region {
+  position: fixed;
+  /* 넓은 화면: 화면 아래에서 32px 위. 홈 표시줄이 있는 기기에서는 그만큼 더 띄웁니다. */
+  inset-block-end: calc(var(--spacing-800) + env(safe-area-inset-bottom));
+  inset-inline: 0;
+  /* GNB·상단바(20)보다 위입니다. 알림이 그 아래로 들어가면 아무것도 알리지 못합니다. */
+  z-index: 25;
+  display: flex;
+  justify-content: center;
+  padding-inline: var(--spacing-500);
+  /* 띠가 덮은 자리를 계속 누를 수 있어야 합니다 — 알림은 길을 막지 않습니다. */
+  pointer-events: none;
+}
+
+/* 아래에 고정된 것이 있으면 그 위로 비켜섭니다. 좁은 화면의 신청 버튼이 그렇습니다.
+   가리면 알림 때문에 정작 눌러야 할 것을 못 누릅니다. */
+@media (max-width: 960px) {
+  body:has(.bottom-cta) .toast-region {
+    inset-block-end: calc(
+      var(--_bottom-cta-height) + var(--spacing-300) + env(safe-area-inset-bottom)
+    );
+  }
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-200);
+  box-sizing: border-box;
+  /* 화면이 넓어진다고 알림이 길어질 이유는 없습니다. 좁으면 남는 만큼만 씁니다. */
+  inline-size: min(var(--_toast-width), 100%);
+  min-block-size: var(--_toast-min-height);
+  padding: var(--spacing-300) var(--spacing-400);
+  border-radius: var(--_toast-rounded);
+  background: var(--_toast-bg);
+  /* 배경이 85% 라 뒤가 조금 비칩니다. 흐려서 글자가 아니라 색으로만 남게 합니다. */
+  backdrop-filter: blur(var(--_toast-blur-radius));
+  color: var(--_toast-fg);
+  font-family: var(--_font-family-pretendard);
+  font-size: var(--typography-body-m-regular-font-size);
+  line-height: var(--typography-body-m-regular-line-height);
+}
+
+.toast__icon {
+  flex: none;
+  display: block;
+  inline-size: var(--_toast-icon-size);
+  block-size: var(--_toast-icon-size);
+  color: currentColor;
+}
+
+/* 무엇이 되었는지 아이콘이 한 번 더 말하는 자리입니다. 찜했을 때만 브랜드색 하트가
+   붙고, 해제에는 아이콘이 없습니다 — 없어졌다는 말을 그림으로도 합니다. */
+.toast--accent .toast__icon { color: var(--_toast-fg-accent); }
+
+/* 뜻대로 되지 않은 일. 아이콘만 붉히고 글자는 흰색 그대로입니다 — 문장까지 붉히면
+   띠 전체가 경고가 되어, 무슨 일인지 읽기 전에 겁부터 먹습니다. */
+.toast--critical .toast__icon { color: var(--_toast-fg-critical); }
+
+.toast__label {
+  margin: 0;
+  /* 최대 두 줄입니다. 세 줄이 되면 다 읽기 전에 띠가 사라집니다. */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-feature-settings: 'lnum' 1, 'tnum' 1;
+}
+
+/* ---- 나타나고 사라지기 --------------------------------------------------
+   아래에서 조금 밀려 올라오고, 물러날 때는 제자리에서 흐려집니다. 올라온 방향으로
+   되돌아가면 사라지는 동안 눈이 따라가는데, 이미 다 읽은 알림입니다.
+
+   ⚠️ Figma 에 이 모션이 없어 시간과 곡선을 코드에서 정했습니다. */
+
+.toast {
+  animation: toast-in var(--_duration-base) var(--_easing-decelerate);
+}
+
+.toast.is-leaving {
+  animation: toast-out var(--_duration-base) var(--_easing-accelerate) forwards;
+}
+
+@keyframes toast-in {
+  from { opacity: 0; translate: 0 var(--spacing-200); }
+}
+
+@keyframes toast-out {
+  to { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast,
+  .toast.is-leaving { animation: none; }
+  /* 움직임 없이도 사라지는 것은 보여야 합니다 — 그 자리에서 바로 지워집니다. */
+  .toast.is-leaving { opacity: 0; }
+}

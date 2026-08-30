@@ -1,0 +1,54 @@
+{
+  "components": {
+    "toast": {
+      "$description": "방금 무엇이 되었는지 잠깐 알리고 스스로 사라지는 띠. 누를 것이 없습니다.",
+      "bg": {
+        "$type": "color",
+        "$value": "#000000D9",
+        "$description": "Figma 변수 components/toast/bg 입니다. black 85% → D9 인데 blackAlpha 프리미티브가 없어 값을 그대로 적습니다. 툴팁(seriousGray 900)과 달리 순검정 위 85% 라 뒤 글자가 비칩니다 — blur 와 함께 읽히지 않을 만큼만 남깁니다."
+      },
+      "fg": { "$type": "color", "$value": "{primitive.colors.white}" },
+      "fgAccent": {
+        "$type": "color",
+        "$value": "{primitive.colors.twistOrange.500}",
+        "$description": "찜했을 때의 채운 하트. Figma 변수 components/toast/fg-accent(#F75D15) 이며 브랜드 주조색과 같은 값입니다."
+      },
+      "fgCritical": {
+        "$type": "color",
+        "$value": "{primitive.colors.accentRed.500}",
+        "$description": "실패·마감처럼 뜻대로 되지 않은 일의 아이콘. Figma 변수 components/toast/fg-critical(#FF383C) 입니다. 글자는 흰색 그대로 두고 아이콘만 붉습니다 — 문장까지 붉히면 띠 전체가 경고가 되어, 읽기 전에 무엇이 잘못됐는지부터 겁먹게 됩니다."
+      },
+      "rounded": {
+        "$type": "dimension",
+        "$value": "{primitive.rounded.m}",
+        "$description": "Figma 는 components/tooltip/rounded 를 그대로 쓰고 있습니다. 남의 컴포넌트 토큰을 가리키는 대신 같은 값의 프리미티브(8px)를 가리킵니다."
+      },
+      "iconSize": {
+        "$type": "dimension",
+        "$value": "{primitive.dimension}",
+        "$extensions": { "scale": 5 },
+        "$description": "20px. 버튼의 iconSize/s 와 같습니다."
+      },
+      "width": {
+        "$type": "dimension",
+        "$value": "390px",
+        "$description": "Figma 의 toast 인스턴스 폭입니다. 모바일(430)에서 좌우 20 을 뺀 값이고, 넓은 화면에서도 같은 폭으로 가운데에 섭니다 — 알림은 화면이 넓어진다고 길어질 이유가 없습니다."
+      },
+      "minHeight": {
+        "$type": "dimension",
+        "$value": "52px",
+        "$description": "⚠️ Figma 에 변수로 없습니다. 찜하기 정책의 '최소 높이 52px' 입니다. 한 줄은 여백(12×2)+줄높이(19.6)=43.6 이라 이 값이 높이를 정하고, 두 줄이면 63.2 로 자라 정책의 64 에 닿습니다."
+      },
+      "blurRadius": {
+        "$type": "dimension",
+        "$value": "4px",
+        "$description": "⚠️ Figma 에 변수로 없습니다. backdrop-blur 값에서 읽었습니다."
+      },
+      "duration": {
+        "$type": "duration",
+        "$value": "2500ms",
+        "$description": "⚠️ Figma 에 변수로 없습니다. 찜하기 정책의 '2~3초 후 자동 소멸' 가운데를 잡았습니다. primitive/duration 은 전환용(최대 400ms)이라 여기에 따로 둡니다."
+      }
+    }
+  }
+}

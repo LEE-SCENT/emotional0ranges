@@ -302,9 +302,24 @@
 }
 
 /* ---- 더보기 -----------------------------------------------------------
-   목록 끝에 붙습니다. 높이를 썸네일과 맞춰야 하는데, 그 높이는 카드 "폭"에서
-   나옵니다. block-size 의 100% 는 높이 기준으로 풀리므로 폭을 가리키는
-   컨테이너 쿼리 단위를 씁니다.
+   목록 끝에 붙습니다.
+
+     <a class="product-card-more" href="#">
+       <span class="btn btn--blur btn--small btn--icon-only">
+         <svg class="btn__icon" aria-hidden="true"><use href="#icon-arrowBack"></use></svg>
+       </span>
+       <span>더보기</span>
+     </a>
+
+   화살표는 알약 모양 blur 버튼 안에 들어갑니다. 버튼 컴포넌트를 그대로 쓰므로
+   크기(패딩 6/12 · 아이콘 20)와 색은 button 토큰이 정합니다 — 여기서 다시
+   정하지 않습니다.
+
+   ⚠️ 링크 안이라 <button> 이 아니라 <span> 입니다. 누르는 자리는 더보기 전체이고
+   이 알약은 그 안의 그림입니다 — 버튼을 링크 안에 넣으면 누를 곳이 둘이 됩니다.
+
+   높이를 썸네일과 맞춰야 하는데, 그 높이는 카드 "폭"에서 나옵니다. block-size 의
+   100% 는 높이 기준으로 풀리므로 폭을 가리키는 컨테이너 쿼리 단위를 씁니다.
 */
 
 .product-card-section { container-type: inline-size; }
@@ -321,22 +336,21 @@
     / var(--_product-card-image-ratio)
   );
   /* Figma 의 minWidth 는 좌우 여백을 포함한 값입니다. border-box 로 두지 않으면
-     여백 48 이 그 위에 얹혀 176 이 됩니다. */
+     여백 32 가 그 위에 얹혀 140 이 됩니다. */
   box-sizing: border-box;
   min-inline-size: var(--_product-card-more-min-width);
-  padding-inline: var(--spacing-600);
+  padding-inline: var(--spacing-400);
   color: var(--_product-card-more-fg);
   text-decoration: none;
   font-family: var(--_font-family-pretendard);
-  font-size: var(--typography-body-m-regular-font-size);
-  line-height: var(--typography-body-m-regular-line-height);
+  font-size: var(--typography-body-l-medium-font-size);
+  font-weight: var(--typography-body-l-medium-font-weight);
+  line-height: var(--typography-body-l-medium-line-height);
+  letter-spacing: var(--typography-body-l-medium-letter-spacing);
   white-space: nowrap;
 }
 
-.product-card-more svg {
-  display: block;
-  inline-size: var(--_product-card-more-icon-size);
-  block-size: var(--_product-card-more-icon-size);
+.product-card-more .btn__icon {
   /* arrowBack 을 뒤집어 오른쪽 화살표로 씁니다. */
   scale: -1 1;
 }
