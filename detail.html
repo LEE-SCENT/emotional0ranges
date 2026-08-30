@@ -12,7 +12,7 @@
 <meta name="theme-color" content="#FFFFFF">
 <title>12:12 티키타카 로테이션 소개팅 — 감정적인 오렌지들</title>
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
-<link rel="stylesheet" href="./build/tokens.css?v=63ff0e95">
+<link rel="stylesheet" href="./build/tokens.css?v=c93e0015">
 <link rel="stylesheet" href="./components/container.css?v=55694a09">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=445ba00a">
@@ -25,13 +25,14 @@
 <link rel="stylesheet" href="./components/section-title.css?v=d1c6b1bc">
 <link rel="stylesheet" href="./components/footer.css?v=b6122ba5">
 <link rel="stylesheet" href="./components/tabs.css?v=77e05f5c">
-<link rel="stylesheet" href="./components/option-card.css?v=1f480697">
+<link rel="stylesheet" href="./components/option-card.css?v=0e5935d2">
 <link rel="stylesheet" href="./components/schedule.css?v=6094ad80">
 <link rel="stylesheet" href="./components/confirm.css?v=5552762d">
 <link rel="stylesheet" href="./components/review.css?v=e6a76bd1">
 <link rel="stylesheet" href="./components/detail.css?v=e1271fad">
 <link rel="stylesheet" href="./components/favorite.css?v=8148f536">
 <link rel="stylesheet" href="./components/toast.css?v=654c8975">
+<link rel="stylesheet" href="./components/participants.css?v=49a79626">
 <link rel="stylesheet" href="./components/app-bar.css?v=4709389e">
 <link rel="stylesheet" href="./components/top-bar.css?v=8d2c027b">
 <link rel="stylesheet" href="./components/image-viewer.css?v=f525c651">
@@ -596,6 +597,26 @@
 <!-- 찜은 계정에 남는 것이라 로그인한 사람만 할 수 있습니다. 누른 자리에서 바로
      로그인 화면으로 보내지 않고 한 번 묻습니다 — 읽던 자리를 잃지 않고 돌아설 수
      있어야 합니다. 비로그인 상태는 detail.html?login=guest 로 볼 수 있습니다. -->
+<!-- 고른 일정에 확정된 사람들. 안은 participants.js 가 채웁니다 — 같은 목록이 카드
+     요약과 이 창 두 곳에 나오는데, 마크업에 적어두면 둘이 갈립니다. -->
+<dialog class="confirm participants" id="participants" aria-labelledby="participants-title">
+  <div class="confirm__panel">
+    <h2 id="participants-title">참여자 구성</h2>
+    <div class="participants__body">
+      <p class="participants__when">
+        <span>선택한 일정</span>
+        <span data-participants-when></span>
+      </p>
+      <div class="participants__cols"></div>
+      <p class="participants__note">참여자의 연령대와 직업군만 공개하며, 개인을 식별할 수 있는 정보는 제공하지 않아요.</p>
+    </div>
+    <button class="btn btn--ghost btn--medium btn--icon-only confirm__close" type="button"
+            data-confirm-close aria-label="닫기">
+      <svg class="btn__icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+    </button>
+  </div>
+</dialog>
+
 <dialog class="confirm" id="favorite-login" aria-labelledby="favorite-login-title">
   <div class="confirm__panel">
     <div class="confirm__text">
@@ -700,6 +721,8 @@
   initRecentReview()
   const { initConfirms } = await import('./components/confirm.js?v=b103e627')
   initConfirms()
+  const { initParticipants } = await import('./components/participants.js?v=1db337ee')
+  initParticipants()
   const { initWaitlist } = await import('./components/waitlist.js?v=25791c91')
   initWaitlist()
   const { initDiscounts } = await import('./components/discount.js?v=b7c8b9e1')

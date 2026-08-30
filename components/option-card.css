@@ -24,6 +24,9 @@
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
+  /* 참여자 구성이 붙으면 다음 줄로 내려갑니다. 그것 하나 때문에 카드를 한 겹 더
+     감싸지 않습니다 — 시트·결제 화면까지 같은 마크업이 쓰이고 있습니다. */
+  flex-wrap: wrap;
   gap: var(--spacing-400);
   inline-size: 100%;
   block-size: var(--_option-card-height);
@@ -143,6 +146,89 @@
 */
 
 .option-card--waiting .option-card__seats { color: var(--colors-fg-lower); }
+
+/* ---- 참여자 구성 -------------------------------------------------------
+   고른 일정에 이미 확정된 사람들. 고르기 전에는 접혀 있습니다 — 카드마다 펼쳐두면
+   목록이 세 배로 길어져 일정을 고르는 일이 어려워집니다.
+
+     <label class="option-card">
+       …
+       <span class="option-card__participants">
+         <span class="option-card__participants-row">
+           <span class="option-card__participants-label">참여자 구성</span>
+           <span class="option-card__participants-summary">
+             <span class="option-card__participants-count">남 <b>6</b> · 여 <b>3</b></span>
+             <span class="option-card__participants-detail">90년대 중반 · 의료계 외 8명</span>
+           </span>
+         </span>
+         <button class="btn btn--blur btn--small" data-participants="s1">…</button>
+       </span>
+
+   위 줄과는 선으로 끊습니다. 같은 카드 안이지만 하나는 이 일정이 무엇인지이고
+   다른 하나는 누가 있는지라, 이어 읽히면 자리 수와 사람 수가 뒤섞입니다.
+*/
+
+.option-card__participants {
+  /* 앞의 두 칸(시간·잔여석) 다음 줄을 통째로 씁니다. */
+  flex: 0 0 100%;
+  display: none;
+  flex-direction: column;
+  gap: var(--spacing-400);
+  padding-block-start: var(--spacing-400);
+  border-block-start: 1px solid var(--colors-divider);
+  cursor: default;
+}
+
+/* 고른 카드만 펼칩니다. 높이도 그만큼 늘어나야 해서 92 를 최소값으로 내립니다. */
+.option-card:has(:checked) .option-card__participants { display: flex; }
+
+.option-card:has(:checked):has(.option-card__participants) {
+  block-size: auto;
+  min-block-size: var(--_option-card-height);
+}
+
+.option-card__participants-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-300);
+  font-size: var(--typography-body-s-regular-font-size);
+  line-height: var(--typography-body-s-regular-line-height);
+}
+
+.option-card__participants-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--spacing-50);
+  min-inline-size: 0;
+  text-align: end;
+}
+
+.option-card__participants-count {
+  font-weight: var(--typography-body-s-medium-font-weight);
+  white-space: nowrap;
+  font-feature-settings: 'lnum' 1, 'tnum' 1;
+}
+
+/* 숫자만 브랜드색입니다. "남"과 "여"는 이름이고, 읽어야 할 값은 그 옆의 수입니다. */
+.option-card__participants-count b {
+  color: var(--colors-fg-brand);
+  font-weight: inherit;
+}
+
+.option-card__participants-detail {
+  overflow: hidden;
+  color: var(--colors-fg-lower);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 아직 아무도 없으면 요약도 버튼도 없이 이 한 줄만 남습니다. 열어봐야 빈 창이라
+   들어가는 문을 아예 만들지 않습니다. */
+.option-card__participants-empty { color: var(--colors-fg-lower); }
+
+.option-card__participants .btn { inline-size: 100%; }
 
 /* ---- 마감 --------------------------------------------------------------
    카드를 목록에서 지우지 않습니다. 그 시간대가 있었다는 사실이 남아야 다음 일정을

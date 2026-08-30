@@ -1,0 +1,179 @@
+/**
+ * Participants — 고른 일정에 이미 확정된 사람들.
+ *
+ * 두 자리에 나옵니다. 고른 일정 카드 안의 요약(option-card.css 의 __participants)과,
+ * 전체를 펼쳐 보는 이 창입니다.
+ *
+ *   <dialog class="confirm participants" id="participants">
+ *     <div class="confirm__panel">
+ *       <h2>참여자 구성</h2>
+ *       <div class="participants__body">
+ *         <p class="participants__when"><span>선택한 일정</span><span>8월 22일 (토) 오후 2시</span></p>
+ *         <div class="participants__cols">
+ *           <section class="participants__col">
+ *             <h3>남성 <b>6</b></h3>
+ *             <ul class="participants__list">
+ *               <li class="participant participant--m">
+ *                 <span class="participant__age">90년대 중반</span>
+ *                 <span class="participant__job">의료계</span>
+ *
+ * 창의 껍데기는 confirm 을 그대로 씁니다 — 읽고 닫는 창이라 아래 버튼 줄 없이
+ * 오른쪽 위에 닫기만 있는 그 모양입니다. 폭만 넓힙니다(440 -> 600). 남성과 여성을
+ * 두 단으로 나란히 놓아야 어느 쪽이 몇인지 한눈에 견주어집니다.
+ *
+ * 이름도 사진도 없습니다. 여기 있는 것은 연령대와 직업군뿐이고, 그 이상은 만나서
+ * 알게 될 일입니다 — 창 아래 한 줄이 그 약속을 적어둡니다.
+ */
+
+.participants .confirm__panel {
+  max-inline-size: var(--_participant-modal-width);
+}
+
+.participants__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-400);
+  /* 사람이 많은 일정은 창보다 길어집니다. 창은 화면에 머무르고 목록만 흐릅니다. */
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* 어느 일정을 보고 있는지. 창을 연 뒤에도 고른 일정이 무엇이었는지 남아야 합니다. */
+.participants__when {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-400);
+  margin: 0;
+  padding: var(--spacing-300) var(--spacing-400);
+  border-radius: var(--_rounded-l);
+  background: var(--colors-bg-low);
+  color: var(--colors-fg);
+  font-size: var(--typography-body-m-regular-font-size);
+  line-height: var(--typography-body-m-regular-line-height);
+  white-space: nowrap;
+}
+
+.participants__cols {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--_participant-col-gap);
+}
+
+/* 좁은 화면에서는 두 단을 세웁니다. 180 짜리 항목을 반으로 나누면 연령대와 직업군이
+   한 줄에 들어가지 않습니다. 남성 먼저, 그 다음 여성 — 창의 순서 그대로입니다. */
+@media (max-width: 600px) {
+  .participants__cols { flex-direction: column; }
+}
+
+.participants__col {
+  flex: 1 1 0;
+  min-inline-size: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--_participant-item-gap);
+}
+
+.participants__col h3 {
+  margin: 0;
+  color: var(--colors-fg);
+  font-size: var(--typography-body-m-medium-font-size);
+  font-weight: var(--typography-body-m-medium-font-weight);
+  line-height: var(--typography-body-m-medium-line-height);
+}
+
+/* 숫자만 굵게. 성별은 이름이고 숫자가 이 줄에서 읽어야 할 값입니다. */
+.participants__col h3 b {
+  font-weight: var(--typography-body-m-semibold-font-weight);
+  font-feature-settings: 'lnum' 1, 'tnum' 1;
+}
+
+.participants__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--_participant-item-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ---- 한 사람 -----------------------------------------------------------
+   앞의 점은 성별입니다. 점 하나로만 말하지 않도록 컬럼 제목(남성 6 / 여성 3)이
+   위에 있습니다 — 색을 구분하기 어려운 눈에는 점이 같은 점입니다.
+*/
+
+.participant {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-200);
+  box-sizing: border-box;
+  padding: var(--spacing-300) var(--spacing-400);
+  border: 1px solid var(--_participant-border);
+  border-radius: var(--_participant-rounded);
+  background: var(--_participant-bg);
+  backdrop-filter: blur(var(--_participant-blur-radius));
+  color: var(--_participant-fg);
+  font-size: var(--typography-body-m-regular-font-size);
+  line-height: var(--typography-body-m-regular-line-height);
+}
+
+.participant::before {
+  content: '';
+  flex: none;
+  inline-size: var(--_participant-dot-size);
+  block-size: var(--_participant-dot-size);
+  border-radius: var(--_rounded-full);
+  background: var(--_participant-dot-female);
+}
+
+.participant--m::before { background: var(--_participant-dot-male); }
+
+.participant__age { flex: none; }
+
+/* 연령대와 직업군 사이의 세로선. 여백(12)과 선(1)을 합쳐 Figma 의 12·1·12 가 됩니다. */
+.participant__job {
+  min-inline-size: 0;
+  overflow: hidden;
+  margin-inline-start: var(--spacing-300);
+  padding-inline-start: var(--spacing-300);
+  border-inline-start: 1px solid var(--_participant-separator);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---- 아직 아무도 없는 성별 ----------------------------------------------
+   컬럼을 지우지 않습니다. "여성 0" 과 빈 자리가 함께 보여야 아직 자리가 있다는
+   것이 읽힙니다 — 컬럼째 빠지면 애초에 받지 않는 성별처럼 보입니다.
+*/
+
+.participants__empty {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-200);
+  margin: 0;
+  /* 옆 컬럼이 길어도 이쪽이 따라 늘지 않도록 최소 높이만 잡아둡니다. */
+  min-block-size: var(--spacing-2400);
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-s-regular-font-size);
+  line-height: var(--typography-body-s-regular-line-height);
+  text-align: center;
+}
+
+.participants__empty svg {
+  display: block;
+  inline-size: var(--_participant-icon-size);
+  block-size: var(--_participant-icon-size);
+}
+
+/* 창 아래 약속 한 줄. 위의 목록과는 옅은 선으로만 끊습니다. */
+.participants__note {
+  margin: 0;
+  padding-block-start: var(--spacing-400);
+  border-block-start: 1px solid var(--colors-divider-low);
+  color: var(--colors-fg-low);
+  font-size: var(--typography-body-m-regular-font-size);
+  line-height: var(--typography-body-m-regular-line-height);
+}

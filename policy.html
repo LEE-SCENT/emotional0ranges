@@ -11,7 +11,7 @@
 <meta name="theme-color" content="#FFFFFF">
 <title>emotional oranges — 화면 정책</title>
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
-<link rel="stylesheet" href="./build/tokens.css?v=63ff0e95">
+<link rel="stylesheet" href="./build/tokens.css?v=c93e0015">
 <link rel="stylesheet" href="./components/container.css?v=55694a09">
 <style>
   body { margin: 0; background: var(--colors-bg); color: var(--colors-fg);
@@ -141,6 +141,33 @@
     <tr><th>날짜</th><td>적어두지 않고 <b>며칠 전인지</b>로 셉니다. 목록은 <code>3일 전</code>, 상품 정보는 <code>2026년 8월 27일</code> — 같은 수의 두 모습입니다. 적어둔 날짜는 하루만 지나도 어긋납니다</td></tr>
     <tr><th>모바일 후기</th><td>세 개까지. 한 열로 세우면 여섯 개가 두 화면 반이 되어 같은 말이 반복되는 구간이 길어집니다. 나머지는 <b>후기 모두 보기</b>가 맡습니다</td></tr>
     <tr><th>비슷한 모임</th><td>다섯 개. Tag 와 가격은 노출하지 않습니다 — 지금 보는 상품과 값을 나란히 두면 비교로 읽힙니다</td></tr>
+  </table>
+
+  <h3>일정별 참여자 구성</h3>
+  <p class="note">고른 일정에 <b>이미 확정된 사람들</b>입니다. 결제까지 마친 사람만 셉니다 —
+    대기 신청자는 순서를 잡아둔 것이지 자리를 잡은 것이 아니라, 참여자로 세면 남은 자리와 어긋납니다.</p>
+  <table>
+    <tr><th>여는 법</th><td>일정 카드를 <b>고르면</b> 그 카드가 늘어나며 나옵니다. 카드마다 펼쳐두면 목록이 세 배로 길어져 정작 일정을 고르기 어려워집니다</td></tr>
+    <tr><th>공개 범위</th><td><b>성별 인원 · 연령대 · 직업군</b>뿐입니다. 이름·사진·회사명처럼 개인을 알아볼 수 있는 것은 데이터에도 두지 않습니다 — 화면에 실수로 나올 자리를 만들지 않습니다</td></tr>
+    <tr><th>카드 안</th><td>인원 <code>남 6 · 여 3</code>(숫자만 브랜드색), 요약 <code>90년대 중반 · 의료계 외 8명</code>, 버튼 <code>전체 참여자 구성 보기</code></td></tr>
+    <tr><th>요약 한 줄</th><td>맨 앞 <b>한 사람만</b> 펼쳐 적고 나머지는 셉니다. 다 적으면 카드가 목록이 되고, 하나도 안 적으면 무엇이 공개되는지 알 수 없어 창을 열어봐야 합니다</td></tr>
+    <tr><th>한 성별이 0</th><td>인원은 <code>남 6 · 여 0</code> 그대로. 요약과 버튼도 <b>그대로 둡니다</b>. 창의 그 칸에만 <code>아직 참여자가 없어요</code>가 들어갑니다 — 칸째 빼면 애초에 받지 않는 성별처럼 보입니다</td></tr>
+    <tr><th>아무도 없음</th><td>카드에 <code>아직 참여자가 없어요</code> 한 줄만. 인원·요약·버튼을 <b>노출하지 않습니다</b> — 열어봐야 빈 창이라 들어가는 문을 만들지 않습니다</td></tr>
+    <tr><th>신청 가능</th><td>고르고 펼쳐 볼 수 있습니다</td></tr>
+    <tr><th>대기 가능</th><td>신청 가능 일정과 <b>같습니다</b>. 대기자만 빠집니다</td></tr>
+    <tr><th>마감</th><td>고를 수 없으므로 펼치지 않습니다. 참여자 구성도 주지 않습니다</td></tr>
+    <tr><th>지난 일정</th><td>일정 목록에 아예 없습니다</td></tr>
+  </table>
+
+  <p class="note">창은 <b>읽고 닫는 창</b>입니다(환불 정책과 같은 모양). 고를 것이 없어 아래 버튼 줄 대신
+    오른쪽 위에 닫기만 둡니다.</p>
+  <table>
+    <tr><th>타이틀</th><td><code>참여자 구성</code></td></tr>
+    <tr><th>일정</th><td><code>선택한 일정</code> ↔ <code>8월 22일 (토) 오후 2시</code>. 창을 연 뒤에도 무엇을 골랐는지 남아야 합니다</td></tr>
+    <tr><th>넓은 화면</th><td>남성·여성 <b>두 단</b>. 어느 쪽이 몇인지 나란히 견주어집니다</td></tr>
+    <tr><th>좁은 화면</th><td>남성 다음 여성으로 <b>세로</b>. 한 단을 반으로 나누면 연령대와 직업군이 한 줄에 들어가지 않습니다</td></tr>
+    <tr><th>항목</th><td><code>90년대 중반 · 의료계</code>. 앞의 점은 성별이지만 <b>점만으로 말하지 않습니다</b> — 칸 제목(<code>남성 6</code>)이 위에 있습니다</td></tr>
+    <tr><th>맨 아래</th><td><code>참여자의 연령대와 직업군만 공개하며, 개인을 식별할 수 있는 정보는 제공하지 않아요.</code></td></tr>
   </table>
 
   <h3>사진 확대보기</h3>

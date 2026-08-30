@@ -1,0 +1,142 @@
+/**
+ * 고른 일정에 이미 확정된 사람들을 카드 안에 펼치고, 전체는 창으로 엽니다.
+ *
+ *   import { initParticipants } from './components/participants.js'
+ *   initParticipants()   // product.js 가 일정을 그린 뒤에
+ *
+ * 카드 안의 블록은 마크업에 적어두지 않고 여기서 만듭니다. 같은 사람 목록이 카드
+ * 요약과 창 두 곳에 나오는데, 마크업에 적어두면 둘이 갈립니다 — 상품마다 일정이
+ * 다시 그려지는 화면이라 특히 그렇습니다.
+ *
+ * 무엇을 공개하고 무엇을 감추는지는 policy.html 이 정합니다(일정별 참여자 구성).
+ * 여기서 지키는 것은 그중 셋입니다.
+ *
+ *   확정된 사람만    대기 신청자는 세지 않습니다. 대기는 순서이지 자리가 아닙니다.
+ *   마감된 일정      아무것도 붙이지 않습니다. 고를 수 없는 일정입니다.
+ *   아무도 없으면    한 줄만 남기고 버튼을 만들지 않습니다 — 열어봐야 빈 창입니다.
+ */
+
+import { PRODUCTS, peopleOf, peopleSummary } from './products.js'
+import { currentProduct } from './product.js'
+import { openConfirm } from './confirm.js'
+import { dateAfter, dayText } from './schedule.js'
+
+const DIALOG = 'participants'
+const EMPTY = '아직 참여자가 없어요'
+/** 주소에 상품이 없으면 detail.html 에 적혀 있는 그 상품입니다. */
+const DEFAULT = 'tikitaka'
+
+const scheduleOf = () => PRODUCTS[currentProduct() ?? DEFAULT]?.schedule ?? []
+const find = (value) => scheduleOf().find((o) => o.v === value)
+
+/** 창의 첫 줄에 적는 일정. 목록 카드의 날짜 태그와 같은 규칙으로 만듭니다. */
+const whenText = (o) => `${dayText(dateAfter(o.in))} ${o.label}`
+
+const el = (tag, className, text) => {
+  const node = document.createElement(tag)
+  if (className) node.className = className
+  if (text != null) node.textContent = text
+  return node
+}
+
+/* ---- 카드 안의 요약 ------------------------------------------------------ */
+
+function summaryBlock(o) {
+  const { m, f } = peopleOf(o)
+  const wrap = el('span', 'option-card__participants')
+  const row = el('span', 'option-card__participants-row')
+  row.append(el('span', 'option-card__participants-label', '참여자 구성'))
+
+  if (!m.length && !f.length) {
+    row.append(el('span', 'option-card__participants-empty', EMPTY))
+    wrap.append(row)
+    return wrap
+  }
+
+  const summary = el('span', 'option-card__participants-summary')
+  const count = el('span', 'option-card__participants-count')
+  // "남 6 · 여 3" — 숫자만 <b> 로 감싸 브랜드색이 수에만 걸립니다.
+  count.append('남 ', el('b', null, String(m.length)), ' · 여 ', el('b', null, String(f.length)))
+  summary.append(count, el('span', 'option-card__participants-detail', peopleSummary(o)))
+  row.append(summary)
+
+  const button = el('button', 'btn btn--blur btn--small')
+  button.type = 'button'
+  button.dataset.participants = o.v
+  button.append(el('span', 'btn__label', '전체 참여자 구성 보기'))
+
+  wrap.append(row, button)
+  return wrap
+}
+
+/* ---- 전체를 펼친 창 ------------------------------------------------------ */
+
+function column(name, list) {
+  const col = el('section', 'participants__col')
+  const title = el('h3')
+  title.append(`${name} `, el('b', null, String(list.length)))
+  col.append(title)
+
+  if (!list.length) {
+    const empty = el('p', 'participants__empty')
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+    svg.setAttribute('aria-hidden', 'true')
+    const use = document.createElementNS('http://www.w3.org/2000/svg', 'use')
+    use.setAttribute('href', '#icon-infoCircle')
+    svg.append(use)
+    empty.append(svg, el('span', null, EMPTY))
+    col.append(empty)
+    return col
+  }
+
+  const ul = el('ul', 'participants__list')
+  for (const person of list) {
+    const li = el('li', `participant participant--${name === '남성' ? 'm' : 'f'}`)
+    li.append(
+      el('span', 'participant__age', person.age),
+      el('span', 'participant__job', person.job),
+    )
+    ul.append(li)
+  }
+  col.append(ul)
+  return col
+}
+
+function fill(dialog, o) {
+  const when = dialog.querySelector('[data-participants-when]')
+  if (when) when.textContent = whenText(o)
+  const cols = dialog.querySelector('.participants__cols')
+  if (!cols) return
+  const { m, f } = peopleOf(o)
+  cols.replaceChildren(column('남성', m), column('여성', f))
+}
+
+/* ------------------------------------------------------------------------ */
+
+export function initParticipants(scope = document) {
+  const dialog = document.getElementById(DIALOG)
+
+  for (const input of scope.querySelectorAll('[name="schedule"]')) {
+    const card = input.closest('.option-card')
+    if (!card || card.dataset.participantsReady) continue
+    card.dataset.participantsReady = '1'
+    // 마감된 일정은 고를 수 없으므로 펼칠 것도 없습니다.
+    if (card.classList.contains('option-card--soldout')) continue
+    const o = find(input.value)
+    if (!o) continue
+    card.append(summaryBlock(o))
+  }
+
+  if (!dialog || dialog.dataset.participantsReady) return
+  dialog.dataset.participantsReady = '1'
+  document.addEventListener('click', (e) => {
+    const button = e.target.closest('[data-participants]')
+    if (!button) return
+    // 카드는 <label> 입니다. 막지 않으면 창을 여는 클릭이 라디오까지 건드립니다.
+    e.preventDefault()
+    const o = find(button.dataset.participants)
+    if (!o) return
+    fill(dialog, o)
+    openConfirm(dialog)
+  })
+}

@@ -1,0 +1,50 @@
+{
+  "components": {
+    "participant": {
+      "$description": "일정에 확정된 참여자. 고른 일정 카드 안의 요약과, 전체를 펼쳐 보는 창이 같은 값을 씁니다. Figma 의 컴포넌트 이름은 participantInfoItem 입니다.",
+      "bg": { "$type": "color", "$value": "{semantic.colors.bg}" },
+      "border": { "$type": "color", "$value": "{semantic.colors.border}" },
+      "fg": { "$type": "color", "$value": "{semantic.colors.fg}" },
+      "separator": {
+        "$type": "color",
+        "$value": "{primitive.colors.seriousGray.200}",
+        "$description": "연령대와 직업군을 가르는 세로선. 테두리보다 옅습니다 — 한 항목 안을 나누는 선이라 상자를 쪼개 보이면 안 됩니다."
+      },
+      "rounded": { "$type": "dimension", "$value": "{primitive.rounded.m}" },
+      "dotSize": {
+        "$type": "dimension",
+        "$value": "{primitive.dimension}",
+        "$extensions": { "scale": 2 },
+        "$description": "8px. 성별을 색 하나로만 말하지 않도록 컬럼 제목(남성 6 / 여성 3)이 함께 있습니다."
+      },
+      "dotMale": {
+        "$type": "color",
+        "$value": "#195EFF",
+        "$description": "⚠️ Figma 에 변수로 없고, 팔레트에 없는 색입니다 — 내보낸 SVG 의 fill 에서 읽었습니다. 파랑이 프리미티브에 한 칸도 없어 그대로 적습니다."
+      },
+      "dotFemale": {
+        "$type": "color",
+        "$value": "{primitive.colors.twistOrange.500}",
+        "$description": "내보낸 SVG 의 fill(#F75D15)이 브랜드 주조색과 같은 값입니다."
+      },
+      "iconSize": {
+        "$type": "dimension",
+        "$value": "{primitive.dimension}",
+        "$extensions": { "scale": 5 },
+        "$description": "아직 아무도 없는 성별 칸의 안내 아이콘 20px."
+      },
+      "blurRadius": {
+        "$type": "dimension",
+        "$value": "12px",
+        "$description": "⚠️ Figma 에 변수로 없습니다. backdrop-blur 값에서 읽었습니다."
+      },
+      "modalWidth": {
+        "$type": "dimension",
+        "$value": "600px",
+        "$description": "묻는 창(440)보다 넓습니다 — 남성과 여성을 두 단으로 나란히 놓아야 합니다."
+      },
+      "colGap": { "$type": "dimension", "$value": "{semantic.spacing.400}" },
+      "itemGap": { "$type": "dimension", "$value": "{semantic.spacing.200}" }
+    }
+  }
+}
