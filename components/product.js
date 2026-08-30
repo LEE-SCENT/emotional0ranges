@@ -16,7 +16,7 @@
  * 먼저 돌아야 합니다. 그들이 세어둔 뒤에 목록을 갈아끼우면 서로 다른 것을 보게 됩니다.
  */
 
-import { PRODUCTS } from './products.js'
+import { PRODUCTS, seatsText } from './products.js'
 
 export const currentProduct = () => {
   const slug = new URLSearchParams(location.search).get('product')
@@ -103,7 +103,7 @@ function renderSchedule(scope, schedule) {
               <span class="option-card__place">${o.place}</span>
             </span>
             <span class="option-card__aside">${tag}
-              <span class="option-card__seats">${icon}${o.seats}</span>
+              <span class="option-card__seats">${icon}${seatsText(o)}</span>
             </span>
           </label>
         </li>`

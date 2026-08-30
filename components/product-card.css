@@ -135,6 +135,10 @@
   white-space: nowrap;
 }
 
+/* 알릴 것이 없으면 띠도 없습니다. 자리가 넉넉한 모임에서는 아무 말도 하지 않는 것이
+   규칙이라(policy.html), 빈 띠만 남으면 사진 위에 얹힌 회색 자국이 됩니다. */
+.product-card__status:empty { display: none; }
+
 .product-card__status .is-remaining { color: var(--_product-card-status-fg-remaining); }
 .product-card__status .is-closed { color: var(--_product-card-status-fg-closed); }
 

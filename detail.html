@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="./components/tooltip.css?v=d3d8dfa4">
 <link rel="stylesheet" href="./components/gnb.css?v=3046ec8e">
 <link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
-<link rel="stylesheet" href="./components/product-card.css?v=66da8215">
+<link rel="stylesheet" href="./components/product-card.css?v=b8fad36f">
 <link rel="stylesheet" href="./components/section-title.css?v=d1c6b1bc">
 <link rel="stylesheet" href="./components/footer.css?v=b6122ba5">
 <link rel="stylesheet" href="./components/tabs.css?v=77e05f5c">
@@ -666,7 +666,7 @@
   initStickyGnb()
   // 일정·후기를 읽는 스크립트들보다 먼저 돕니다. 그들이 세어둔 뒤에 목록을
   // 갈아끼우면 서로 다른 것을 보게 됩니다.
-  const { initProduct } = await import('./components/product.js?v=20868387')
+  const { initProduct } = await import('./components/product.js?v=bb76563f')
   initProduct()
   const { initSchedule } = await import('./components/schedule.js?v=1b0a6faf')
   initSchedule()
@@ -685,7 +685,7 @@
   const { initFavorites } = await import('./components/favorite.js?v=59fe0f4a')
   initFavorites()
   // 비슷한 모임 카드도 목록과 같은 데이터에서 지역·일정 수를 받습니다.
-  const { initProductCards } = await import('./components/product-cards.js?v=0e9be8b5')
+  const { initProductCards } = await import('./components/product-cards.js?v=693c2d78')
   initProductCards()
   const { initDetailIntro } = await import('./components/detail-intro.js?v=c2d2bd44')
   initDetailIntro()

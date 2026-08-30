@@ -21,9 +21,12 @@
  * 실제로 목록에는 닷새 전 날짜와 상세에 없는 잔여석이 남아 있었습니다.
  *
  * 데이터에 없는 상품(아직 준비 중인 카드)은 마크업에 적힌 것을 그대로 둡니다.
+ *
+ * 무엇을 언제 보여줄지는 policy.html 이 정합니다 — 대표 일정, Tag 노출 조건, 장소·일정
+ * 문구, 가격. 이 파일은 그것을 옮긴 것이므로, 규칙이 바뀌면 그 문서가 먼저입니다.
  */
 
-import { PRODUCTS } from './products.js'
+import { PRODUCTS, isOpen, seatTags } from './products.js'
 import { dateAfter, dayText } from './schedule.js'
 
 const won = (n) => `${n.toLocaleString('ko-KR')}원`
@@ -35,8 +38,14 @@ function slugOf(card) {
   return new URL(href, location.href).searchParams.get('product')
 }
 
-/** 목록이 말하는 "다음 일정" — 가장 이른 것 하나입니다. */
-const soonest = (schedule) => [...schedule].sort((a, b) => a.in - b.in)[0]
+/**
+ * 카드가 대신 말하는 일정 하나 — 신청할 수 있는 것 중 가장 가까운 일정입니다.
+ *
+ * 카드에 적히는 날짜와 잔여석은 모두 여기서 나옵니다. 여러 일정에서 하나씩 골라
+ * 섞으면, 이 날짜를 보고 저 일정의 자리를 믿게 됩니다(policy.html: 대표 일정).
+ */
+const represents = (schedule) =>
+  [...schedule].filter(isOpen).sort((a, b) => a.in - b.in)[0] ?? null
 
 /**
  * 일정이 열리는 자리에서 지역만.
@@ -47,51 +56,62 @@ const soonest = (schedule) => [...schedule].sort((a, b) => a.in - b.in)[0]
 const areaOf = (s) => s.place.split(' · ')[0]
 
 /**
- * 지역 한 줄: 여는 곳이 여럿이면 다음 일정의 자리와 나머지 수를 함께 적습니다.
- * 한 곳뿐이면 "외 0개 지역"이 될 자리라 그 말을 빼둡니다.
+ * 지역과 일정 수 한 줄. policy.html 의 "장소 · 일정 문구"를 그대로 옮겼습니다.
+ *
+ *   한 곳    서울 강남
+ *   두 곳    서울 강남 · 수원 광교      — 둘까지는 이름을 다 부릅니다.
+ *   세 곳~   서울 강남 외 4개 지역      — 그 위로는 세어서 줄입니다.
+ *
+ * 일정이 하나뿐이면 개수를 적지 않습니다. "일정 1개"는 세어줄 것이 없다는 말입니다.
  */
-function areaText(schedule, next) {
-  const rest = new Set(schedule.map(areaOf)).size - 1
-  return rest > 0 ? `${areaOf(next)} 외 ${rest}개 지역` : areaOf(next)
+function placeText(schedule) {
+  const areas = [...new Set(schedule.map(areaOf))]
+  const where =
+    areas.length <= 2 ? areas.join(' · ') : `${areas[0]} 외 ${areas.length - 1}개 지역`
+  return schedule.length > 1 ? `${where} · 일정 ${schedule.length}개` : where
+}
+
+const el = (tag, className, text) => {
+  const node = document.createElement(tag)
+  node.className = className
+  node.textContent = text
+  return node
 }
 
 function fill(card, product) {
   const schedule = product.schedule ?? []
   if (!schedule.length) return
-  const next = soonest(schedule)
+  const next = represents(schedule)
+  const seats = next ? seatTags(next) : []
 
   const tags = card.querySelector('.product-card__tags')
   if (tags) {
-    // 태그는 다시 그립니다. 마크업에 남아 있던 잔여석 태그가 지워지지 않으면 새로
-    // 그린 것 옆에 옛 숫자가 그대로 붙어 있습니다.
+    // 태그는 다시 그립니다. 마크업에 남아 있던 것이 지워지지 않으면 새로 그린 것
+    // 옆에 옛 숫자가 그대로 붙어 있습니다.
     tags.textContent = ''
-    const when = document.createElement('span')
-    when.className = 'tag'
-    when.textContent = `${dayText(dateAfter(next.in))} ${next.label}`
-    tags.append(when)
-    if (next.seats) {
-      const seats = document.createElement('span')
-      seats.className = 'tag tag--accent-pri'
-      seats.textContent = next.seats
-      tags.append(seats)
+    // 신청할 수 있는 일정이 하나도 없으면 날짜 자리를 이 말이 대신합니다.
+    if (!next) tags.append(el('span', 'tag', '모든 일정 마감'))
+    else {
+      tags.append(el('span', 'tag', `${dayText(dateAfter(next.in))} ${next.label}`))
+      for (const s of seats) {
+        tags.append(el('span', `tag ${s.closed ? 'tag--accent-sec' : 'tag--accent-pri'}`, s.text))
+      }
     }
   }
 
+  // 좁은 화면에서 태그 대신 나오는 사진 아래 띠입니다. 같은 것을 말하므로 같은
+  // 기준으로 그립니다 — 어느 폭에서 보든 카드가 같은 말을 해야 합니다.
   const status = card.querySelector('.product-card__status')
   if (status) {
     status.textContent = ''
-    if (next.seats) {
-      const seats = document.createElement('span')
-      seats.className = 'is-remaining'
-      seats.textContent = next.seats
-      status.append(seats)
-    }
+    for (const s of seats) status.append(el('span', s.closed ? 'is-closed' : 'is-remaining', s.text))
   }
 
   const desc = card.querySelector('.product-card__desc')
-  if (desc) desc.textContent = `${areaText(schedule, next)} · 일정 ${schedule.length}개`
+  if (desc) desc.textContent = placeText(schedule)
 
   // 값이 여럿이면 가장 싼 것을 앞세우고 "~"로 그 위가 있다는 것을 알립니다.
+  // 기존가는 적지 않습니다 — 목록에서 두 값을 나란히 두면 비교로 읽힙니다.
   const price = card.querySelector('.product-card__price')
   if (price) {
     const cheapest = schedule.reduce(

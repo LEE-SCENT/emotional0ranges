@@ -17,6 +17,62 @@
 /** 사진은 폭·높이를 함께 둡니다. 목록의 벽돌쌓기가 도착 전에 자리를 잡아야 합니다. */
 const photo = (src, w, h, alt) => ({ src: `./images/${src}`, w, h, alt })
 
+/* ---- 잔여석 ------------------------------------------------------------
+   자리는 성별로 나뉜 숫자입니다({ m: 6, f: 5 }). 글로 적어두지 않는 것은 화면마다
+   같은 숫자를 다르게 말하기 때문입니다 — 상세의 일정 카드는 남은 자리를 다 적고,
+   목록의 카드는 얼마 남지 않았을 때만 알립니다(policy.html: Tag 노출 조건).
+   글로 적어두면 그 판단을 문장에서 되짚어 읽어내야 합니다.
+
+   0 은 그 성별의 마감입니다. 값이 없는 성별은 애초에 자리가 없는 것이고, seats 가
+   통째로 없으면 대기만 받는 일정입니다(wait). */
+
+/** 한 성별씩 [키, 이름] — 적는 순서이기도 합니다. */
+const GENDERS = [
+  ['m', '남성'],
+  ['f', '여성'],
+]
+
+/** 신청할 수 있는 자리가 하나라도 남았는지. */
+export const isOpen = (o) =>
+  !o.wait && GENDERS.some(([key]) => (o.seats?.[key] ?? 0) > 0)
+
+/**
+ * 상세의 일정 카드에 적는 한 줄: 남성 6 · 여성 5자리 남음
+ *
+ * "자리 남음"은 마지막에 한 번만 붙습니다. 성별마다 붙이면 같은 말이 두 번 나옵니다.
+ * 마감된 성별은 숫자 대신 그 사실을 말합니다 — 0 은 자리 수가 아니라 상태입니다.
+ */
+export function seatsText(o) {
+  if (o.wait) return '대기 가능'
+  const left = GENDERS.filter(([key]) => (o.seats?.[key] ?? 0) > 0)
+  const closed = GENDERS.filter(([key]) => o.seats?.[key] === 0)
+  const parts = []
+  if (left.length) {
+    parts.push(`${left.map(([key, name]) => `${name} ${o.seats[key]}`).join(' · ')}자리 남음`)
+  }
+  for (const [, name] of closed) parts.push(`${name} 마감`)
+  return parts.join(' · ')
+}
+
+/**
+ * 목록 카드의 현황 태그. policy.html 의 "Tag 노출 조건"을 그대로 옮긴 것입니다.
+ *
+ *   1~2자리 남음  →  남았다고 알립니다.
+ *   마감          →  마감이라고 알립니다.
+ *   3자리 이상    →  아무 말도 하지 않습니다 — 급하지 않은 것을 급해 보이게 하지
+ *                    않으려는 것이고, 그래야 태그가 붙은 카드가 실제로 급합니다.
+ */
+export function seatTags(o) {
+  if (o.wait) return []
+  const tags = []
+  for (const [key, name] of GENDERS) {
+    const left = o.seats?.[key]
+    if (left === 0) tags.push({ text: `${name} 마감`, closed: true })
+    else if (left === 1 || left === 2) tags.push({ text: `${name} ${left}자리 남음`, closed: false })
+  }
+  return tags
+}
+
 export const PRODUCTS = {
   tikitaka: {
     title: '12:12 티키타카 로테이션 소개팅',
@@ -38,11 +94,11 @@ export const PRODUCTS = {
       photo('detail-photo-5.jpg', 2000, 1333, '작은 조명 아래 음료를 두고 마주한 손'),
     ],
     schedule: [
-      { v: 's1', in: 0, time: '오후 2:00~5:30', label: '오후 2시', place: '서울 강남', age: '27-38세', price: 45000, off: 10000, seats: '남성 6 · 여성 5자리 남음', deadline: 9024 },
-      { v: 's2', in: 0, time: '밤 10:00~12:30', label: '밤 10시', place: '서울 강남', age: '27-38세', price: 38000, off: 10000, seats: '남성 3자리 남음', deadline: 284400 },
-      { v: 's3', in: 1, time: '저녁 7:00~9:30', label: '저녁 7시', place: '서울 성수', age: '27-38세', price: 56000, off: 10000, seats: '여성 1자리 남음' },
-      { v: 's5', in: 1, time: '저녁 7:00~9:30', label: '저녁 7시', place: '수원 광교', age: '27-38세', price: 45000, off: 0, seats: '대기 가능', wait: true },
-      { v: 's4', in: 3, time: '저녁 7:00~9:30', label: '저녁 7시', place: '경기 성남', age: '30-42세', price: 45000, off: 10000, seats: '남성 2 · 여성 4자리 남음' },
+      { v: 's1', in: 0, time: '오후 2:00~5:30', label: '오후 2시', place: '서울 강남', age: '27-38세', price: 45000, off: 10000, seats: { m: 6, f: 5 }, deadline: 9024 },
+      { v: 's2', in: 0, time: '밤 10:00~12:30', label: '밤 10시', place: '서울 강남', age: '27-38세', price: 38000, off: 10000, seats: { m: 3 }, deadline: 284400 },
+      { v: 's3', in: 1, time: '저녁 7:00~9:30', label: '저녁 7시', place: '서울 성수', age: '27-38세', price: 56000, off: 10000, seats: { f: 1 } },
+      { v: 's5', in: 1, time: '저녁 7:00~9:30', label: '저녁 7시', place: '수원 광교', age: '27-38세', price: 45000, off: 0, wait: true },
+      { v: 's4', in: 3, time: '저녁 7:00~9:30', label: '저녁 7시', place: '경기 성남', age: '30-42세', price: 45000, off: 10000, seats: { m: 2, f: 4 } },
     ],
     reviews: [
       { days: 3, body: '진행이 매끄러워서 처음인데도 어색하지 않았어요. 자리배치가 좋았습니다.', who: '김**', area: '서울 강남', age: '27세' },
@@ -74,10 +130,10 @@ export const PRODUCTS = {
       photo('promo-tile-1.jpg', 400, 266, '음료가 놓인 테이블 위'),
     ],
     schedule: [
-      { v: 's1', in: 0, time: '오후 3:00~4:40', label: '오후 3시', place: '강남 역삼', age: '35-45세', price: 59000, off: 10000, seats: '남성 4 · 여성 3자리 남음', deadline: 9024 },
-      { v: 's2', in: 2, time: '저녁 7:30~9:10', label: '저녁 7시 반', place: '영등포 여의도', age: '38-48세', price: 59000, off: 10000, seats: '여성 2자리 남음' },
-      { v: 's3', in: 4, time: '오후 3:00~4:40', label: '오후 3시', place: '경기 수원', age: '35-45세', price: 59000, off: 10000, seats: '대기 가능', wait: true },
-      { v: 's4', in: 6, time: '저녁 7:30~9:10', label: '저녁 7시 반', place: '강남 역삼', age: '40-50세', price: 59000, off: 0, seats: '남성 5 · 여성 5자리 남음' },
+      { v: 's1', in: 0, time: '오후 3:00~4:40', label: '오후 3시', place: '강남 역삼', age: '35-45세', price: 59000, off: 10000, seats: { m: 4, f: 3 }, deadline: 9024 },
+      { v: 's2', in: 2, time: '저녁 7:30~9:10', label: '저녁 7시 반', place: '영등포 여의도', age: '38-48세', price: 59000, off: 10000, seats: { f: 2 } },
+      { v: 's3', in: 4, time: '오후 3:00~4:40', label: '오후 3시', place: '경기 수원', age: '35-45세', price: 59000, off: 10000, wait: true },
+      { v: 's4', in: 6, time: '저녁 7:30~9:10', label: '저녁 7시 반', place: '강남 역삼', age: '40-50세', price: 59000, off: 0, seats: { m: 5, f: 5 } },
     ],
     reviews: [
       { days: 2, body: '같은 상황인 분들이라 설명할 게 없어서 마음이 편했어요.', who: '정**', area: '강남 역삼', age: '41세' },
@@ -109,10 +165,10 @@ export const PRODUCTS = {
       photo('promo-tile-2.jpg', 400, 266, '테이블 위에 놓인 준비물'),
     ],
     schedule: [
-      { v: 's1', in: 0, time: '저녁 7:00~8:50', label: '저녁 7시', place: '서울 한남 · 생활운동인 특집', age: '27-38세', price: 65000, off: 25000, seats: '남성 2 · 여성 2자리 남음', deadline: 9024 },
-      { v: 's2', in: 1, time: '오후 2:00~3:50', label: '오후 2시', place: '서울 한남 · 반려동물인 특집', age: '25-35세', price: 55000, off: 17000, seats: '여성 4자리 남음' },
-      { v: 's3', in: 3, time: '저녁 7:00~8:50', label: '저녁 7시', place: '수원 광교 · 180cm 특집', age: '27-38세', price: 65000, off: 25000, seats: '대기 가능', wait: true },
-      { v: 's4', in: 5, time: '오후 2:00~3:50', label: '오후 2시', place: '수원 광교 · 선개팅 특집', age: '30-42세', price: 66000, off: 22000, seats: '남성 3 · 여성 3자리 남음' },
+      { v: 's1', in: 0, time: '저녁 7:00~8:50', label: '저녁 7시', place: '서울 한남 · 생활운동인 특집', age: '27-38세', price: 65000, off: 25000, seats: { m: 2, f: 2 }, deadline: 9024 },
+      { v: 's2', in: 1, time: '오후 2:00~3:50', label: '오후 2시', place: '서울 한남 · 반려동물인 특집', age: '25-35세', price: 55000, off: 17000, seats: { f: 4 } },
+      { v: 's3', in: 3, time: '저녁 7:00~8:50', label: '저녁 7시', place: '수원 광교 · 180cm 특집', age: '27-38세', price: 65000, off: 25000, wait: true },
+      { v: 's4', in: 5, time: '오후 2:00~3:50', label: '오후 2시', place: '수원 광교 · 선개팅 특집', age: '30-42세', price: 66000, off: 22000, seats: { m: 3, f: 3 } },
     ],
     reviews: [
       { days: 3, body: '좋아하는 게 같으니 첫마디가 어렵지 않았어요.', who: '조**', area: '서울 한남', age: '30세' },
@@ -144,10 +200,10 @@ export const PRODUCTS = {
       photo('promo-main.jpg', 1200, 800, '넓은 라운지에 모인 참가자들'),
     ],
     schedule: [
-      { v: 's1', in: 1, time: '저녁 7:30~9:40', label: '저녁 7시 반', place: '서울 한남', age: '30-42세', price: 89000, off: 14000, seats: '남성 1 · 여성 2자리 남음', deadline: 9024 },
-      { v: 's2', in: 2, time: '저녁 7:30~9:40', label: '저녁 7시 반', place: '강남 삼성', age: '32-45세', price: 89000, off: 0, seats: '여성 1자리 남음' },
-      { v: 's3', in: 5, time: '오후 4:00~6:10', label: '오후 4시', place: '경기 수원', age: '30-42세', price: 79000, off: 0, seats: '대기 가능', wait: true },
-      { v: 's4', in: 8, time: '저녁 7:30~9:40', label: '저녁 7시 반', place: '강남 삼성', age: '35-48세', price: 89000, off: 9000, seats: '남성 2 · 여성 2자리 남음' },
+      { v: 's1', in: 1, time: '저녁 7:30~9:40', label: '저녁 7시 반', place: '서울 한남', age: '30-42세', price: 89000, off: 14000, seats: { m: 1, f: 2 }, deadline: 9024 },
+      { v: 's2', in: 2, time: '저녁 7:30~9:40', label: '저녁 7시 반', place: '강남 삼성', age: '32-45세', price: 89000, off: 0, seats: { f: 1 } },
+      { v: 's3', in: 5, time: '오후 4:00~6:10', label: '오후 4시', place: '경기 수원', age: '30-42세', price: 79000, off: 0, wait: true },
+      { v: 's4', in: 8, time: '저녁 7:30~9:40', label: '저녁 7시 반', place: '강남 삼성', age: '35-48세', price: 89000, off: 9000, seats: { m: 2, f: 2 } },
     ],
     reviews: [
       { days: 4, body: '인원이 적어서 한 사람씩 제대로 이야기할 수 있었어요.', who: '신**', area: '서울 한남', age: '36세' },
