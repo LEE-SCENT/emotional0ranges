@@ -56,8 +56,8 @@
         "$description": "목록 끝에 붙는 더보기. 높이는 상품 썸네일과 같습니다. 화살표는 blur 버튼(small · iconOnly)을 그대로 쓰므로 아이콘 크기와 색 토큰은 components.button 에 있습니다.",
         "fg": {
           "$type": "color",
-          "$value": "{semantic.colors.fg}",
-          "$description": "더보기 글자. Figma 의 semantic/fg 입니다."
+          "$value": "{semantic.colors.fg-low}",
+          "$description": "더보기 글자. 검정에서 한 단계 내려왔습니다 — 목록 끝에서 다음을 여는 자리이지 상품 제목과 나란히 읽힐 자리가 아닙니다."
         },
         "minWidth": {
           "$type": "dimension",

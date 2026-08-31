@@ -542,7 +542,7 @@ export const components = {
       "blurRadius": "12px"
     },
     "more": {
-      "fg": "#000000",
+      "fg": "#686666",
       "minWidth": "108px"
     },
     "category": {

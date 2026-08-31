@@ -305,14 +305,14 @@
    목록 끝에 붙습니다.
 
      <a class="product-card-more" href="#">
-       <span class="btn btn--blur btn--small btn--icon-only">
-         <svg class="btn__icon" aria-hidden="true"><use href="#icon-arrowBack"></use></svg>
+       <span class="btn btn--blur btn--medium btn--icon-only">
+         <svg class="btn__icon" aria-hidden="true"><use href="#icon-chevronRight"></use></svg>
        </span>
        <span>더보기</span>
      </a>
 
    화살표는 알약 모양 blur 버튼 안에 들어갑니다. 버튼 컴포넌트를 그대로 쓰므로
-   크기(패딩 6/12 · 아이콘 20)와 색은 button 토큰이 정합니다 — 여기서 다시
+   크기(패딩 8/16 · 아이콘 24)와 색은 button 토큰이 정합니다 — 여기서 다시
    정하지 않습니다.
 
    ⚠️ 링크 안이라 <button> 이 아니라 <span> 입니다. 누르는 자리는 더보기 전체이고
@@ -330,7 +330,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--spacing-200);
+  gap: var(--spacing-250);
   block-size: calc(
     max(var(--_product-card-min-width), (100cqw - 2 * var(--spacing-50)) / 3)
     / var(--_product-card-image-ratio)
@@ -350,10 +350,7 @@
   white-space: nowrap;
 }
 
-.product-card-more .btn__icon {
-  /* arrowBack 을 뒤집어 오른쪽 화살표로 씁니다. */
-  scale: -1 1;
-}
+
 
 /* ---- promotion · 잠금 (블랙 인증 전) --------------------------------------
    사진은 그대로 두고 가격 자리에만 안내를 넣습니다.
