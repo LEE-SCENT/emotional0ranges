@@ -28,7 +28,7 @@
 <link rel="stylesheet" href="./components/checkbox.css?v=67340959">
 <link rel="stylesheet" href="./components/alert-banner.css?v=90e24d38">
 <link rel="stylesheet" href="./components/summary-card.css?v=bd4afa6f">
-<link rel="stylesheet" href="./components/checkout.css?v=2b600f52">
+<link rel="stylesheet" href="./components/checkout.css?v=65ae767c">
 <link rel="stylesheet" href="./components/roll.css?v=2f044986">
 <link rel="stylesheet" href="./components/bottom-cta.css?v=320a66ef">
 <link rel="stylesheet" href="./components/sheet.css?v=29f9252c">
@@ -133,8 +133,8 @@
 
       <section class="checkout__card checkout__agree">
         <label class="checkbox">
-          <input type="checkbox" data-agree
-                 aria-label="[필수] 참석 약속 및 취소·환불 규정에 동의합니다">
+          <input type="checkbox" id="agree-required" data-agree
+                 aria-labelledby="agree-required-title">
           <span class="checkbox__box" aria-hidden="true">
             <svg><use href="#icon-check"></use></svg>
           </span>
@@ -142,10 +142,13 @@
 
         <div class="checkout__agree-body">
           <div class="checkout__agree-head">
-            <span class="checkout__agree-text">
-              <b>[필수] 참석 약속 및 취소·환불 규정에 동의합니다</b>
+            <!-- 글도 체크박스를 켭니다. 네모 하나는 손가락으로 겨누기에 좁고, 읽고
+                 나서 손이 멈추는 자리는 글 위입니다. 이름은 굵은 첫 줄만 씁니다 —
+                 아래 안내까지 읽어주면 무엇에 동의하는지가 문장 속에 묻힙니다. -->
+            <label class="checkout__agree-text" for="agree-required">
+              <b id="agree-required-title">[필수] 참석 약속 및 취소·환불 규정에 동의합니다</b>
               <span>참석이 어렵다면 모임 시작 전에 취소하거나 고객센터로 알려주세요</span>
-            </span>
+            </label>
             <!-- 규정은 펼친 채로 시작합니다. 이 버튼은 다 읽은 사람이 접을 때
                  씁니다 — 스크립트가 오지 않으면 펼쳐진 채로 남습니다. -->
             <button class="checkout__terms-toggle" type="button" aria-expanded="true"

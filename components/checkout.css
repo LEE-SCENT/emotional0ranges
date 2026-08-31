@@ -185,6 +185,8 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-100);
+  /* 네모와 같은 것을 누르는 자리라 손 모양도 같습니다. */
+  cursor: pointer;
 }
 
 .checkout__agree-head b {
