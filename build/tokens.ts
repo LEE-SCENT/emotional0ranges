@@ -521,7 +521,7 @@ export const components = {
     "priceStrikeFg": "#A6A4A3",
     "bgSoldout": "#F8F6F5",
     "fgSoldout": "#C5C3C2",
-    "fgWait": "#F75D15",
+    "fgAlert": "#7D7B7A",
     "soldoutOpacity": 0.3,
     "height": "92px"
   },

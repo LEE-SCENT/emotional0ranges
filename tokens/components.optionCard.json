@@ -27,7 +27,7 @@
       "statusIconSize": {
         "$type": "dimension",
         "$value": "16px",
-        "$description": "대기 상태 앞에 붙는 아이콘."
+        "$description": "빈자리 알림 상태 앞에 붙는 아이콘(종·체크)."
       },
       "rounded": {
         "$type": "dimension",
@@ -51,10 +51,10 @@
         "$type": "color",
         "$value": "{semantic.colors.fg-disabled}"
       },
-      "fgWait": {
+      "fgAlert": {
         "$type": "color",
-        "$value": "{semantic.colors.fg-brand}",
-        "$description": "대기 가능. 자리는 없지만 길이 있다는 뜻이라 눈에 띄어야 합니다."
+        "$value": "{semantic.colors.fg-lower}",
+        "$description": "빈자리 알림 가능·알림 신청 완료. 브랜드색이었다가 내려왔습니다 — 줄을 서는 일도 자리를 잡아두는 일도 아니라 그저 지금의 상태이고, 불러세울 자리가 아닙니다."
       },
       "soldoutOpacity": {
         "$type": "number",

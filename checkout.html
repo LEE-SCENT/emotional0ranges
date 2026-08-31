@@ -12,7 +12,7 @@
 <meta name="theme-color" content="#FFFFFF">
 <title>신청하기 — 감정적인 오렌지들</title>
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
-<link rel="stylesheet" href="./build/tokens.css?v=6017d5a9">
+<link rel="stylesheet" href="./build/tokens.css?v=2187448f">
 <link rel="stylesheet" href="./components/container.css?v=55694a09">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=445ba00a">
@@ -22,7 +22,7 @@
 <link rel="stylesheet" href="./components/gnb.css?v=6ffa9bb9">
 <link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
 <link rel="stylesheet" href="./components/footer.css?v=b6122ba5">
-<link rel="stylesheet" href="./components/option-card.css?v=b8f4b7b3">
+<link rel="stylesheet" href="./components/option-card.css?v=2e26e18d">
 <link rel="stylesheet" href="./components/schedule.css?v=6094ad80">
 <link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
 <link rel="stylesheet" href="./components/checkbox.css?v=67340959">
@@ -365,7 +365,7 @@
               </label>
             </li>
             <li>
-              <label class="option-card option-card--wait" data-date-in="1"
+              <label class="option-card option-card--alert" data-date-in="1"
                      data-time="저녁 7시" data-where="수원 광교 · 27-38세"
                      data-price="45000" data-discount="0">
                 <input class="sr-only" type="radio" name="schedule" value="s5">
@@ -375,7 +375,7 @@
                   <span class="option-card__place">수원 광교</span>
                 </span>
                 <span class="option-card__aside">
-                  <span class="option-card__seats"><svg aria-hidden="true"><use href="#icon-wait"></use></svg>대기 가능</span>
+                  <span class="option-card__seats"><svg aria-hidden="true"><use href="#icon-notifications"></use></svg>빈자리 알림 가능</span>
                 </span>
               </label>
             </li>
@@ -421,15 +421,15 @@
   // 일정을 읽는 스크립트들보다 먼저 돕니다. 상품이 정해져 있으면 목록을 그 상품의
   // 일정으로 갈아끼우는데, 날짜를 그린 뒤에 갈아끼우면 새로 그려진 목록의 날짜 칸이
   // 빈 채로 남습니다 — 시트에서 며칠 일정인지가 사라졌습니다.
-  const { initProduct } = await import('./components/product.js?v=5a2b2fca')
+  const { initProduct } = await import('./components/product.js?v=f94764f8')
   initProduct()
-  const { initSchedule } = await import('./components/schedule.js?v=1b0a6faf')
+  const { initSchedule } = await import('./components/schedule.js?v=6b6ab0cc')
   initSchedule()
   const { initDiscounts } = await import('./components/discount.js?v=b7c8b9e1')
   initDiscounts()
   const { initSheets } = await import('./components/sheet.js?v=b6e86ec5')
   initSheets()
-  const { initCheckout } = await import('./components/checkout.js?v=1ee0721c')
+  const { initCheckout } = await import('./components/checkout.js?v=1f4975e7')
   initCheckout()
   // 닫기와 뒤로는 상세로 돌아갑니다. 링크로 새로 열면 상세가 한 벌 더 쌓여, 그
   // 상세에서 뒤로를 누를 때 방금 나온 결제로 되돌아갑니다.

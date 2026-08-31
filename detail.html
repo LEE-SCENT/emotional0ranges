@@ -12,7 +12,7 @@
 <meta name="theme-color" content="#FFFFFF">
 <title>12:12 티키타카 로테이션 소개팅 — 감정적인 오렌지들</title>
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
-<link rel="stylesheet" href="./build/tokens.css?v=6017d5a9">
+<link rel="stylesheet" href="./build/tokens.css?v=2187448f">
 <link rel="stylesheet" href="./components/container.css?v=55694a09">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=445ba00a">
@@ -25,9 +25,9 @@
 <link rel="stylesheet" href="./components/section-title.css?v=d1c6b1bc">
 <link rel="stylesheet" href="./components/footer.css?v=b6122ba5">
 <link rel="stylesheet" href="./components/tabs.css?v=77e05f5c">
-<link rel="stylesheet" href="./components/option-card.css?v=b8f4b7b3">
+<link rel="stylesheet" href="./components/option-card.css?v=2e26e18d">
 <link rel="stylesheet" href="./components/schedule.css?v=6094ad80">
-<link rel="stylesheet" href="./components/confirm.css?v=5552762d">
+<link rel="stylesheet" href="./components/confirm.css?v=8d793bfd">
 <link rel="stylesheet" href="./components/review.css?v=e6a76bd1">
 <link rel="stylesheet" href="./components/detail.css?v=e1271fad">
 <link rel="stylesheet" href="./components/favorite.css?v=8148f536">
@@ -370,7 +370,7 @@
               </label>
             </li>
             <li>
-              <label class="option-card option-card--wait" data-date-in="1"
+              <label class="option-card option-card--alert" data-date-in="1"
                      data-time="저녁 7시" data-where="수원 광교 · 27-38세"
                      data-price="45000" data-discount="0">
                 <input class="sr-only" type="radio" name="schedule" value="s5">
@@ -380,7 +380,7 @@
                   <span class="option-card__place">수원 광교</span>
                 </span>
                 <span class="option-card__aside">
-                  <span class="option-card__seats"><svg aria-hidden="true"><use href="#icon-wait"></use></svg>대기 가능</span>
+                  <span class="option-card__seats"><svg aria-hidden="true"><use href="#icon-notifications"></use></svg>빈자리 알림 가능</span>
                 </span>
               </label>
             </li>
@@ -556,39 +556,39 @@
   </div>
 </dialog>
 
-<!-- 대기는 결제가 아니라 순서를 잡아두는 일입니다. 무엇이 일어나고 무엇이
-     일어나지 않는지 먼저 말합니다. -->
-<dialog class="confirm" id="waitlist-apply" aria-labelledby="waitlist-apply-title">
+<!-- 알림은 결제도 좌석 확보도 아닙니다. 자리가 열리면 알려준다는 것과, 그 뒤는
+     선착순이라는 것을 먼저 말합니다. -->
+<dialog class="confirm" id="seat-alert-apply" aria-labelledby="seat-alert-apply-title">
   <div class="confirm__panel">
     <div class="confirm__text">
-      <h2 id="waitlist-apply-title">자리가 생기면 순서대로 알려드릴게요</h2>
-      <p>대기 신청 시 결제되지 않아요.<br>안내받은 시간 내 결제하면 참여가 확정돼요.</p>
+      <h2 id="seat-alert-apply-title">자리가 생기면 알려드릴게요</h2>
+      <p>취소 자리가 생기면 알려드려요.<br>알림 후 결제는 선착순으로 마감될 수 있어요.</p>
     </div>
     <div class="confirm__actions">
       <button class="btn btn--outlined btn--large" type="button" data-confirm-close>
         <span class="btn__label">닫기</span>
       </button>
       <button class="btn btn--filled btn--large" type="button" data-confirm-accept>
-        <span class="btn__label">대기 신청하기</span>
+        <span class="btn__label">빈자리 알림 받기</span>
       </button>
     </div>
   </div>
 </dialog>
 
-<!-- 되돌릴 수 없는 쪽(대기 취소)이 왼쪽에 섭니다. 큰 버튼을 무심코 눌렀을 때
-     아무 일도 일어나지 않아야 합니다. -->
-<dialog class="confirm" id="waitlist-cancel" aria-labelledby="waitlist-cancel-title">
+<!-- 되돌리는 쪽(알림 취소)이 왼쪽에 섭니다. 큰 버튼을 무심코 눌렀을 때 알림이
+     꺼지면 안 됩니다. -->
+<dialog class="confirm" id="seat-alert-cancel" aria-labelledby="seat-alert-cancel-title">
   <div class="confirm__panel">
     <div class="confirm__text">
-      <h2 id="waitlist-cancel-title">대기 신청을 취소할까요?</h2>
-      <p>취소하면 현재 대기 순서가 사라져요.<br>다시 신청해도 이전 순서는 유지되지 않아요.</p>
+      <h2 id="seat-alert-cancel-title">빈자리 알림을 취소할까요?</h2>
+      <p>취소하면 빈자리 알림을 받을 수 없어요.<br>언제든 다시 신청할 수 있어요.</p>
     </div>
     <div class="confirm__actions">
       <button class="btn btn--outlined btn--large" type="button" data-confirm-accept>
-        <span class="btn__label">대기 취소</span>
+        <span class="btn__label">알림 취소</span>
       </button>
       <button class="btn btn--filled btn--large" type="button" data-confirm-close>
-        <span class="btn__label">계속 대기</span>
+        <span class="btn__label">계속 알림 받기</span>
       </button>
     </div>
   </div>
@@ -709,9 +709,9 @@
   initStickyGnb()
   // 일정·후기를 읽는 스크립트들보다 먼저 돕니다. 그들이 세어둔 뒤에 목록을
   // 갈아끼우면 서로 다른 것을 보게 됩니다.
-  const { initProduct } = await import('./components/product.js?v=5a2b2fca')
+  const { initProduct } = await import('./components/product.js?v=f94764f8')
   initProduct()
-  const { initSchedule } = await import('./components/schedule.js?v=1b0a6faf')
+  const { initSchedule } = await import('./components/schedule.js?v=6b6ab0cc')
   initSchedule()
   // 상세는 목록에서 들어오는 화면이라 뒤로가 곧 목록입니다. 열자마자 눌렀다면
   // 돌아갈 곳이 없으므로 홈으로 보냅니다 — 그 길은 data-back 에 적혀 있습니다.
@@ -719,12 +719,12 @@
   initBack()
   const { initRecentReview } = await import('./components/recent-review.js?v=417e597f')
   initRecentReview()
-  const { initConfirms } = await import('./components/confirm.js?v=b103e627')
+  const { initConfirms } = await import('./components/confirm.js?v=1929c179')
   initConfirms()
-  const { initParticipants } = await import('./components/participants.js?v=a4034162')
+  const { initParticipants } = await import('./components/participants.js?v=8f48e74f')
   initParticipants()
-  const { initWaitlist } = await import('./components/waitlist.js?v=25791c91')
-  initWaitlist()
+  const { initSeatAlert } = await import('./components/seat-alert.js?v=479b45d8')
+  initSeatAlert()
   const { initDiscounts } = await import('./components/discount.js?v=b7c8b9e1')
   initDiscounts()
   const { initFavorites } = await import('./components/favorite.js?v=798dc8b0')

@@ -115,15 +115,18 @@
   font-feature-settings: 'lnum' 1, 'tnum' 1;
 }
 
-/* ---- 대기 --------------------------------------------------------------
-   자리는 찼지만 대기를 걸 수 있는 일정입니다. 잔여석 자리에 "대기 가능"이 들어가고
-   브랜드색으로 눈에 띕니다 — 막다른 길이 아니라는 신호입니다.
+/* ---- 빈자리 알림 --------------------------------------------------------
+   자리는 찼지만 빈자리가 생기면 알려줄 수 있는 일정입니다. 잔여석 자리에 "빈자리
+   알림 가능"이 들어갑니다.
+
+   브랜드색을 쓰지 않습니다. 줄을 서는 일도, 자리를 잡아두는 일도 아니라 그저 지금의
+   상태입니다 — 불러세울 자리가 아닙니다.
 */
 
-.option-card--wait .option-card__seats { color: var(--_option-card-fg-wait); }
+.option-card--alert .option-card__seats { color: var(--_option-card-fg-alert); }
 
-/* 라벨 앞의 아이콘. 잔여석은 숫자라 글자만으로 충분하지만, 대기는 상태라 무엇을
-   말하는지 한 글자 앞에서 알려줍니다. */
+/* 라벨 앞의 아이콘. 잔여석은 숫자라 글자만으로 충분하지만, 알림은 상태라 무엇을
+   말하는지 한 글자 앞에서 알려줍니다. 신청 전에는 종, 신청 뒤에는 체크입니다. */
 .option-card__seats svg {
   display: none;
   flex: none;
@@ -131,23 +134,23 @@
   block-size: var(--_option-card-status-icon-size);
 }
 
-.option-card--wait .option-card__seats,
-.option-card--waiting .option-card__seats {
+.option-card--alert .option-card__seats,
+.option-card--alerted .option-card__seats {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: var(--spacing-50);
 }
 
-.option-card--wait .option-card__seats svg,
-.option-card--waiting .option-card__seats svg { display: block; }
+.option-card--alert .option-card__seats svg,
+.option-card--alerted .option-card__seats svg { display: block; }
 
-/* ---- 대기 신청 완료 ----------------------------------------------------
-   대기를 걸어둔 일정입니다. 브랜드색을 거두는 것은 이제 고르라는 말이 아니기
-   때문입니다 — 걸어둔 상태를 알리는 자리이지 부르는 자리가 아닙니다.
+/* ---- 알림 신청 완료 ----------------------------------------------------
+   알림을 걸어둔 일정입니다. 아이콘이 종에서 체크로 바뀌어, 무엇이 달라졌는지 색이
+   아니라 그림으로 읽힙니다.
 */
 
-.option-card--waiting .option-card__seats { color: var(--colors-fg-lower); }
+.option-card--alerted .option-card__seats { color: var(--_option-card-fg-alert); }
 
 /* ---- 참여자 구성 -------------------------------------------------------
    고른 일정에 이미 확정된 사람들. 고르기 전에는 접혀 있습니다 — 카드마다 펼쳐두면

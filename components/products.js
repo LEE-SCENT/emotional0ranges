@@ -23,9 +23,9 @@ const photo = (src, w, h, alt) => ({ src: `./images/${src}`, w, h, alt })
  * 이름도 사진도 회사명도 두지 않습니다. 데이터에 없으면 화면에 실수로 나올 일도
  * 없습니다(policy.html: 일정별 참여자 구성).
  *
- * 대기만 받는 일정(wait)에는 반드시 사람이 있어야 합니다. 대기를 받는다는 것은 정원이
- * 찼다는 뜻이라, "대기 가능" 옆에 "아직 참여자가 없어요"가 함께 서면 두 말이 서로를
- * 부정합니다 — 실제로 그렇게 서 있었습니다.
+ * 빈자리 알림만 받는 일정(alert)에는 반드시 사람이 있어야 합니다. 알림을 받는다는 것은
+ * 정원이 찼다는 뜻이라, "빈자리 알림 가능" 옆에 "아직 참여자가 없어요"가 함께 서면 두
+ * 말이 서로를 부정합니다 — 실제로 그렇게 서 있었습니다.
  *
  * ⚠️ 아래 사람들은 제가 지어낸 것입니다. 실제 참여자 정보가 아닙니다.
  */
@@ -38,7 +38,7 @@ const who = (age, job) => ({ age, job })
    글로 적어두면 그 판단을 문장에서 되짚어 읽어내야 합니다.
 
    0 은 그 성별의 마감입니다. 값이 없는 성별은 애초에 자리가 없는 것이고, seats 가
-   통째로 없으면 대기만 받는 일정입니다(wait). */
+   통째로 없으면 빈자리 알림만 받는 일정입니다(alert). */
 
 /** 한 성별씩 [키, 이름]. 태그의 순서는 급한 차례가 정합니다(seatTags). */
 const GENDERS = [
@@ -46,9 +46,9 @@ const GENDERS = [
   ['f', '여성'],
 ]
 
-/** 신청할 수 있는 자리가 하나라도 남았는지. */
+/** 신청할 수 있는 자리가 하나라도 남았는지. 빈자리 알림만 받는 일정은 아닙니다. */
 export const isOpen = (o) =>
-  !o.wait && GENDERS.some(([key]) => (o.seats?.[key] ?? 0) > 0)
+  !o.alert && GENDERS.some(([key]) => (o.seats?.[key] ?? 0) > 0)
 
 /**
  * 상세의 일정 카드에 적는 한 줄: 남성 6 · 여성 5자리 남음
@@ -57,7 +57,7 @@ export const isOpen = (o) =>
  * 마감된 성별은 숫자 대신 그 사실을 말합니다 — 0 은 자리 수가 아니라 상태입니다.
  */
 export function seatsText(o) {
-  if (o.wait) return '대기 가능'
+  if (o.alert) return '빈자리 알림 가능'
   const left = GENDERS.filter(([key]) => (o.seats?.[key] ?? 0) > 0)
   const closed = GENDERS.filter(([key]) => o.seats?.[key] === 0)
   const parts = []
@@ -97,9 +97,9 @@ export function seatsText(o) {
 export const startTime = (o) => o.time.split('~')[0].trim()
 
 /**
- * 확정된 참여자. 대기 신청자는 여기에 들어오지 않습니다 — 대기는 순서를 잡아둔
- * 것이지 자리를 잡은 것이 아니라, 그 사람을 참여자로 세면 남은 자리와 어긋납니다
- * (policy.html: 일정별 참여자 구성).
+ * 확정된 참여자. 빈자리 알림을 신청한 사람은 여기에 들어오지 않습니다 — 알림은 자리가
+ * 열리면 알려달라는 것이지 자리를 잡은 것이 아니라, 그 사람을 참여자로 세면 남은
+ * 자리와 어긋납니다 (policy.html: 일정별 참여자 구성).
  */
 export const peopleOf = (o) => ({ m: o.people?.m ?? [], f: o.people?.f ?? [] })
 
@@ -120,7 +120,7 @@ export function peopleSummary(o) {
 }
 
 export function seatTags(o) {
-  if (o.wait) return []
+  if (o.alert) return []
   const near = []
   const closed = []
   for (const [key, name] of GENDERS) {
@@ -178,7 +178,7 @@ export const PRODUCTS = {
           m: [who('90년대 초반', '전문직'), who('80년대 후반', '공공기관')],
           f: [who('90년대 중반', '디자인'), who('90년대 후반', '교육')],
         } },
-      { v: 's5', in: 1, time: '저녁 7:00~9:30', label: '저녁 7시', place: '수원 광교', age: '27-38세', price: 45000, off: 0, wait: true,
+      { v: 's5', in: 1, time: '저녁 7:00~9:30', label: '저녁 7시', place: '수원 광교', age: '27-38세', price: 45000, off: 0, alert: true,
         people: {
           m: [who('90년대 초반', '대기업'), who('80년대 후반', '의료계'), who('90년대 중반', 'IT·개발직'),
               who('90년대 중반', '공공기관'), who('80년대 후반', '전문직'), who('90년대 초반', '자영업')],
@@ -227,7 +227,7 @@ export const PRODUCTS = {
           m: [who('70년대 후반', '대기업'), who('80년대 초반', 'IT·개발직')],
           f: [],
         } },
-      { v: 's3', in: 4, time: '오후 3:00~4:40', label: '오후 3시', place: '경기 수원', age: '35-45세', price: 59000, off: 10000, wait: true,
+      { v: 's3', in: 4, time: '오후 3:00~4:40', label: '오후 3시', place: '경기 수원', age: '35-45세', price: 59000, off: 10000, alert: true,
         people: {
           m: [who('70년대 후반', '전문직'), who('80년대 초반', '금융권'), who('80년대 중반', '대기업'),
               who('70년대 후반', '자영업'), who('80년대 초반', '공공기관'), who('80년대 중반', 'IT·개발직')],
@@ -276,7 +276,7 @@ export const PRODUCTS = {
           m: [who('90년대 중반', '수의·동물'), who('90년대 초반', '공공기관')],
           f: [who('90년대 후반', '수의·동물'), who('90년대 중반', '기획·마케팅'), who('90년대 초반', '대기업')],
         } },
-      { v: 's3', in: 3, time: '저녁 7:00~8:50', label: '저녁 7시', place: '수원 광교 · 180cm 특집', age: '27-38세', price: 65000, off: 25000, wait: true,
+      { v: 's3', in: 3, time: '저녁 7:00~8:50', label: '저녁 7시', place: '수원 광교 · 180cm 특집', age: '27-38세', price: 65000, off: 25000, alert: true,
         people: {
           m: [who('90년대 초반', '체육·스포츠'), who('80년대 후반', '대기업'), who('90년대 중반', 'IT·개발직'),
               who('90년대 초반', '금융권'), who('90년대 중반', '전문직'), who('80년대 후반', '공공기관')],
@@ -326,7 +326,7 @@ export const PRODUCTS = {
           m: [who('90년대 초반', '연구직')],
           f: [who('90년대 중반', '디자인')],
         } },
-      { v: 's3', in: 4, time: '저녁 7:30~9:00', label: '저녁 7시 반', place: '서울 강남 역삼', age: '30-42세', price: 45000, off: 0, wait: true,
+      { v: 's3', in: 4, time: '저녁 7:30~9:00', label: '저녁 7시 반', place: '서울 강남 역삼', age: '30-42세', price: 45000, off: 0, alert: true,
         people: {
           m: [who('80년대 후반', '대기업'), who('90년대 초반', '공공기관'), who('80년대 중반', '자영업'),
               who('90년대 초반', 'IT·개발직'), who('80년대 후반', '전문직'), who('90년대 중반', '금융권')],
@@ -377,7 +377,7 @@ export const PRODUCTS = {
           m: [who('80년대 중반', '경영·임원'), who('80년대 후반', '전문직')],
           f: [who('80년대 후반', '기획·마케팅'), who('90년대 초반', '금융권'), who('80년대 중반', '교육')],
         } },
-      { v: 's3', in: 5, time: '오후 4:00~6:10', label: '오후 4시', place: '경기 수원', age: '30-42세', price: 79000, off: 0, wait: true,
+      { v: 's3', in: 5, time: '오후 4:00~6:10', label: '오후 4시', place: '경기 수원', age: '30-42세', price: 79000, off: 0, alert: true,
         people: {
           m: [who('80년대 중반', '경영·임원'), who('80년대 후반', '전문직'), who('90년대 초반', '금융권'),
               who('80년대 중반', '의료계'), who('80년대 후반', '자영업')],

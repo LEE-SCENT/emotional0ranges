@@ -54,11 +54,11 @@ export function initCheckout(scope = document) {
   const toggle = scope.querySelector('.checkout__terms-toggle')
   const buttons = [...scope.querySelectorAll('[data-pay]')]
 
-  /** 신청할 수 있는 일정인지. 대기·마감은 이 화면에서 다루지 않습니다. */
+  /** 신청할 수 있는 일정인지. 빈자리 알림·마감은 이 화면에서 다루지 않습니다. */
   const bookable = (el) => {
     const card = el.closest('.option-card')
     return (
-      !card.classList.contains('option-card--wait') &&
+      !card.classList.contains('option-card--alert') &&
       !card.classList.contains('option-card--soldout')
     )
   }
@@ -153,7 +153,7 @@ export function initCheckout(scope = document) {
      ?schedule=s2 처럼 붙어 옵니다. 상세 화면에서 고른 일정 그대로 시작해야, 여기서
      한 번 더 고르게 하지 않습니다. 목록에 없는 값이면 마크업의 기본 선택을 둡니다. */
   const wanted = new URLSearchParams(location.search).get('schedule')
-  // 신청할 수 없는 일정(대기·마감)은 받아도 무시합니다. 이 화면은 결제하는 곳이라,
+  // 신청할 수 없는 일정(빈자리 알림·마감)은 받아도 무시합니다. 이 화면은 결제하는 곳이라,
   // 결제할 수 없는 일정이 요약에 앉아 있으면 고를 수도 지울 수도 없습니다.
   const asked = options.find((el) => el.value === wanted)
   if (asked && bookable(asked)) applied = wanted
@@ -212,11 +212,11 @@ export function initCheckout(scope = document) {
   })
 
   /* ---- 시트에는 신청 가능한 일정만 -------------------------------------
-     대기·마감은 여기서 뺍니다. 고르는 자리에 고를 수 없는 것이 섞여 있으면, 눌러본
-     뒤에야 안 된다는 것을 알게 됩니다. 대기는 상세 화면의 그 일정에서 따로 겁니다.
+     빈자리 알림·마감은 여기서 뺍니다. 고르는 자리에 고를 수 없는 것이 섞여 있으면,
+     눌러본 뒤에야 안 된다는 것을 알게 됩니다. 알림은 상세 화면의 그 일정에서 겁니다.
 
-     상세 화면의 목록은 그대로입니다 — 거기서는 대기 가능도 보여주어야 대기를 걸
-     수 있습니다. 감추는 것은 이 화면의 변경 목록뿐입니다. */
+     상세 화면의 목록은 그대로입니다 — 거기서는 빈자리 알림 가능도 보여주어야 알림을
+     걸 수 있습니다. 감추는 것은 이 화면의 변경 목록뿐입니다. */
 
   if (sheet) {
     for (const el of sheet.querySelectorAll('[name="schedule"]')) {

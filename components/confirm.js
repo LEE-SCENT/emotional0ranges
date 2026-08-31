@@ -1,13 +1,13 @@
 /**
  * 묻는 창을 열고 닫습니다.
  *
- *   <button data-confirm-open="waitlist-apply">대기 신청하기</button>
+ *   <button data-confirm-open="seat-alert-apply">빈자리 알림 받기</button>
  *
- *   <dialog class="confirm" id="waitlist-apply">
+ *   <dialog class="confirm" id="seat-alert-apply">
  *     <div class="confirm__panel">
  *       …
  *       <button data-confirm-close>닫기</button>
- *       <button data-confirm-accept>대기 신청하기</button>
+ *       <button data-confirm-accept>빈자리 알림 받기</button>
  *
  *   import { initConfirms } from './components/confirm.js'
  *   initConfirms()

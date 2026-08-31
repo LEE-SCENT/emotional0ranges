@@ -12,7 +12,7 @@
  * 기본 상품(티키타카)의 내용은 detail.html 에 그대로 적혀 있고, 다른 상품일 때만
  * 여기서 다시 그립니다. 스크립트가 오지 않아도 한 상품은 온전히 읽힙니다.
  *
- * 일정과 후기를 읽는 다른 스크립트(schedule·discount·waitlist·recent-review)보다
+ * 일정과 후기를 읽는 다른 스크립트(schedule·discount·seat-alert·recent-review)보다
  * 먼저 돌아야 합니다. 그들이 세어둔 뒤에 목록을 갈아끼우면 서로 다른 것을 보게 됩니다.
  */
 
@@ -89,9 +89,9 @@ function renderSchedule(scope, schedule) {
                 <time class="countdown">02:30:24</time>
               </span>`
           : ''
-        const icon = o.wait ? '<svg aria-hidden="true"><use href="#icon-wait"></use></svg>' : ''
+        const icon = o.alert ? '<svg aria-hidden="true"><use href="#icon-notifications"></use></svg>' : ''
         return `<li>
-          <label class="option-card${o.wait ? ' option-card--wait' : ''}" data-date-in="${o.in}"${
+          <label class="option-card${o.alert ? ' option-card--alert' : ''}" data-date-in="${o.in}"${
             o.deadline ? ` data-discount-in="${o.deadline}"` : ''
           }
                  data-time="${o.label}" data-where="${o.place} · ${o.age}"
