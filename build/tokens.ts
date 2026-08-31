@@ -462,6 +462,7 @@ export const components = {
     "fg": "#000000",
     "maxContentWidth": "1280px",
     "maxWidth": "1920px",
+    "maxHeight": "72px",
     "logo": {
       "width": "126px",
       "height": "40px",

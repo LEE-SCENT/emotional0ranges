@@ -12,14 +12,14 @@
 <meta name="theme-color" content="#FFFFFF">
 <title>12:12 티키타카 로테이션 소개팅 — 감정적인 오렌지들</title>
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
-<link rel="stylesheet" href="./build/tokens.css?v=fc518473">
+<link rel="stylesheet" href="./build/tokens.css?v=46e3801b">
 <link rel="stylesheet" href="./components/container.css?v=55694a09">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=445ba00a">
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
-<link rel="stylesheet" href="./components/segmented-control.css?v=7a4a3de6">
+<link rel="stylesheet" href="./components/segmented-control.css?v=a913fdf3">
 <link rel="stylesheet" href="./components/tooltip.css?v=d3d8dfa4">
-<link rel="stylesheet" href="./components/gnb.css?v=3046ec8e">
+<link rel="stylesheet" href="./components/gnb.css?v=3c18673a">
 <link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
 <link rel="stylesheet" href="./components/product-card.css?v=603e6641">
 <link rel="stylesheet" href="./components/section-title.css?v=d1c6b1bc">
@@ -317,7 +317,7 @@
                      data-price="45000" data-discount="10000">
                 <input class="sr-only" type="radio" name="schedule" value="s1" checked>
                 <span class="option-card__main">
-                  <span class="option-card__time">오후 2:00~5:30</span>
+                  <span class="option-card__time">오후 2:00</span>
                   <span class="option-card__price"><b>35,000원</b> <s>45,000원</s></span>
                   <span class="option-card__place">서울 강남</span>
                 </span>
@@ -336,7 +336,7 @@
                      data-price="38000" data-discount="10000">
                 <input class="sr-only" type="radio" name="schedule" value="s2">
                 <span class="option-card__main">
-                  <span class="option-card__time">밤 10:00~12:30</span>
+                  <span class="option-card__time">밤 10:00</span>
                   <span class="option-card__price"><b>28,000원</b> <s>38,000원</s></span>
                   <span class="option-card__place">서울 강남</span>
                 </span>
@@ -360,7 +360,7 @@
                      data-price="56000" data-discount="10000">
                 <input class="sr-only" type="radio" name="schedule" value="s3">
                 <span class="option-card__main">
-                  <span class="option-card__time">저녁 7:00~9:30</span>
+                  <span class="option-card__time">저녁 7:00</span>
                   <span class="option-card__price"><b>46,000원</b> <s>56,000원</s></span>
                   <span class="option-card__place">서울 성수</span>
                 </span>
@@ -375,7 +375,7 @@
                      data-price="45000" data-discount="0">
                 <input class="sr-only" type="radio" name="schedule" value="s5">
                 <span class="option-card__main">
-                  <span class="option-card__time">저녁 7:00~9:30</span>
+                  <span class="option-card__time">저녁 7:00</span>
                   <span class="option-card__price"><b>45,000원</b></span>
                   <span class="option-card__place">수원 광교</span>
                 </span>
@@ -395,7 +395,7 @@
                      data-price="45000" data-discount="10000">
                 <input class="sr-only" type="radio" name="schedule" value="s4">
                 <span class="option-card__main">
-                  <span class="option-card__time">저녁 7:00~9:30</span>
+                  <span class="option-card__time">저녁 7:00</span>
                   <span class="option-card__price"><b>35,000원</b> <s>45,000원</s></span>
                   <span class="option-card__place">경기 성남</span>
                 </span>
@@ -709,7 +709,7 @@
   initStickyGnb()
   // 일정·후기를 읽는 스크립트들보다 먼저 돕니다. 그들이 세어둔 뒤에 목록을
   // 갈아끼우면 서로 다른 것을 보게 됩니다.
-  const { initProduct } = await import('./components/product.js?v=bb76563f')
+  const { initProduct } = await import('./components/product.js?v=5a2b2fca')
   initProduct()
   const { initSchedule } = await import('./components/schedule.js?v=1b0a6faf')
   initSchedule()
