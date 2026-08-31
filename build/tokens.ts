@@ -9,7 +9,8 @@ export const primitive = {
     "white": "#FFFFFF",
     "whiteAlpha": {
       "15": "#FFFFFF26",
-      "85": "#FFFFFFD9"
+      "85": "#FFFFFFD9",
+      "90": "#FFFFFFE6"
     },
     "twistOrange": {
       "50": "#FAE9E6",
@@ -255,6 +256,13 @@ export const typography = {
     "fontFamily": "\"Pretendard Variable\", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, \"Helvetica Neue\", \"Segoe UI\", \"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", sans-serif",
     "fontSize": "20px",
     "fontWeight": 600,
+    "lineHeight": "140%",
+    "letterSpacing": "0em"
+  },
+  "body-xl-medium": {
+    "fontFamily": "\"Pretendard Variable\", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, \"Helvetica Neue\", \"Segoe UI\", \"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", sans-serif",
+    "fontSize": "20px",
+    "fontWeight": 500,
     "lineHeight": "140%",
     "letterSpacing": "0em"
   },
@@ -575,7 +583,7 @@ export const components = {
     "fgDescription": "#7D7B7A"
   },
   "segmentedControl": {
-    "bg": "#FFFFFF",
+    "bg": "#FFFFFFE6",
     "border": "#27262514",
     "rounded": "9999px",
     "borderWidth": "1px",

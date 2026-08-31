@@ -8,6 +8,10 @@
 
       "whiteAlpha": {
         "$description": "Figma 경로는 colors/white/alpha/* 이지만, DTCG 에서 토큰(white)은 자식을 가질 수 없어 형제 그룹으로 뒀습니다. CSS 변수명(--colors-white-alpha-15)은 Figma 경로와 동일합니다.",
+        "90": {
+          "$value": "#FFFFFFE6",
+          "$description": "white 를 90% 로. 90% = 0.9×255 = 229.5 이므로 8자리 hex 에서는 E6(90.2%) 로 반올림됩니다. 사진·영상 위에 얹혀도 뒤가 거의 비치지 않는 밝은 면."
+        },
         "85": {
           "$value": "#FFFFFFD9",
           "$description": "white 를 85% 로. 85% → D9 (85.1%). 어두운 배경 위 거의 불투명한 밝은 면."

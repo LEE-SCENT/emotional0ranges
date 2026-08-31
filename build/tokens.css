@@ -10,6 +10,7 @@
   --_colors-white: #FFFFFF;
   --_colors-white-alpha-15: #FFFFFF26;
   --_colors-white-alpha-85: #FFFFFFD9;
+  --_colors-white-alpha-90: #FFFFFFE6;
   --_colors-twist-orange-50: #FAE9E6;
   --_colors-twist-orange-100: #FDCCBA;
   --_colors-twist-orange-200: #FBAC8D;
@@ -285,7 +286,7 @@
   --_review-symbol-size: calc(var(--_dimension) * 10.5);
   --_section-title-fg: var(--colors-fg);
   --_section-title-fg-description: var(--colors-fg-lower);
-  --_segmented-control-bg: var(--_colors-white);
+  --_segmented-control-bg: var(--_colors-white-alpha-90);
   --_segmented-control-border: var(--_colors-serious-gray-alpha900-8);
   --_segmented-control-rounded: var(--_rounded-full);
   --_segmented-control-border-width: 1px;
@@ -408,6 +409,11 @@
   --typography-body-xl-semibold-font-weight: var(--_font-weight-semibold-600);
   --typography-body-xl-semibold-line-height: var(--_line-height-140);
   --typography-body-xl-semibold-letter-spacing: var(--_letter-spacing-0);
+  --typography-body-xl-medium-font-family: var(--_font-family-pretendard);
+  --typography-body-xl-medium-font-size: var(--_font-size-500);
+  --typography-body-xl-medium-font-weight: var(--_font-weight-medium-500);
+  --typography-body-xl-medium-line-height: var(--_line-height-140);
+  --typography-body-xl-medium-letter-spacing: var(--_letter-spacing-0);
   --typography-body-l-semibold-font-family: var(--_font-family-pretendard);
   --typography-body-l-semibold-font-size: var(--_font-size-350);
   --typography-body-l-semibold-font-weight: var(--_font-weight-semibold-600);
@@ -533,6 +539,13 @@
   font-weight: var(--typography-body-xl-semibold-font-weight);
   line-height: var(--typography-body-xl-semibold-line-height);
   letter-spacing: var(--typography-body-xl-semibold-letter-spacing);
+}
+.typography-body-xl-medium {
+  font-family: var(--typography-body-xl-medium-font-family);
+  font-size: var(--typography-body-xl-medium-font-size);
+  font-weight: var(--typography-body-xl-medium-font-weight);
+  line-height: var(--typography-body-xl-medium-line-height);
+  letter-spacing: var(--typography-body-xl-medium-letter-spacing);
 }
 .typography-body-l-semibold {
   font-family: var(--typography-body-l-semibold-font-family);

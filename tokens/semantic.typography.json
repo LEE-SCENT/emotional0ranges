@@ -93,6 +93,15 @@
             "letterSpacing": "{primitive.letterSpacing.0}"
           }
         },
+        "xl-medium": {
+          "$value": {
+            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontSize": "{primitive.fontSize.500}",
+            "fontWeight": "{primitive.fontWeight.medium-500}",
+            "lineHeight": "{primitive.lineHeight.140}",
+            "letterSpacing": "{primitive.letterSpacing.0}"
+          }
+        },
         "l-semibold": {
           "$value": {
             "fontFamily": "{primitive.fontFamily.pretendard}",
