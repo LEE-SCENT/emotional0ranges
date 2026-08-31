@@ -199,15 +199,16 @@
 */
 
 .participants__empty {
+  /* 칸을 채우지 않습니다. 옆 목록이 길어도 이 안내는 제 높이(80)만큼만 쓰고 위에
+     머무릅니다 — 가운데로 내려가면 목록이 시작해야 할 자리가 비어 보입니다. */
+  flex: none;
   display: flex;
-  flex: 1 1 auto;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--spacing-200);
+  gap: var(--spacing-100);
   margin: 0;
-  /* 옆 컬럼이 길어도 이쪽이 따라 늘지 않도록 최소 높이만 잡아둡니다. */
-  min-block-size: var(--spacing-2400);
+  min-block-size: var(--spacing-2000);
   color: var(--colors-fg-lower);
   font-size: var(--typography-body-s-regular-font-size);
   line-height: var(--typography-body-s-regular-line-height);
