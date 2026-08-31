@@ -95,6 +95,12 @@ function column(name, list) {
   }
 
   const ul = el('ul', 'participants__list')
+  // 좁은 화면에서 두 줄로 접을 때 쓰는 칸 수입니다. 절반(올림)이면 위 줄이 먼저 차고
+  // 아래 줄이 그만큼 따라옵니다 — 한두 명은 나눌 것이 없어 인원 그대로 한 줄입니다.
+  ul.style.setProperty(
+    '--participants-cols',
+    String(list.length <= 2 ? list.length : Math.ceil(list.length / 2)),
+  )
   for (const person of list) {
     const li = el('li', `participant participant--${name === '남성' ? 'm' : 'f'}`)
     const content = el('span', 'participant__content')

@@ -56,14 +56,10 @@
 
 .participants__cols {
   display: flex;
-  align-items: flex-start;
+  /* 두 단의 높이를 맞춥니다. 한쪽이 비어 있을 때 그 칸이 옆 목록만큼 자라야
+     "아직 없다"가 목록이 있어야 할 자리에서 읽힙니다. */
+  align-items: stretch;
   gap: var(--_participant-col-gap);
-}
-
-/* 좁은 화면에서는 두 단을 세웁니다. 180 짜리 항목을 반으로 나누면 연령대와 직업군이
-   한 줄에 들어가지 않습니다. 남성 먼저, 그 다음 여성 — 창의 순서 그대로입니다. */
-@media (max-width: 600px) {
-  .participants__cols { flex-direction: column; }
 }
 
 .participants__col {
@@ -149,6 +145,34 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* ---- 좁은 화면 ---------------------------------------------------------
+   두 단을 세우고, 성별마다 가로로 흐르는 두 줄이 됩니다. 항목 하나가 180 남짓이라
+   한 단을 반으로 나누면 연령대와 직업군이 한 줄에 들어가지 않습니다.
+
+   세로로 쭉 세우지 않는 것은 창 때문입니다. 여섯 명이 세로로 서면 남성 목록만으로
+   화면이 차서, 여성 쪽이 있는지조차 스크롤해봐야 압니다. 두 줄로 접고 나머지는
+   옆으로 흘려보내면 두 성별이 한 화면에 함께 보입니다.
+*/
+
+@media (max-width: 600px) {
+  .participants__cols { flex-direction: column; }
+
+  .participants__list {
+    display: grid;
+    /* 칸 수는 인원의 절반(올림)입니다 — participants.js 가 세어 넘깁니다. 그래야 위
+       줄부터 왼쪽에서 오른쪽으로 차고, 몇 명이든 두 줄을 넘지 않습니다.
+       한두 명일 때는 인원만큼이라 한 줄로 섭니다. */
+    grid-template-columns: repeat(var(--participants-cols, 2), max-content);
+    overflow-x: auto;
+    /* 목록마다 따로 흐릅니다. 남성을 넘겼다고 여성까지 따라 움직이면 두 줄이 서로
+       다른 사람을 가리키게 됩니다. */
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .participants__list::-webkit-scrollbar { display: none; }
 }
 
 /* ---- 아직 아무도 없는 성별 ----------------------------------------------
