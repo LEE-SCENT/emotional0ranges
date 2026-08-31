@@ -13,8 +13,8 @@
       "size": {
         "$type": "dimension",
         "$value": "{primitive.dimension}",
-        "$extensions": { "scale": 2 },
-        "$description": "8px. 내보낸 SVG 의 circle(r=4)에서 읽었습니다 — 단색 원 하나라 스프라이트에 넣지 않고 CSS 로 그립니다."
+        "$extensions": { "scale": 1.5 },
+        "$description": "6px. 단색 원 하나라 스프라이트에 넣지 않고 CSS 로 그립니다. 8 에서 내려왔습니다 — 항목이 회색 면으로 바뀌며 점이 덜 도드라져도 됩니다."
       }
     }
   }

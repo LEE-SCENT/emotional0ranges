@@ -456,7 +456,7 @@ export const components = {
   "genderIndicator": {
     "male": "#195EFF",
     "female": "#F75D15",
-    "size": "8px"
+    "size": "6px"
   },
   "gnb": {
     "fg": "#000000",
@@ -517,14 +517,12 @@ export const components = {
     "height": "92px"
   },
   "participant": {
-    "bg": "#FFFFFF",
-    "border": "#E7E5E4",
+    "bg": "#F8F6F5",
     "fg": "#000000",
-    "separator": "#F3F1F0",
+    "separator": "#E7E5E4",
     "separatorHeight": "14px",
-    "rounded": "8px",
+    "rounded": "12px",
     "iconSize": "20px",
-    "blurRadius": "12px",
     "modalWidth": "600px",
     "colGap": "4px",
     "itemGap": "4px"

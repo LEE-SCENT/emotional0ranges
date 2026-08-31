@@ -203,7 +203,7 @@
   --_footer-sns-icon-size: calc(var(--_dimension) * 5);
   --_gender-indicator-male: var(--_colors-accent-blue-400);
   --_gender-indicator-female: var(--colors-fg-brand);
-  --_gender-indicator-size: calc(var(--_dimension) * 2);
+  --_gender-indicator-size: calc(var(--_dimension) * 1.5);
   --_gnb-fg: var(--colors-fg);
   --_gnb-max-content-width: var(--container-max-width-md);
   --_gnb-max-width: 1920px;
@@ -244,14 +244,12 @@
   --_option-card-fg-wait: var(--colors-fg-brand);
   --_option-card-soldout-opacity: 0.3;
   --_option-card-height: 92px;
-  --_participant-bg: var(--colors-bg);
-  --_participant-border: var(--colors-border);
+  --_participant-bg: var(--colors-bg-low);
   --_participant-fg: var(--colors-fg);
-  --_participant-separator: var(--_colors-serious-gray-200);
+  --_participant-separator: var(--colors-border);
   --_participant-separator-height: 14px;
-  --_participant-rounded: var(--_rounded-m);
+  --_participant-rounded: var(--_rounded-l);
   --_participant-icon-size: calc(var(--_dimension) * 5);
-  --_participant-blur-radius: 12px;
   --_participant-modal-width: 600px;
   --_participant-col-gap: var(--spacing-400);
   --_participant-item-gap: var(--spacing-200);

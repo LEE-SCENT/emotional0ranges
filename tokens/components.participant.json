@@ -2,30 +2,28 @@
   "components": {
     "participant": {
       "$description": "일정에 확정된 참여자. 고른 일정 카드 안의 요약과, 전체를 펼쳐 보는 창이 같은 값을 씁니다. Figma 의 컴포넌트 이름은 participantInfoItem 입니다.",
-      "bg": { "$type": "color", "$value": "{semantic.colors.bg}" },
-      "border": { "$type": "color", "$value": "{semantic.colors.border}" },
+      "bg": {
+        "$type": "color",
+        "$value": "{semantic.colors.bg-low}",
+        "$description": "흰 면에 테두리를 두르던 것에서 회색 면으로 바뀌었습니다. 창 배경이 흰색이라, 선으로 가르는 것보다 면으로 얹는 편이 한 사람씩 세어집니다."
+      },
       "fg": { "$type": "color", "$value": "{semantic.colors.fg}" },
       "separator": {
         "$type": "color",
-        "$value": "{primitive.colors.seriousGray.200}",
-        "$description": "연령대와 직업군을 가르는 세로선. 테두리보다 옅습니다 — 한 항목 안을 나누는 선이라 상자를 쪼개 보이면 안 됩니다."
+        "$value": "{semantic.colors.border}",
+        "$description": "연령대와 직업군을 가르는 세로선. 항목에 테두리가 없어진 만큼 선은 한 단계 진해집니다 — 회색 면 위에서 더 옅으면 보이지 않습니다."
       },
       "separatorHeight": {
         "$type": "dimension",
         "$value": "14px",
         "$description": "⚠️ Figma 에 변수로 없습니다 — Separator 의 높이(14)에서 읽었습니다. 글자 줄 높이(19.6)가 아니라 글자 크기(14)에 맞춘 값이라, 선이 글자보다 길어 보이지 않습니다."
       },
-      "rounded": { "$type": "dimension", "$value": "{primitive.rounded.m}" },
+      "rounded": { "$type": "dimension", "$value": "{primitive.rounded.l}" },
       "iconSize": {
         "$type": "dimension",
         "$value": "{primitive.dimension}",
         "$extensions": { "scale": 5 },
         "$description": "아직 아무도 없는 성별 칸의 안내 아이콘 20px."
-      },
-      "blurRadius": {
-        "$type": "dimension",
-        "$value": "12px",
-        "$description": "⚠️ Figma 에 변수로 없습니다. backdrop-blur 값에서 읽었습니다."
       },
       "modalWidth": {
         "$type": "dimension",

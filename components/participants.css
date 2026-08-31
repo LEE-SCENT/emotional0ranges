@@ -107,11 +107,9 @@
   align-items: center;
   gap: var(--spacing-200);
   box-sizing: border-box;
-  padding: var(--spacing-300) var(--spacing-400);
-  border: 1px solid var(--_participant-border);
+  padding: var(--spacing-250) var(--spacing-300);
   border-radius: var(--_participant-rounded);
   background: var(--_participant-bg);
-  backdrop-filter: blur(var(--_participant-blur-radius));
   color: var(--_participant-fg);
   font-size: var(--typography-body-m-regular-font-size);
   line-height: var(--typography-body-m-regular-line-height);
@@ -128,12 +126,12 @@
 
 .participant--m::before { background: var(--_gender-indicator-male); }
 
-/* 연령대 · 선 · 직업군. 셋의 간격이 12 라 선을 글자에 border 로 붙이지 않고 따로
-   둡니다 — border 는 글자의 줄 높이(19.6)만큼 길어져 항목보다 커 보입니다. */
+/* 연령대 · 선 · 직업군. 선을 글자에 border 로 붙이지 않고 따로 둡니다 — border 는
+   글자의 줄 높이(19.6)만큼 길어져 항목보다 커 보입니다. */
 .participant__content {
   display: flex;
   align-items: center;
-  gap: var(--spacing-300);
+  gap: var(--spacing-200);
   min-inline-size: 0;
 }
 
