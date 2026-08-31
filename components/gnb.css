@@ -124,7 +124,11 @@
 
 /* ---- medium (1025px~) -------------------------------------------------- */
 @media (min-width: 961px) {
-  .gnb { padding: var(--spacing-400) var(--spacing-600); }
+  .gnb {
+    padding: var(--spacing-400) var(--spacing-600);
+    /* 가운데에 무엇이 들어오든 바는 이 높이를 넘지 않습니다. */
+    max-block-size: var(--_gnb-max-height);
+  }
 
   .gnb__inner { gap: var(--spacing-400); }
 
