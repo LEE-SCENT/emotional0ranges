@@ -248,6 +248,7 @@
   --_option-card-price-strike-fg: var(--colors-fg-lowest);
   --_option-card-bg-soldout: var(--_colors-serious-gray-100);
   --_option-card-fg-soldout: var(--colors-fg-disabled);
+  --_option-card-deadline-icon-size: var(--icon-size-xs);
   --_option-card-fg-alert: var(--colors-fg-lower);
   --_option-card-soldout-opacity: 0.3;
   --_option-card-height: 92px;

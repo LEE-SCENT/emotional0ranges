@@ -84,8 +84,8 @@ function renderSchedule(scope, schedule) {
           : `<b>${won(o.price)}</b>`
         // 24 시간 안쪽에 끝나는 할인만 칩을 답니다. 나머지는 자리째 비워둡니다.
         const tag = o.deadline
-          ? `<span class="tag tag--accent-pri option-card__deadline"${o.deadline < 86400 ? '' : ' hidden'}>
-                <svg aria-hidden="true"><use href="#icon-scheduleFilled"></use></svg>
+          ? `<span class="option-card__deadline"${o.deadline < 86400 ? '' : ' hidden'}>
+                <svg aria-hidden="true"><use href="#icon-schedule"></use></svg>
                 <time class="countdown">02:30:24</time>
               </span>`
           : ''

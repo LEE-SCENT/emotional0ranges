@@ -109,8 +109,33 @@
   font-feature-settings: 'lnum' 1;
 }
 
+/* ---- 남은 시간 ----------------------------------------------------------
+   할인이 끝나기까지 남은 시간입니다. 채운 알약이었다가 글자만 남았습니다 — 카드
+   안에서 가장 진한 면이 잔여석도 가격도 아닌 타이머였고, 급한 것 하나 때문에 카드
+   전체가 급해 보였습니다. 색은 그대로 브랜드색이라 눈에는 여전히 먼저 걸립니다.
+*/
+
+.option-card__deadline {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-50);
+  color: var(--colors-fg-brand);
+  font-size: var(--typography-body-s-medium-font-size);
+  font-weight: var(--typography-body-s-medium-font-weight);
+  line-height: var(--typography-body-s-medium-line-height);
+  letter-spacing: var(--typography-body-s-medium-letter-spacing);
+  white-space: nowrap;
+}
+
+.option-card__deadline svg {
+  flex: none;
+  display: block;
+  inline-size: var(--_option-card-deadline-icon-size);
+  block-size: var(--_option-card-deadline-icon-size);
+}
+
 /* 타이머는 1 초마다 숫자가 바뀝니다. 비례폭으로 두면 1 이 지날 때마다 글자가
-   좁아졌다 넓어져 태그가 들썩입니다. 여기서만 고정폭을 켭니다. */
+   좁아졌다 넓어져 줄이 들썩입니다. 여기서만 고정폭을 켭니다. */
 .countdown {
   font-feature-settings: 'lnum' 1, 'tnum' 1;
 }

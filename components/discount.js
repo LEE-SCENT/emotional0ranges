@@ -5,7 +5,7 @@
  *     …
  *     <span class="option-card__price"><b>35,000원~</b> <s>45,000원</s></span>
  *     …
- *     <span class="tag tag--accent-pri option-card__deadline">
+ *     <span class="option-card__deadline">
  *       <svg aria-hidden="true"><use href="#icon-scheduleFilled"></use></svg>
  *       <time class="countdown">02:30:24</time>
  *     </span>

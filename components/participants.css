@@ -97,6 +97,13 @@
   display: flex;
   flex-direction: column;
   gap: var(--_participant-item-gap);
+}
+
+/* 두 줄 중 하나. 넓은 화면에서는 세로로 쌓여, 두 줄이 이어진 한 줄로 읽힙니다. */
+.participants__row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--_participant-item-gap);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -169,19 +176,21 @@
   .participants__cols { flex-direction: column; }
 
   .participants__list {
-    display: grid;
-    /* 칸 수는 인원의 절반(올림)입니다 — participants.js 가 세어 넘깁니다. 그래야 위
-       줄부터 왼쪽에서 오른쪽으로 차고, 몇 명이든 두 줄을 넘지 않습니다.
-       한두 명일 때는 인원만큼이라 한 줄로 섭니다. */
-    grid-template-columns: repeat(var(--participants-cols, 2), max-content);
     overflow-x: auto;
     /* 목록마다 따로 흐릅니다. 남성을 넘겼다고 여성까지 따라 움직이면 두 줄이 서로
-       다른 사람을 가리키게 됩니다. */
+       다른 사람을 가리키게 됩니다. 두 줄은 한 상자 안에 있어 함께 움직입니다. */
     overscroll-behavior-x: contain;
     scrollbar-width: none;
   }
 
   .participants__list::-webkit-scrollbar { display: none; }
+
+  /* 사람마다 제 글자만큼만 차지합니다. 칸을 나눠 담으면 같은 칸의 둘이 긴 쪽에
+     맞춰 함께 늘어납니다 — 줄이 아니라 표가 됩니다. */
+  .participants__row {
+    flex-direction: row;
+    inline-size: max-content;
+  }
 }
 
 /* ---- 아직 아무도 없는 성별 ----------------------------------------------

@@ -12,7 +12,7 @@
 <meta name="theme-color" content="#FFFFFF">
 <title>12:12 티키타카 로테이션 소개팅 — 감정적인 오렌지들</title>
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
-<link rel="stylesheet" href="./build/tokens.css?v=2187448f">
+<link rel="stylesheet" href="./build/tokens.css?v=709009f0">
 <link rel="stylesheet" href="./components/container.css?v=55694a09">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=445ba00a">
@@ -25,14 +25,14 @@
 <link rel="stylesheet" href="./components/section-title.css?v=d1c6b1bc">
 <link rel="stylesheet" href="./components/footer.css?v=b6122ba5">
 <link rel="stylesheet" href="./components/tabs.css?v=77e05f5c">
-<link rel="stylesheet" href="./components/option-card.css?v=2e26e18d">
+<link rel="stylesheet" href="./components/option-card.css?v=0211339f">
 <link rel="stylesheet" href="./components/schedule.css?v=6094ad80">
 <link rel="stylesheet" href="./components/confirm.css?v=8d793bfd">
 <link rel="stylesheet" href="./components/review.css?v=e6a76bd1">
 <link rel="stylesheet" href="./components/detail.css?v=e1271fad">
 <link rel="stylesheet" href="./components/favorite.css?v=8148f536">
 <link rel="stylesheet" href="./components/toast.css?v=654c8975">
-<link rel="stylesheet" href="./components/participants.css?v=b1e4b414">
+<link rel="stylesheet" href="./components/participants.css?v=ccf952a7">
 <link rel="stylesheet" href="./components/app-bar.css?v=4709389e">
 <link rel="stylesheet" href="./components/top-bar.css?v=8d2c027b">
 <link rel="stylesheet" href="./components/image-viewer.css?v=f525c651">
@@ -322,8 +322,8 @@
                   <span class="option-card__place">서울 강남</span>
                 </span>
                 <span class="option-card__aside">
-                  <span class="tag tag--accent-pri option-card__deadline">
-                    <svg aria-hidden="true"><use href="#icon-scheduleFilled"></use></svg>
+                  <span class="option-card__deadline">
+                    <svg aria-hidden="true"><use href="#icon-schedule"></use></svg>
                     <time class="countdown">02:30:24</time>
                   </span>
                   <span class="option-card__seats">남성 6 · 여성 5자리 남음</span>
@@ -341,8 +341,8 @@
                   <span class="option-card__place">서울 강남</span>
                 </span>
                 <span class="option-card__aside">
-                  <span class="tag tag--accent-pri option-card__deadline" hidden>
-                    <svg aria-hidden="true"><use href="#icon-scheduleFilled"></use></svg>
+                  <span class="option-card__deadline" hidden>
+                    <svg aria-hidden="true"><use href="#icon-schedule"></use></svg>
                     <time class="countdown">02:30:24</time>
                   </span>
                   <span class="option-card__seats">남성 3자리 남음</span>
@@ -709,7 +709,7 @@
   initStickyGnb()
   // 일정·후기를 읽는 스크립트들보다 먼저 돕니다. 그들이 세어둔 뒤에 목록을
   // 갈아끼우면 서로 다른 것을 보게 됩니다.
-  const { initProduct } = await import('./components/product.js?v=f94764f8')
+  const { initProduct } = await import('./components/product.js?v=0fc19687')
   initProduct()
   const { initSchedule } = await import('./components/schedule.js?v=6b6ab0cc')
   initSchedule()
@@ -721,11 +721,11 @@
   initRecentReview()
   const { initConfirms } = await import('./components/confirm.js?v=1929c179')
   initConfirms()
-  const { initParticipants } = await import('./components/participants.js?v=8f48e74f')
+  const { initParticipants } = await import('./components/participants.js?v=b9c7b8b3')
   initParticipants()
   const { initSeatAlert } = await import('./components/seat-alert.js?v=479b45d8')
   initSeatAlert()
-  const { initDiscounts } = await import('./components/discount.js?v=b7c8b9e1')
+  const { initDiscounts } = await import('./components/discount.js?v=468895d6')
   initDiscounts()
   const { initFavorites } = await import('./components/favorite.js?v=798dc8b0')
   initFavorites()

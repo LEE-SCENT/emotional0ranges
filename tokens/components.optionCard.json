@@ -51,6 +51,11 @@
         "$type": "color",
         "$value": "{semantic.colors.fg-disabled}"
       },
+      "deadlineIconSize": {
+        "$type": "dimension",
+        "$value": "{semantic.iconSize.xs}",
+        "$description": "남은 시간 앞의 시계 16px."
+      },
       "fgAlert": {
         "$type": "color",
         "$value": "{semantic.colors.fg-lower}",

@@ -12,7 +12,7 @@
 <meta name="theme-color" content="#FFFFFF">
 <title>신청하기 — 감정적인 오렌지들</title>
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
-<link rel="stylesheet" href="./build/tokens.css?v=2187448f">
+<link rel="stylesheet" href="./build/tokens.css?v=709009f0">
 <link rel="stylesheet" href="./components/container.css?v=55694a09">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=445ba00a">
@@ -22,7 +22,7 @@
 <link rel="stylesheet" href="./components/gnb.css?v=6ffa9bb9">
 <link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
 <link rel="stylesheet" href="./components/footer.css?v=b6122ba5">
-<link rel="stylesheet" href="./components/option-card.css?v=2e26e18d">
+<link rel="stylesheet" href="./components/option-card.css?v=0211339f">
 <link rel="stylesheet" href="./components/schedule.css?v=6094ad80">
 <link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
 <link rel="stylesheet" href="./components/checkbox.css?v=67340959">
@@ -317,8 +317,8 @@
                   <span class="option-card__place">서울 강남</span>
                 </span>
                 <span class="option-card__aside">
-                  <span class="tag tag--accent-pri option-card__deadline">
-                    <svg aria-hidden="true"><use href="#icon-scheduleFilled"></use></svg>
+                  <span class="option-card__deadline">
+                    <svg aria-hidden="true"><use href="#icon-schedule"></use></svg>
                     <time class="countdown">02:30:24</time>
                   </span>
                   <span class="option-card__seats">남성 6 · 여성 5자리 남음</span>
@@ -336,8 +336,8 @@
                   <span class="option-card__place">서울 강남</span>
                 </span>
                 <span class="option-card__aside">
-                  <span class="tag tag--accent-pri option-card__deadline" hidden>
-                    <svg aria-hidden="true"><use href="#icon-scheduleFilled"></use></svg>
+                  <span class="option-card__deadline" hidden>
+                    <svg aria-hidden="true"><use href="#icon-schedule"></use></svg>
                     <time class="countdown">02:30:24</time>
                   </span>
                   <span class="option-card__seats">남성 3자리 남음</span>
@@ -421,11 +421,11 @@
   // 일정을 읽는 스크립트들보다 먼저 돕니다. 상품이 정해져 있으면 목록을 그 상품의
   // 일정으로 갈아끼우는데, 날짜를 그린 뒤에 갈아끼우면 새로 그려진 목록의 날짜 칸이
   // 빈 채로 남습니다 — 시트에서 며칠 일정인지가 사라졌습니다.
-  const { initProduct } = await import('./components/product.js?v=f94764f8')
+  const { initProduct } = await import('./components/product.js?v=0fc19687')
   initProduct()
   const { initSchedule } = await import('./components/schedule.js?v=6b6ab0cc')
   initSchedule()
-  const { initDiscounts } = await import('./components/discount.js?v=b7c8b9e1')
+  const { initDiscounts } = await import('./components/discount.js?v=468895d6')
   initDiscounts()
   const { initSheets } = await import('./components/sheet.js?v=b6e86ec5')
   initSheets()

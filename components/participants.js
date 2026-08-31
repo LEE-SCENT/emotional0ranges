@@ -94,25 +94,34 @@ function column(name, list) {
     return col
   }
 
-  const ul = el('ul', 'participants__list')
-  // 좁은 화면에서 두 줄로 접을 때 쓰는 칸 수입니다. 절반(올림)이면 위 줄이 먼저 차고
-  // 아래 줄이 그만큼 따라옵니다 — 한두 명은 나눌 것이 없어 인원 그대로 한 줄입니다.
-  ul.style.setProperty(
-    '--participants-cols',
-    String(list.length <= 2 ? list.length : Math.ceil(list.length / 2)),
-  )
-  for (const person of list) {
-    const li = el('li', `participant participant--${name === '남성' ? 'm' : 'f'}`)
-    const content = el('span', 'participant__content')
-    content.append(
-      el('span', 'participant__age', person.age),
-      el('span', 'participant__sep'),
-      el('span', 'participant__job', person.job),
-    )
-    li.append(content)
-    ul.append(li)
+  /*
+   * 두 줄로 나눠 담습니다. 좁은 화면에서 위 줄이 먼저 왼쪽에서 오른쪽으로 차고 아래
+   * 줄이 그만큼 따라오는데, 이것을 한 줄짜리 목록에 맡기면 칸 폭이 서로 묶입니다 —
+   * 같은 칸의 두 사람이 긴 쪽에 맞춰 함께 늘어납니다. 줄을 아예 나눠두면 사람마다
+   * 제 글자만큼만 차지합니다.
+   *
+   * 넓은 화면에서는 두 줄이 세로로 쌓여 앞에서부터 순서대로 한 줄이 됩니다.
+   * 한두 명은 나눌 것이 없어 윗줄 하나로 끝납니다.
+   */
+  const wrap = el('div', 'participants__list')
+  const half = list.length <= 2 ? list.length : Math.ceil(list.length / 2)
+  for (const part of [list.slice(0, half), list.slice(half)]) {
+    if (!part.length) continue
+    const ul = el('ul', 'participants__row')
+    for (const person of part) {
+      const li = el('li', `participant participant--${name === '남성' ? 'm' : 'f'}`)
+      const content = el('span', 'participant__content')
+      content.append(
+        el('span', 'participant__age', person.age),
+        el('span', 'participant__sep'),
+        el('span', 'participant__job', person.job),
+      )
+      li.append(content)
+      ul.append(li)
+    }
+    wrap.append(ul)
   }
-  col.append(ul)
+  col.append(wrap)
   return col
 }
 
