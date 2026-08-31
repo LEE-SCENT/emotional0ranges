@@ -146,8 +146,8 @@
               <b>[필수] 참석 약속 및 취소·환불 규정에 동의합니다</b>
               <span>참석이 어렵다면 모임 시작 전에 취소하거나 고객센터로 알려주세요</span>
             </span>
-            <!-- 스크립트가 규정을 접고 이 버튼을 켭니다. 스크립트가 오지 않으면
-                 규정은 펼쳐진 채이고 이 버튼은 할 일이 없습니다. -->
+            <!-- 규정은 펼친 채로 시작합니다. 이 버튼은 다 읽은 사람이 접을 때
+                 씁니다 — 스크립트가 오지 않으면 펼쳐진 채로 남습니다. -->
             <button class="checkout__terms-toggle" type="button" aria-expanded="true"
                     aria-label="규정 접기">
               <svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg>
@@ -424,7 +424,7 @@
   initDiscounts()
   const { initSheets } = await import('./components/sheet.js?v=b6e86ec5')
   initSheets()
-  const { initCheckout } = await import('./components/checkout.js?v=7624cede')
+  const { initCheckout } = await import('./components/checkout.js?v=1ee0721c')
   initCheckout()
   // 닫기와 뒤로는 상세로 돌아갑니다. 링크로 새로 열면 상세가 한 벌 더 쌓여, 그
   // 상세에서 뒤로를 누를 때 방금 나온 결제로 되돌아갑니다.

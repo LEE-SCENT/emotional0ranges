@@ -278,11 +278,14 @@ export function initCheckout(scope = document) {
     })
   }
 
-  /* ---- 규정 펼치기 ------------------------------------------------------
-     마크업에는 펼쳐진 채로 들어 있고 여기서 접습니다. 반대로 하면 스크립트가 오지
-     않았을 때 규정을 읽을 방법이 없습니다. */
+  /* ---- 규정 접기 --------------------------------------------------------
+     펼친 채로 시작합니다. 동의를 받는 화면에서 규정이 접혀 있으면, 읽지 않고 체크한
+     것과 읽을 수 없게 해둔 것을 나중에 가릴 수 없습니다 — 법무 검토 의견입니다.
+
+     마크업도 펼쳐진 상태라, 스크립트가 오지 않아도 규정은 그대로 읽힙니다. 접는
+     것은 다 읽은 사람이 스스로 하는 일이고, 이 버튼이 그 몫입니다. */
   if (agreeRow && terms && toggle) {
-    let open = false
+    let open = true
     const paint = () => {
       agreeRow.classList.toggle('is-collapsed', !open)
       toggle.setAttribute('aria-expanded', String(open))
