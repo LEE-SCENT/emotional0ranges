@@ -28,7 +28,7 @@
 <link rel="stylesheet" href="./components/checkbox.css?v=67340959">
 <link rel="stylesheet" href="./components/alert-banner.css?v=90e24d38">
 <link rel="stylesheet" href="./components/summary-card.css?v=bd4afa6f">
-<link rel="stylesheet" href="./components/checkout.css?v=65ae767c">
+<link rel="stylesheet" href="./components/checkout.css?v=c80bd7b5">
 <link rel="stylesheet" href="./components/roll.css?v=2f044986">
 <link rel="stylesheet" href="./components/bottom-cta.css?v=320a66ef">
 <link rel="stylesheet" href="./components/sheet.css?v=29f9252c">
@@ -158,6 +158,7 @@
           </div>
 
           <div class="checkout__terms">
+            <div class="checkout__terms-inner">
             <section>
               <h3>취소·불참에 따른 이용 제한</h3>
               <ul>
@@ -175,6 +176,7 @@
                 <li>4일 전부터 당일까지: 환불 불가</li>
               </ul>
             </section>
+            </div>
           </div>
 
         </div>
@@ -243,14 +245,14 @@
            이어서 확인할 것도 없습니다. -->
       <label class="summary-card__option" data-workplace-only="verified">
         <span class="checkbox">
-          <input type="checkbox" data-extra-option="10000"
-                 aria-label="모임 전까지 계속 확인하기, 10,000원 추가">
+          <input type="checkbox" id="extra-keep-checking" data-extra-option="10000"
+                 aria-labelledby="extra-keep-checking-title">
           <span class="checkbox__box" aria-hidden="true">
             <svg><use href="#icon-check"></use></svg>
           </span>
         </span>
         <span class="summary-card__option-text">
-          <b>모임 전까지 계속 확인하기 (+10,000원)</b>
+          <b id="extra-keep-checking-title">모임 전까지 계속 확인하기 (+10,000원)</b>
           <span>새로 겹치는 사람이 확인되면 알려드려요</span>
           <span>참여 · 일정 변경 · 환불 중에서 선택할 수 있어요</span>
         </span>

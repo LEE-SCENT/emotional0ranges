@@ -168,7 +168,9 @@
   min-inline-size: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-400);
+  /* 줄 사이 간격은 0 입니다. 접힌 규정이 자리를 차지하지 않아야 동의 한 줄만 남습니다 —
+     펼쳐졌을 때의 16 은 규정 안쪽의 padding 이 만듭니다. */
+  gap: 0;
 }
 
 /* 동의 문장과 펼침 화살표가 한 줄에 섭니다. 화살표는 줄 맨 위에 맞춥니다 —
@@ -202,13 +204,39 @@
   line-height: var(--typography-body-s-regular-line-height);
 }
 
+/* ---- 규정 접고 펼치기 --------------------------------------------------
+   높이를 재지 않고 grid 의 1fr -> 0fr 로 접습니다. 규정은 길이가 정해져 있지 않고,
+   접히는 것이 보여야 어디로 갔는지 압니다 — 사라지면 다시 부를 수 있다는 것도 함께
+   사라집니다.
+
+   ⚠️ Figma 에 이 모션이 없어 시간과 곡선을 코드에서 정했습니다.
+*/
+
 .checkout__terms {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-200);
+  display: grid;
+  grid-template-rows: 1fr;
   color: var(--colors-fg-low);
   font-size: var(--typography-body-s-regular-font-size);
   line-height: var(--typography-body-s-regular-line-height);
+  transition: grid-template-rows var(--_duration-base) var(--_easing-standard);
+}
+
+/* 접힌 동안 잘려나가는 자리. 위 여백도 이 안에 있어야 합니다 — 바깥에 두면 접힌
+   뒤에도 빈 줄이 남습니다. */
+.checkout__terms-inner {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-200);
+}
+
+/* 동의 줄과 규정 사이의 16 은 첫 조각의 margin 입니다. 상자의 padding 으로 두면
+   접힌 뒤에도 그만큼이 남습니다 — padding 은 잘려나가는 내용이 아니라 상자 자신의
+   크기입니다. */
+.checkout__terms-inner > :first-child { margin-block-start: var(--spacing-400); }
+
+@media (prefers-reduced-motion: reduce) {
+  .checkout__terms { transition: none; }
 }
 
 .checkout__terms section {
@@ -234,7 +262,7 @@
 /* 접힌 동안에는 규정이 통째로 빠집니다. 동의 문장만으로 무엇에 동의하는지 알 수
    있고, 자세한 것은 펼쳐서 봅니다. 스크립트가 붙였다 떼며, 스크립트가 없으면
    처음부터 펼쳐진 채입니다 — 읽을 수 없는 것보다 긴 편이 낫습니다. */
-.checkout__agree.is-collapsed .checkout__terms { display: none; }
+.checkout__agree.is-collapsed .checkout__terms { grid-template-rows: 0fr; }
 
 /* 화살표 하나가 버튼입니다.
    ⚠️ 스프라이트에는 chevronDown 만 있습니다. 펼쳐진 상태의 chevronUp 은 같은 모양을
