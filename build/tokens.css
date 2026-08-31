@@ -252,7 +252,7 @@
   --_participant-icon-size: calc(var(--_dimension) * 5);
   --_participant-modal-width: 600px;
   --_participant-col-gap: var(--spacing-400);
-  --_participant-item-gap: var(--spacing-200);
+  --_participant-item-gap: var(--spacing-100);
   --_product-card-rounded: var(--_rounded-l);
   --_product-card-image-ratio: 1.4444;
   --_product-card-min-width: 312px;

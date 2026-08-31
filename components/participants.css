@@ -38,7 +38,10 @@
   overscroll-behavior: contain;
 }
 
-/* 어느 일정을 보고 있는지. 창을 연 뒤에도 고른 일정이 무엇이었는지 남아야 합니다. */
+/* 어느 일정을 보고 있는지. 창을 연 뒤에도 고른 일정이 무엇이었는지 남아야 합니다.
+
+   사람 항목이 회색 면이 되면서 이 줄은 흰 면에 테두리가 됩니다 — 같은 회색이 둘이면
+   무엇이 목록이고 무엇이 머리글인지 흐려집니다. */
 .participants__when {
   display: flex;
   align-items: center;
@@ -46,13 +49,18 @@
   gap: var(--spacing-400);
   margin: 0;
   padding: var(--spacing-300) var(--spacing-400);
+  border: 1px solid var(--colors-border);
   border-radius: var(--_rounded-l);
-  background: var(--colors-bg-low);
+  background: var(--colors-bg);
   color: var(--colors-fg);
   font-size: var(--typography-body-m-regular-font-size);
   line-height: var(--typography-body-m-regular-line-height);
   white-space: nowrap;
 }
+
+/* 왼쪽은 이름표, 오른쪽이 값입니다. 같은 굵기로 나란히 두면 어느 쪽을 읽어야 할지
+   한 번 더 고르게 됩니다. */
+.participants__when > :first-child { color: var(--colors-fg-low); }
 
 .participants__cols {
   display: flex;
@@ -67,7 +75,8 @@
   min-inline-size: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--_participant-item-gap);
+  /* 제목과 목록 사이. 사람과 사람 사이(4)보다 넓습니다 — 다른 것 사이의 간격입니다. */
+  gap: var(--spacing-200);
 }
 
 .participants__col h3 {

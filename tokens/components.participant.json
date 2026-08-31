@@ -31,7 +31,11 @@
         "$description": "묻는 창(440)보다 넓습니다 — 남성과 여성을 두 단으로 나란히 놓아야 합니다."
       },
       "colGap": { "$type": "dimension", "$value": "{semantic.spacing.400}" },
-      "itemGap": { "$type": "dimension", "$value": "{semantic.spacing.200}" }
+      "itemGap": {
+        "$type": "dimension",
+        "$value": "{semantic.spacing.100}",
+        "$description": "사람과 사람 사이 4. 8 에서 좁혔습니다 — 항목이 회색 면이 되면서 여백이 아니라 면이 경계를 맡습니다. 제목과 목록 사이는 그대로 8 입니다(그쪽은 다른 것 사이의 간격입니다)."
+      }
     }
   }
 }
