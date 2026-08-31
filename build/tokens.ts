@@ -152,6 +152,15 @@ export const semantic = {
     "divider": "#E7E5E4",
     "divider-low": "#F3F1F0"
   },
+  "iconSize": {
+    "2xs": "12px",
+    "xs": "16px",
+    "s": "20px",
+    "m": "24px",
+    "l": "28px",
+    "xl": "32px",
+    "2xl": "36px"
+  },
   "breakpoint": {
     "sm": "441px",
     "md": "961px",
@@ -421,10 +430,10 @@ export const components = {
     },
     "rounded": "9999px",
     "iconSize": {
-      "xs": "16px",
-      "s": "20px",
-      "m": "24px",
-      "l": "28px"
+      "xs": "4px",
+      "s": "4px",
+      "m": "4px",
+      "l": "4px"
     },
     "borderWidth": "1px",
     "blurRadius": "7.5px"

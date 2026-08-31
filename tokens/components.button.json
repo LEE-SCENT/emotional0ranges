@@ -74,30 +74,11 @@
       },
       "iconSize": {
         "$type": "dimension",
-        "xs": {
-          "$value": "{primitive.dimension}",
-          "$extensions": {
-            "scale": 4
-          }
-        },
-        "s": {
-          "$value": "{primitive.dimension}",
-          "$extensions": {
-            "scale": 5
-          }
-        },
-        "m": {
-          "$value": "{primitive.dimension}",
-          "$extensions": {
-            "scale": 6
-          }
-        },
-        "l": {
-          "$value": "{primitive.dimension}",
-          "$extensions": {
-            "scale": 7
-          }
-        }
+        "$description": "제 값을 적지 않고 semantic/iconSize 의 칸을 가리킵니다. 값은 그대로(16·20·24·28)이지만, 이제 계단이 바뀌면 버튼도 함께 따라갑니다.",
+        "xs": { "$value": "{semantic.iconSize.xs}" },
+        "s":  { "$value": "{semantic.iconSize.s}" },
+        "m":  { "$value": "{semantic.iconSize.m}" },
+        "l":  { "$value": "{semantic.iconSize.l}" }
       },
       "borderWidth": {
         "$type": "dimension",

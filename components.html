@@ -9,7 +9,7 @@
 <link rel="mask-icon" href="./favicon.svg" color="#F75D15">
 <meta name="theme-color" content="#FFFFFF">
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
-<link rel="stylesheet" href="./build/tokens.css?v=e35dedf8">
+<link rel="stylesheet" href="./build/tokens.css?v=6017d5a9">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=445ba00a">
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="./components/container.css?v=55694a09">
 <link rel="stylesheet" href="./components/footer.css?v=b6122ba5">
 <link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
-<link rel="stylesheet" href="./components/product-card.css?v=0494adff">
+<link rel="stylesheet" href="./components/product-card.css?v=83692fb0">
 <link rel="stylesheet" href="./components/app-bar.css?v=4709389e">
 <link rel="stylesheet" href="./components/toast.css?v=654c8975">
 <link rel="stylesheet" href="./components/participants.css?v=b1e4b414">
@@ -413,6 +413,30 @@
     </div>
   </article>
 </div>
+
+<h2>Card — 목록 끝의 더보기 (썸네일과 같은 높이 · 최소 폭 108)</h2>
+<div class="product-card-section">
+  <div class="product-card-group">
+    <article class="product-card">
+      <div class="product-card__media">
+        <img src="./images/meetup-couple.jpg" alt="">
+        <div class="product-card__tags"><span class="tag">8월 25일 (화) 저녁 7시</span></div>
+      </div>
+      <div class="product-card__info">
+        <h3 class="product-card__title">목록의 마지막 카드</h3>
+        <p class="product-card__desc">서울 강남 · 일정 5개</p>
+        <p class="product-card__price">42,000원~</p>
+      </div>
+    </article>
+    <a class="product-card-more" href="#">
+      <span class="btn btn--blur btn--medium btn--icon-only">
+        <svg class="btn__icon" aria-hidden="true"><use href="#icon-chevronRight"></use></svg>
+      </span>
+      <span>더보기</span>
+    </a>
+  </div>
+</div>
+<small>높이는 옆 카드의 썸네일에서 옵니다 — 카드 폭에서 나온 값이라 컨테이너 쿼리로 잽니다.</small>
 
 <h2>Card — promotion · 사진 7장 (메인 포함) → 더보기 노출</h2>
 <article class="product-card product-card--promotion is-locked">

@@ -343,10 +343,10 @@
   color: var(--_product-card-more-fg);
   text-decoration: none;
   font-family: var(--_font-family-pretendard);
-  font-size: var(--typography-body-l-medium-font-size);
-  font-weight: var(--typography-body-l-medium-font-weight);
-  line-height: var(--typography-body-l-medium-line-height);
-  letter-spacing: var(--typography-body-l-medium-letter-spacing);
+  font-size: var(--typography-body-m-regular-font-size);
+  font-weight: var(--typography-body-m-regular-font-weight);
+  line-height: var(--typography-body-m-regular-line-height);
+  letter-spacing: var(--typography-body-m-regular-letter-spacing);
   white-space: nowrap;
 }
 

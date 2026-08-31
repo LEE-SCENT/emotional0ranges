@@ -1,0 +1,15 @@
+{
+  "semantic": {
+    "iconSize": {
+      "$type": "dimension",
+      "$description": "아이콘 한 벌의 크기 계단. primitive/dimension(4px) 의 배수이고, 컴포넌트는 제 값을 적는 대신 이 계단의 한 칸을 가리킵니다 — 버튼의 s 와 툴팁의 s 가 같은 20 이라는 것이 두 곳에 적힌 20 이 아니라 같은 칸이어야 합니다.",
+      "2xs": { "$value": "{primitive.dimension}", "$extensions": { "scale": 3 } },
+      "xs":  { "$value": "{primitive.dimension}", "$extensions": { "scale": 4 } },
+      "s":   { "$value": "{primitive.dimension}", "$extensions": { "scale": 5 } },
+      "m":   { "$value": "{primitive.dimension}", "$extensions": { "scale": 6 } },
+      "l":   { "$value": "{primitive.dimension}", "$extensions": { "scale": 7 } },
+      "xl":  { "$value": "{primitive.dimension}", "$extensions": { "scale": 8 } },
+      "2xl": { "$value": "{primitive.dimension}", "$extensions": { "scale": 9 } }
+    }
+  }
+}

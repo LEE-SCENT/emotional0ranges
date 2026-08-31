@@ -101,6 +101,13 @@
   --colors-border: var(--_colors-serious-gray-300);
   --colors-divider: var(--_colors-serious-gray-300);
   --colors-divider-low: var(--_colors-serious-gray-200);
+  --icon-size-2xs: calc(var(--_dimension) * 3);
+  --icon-size-xs: calc(var(--_dimension) * 4);
+  --icon-size-s: calc(var(--_dimension) * 5);
+  --icon-size-m: calc(var(--_dimension) * 6);
+  --icon-size-l: calc(var(--_dimension) * 7);
+  --icon-size-xl: calc(var(--_dimension) * 8);
+  --icon-size-2xl: calc(var(--_dimension) * 9);
   --breakpoint-sm: 441px;
   --breakpoint-md: 961px;
   --breakpoint-lg: 1601px;
@@ -177,10 +184,10 @@
   --_button-blur-fg-on: var(--_colors-white);
   --_button-blur-bg-on: var(--_colors-white-alpha-15);
   --_button-rounded: var(--_rounded-full);
-  --_button-icon-size-xs: calc(var(--_dimension) * 4);
-  --_button-icon-size-s: calc(var(--_dimension) * 5);
-  --_button-icon-size-m: calc(var(--_dimension) * 6);
-  --_button-icon-size-l: calc(var(--_dimension) * 7);
+  --_button-icon-size-xs: var(--icon-size-xs);
+  --_button-icon-size-s: var(--icon-size-s);
+  --_button-icon-size-m: var(--icon-size-m);
+  --_button-icon-size-l: var(--icon-size-l);
   --_button-border-width: 1px;
   --_button-blur-radius: 7.5px;
   --_confirm-width: 440px;
