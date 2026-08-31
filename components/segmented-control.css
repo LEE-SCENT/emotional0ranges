@@ -7,7 +7,8 @@
  *     <button class="segmented__item" role="tab" aria-selected="false">오프라인</button>
  *   </div>
  *
- * size: 기본 small (높이 40) | --medium (높이 56)
+ * 크기는 하나입니다 (높이 40). 두 가지를 두던 때가 있었지만 Figma 가 medium 하나로
+ * 합쳤습니다 — 같은 컨트롤이 화면마다 다른 크기로 서 있을 이유가 없습니다.
  *
  * 선택 표시는 항목의 배경이 아니라 별도의 __thumb 이 맡습니다. 배경을 켜고 끄면
  * 즉시 점프하지만, thumb 은 위치와 폭을 전환할 수 있어 미끄러지듯 이동합니다.
@@ -24,6 +25,9 @@
   display: inline-flex;
   align-items: center;
   overflow: clip;
+  /* 고른 항목이 테두리에 닿지 않도록 2 를 둘러 둡니다. 알약 안의 알약이라, 닿아
+     있으면 바깥 선이 안쪽 알약의 테두리처럼 읽힙니다. */
+  padding: var(--spacing-50);
   border-radius: var(--_segmented-control-rounded);
   background: var(--_segmented-control-bg);
   box-shadow: inset 0 0 0 var(--_segmented-control-border-width) var(--_segmented-control-border);
@@ -31,7 +35,9 @@
 
 .segmented__thumb {
   position: absolute;
-  inset-block: 0;
+  /* 절대 위치의 기준은 padding 상자라, 0 으로 두면 위아래 여백을 밟고 올라섭니다.
+     가로는 JS 가 넘기는 offsetLeft 가 이미 그 여백을 포함합니다. */
+  inset-block: var(--spacing-50);
   inset-inline-start: 0;
   inline-size: var(--segmented-thumb-w, 0);
   translate: var(--segmented-thumb-x, 0) 0;
@@ -59,8 +65,7 @@
   box-sizing: border-box;
   border: 0;
   margin: 0;
-  /* 좌우 12 는 두 크기가 같고, 위아래만 달라집니다 (small 10 / medium 16). */
-  padding: var(--spacing-250) var(--spacing-300);
+  padding: var(--spacing-200) var(--spacing-300);
   border-radius: var(--_segmented-control-item-rounded);
   background: transparent;
   color: var(--_segmented-control-item-fg);
@@ -74,15 +79,6 @@
   /* 글자색은 thumb 이 도착하는 속도에 맞춰 함께 바뀝니다. */
   transition: color var(--_segmented-control-transition-duration)
               var(--_segmented-control-transition-easing);
-}
-
-/* medium 은 글자도 한 단계 큽니다 (body-l-medium 16/1.5). */
-.segmented--medium .segmented__item {
-  padding-block: var(--spacing-400);
-  font-size: var(--typography-body-l-medium-font-size);
-  font-weight: var(--typography-body-l-medium-font-weight);
-  line-height: var(--typography-body-l-medium-line-height);
-  letter-spacing: var(--typography-body-l-medium-letter-spacing);
 }
 
 /* 고를 수 없는 항목. 배경은 그대로 두고 글자만 낮춥니다 — 자리를 지키고 있어야

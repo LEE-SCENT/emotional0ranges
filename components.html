@@ -9,13 +9,13 @@
 <link rel="mask-icon" href="./favicon.svg" color="#F75D15">
 <meta name="theme-color" content="#FFFFFF">
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
-<link rel="stylesheet" href="./build/tokens.css?v=fc518473">
+<link rel="stylesheet" href="./build/tokens.css?v=46e3801b">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=445ba00a">
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
-<link rel="stylesheet" href="./components/segmented-control.css?v=7a4a3de6">
+<link rel="stylesheet" href="./components/segmented-control.css?v=a913fdf3">
 <link rel="stylesheet" href="./components/tooltip.css?v=d3d8dfa4">
-<link rel="stylesheet" href="./components/gnb.css?v=3046ec8e">
+<link rel="stylesheet" href="./components/gnb.css?v=3c18673a">
 <link rel="stylesheet" href="./components/container.css?v=55694a09">
 <link rel="stylesheet" href="./components/footer.css?v=b6122ba5">
 <link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
@@ -64,7 +64,7 @@
 <div class="row" id="r4"></div>
 <h2>Button — iconOnly + badge</h2>
 <div class="row" id="r4b"></div>
-<h2>SegmentedControl — small(40) / medium(56) · 마지막 항목은 비활성</h2>
+<h2>SegmentedControl — 높이 40 · 마지막 항목은 비활성</h2>
 <div class="row" id="r5"></div>
 <h2>Tooltip — bottom / top × 닫기버튼</h2>
 <div class="row" id="r6" style="gap:32px;row-gap:28px;padding:20px 0"></div>
@@ -568,14 +568,14 @@ document.getElementById('r4').innerHTML =
 document.getElementById('r4b').innerHTML =
   ['filled','outlined','ghost','blur'].flatMap(t => ['small','medium','large'].map(s => iconOnly(t,s,true))).join('')
 
-document.getElementById('r5').innerHTML = ['small','medium'].map(sz => `
-  <div class="segmented${sz==='medium'?' segmented--medium':''}" role="tablist">
+document.getElementById('r5').innerHTML = `
+  <div class="segmented" role="tablist">
     <span class="segmented__thumb" aria-hidden="true"></span>
     <button class="segmented__item is-selected" role="tab" aria-selected="true">온라인</button>
     <button class="segmented__item" role="tab" aria-selected="false">오프라인</button>
     <button class="segmented__item" role="tab" aria-selected="false">전체</button>
     <button class="segmented__item" role="tab" aria-selected="false" disabled>준비 중</button>
-  </div>`).join('')
+  </div>`
 
 document.getElementById('r6').innerHTML = ['bottom','top'].flatMap(pl => [
   `<div class="tooltip tooltip--${pl}"><span class="tooltip__label">온라인 매칭 지금 보러 가기</span></div>`,
