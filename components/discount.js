@@ -7,7 +7,7 @@
  *     …
  *     <span class="option-card__deadline">
  *       <svg aria-hidden="true"><use href="#icon-scheduleFilled"></use></svg>
- *       <time class="countdown">02:30:24</time>
+ *       <span><time class="countdown">02:30:24</time> 남음</span>
  *     </span>
  *
  *   import { initDiscounts } from './components/discount.js'

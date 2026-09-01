@@ -86,7 +86,7 @@ function renderSchedule(scope, schedule) {
         const tag = o.deadline
           ? `<span class="option-card__deadline"${o.deadline < 86400 ? '' : ' hidden'}>
                 <svg aria-hidden="true"><use href="#icon-schedule"></use></svg>
-                <time class="countdown">02:30:24</time>
+                <span><time class="countdown">02:30:24</time> 남음</span>
               </span>`
           : ''
         const icon = o.alert ? '<svg aria-hidden="true"><use href="#icon-notifications"></use></svg>' : ''
