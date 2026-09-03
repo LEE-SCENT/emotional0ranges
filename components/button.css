@@ -24,7 +24,7 @@
   margin: 0;
   border-radius: var(--_button-rounded);
   background: transparent;
-  font-family: var(--_font-family-pretendard);
+  font-family: var(--_font-family-base);
   cursor: pointer;
   /* <a> 로도 씁니다 — 다른 화면으로 가는 버튼은 링크여야 새 탭으로 열거나 주소를
      복사할 수 있습니다. 그때 따라오는 브라우저 기본 밑줄을 여기서 끕니다. */

@@ -31,7 +31,7 @@
   max-inline-size: var(--container-max-width-md);
   margin-inline: auto;
   border-block-start: 1px solid var(--colors-border);
-  font-family: var(--_font-family-pretendard);
+  font-family: var(--_font-family-base);
 }
 
 .footer__info {

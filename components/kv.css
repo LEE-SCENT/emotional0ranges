@@ -19,7 +19,7 @@
   min-block-size: var(--_kv-min-height-base);
   border-radius: var(--_kv-rounded-base);
   color: var(--colors-fg-contrast);
-  font-family: var(--_font-family-pretendard);
+  font-family: var(--_font-family-base);
 }
 
 /* ---- 배경 영상 ---------------------------------------------------------
@@ -187,7 +187,7 @@
      ⚠️ 단계 전환이 의도였다면 이 clamp 를 고정값으로 바꿔야 합니다. */
   .kv__headline {
     font-size: clamp(
-      var(--typography-display-m-semibold-font-size),
+      var(--typography-display-l-semibold-font-size),
       calc(29.78px + 1.3889vw),
       var(--typography-display-xl-semibold-font-size)
     );

@@ -69,7 +69,7 @@
   border-radius: var(--_segmented-control-item-rounded);
   background: transparent;
   color: var(--_segmented-control-item-fg);
-  font-family: var(--_font-family-pretendard);
+  font-family: var(--_font-family-base);
   font-size: var(--typography-body-m-medium-font-size);
   font-weight: var(--typography-body-m-medium-font-weight);
   line-height: var(--typography-body-m-medium-line-height);

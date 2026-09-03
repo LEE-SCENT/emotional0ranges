@@ -21,7 +21,7 @@
   align-items: center;
   gap: var(--spacing-600);
   box-shadow: inset 0 -1px 0 0 var(--_tabs-border);
-  font-family: var(--_font-family-pretendard);
+  font-family: var(--_font-family-base);
 }
 
 .tabs__item {

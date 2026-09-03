@@ -19,7 +19,7 @@
   background: var(--_tag-bg);
   color: var(--_tag-fg);
   backdrop-filter: blur(var(--_tag-blur-radius));
-  font-family: var(--_font-family-pretendard);
+  font-family: var(--_font-family-base);
   font-size: var(--typography-body-s-medium-font-size);
   font-weight: var(--typography-body-s-medium-font-weight);
   line-height: var(--typography-body-s-medium-line-height);

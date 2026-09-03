@@ -23,7 +23,7 @@
   border-radius: var(--_alert-banner-rounded);
   background: var(--_alert-banner-bg);
   color: var(--_alert-banner-fg);
-  font-family: var(--_font-family-pretendard);
+  font-family: var(--_font-family-base);
   font-size: var(--typography-body-s-regular-font-size);
   font-weight: var(--typography-body-s-regular-font-weight);
   line-height: var(--typography-body-s-regular-line-height);

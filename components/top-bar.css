@@ -27,7 +27,7 @@
   gap: var(--_top-bar-gap);
   padding: var(--_top-bar-padding-block) var(--_top-bar-padding-inline);
   background: var(--colors-bg);
-  font-family: var(--_font-family-pretendard);
+  font-family: var(--_font-family-base);
 }
 
 .top-bar__label {

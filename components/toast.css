@@ -59,7 +59,7 @@
   /* 배경이 85% 라 뒤가 조금 비칩니다. 흐려서 글자가 아니라 색으로만 남게 합니다. */
   backdrop-filter: blur(var(--_toast-blur-radius));
   color: var(--_toast-fg);
-  font-family: var(--_font-family-pretendard);
+  font-family: var(--_font-family-base);
   font-size: var(--typography-body-m-regular-font-size);
   line-height: var(--typography-body-m-regular-line-height);
 }

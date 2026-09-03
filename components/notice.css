@@ -19,7 +19,7 @@
   /* 앞 카드 섹션이 아래쪽 48 을 품고 있어 여기서는 띄우지 않습니다. */
   padding: var(--spacing-800) var(--spacing-600);
   background: var(--_notice-bg);
-  font-family: var(--_font-family-pretendard);
+  font-family: var(--_font-family-base);
 }
 
 .notice__inner {

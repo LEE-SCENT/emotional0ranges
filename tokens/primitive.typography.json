@@ -2,7 +2,7 @@
   "primitive": {
     "fontFamily": {
       "$type": "fontFamily",
-      "pretendard": {
+      "base": {
         "$value": [
           "Pretendard Variable",
           "Pretendard",
@@ -18,6 +18,15 @@
           "sans-serif"
         ],
         "$description": "우리가 fonts/pretendard 로 직접 배포하는 'Pretendard Variable' 이 맨 앞입니다. 로컬에 설치된 static Pretendard 가 먼저 잡히면 기기마다 렌더링이 달라지므로 순서가 중요합니다. 나머지는 웹폰트 로딩 전/실패 시의 폴백입니다."
+      },
+      "display": {
+        "$value": [
+          "Crimson Pro",
+          "Georgia",
+          "Times New Roman",
+          "serif"
+        ],
+        "$description": "display-en 계열에만 씁니다. Google Fonts 에서 받아오며(각 화면의 <link>), 한글 글리프가 없어 본문 서체로는 쓰지 않습니다. 폴백은 도착 전·실패 시의 세리프입니다."
       }
     },
     "fontSize": {
@@ -52,8 +61,17 @@
       "1050": {
         "$value": "44px"
       },
+      "1100": {
+        "$value": "48px"
+      },
       "1150": {
         "$value": "52px"
+      },
+      "1250": {
+        "$value": "60px"
+      },
+      "1350": {
+        "$value": "68px"
       }
     },
     "fontWeight": {
@@ -71,6 +89,9 @@
     "lineHeight": {
       "$type": "lineHeight",
       "$description": "퍼센트 표기(Figma line-height 방식)를 사용합니다. DTCG 코어에는 퍼센트 타입이 없어 Tokens Studio의 lineHeight 타입을 씁니다.",
+      "85": {
+        "$value": "85%"
+      },
       "110": {
         "$value": "110%"
       },
@@ -89,6 +110,10 @@
       "$description": "Figma와 동일하게 퍼센트로 정의합니다. CSS letter-spacing 은 퍼센트를 받지 않으므로 빌드 시 em 으로 변환됩니다(-2% -> -0.02em). em 은 자기 font-size 기준이라 Figma의 퍼센트 의미와 정확히 일치합니다.\n⚠️ Figma Dev Mode 는 이 변수를 단위 없는 -2 로 내보내고 코드 예시에는 -2px 로 적습니다. px 가 아닙니다 — 확인된 값은 퍼센트입니다. 32px 헤드라인 기준 -2% 는 -0.64px 이고 -2px 로 바꾸면 글줄이 16px 좁아집니다.",
       "0": {
         "$value": "0%"
+      },
+      "n1": {
+        "$value": "-1%",
+        "$description": "아직 semantic 토큰에서 사용하지 않습니다."
       },
       "n2": {
         "$value": "-2%"

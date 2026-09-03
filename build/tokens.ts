@@ -83,7 +83,7 @@ export const primitive = {
     "full": "9999px"
   },
   "fontFamily": {
-    "pretendard": [
+    "base": [
       "Pretendard Variable",
       "Pretendard",
       "-apple-system",
@@ -96,6 +96,12 @@ export const primitive = {
       "Noto Sans KR",
       "Malgun Gothic",
       "sans-serif"
+    ],
+    "display": [
+      "Crimson Pro",
+      "Georgia",
+      "Times New Roman",
+      "serif"
     ]
   },
   "fontSize": {
@@ -109,7 +115,10 @@ export const primitive = {
     "800": "32px",
     "900": "36px",
     "1050": "44px",
-    "1150": "52px"
+    "1100": "48px",
+    "1150": "52px",
+    "1250": "60px",
+    "1350": "68px"
   },
   "fontWeight": {
     "regular-400": 400,
@@ -117,6 +126,7 @@ export const primitive = {
     "semibold-600": 600
   },
   "lineHeight": {
+    "85": "85%",
     "110": "110%",
     "130": "130%",
     "140": "140%",
@@ -124,6 +134,7 @@ export const primitive = {
   },
   "letterSpacing": {
     "0": "0em",
+    "n1": "-0.01em",
     "n2": "-0.02em",
     "n3": "-0.03em"
   }
@@ -212,12 +223,26 @@ export const typography = {
     "lineHeight": "130%",
     "letterSpacing": "-0.02em"
   },
-  "display-m-semibold": {
+  "display-en-xl-semibold": {
+    "fontFamily": "\"Crimson Pro\", Georgia, \"Times New Roman\", serif",
+    "fontSize": "68px",
+    "fontWeight": 600,
+    "lineHeight": "85%",
+    "letterSpacing": "0em"
+  },
+  "display-l-semibold": {
     "fontFamily": "\"Pretendard Variable\", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, \"Helvetica Neue\", \"Segoe UI\", \"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", sans-serif",
     "fontSize": "44px",
     "fontWeight": 600,
     "lineHeight": "130%",
     "letterSpacing": "-0.02em"
+  },
+  "display-en-l-semibold": {
+    "fontFamily": "\"Crimson Pro\", Georgia, \"Times New Roman\", serif",
+    "fontSize": "60px",
+    "fontWeight": 600,
+    "lineHeight": "85%",
+    "letterSpacing": "0em"
   },
   "display-s-semibold": {
     "fontFamily": "\"Pretendard Variable\", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, \"Helvetica Neue\", \"Segoe UI\", \"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", sans-serif",
@@ -225,6 +250,13 @@ export const typography = {
     "fontWeight": 600,
     "lineHeight": "130%",
     "letterSpacing": "-0.02em"
+  },
+  "display-en-s-semibold": {
+    "fontFamily": "\"Crimson Pro\", Georgia, \"Times New Roman\", serif",
+    "fontSize": "48px",
+    "fontWeight": 600,
+    "lineHeight": "85%",
+    "letterSpacing": "0em"
   },
   "heading-l-semibold": {
     "fontFamily": "\"Pretendard Variable\", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, \"Helvetica Neue\", \"Segoe UI\", \"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", sans-serif",

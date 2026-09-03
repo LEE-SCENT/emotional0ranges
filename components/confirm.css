@@ -63,7 +63,7 @@
   border-radius: var(--_confirm-rounded);
   background: var(--_confirm-bg);
   box-shadow: var(--_confirm-shadow);
-  font-family: var(--_font-family-pretendard);
+  font-family: var(--_font-family-base);
 }
 
 /* 초점은 판이 받습니다(confirm.js) — 열자마자 버튼 하나에 테가 둘리지 않게 하려는

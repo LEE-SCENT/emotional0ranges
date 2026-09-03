@@ -9,23 +9,36 @@
 <link rel="mask-icon" href="./favicon.svg" color="#F75D15">
 <meta name="theme-color" content="#FFFFFF">
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
-<link rel="stylesheet" href="./build/tokens.css?v=709009f0">
+<!-- 영문 전용 display 서체(display-en-*). Google Fonts 에서 받아옵니다.
+     선언만 담긴 CSS 라, 이 서체를 쓰는 글자가 화면에 없으면 폰트 파일은 받지 않습니다.
+     preconnect 는 그 CSS 를 읽고 나서야 시작될 연결을 미리 열어둡니다.
+
+     media=print 로 걸었다가 도착하면 all 로 바꿉니다. 스타일시트는 원래 첫 그림을
+     막는데, 남의 서버에서 오는 이 한 줄 때문에 우리 화면이 늦게 뜰 이유가 없습니다 —
+     화면에 쓰이는 글자는 어차피 Pretendard 이고, 이 서체는 늦게 와도 그때 바뀝니다. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" media="print" onload="this.media='all'"
+      href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@600&display=swap">
+<noscript><link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@600&display=swap"></noscript>
+<link rel="stylesheet" href="./build/tokens.css?v=4caa9dc5">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
-<link rel="stylesheet" href="./components/button.css?v=445ba00a">
+<link rel="stylesheet" href="./components/button.css?v=74e05141">
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
-<link rel="stylesheet" href="./components/segmented-control.css?v=51e463af">
-<link rel="stylesheet" href="./components/tooltip.css?v=d3d8dfa4">
-<link rel="stylesheet" href="./components/gnb.css?v=6ffa9bb9">
+<link rel="stylesheet" href="./components/segmented-control.css?v=688cb4f0">
+<link rel="stylesheet" href="./components/tooltip.css?v=7ec024df">
+<link rel="stylesheet" href="./components/gnb.css?v=97ee337d">
 <link rel="stylesheet" href="./components/container.css?v=55694a09">
-<link rel="stylesheet" href="./components/footer.css?v=b6122ba5">
-<link rel="stylesheet" href="./components/tag.css?v=fe69b51f">
-<link rel="stylesheet" href="./components/product-card.css?v=83692fb0">
-<link rel="stylesheet" href="./components/app-bar.css?v=4709389e">
-<link rel="stylesheet" href="./components/toast.css?v=654c8975">
+<link rel="stylesheet" href="./components/footer.css?v=090dd8fc">
+<link rel="stylesheet" href="./components/tag.css?v=fef5c195">
+<link rel="stylesheet" href="./components/product-card.css?v=82efa7cf">
+<link rel="stylesheet" href="./components/app-bar.css?v=7fbb6489">
+<link rel="stylesheet" href="./components/toast.css?v=c0f08bad">
 <link rel="stylesheet" href="./components/participants.css?v=3d11ed3c">
 <style>
   body { margin:0; padding:24px; background:var(--colors-bg); color:var(--colors-fg);
-         font-family:var(--_font-family-pretendard); }
+         font-family:var(--_font-family-base); }
   h2 { font-size:12px; letter-spacing:.08em; text-transform:uppercase;
        color:var(--colors-fg-lower); margin:28px 0 10px; }
   .row { display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-bottom:10px; }

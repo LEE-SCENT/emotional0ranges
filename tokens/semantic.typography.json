@@ -7,37 +7,67 @@
         "$description": "마케팅/프로모션 등 화면당 1회 수준의 대형 텍스트.",
         "xl-semibold": {
           "$value": {
-            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontFamily": "{primitive.fontFamily.base}",
             "fontSize": "{primitive.fontSize.1150}",
             "fontWeight": "{primitive.fontWeight.semibold-600}",
             "lineHeight": "{primitive.lineHeight.130}",
             "letterSpacing": "{primitive.letterSpacing.n2}"
           }
         },
-        "m-semibold": {
+        "en-xl-semibold": {
           "$value": {
-            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontFamily": "{primitive.fontFamily.display}",
+            "fontSize": "{primitive.fontSize.1350}",
+            "fontWeight": "{primitive.fontWeight.semibold-600}",
+            "lineHeight": "{primitive.lineHeight.85}",
+            "letterSpacing": "{primitive.letterSpacing.0}"
+          },
+          "$description": "영문 전용입니다. 한글 글리프가 없는 서체라 한글이 섞이면 폴백 세리프로 떨어집니다.\n⚠️ Figma 텍스트 스타일 목록에 자간이 적혀 있지 않아 0 으로 두었습니다. 값이 정해지면 여기만 고치면 됩니다."
+        },
+        "l-semibold": {
+          "$value": {
+            "fontFamily": "{primitive.fontFamily.base}",
             "fontSize": "{primitive.fontSize.1050}",
             "fontWeight": "{primitive.fontWeight.semibold-600}",
             "lineHeight": "{primitive.lineHeight.130}",
             "letterSpacing": "{primitive.letterSpacing.n2}"
           }
         },
+        "en-l-semibold": {
+          "$value": {
+            "fontFamily": "{primitive.fontFamily.display}",
+            "fontSize": "{primitive.fontSize.1250}",
+            "fontWeight": "{primitive.fontWeight.semibold-600}",
+            "lineHeight": "{primitive.lineHeight.85}",
+            "letterSpacing": "{primitive.letterSpacing.0}"
+          },
+          "$description": "영문 전용입니다. 한글 글리프가 없는 서체라 한글이 섞이면 폴백 세리프로 떨어집니다.\n⚠️ Figma 텍스트 스타일 목록에 자간이 적혀 있지 않아 0 으로 두었습니다. 값이 정해지면 여기만 고치면 됩니다."
+        },
         "s-semibold": {
           "$value": {
-            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontFamily": "{primitive.fontFamily.base}",
             "fontSize": "{primitive.fontSize.800}",
             "fontWeight": "{primitive.fontWeight.semibold-600}",
             "lineHeight": "{primitive.lineHeight.130}",
             "letterSpacing": "{primitive.letterSpacing.n2}"
           }
+        },
+        "en-s-semibold": {
+          "$value": {
+            "fontFamily": "{primitive.fontFamily.display}",
+            "fontSize": "{primitive.fontSize.1100}",
+            "fontWeight": "{primitive.fontWeight.semibold-600}",
+            "lineHeight": "{primitive.lineHeight.85}",
+            "letterSpacing": "{primitive.letterSpacing.0}"
+          },
+          "$description": "영문 전용입니다. 한글 글리프가 없는 서체라 한글이 섞이면 폴백 세리프로 떨어집니다.\n⚠️ Figma 텍스트 스타일 목록에 자간이 적혀 있지 않아 0 으로 두었습니다. 값이 정해지면 여기만 고치면 됩니다."
         }
       },
       "heading": {
         "$description": "페이지 제목과 섹션 제목.",
         "l-semibold": {
           "$value": {
-            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontFamily": "{primitive.fontFamily.base}",
             "fontSize": "{primitive.fontSize.900}",
             "fontWeight": "{primitive.fontWeight.semibold-600}",
             "lineHeight": "{primitive.lineHeight.110}",
@@ -46,7 +76,7 @@
         },
         "m-semibold": {
           "$value": {
-            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontFamily": "{primitive.fontFamily.base}",
             "fontSize": "{primitive.fontSize.750}",
             "fontWeight": "{primitive.fontWeight.semibold-600}",
             "lineHeight": "{primitive.lineHeight.130}",
@@ -55,7 +85,7 @@
         },
         "s-semibold": {
           "$value": {
-            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontFamily": "{primitive.fontFamily.base}",
             "fontSize": "{primitive.fontSize.700}",
             "fontWeight": "{primitive.fontWeight.semibold-600}",
             "lineHeight": "{primitive.lineHeight.140}",
@@ -64,7 +94,7 @@
         },
         "xs-semibold": {
           "$value": {
-            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontFamily": "{primitive.fontFamily.base}",
             "fontSize": "{primitive.fontSize.500}",
             "fontWeight": "{primitive.fontWeight.semibold-600}",
             "lineHeight": "{primitive.lineHeight.140}",
@@ -73,7 +103,7 @@
         },
         "xs-medium": {
           "$value": {
-            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontFamily": "{primitive.fontFamily.base}",
             "fontSize": "{primitive.fontSize.500}",
             "fontWeight": "{primitive.fontWeight.medium-500}",
             "lineHeight": "{primitive.lineHeight.140}",
@@ -86,7 +116,7 @@
         "$description": "본문과 UI 텍스트. 같은 크기 안에서 semibold/medium/regular 로 강조 단계를 나눕니다.",
         "xl-semibold": {
           "$value": {
-            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontFamily": "{primitive.fontFamily.base}",
             "fontSize": "{primitive.fontSize.500}",
             "fontWeight": "{primitive.fontWeight.semibold-600}",
             "lineHeight": "{primitive.lineHeight.140}",
@@ -95,7 +125,7 @@
         },
         "xl-medium": {
           "$value": {
-            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontFamily": "{primitive.fontFamily.base}",
             "fontSize": "{primitive.fontSize.500}",
             "fontWeight": "{primitive.fontWeight.medium-500}",
             "lineHeight": "{primitive.lineHeight.140}",
@@ -104,7 +134,7 @@
         },
         "l-semibold": {
           "$value": {
-            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontFamily": "{primitive.fontFamily.base}",
             "fontSize": "{primitive.fontSize.350}",
             "fontWeight": "{primitive.fontWeight.semibold-600}",
             "lineHeight": "{primitive.lineHeight.150}",
@@ -113,7 +143,7 @@
         },
         "l-medium": {
           "$value": {
-            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontFamily": "{primitive.fontFamily.base}",
             "fontSize": "{primitive.fontSize.350}",
             "fontWeight": "{primitive.fontWeight.medium-500}",
             "lineHeight": "{primitive.lineHeight.150}",
@@ -122,7 +152,7 @@
         },
         "l-regular": {
           "$value": {
-            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontFamily": "{primitive.fontFamily.base}",
             "fontSize": "{primitive.fontSize.350}",
             "fontWeight": "{primitive.fontWeight.regular-400}",
             "lineHeight": "{primitive.lineHeight.150}",
@@ -131,7 +161,7 @@
         },
         "m-semibold": {
           "$value": {
-            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontFamily": "{primitive.fontFamily.base}",
             "fontSize": "{primitive.fontSize.250}",
             "fontWeight": "{primitive.fontWeight.semibold-600}",
             "lineHeight": "{primitive.lineHeight.140}",
@@ -140,7 +170,7 @@
         },
         "m-medium": {
           "$value": {
-            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontFamily": "{primitive.fontFamily.base}",
             "fontSize": "{primitive.fontSize.250}",
             "fontWeight": "{primitive.fontWeight.medium-500}",
             "lineHeight": "{primitive.lineHeight.140}",
@@ -149,7 +179,7 @@
         },
         "m-regular": {
           "$value": {
-            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontFamily": "{primitive.fontFamily.base}",
             "fontSize": "{primitive.fontSize.250}",
             "fontWeight": "{primitive.fontWeight.regular-400}",
             "lineHeight": "{primitive.lineHeight.140}",
@@ -158,7 +188,7 @@
         },
         "s-semibold": {
           "$value": {
-            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontFamily": "{primitive.fontFamily.base}",
             "fontSize": "{primitive.fontSize.150}",
             "fontWeight": "{primitive.fontWeight.semibold-600}",
             "lineHeight": "{primitive.lineHeight.130}",
@@ -167,7 +197,7 @@
         },
         "s-medium": {
           "$value": {
-            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontFamily": "{primitive.fontFamily.base}",
             "fontSize": "{primitive.fontSize.150}",
             "fontWeight": "{primitive.fontWeight.medium-500}",
             "lineHeight": "{primitive.lineHeight.130}",
@@ -176,7 +206,7 @@
         },
         "s-regular": {
           "$value": {
-            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontFamily": "{primitive.fontFamily.base}",
             "fontSize": "{primitive.fontSize.150}",
             "fontWeight": "{primitive.fontWeight.regular-400}",
             "lineHeight": "{primitive.lineHeight.130}",
@@ -185,7 +215,7 @@
         },
         "xs-semibold": {
           "$value": {
-            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontFamily": "{primitive.fontFamily.base}",
             "fontSize": "{primitive.fontSize.100}",
             "fontWeight": "{primitive.fontWeight.semibold-600}",
             "lineHeight": "{primitive.lineHeight.140}",
@@ -194,7 +224,7 @@
         },
         "xs-medium": {
           "$value": {
-            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontFamily": "{primitive.fontFamily.base}",
             "fontSize": "{primitive.fontSize.100}",
             "fontWeight": "{primitive.fontWeight.medium-500}",
             "lineHeight": "{primitive.lineHeight.140}",
@@ -203,7 +233,7 @@
         },
         "xs-regular": {
           "$value": {
-            "fontFamily": "{primitive.fontFamily.pretendard}",
+            "fontFamily": "{primitive.fontFamily.base}",
             "fontSize": "{primitive.fontSize.100}",
             "fontWeight": "{primitive.fontWeight.regular-400}",
             "lineHeight": "{primitive.lineHeight.140}",

@@ -44,7 +44,7 @@
   padding: var(--spacing-400) var(--spacing-300) var(--spacing-400) var(--spacing-500);
   background: var(--colors-bg);
   color: var(--_gnb-fg);
-  font-family: var(--_font-family-pretendard);
+  font-family: var(--_font-family-base);
 }
 
 .gnb__inner {
