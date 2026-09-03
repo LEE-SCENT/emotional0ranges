@@ -113,10 +113,11 @@
       },
       "n1": {
         "$value": "-1%",
-        "$description": "아직 semantic 토큰에서 사용하지 않습니다."
+        "$description": "display 계열이 씁니다 — 큰 글자는 그만큼 좁혀야 글자 사이가 벌어져 보이지 않습니다."
       },
       "n2": {
-        "$value": "-2%"
+        "$value": "-2%",
+        "$description": "아직 semantic 토큰에서 사용하지 않습니다."
       },
       "n3": {
         "$value": "-3%",

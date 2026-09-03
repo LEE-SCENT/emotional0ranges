@@ -11,7 +11,7 @@
             "fontSize": "{primitive.fontSize.1150}",
             "fontWeight": "{primitive.fontWeight.semibold-600}",
             "lineHeight": "{primitive.lineHeight.130}",
-            "letterSpacing": "{primitive.letterSpacing.n2}"
+            "letterSpacing": "{primitive.letterSpacing.n1}"
           }
         },
         "en-xl-semibold": {
@@ -20,9 +20,9 @@
             "fontSize": "{primitive.fontSize.1350}",
             "fontWeight": "{primitive.fontWeight.semibold-600}",
             "lineHeight": "{primitive.lineHeight.85}",
-            "letterSpacing": "{primitive.letterSpacing.0}"
+            "letterSpacing": "{primitive.letterSpacing.n1}"
           },
-          "$description": "영문 전용입니다. 한글 글리프가 없는 서체라 한글이 섞이면 폴백 세리프로 떨어집니다.\n⚠️ Figma 텍스트 스타일 목록에 자간이 적혀 있지 않아 0 으로 두었습니다. 값이 정해지면 여기만 고치면 됩니다."
+          "$description": "영문 전용입니다. 한글 글리프가 없는 서체라 한글이 섞이면 폴백 세리프로 떨어집니다."
         },
         "l-semibold": {
           "$value": {
@@ -30,7 +30,7 @@
             "fontSize": "{primitive.fontSize.1050}",
             "fontWeight": "{primitive.fontWeight.semibold-600}",
             "lineHeight": "{primitive.lineHeight.130}",
-            "letterSpacing": "{primitive.letterSpacing.n2}"
+            "letterSpacing": "{primitive.letterSpacing.n1}"
           }
         },
         "en-l-semibold": {
@@ -39,9 +39,9 @@
             "fontSize": "{primitive.fontSize.1250}",
             "fontWeight": "{primitive.fontWeight.semibold-600}",
             "lineHeight": "{primitive.lineHeight.85}",
-            "letterSpacing": "{primitive.letterSpacing.0}"
+            "letterSpacing": "{primitive.letterSpacing.n1}"
           },
-          "$description": "영문 전용입니다. 한글 글리프가 없는 서체라 한글이 섞이면 폴백 세리프로 떨어집니다.\n⚠️ Figma 텍스트 스타일 목록에 자간이 적혀 있지 않아 0 으로 두었습니다. 값이 정해지면 여기만 고치면 됩니다."
+          "$description": "영문 전용입니다. 한글 글리프가 없는 서체라 한글이 섞이면 폴백 세리프로 떨어집니다."
         },
         "s-semibold": {
           "$value": {
@@ -49,7 +49,7 @@
             "fontSize": "{primitive.fontSize.800}",
             "fontWeight": "{primitive.fontWeight.semibold-600}",
             "lineHeight": "{primitive.lineHeight.130}",
-            "letterSpacing": "{primitive.letterSpacing.n2}"
+            "letterSpacing": "{primitive.letterSpacing.n1}"
           }
         },
         "en-s-semibold": {
@@ -58,9 +58,9 @@
             "fontSize": "{primitive.fontSize.1100}",
             "fontWeight": "{primitive.fontWeight.semibold-600}",
             "lineHeight": "{primitive.lineHeight.85}",
-            "letterSpacing": "{primitive.letterSpacing.0}"
+            "letterSpacing": "{primitive.letterSpacing.n1}"
           },
-          "$description": "영문 전용입니다. 한글 글리프가 없는 서체라 한글이 섞이면 폴백 세리프로 떨어집니다.\n⚠️ Figma 텍스트 스타일 목록에 자간이 적혀 있지 않아 0 으로 두었습니다. 값이 정해지면 여기만 고치면 됩니다."
+          "$description": "영문 전용입니다. 한글 글리프가 없는 서체라 한글이 섞이면 폴백 세리프로 떨어집니다."
         }
       },
       "heading": {
