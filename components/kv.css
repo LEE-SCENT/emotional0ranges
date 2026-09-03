@@ -102,12 +102,15 @@
   text-align: start;
 }
 
+/* 영문 헤드라인이라 display-en 을 씁니다 — 세리프(Crimson Pro)에 행간 85%.
+   .kv 가 본문 서체를 깔아두므로 font-family 까지 함께 적어야 합니다. */
 .kv__headline {
   margin: 0;
-  font-size: var(--typography-display-s-semibold-font-size);
-  font-weight: var(--typography-display-s-semibold-font-weight);
-  line-height: var(--typography-display-s-semibold-line-height);
-  letter-spacing: var(--typography-display-s-semibold-letter-spacing);
+  font-family: var(--typography-display-en-s-semibold-font-family);
+  font-size: var(--typography-display-en-s-semibold-font-size);
+  font-weight: var(--typography-display-en-s-semibold-font-weight);
+  line-height: var(--typography-display-en-s-semibold-line-height);
+  letter-spacing: var(--typography-display-en-s-semibold-letter-spacing);
 }
 
 /* 문장 끝 마침표만 브랜드 색입니다. */
@@ -182,16 +185,16 @@
   /* 넓은 화면에서는 좌우 화살표가 자리를 알려줍니다. */
   .kv__pagination { display: none; }
 
-  /* 961~1600 구간에서 헤드라인이 44 → 52 로 자랍니다. Figma 가 같은 티어의
-     1024 프레임과 1600 프레임에 각각 44 / 52 를 그려두어 유동 스케일로 읽었습니다.
+  /* 1024~1600 구간에서 헤드라인이 60 → 68 로 자랍니다. Figma 가 같은 티어의
+     1024 프레임과 1600 프레임에 두 단계를 그려두어 유동 스케일로 읽었습니다 —
+     영문 헤드라인이므로 그 두 단계는 display-en 의 l 과 xl 입니다.
      ⚠️ 단계 전환이 의도였다면 이 clamp 를 고정값으로 바꿔야 합니다. */
   .kv__headline {
     font-size: clamp(
-      var(--typography-display-l-semibold-font-size),
-      calc(29.78px + 1.3889vw),
-      var(--typography-display-xl-semibold-font-size)
+      var(--typography-display-en-l-semibold-font-size),
+      calc(45.78px + 1.3889vw),
+      var(--typography-display-en-xl-semibold-font-size)
     );
-    letter-spacing: var(--typography-display-xl-semibold-letter-spacing);
   }
 
   .kv__sub {
@@ -269,16 +272,16 @@
      넘겨 스스로 한 번 더 접히고, 두 줄로 쓴 문장이 서너 줄이 되어 읽는 호흡이
      끊깁니다. 화면이 내주는 폭만큼만 줄여서 <br> 이 나눈 두 줄을 지킵니다.
 
-     9.3 은 가장 긴 줄("당신은 좋은 사람이예요")이 글자 크기의 몇 배를 차지하는지입니다 —
-     재어보면 9.125(32 로 그릴 때 292)이고, 자간과 반올림으로 반 픽셀이 모자라 접히는
-     일이 있어 여유를 조금 얹었습니다. 가용 폭을 그 배수로 나눈 값이 곧 그 줄이 한 줄에
-     들어가는 크기입니다.
+     5.25 는 가장 긴 줄("Not a waste,")이 글자 크기의 몇 배를 차지하는지입니다 —
+     재어보면 5.073 이고, 자간과 반올림으로 반 픽셀이 모자라 접히는 일이 있어 여유를
+     조금 얹었습니다. 가용 폭을 그 배수로 나눈 값이 곧 그 줄이 한 줄에 들어가는
+     크기입니다.
      ⚠️ 문구가 길어지면 이 배수도 함께 커져야 합니다. 크기를 계속 줄여 맞추는 것보다
      운영에서 글자 수를 제한하는 편이 맞습니다. */
   .kv__headline {
     font-size: min(
-      var(--typography-display-s-semibold-font-size),
-      calc((100vw - 2 * var(--container-gutter-base) - 2 * var(--spacing-800)) / 9.3)
+      var(--typography-display-en-s-semibold-font-size),
+      calc((100vw - 2 * var(--container-gutter-base) - 2 * var(--spacing-800)) / 5.25)
     );
   }
 }
