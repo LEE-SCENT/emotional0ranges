@@ -175,6 +175,14 @@
   inline-size: 100%;
 }
 
+/* 이름이 두 줄이 될 때 어디서 끊길지까지 정해둡니다.
+
+   한글은 어디서나 끊을 수 있어, 그냥 두면 "티키타카 로테이션 소개 / 팅"처럼 낱자
+   하나가 홀로 떨어집니다. 어절만 지키면(keep-all) 이번엔 "티키타카 로테이션 / 소개팅"
+   처럼 한 줄만 길어집니다. 두 규칙을 함께 걸어 어절을 지키면서 줄 길이를 고르게
+   나눕니다 — "티키타카 / 로테이션 소개팅".
+
+   balance 를 모르는 브라우저에서는 어절만 지켜집니다. 낱자가 떨어지는 것보다 낫습니다. */
 .detail-info__name {
   margin: 0;
   color: var(--colors-fg);
@@ -182,13 +190,17 @@
   font-weight: var(--typography-heading-l-semibold-font-weight);
   line-height: var(--typography-heading-l-semibold-line-height);
   letter-spacing: var(--typography-heading-l-semibold-letter-spacing);
+  word-break: keep-all;
+  text-wrap: balance;
 }
 
+/* 줄은 문구가 <br> 로 나눕니다. 그보다 좁아져 한 번 더 접힐 때만 어절을 지킵니다. */
 .detail-info__lead {
   margin: 0;
   color: var(--colors-fg-lower);
   font-size: var(--typography-body-l-regular-font-size);
   line-height: var(--typography-body-l-regular-line-height);
+  word-break: keep-all;
 }
 
 .detail-info__facts {
