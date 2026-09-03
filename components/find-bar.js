@@ -24,10 +24,10 @@
  * 열었을 때 같은 목록이 나와야 하고, 뒤로 돌아왔을 때 고른 것이 남아 있어야 합니다.
  */
 
-import { PRODUCTS, REGIONS, areaOf, cityOf, openMeetups, regionOf } from './products.js'
-import { dateAfter, dateKey, isToday, todayInSeoul } from './schedule.js'
-import { lockScroll, unlockScroll } from './scroll-lock.js'
-import { initSegmentedControl } from './segmented-control.js'
+import { PRODUCTS, REGIONS, areaOf, cityOf, openMeetups, regionOf } from './products.js?v=a3926563'
+import { dateAfter, dateKey, isToday, todayInSeoul } from './schedule.js?v=a9e9003f'
+import { lockScroll, unlockScroll } from './scroll-lock.js?v=40a2cd35'
+import { initSegmentedControl } from './segmented-control.js?v=bbd7c4b8'
 
 const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토']
 const SORTS = ['soon', 'price', 'urgent']

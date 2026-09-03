@@ -20,7 +20,7 @@
  * 가리킵니다 — 적어둔 날짜는 하루만 지나도 어긋납니다.
  */
 
-import { todayInSeoul } from './schedule.js'
+import { todayInSeoul } from './schedule.js?v=a9e9003f'
 
 /** 며칠 전을 실제 날짜로. */
 function dayBefore(days) {

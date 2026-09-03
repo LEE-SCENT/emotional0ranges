@@ -32,8 +32,8 @@
  * 이미 신청한 알림을 끄지 못한다는 뜻이 아닙니다.
  */
 
-import { stampScheduleLinks } from './schedule.js'
-import { showToast } from './toast.js'
+import { stampScheduleLinks } from './schedule.js?v=a9e9003f'
+import { showToast } from './toast.js?v=e8593860'
 
 const LABEL = {
   apply: '신청하기',

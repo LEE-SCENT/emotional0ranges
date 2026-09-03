@@ -21,8 +21,8 @@
  * 둘을 늘 같게 두라는 것은, 다르게 만들 방법이 있으면 언젠가 달라지기 때문입니다.
  */
 
-import { dateOf, isToday, dateText } from './schedule.js'
-import { roll } from './roll.js'
+import { dateOf, isToday, dateText } from './schedule.js?v=a9e9003f'
+import { roll } from './roll.js?v=e4ae1351'
 
 const won = (n) => `${n.toLocaleString('ko-KR')}원`
 

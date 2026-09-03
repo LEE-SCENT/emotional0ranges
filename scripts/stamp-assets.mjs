@@ -20,10 +20,62 @@ const LINK = /(href|src)="\.\/((?:build|components|fonts)\/[^"?]+\.(?:css|js))(?
 /** 동적 import 는 속성이 아니라 코드 안에 있어 따로 잡아야 합니다. 놓치면 JS 만 옛 버전이 남습니다. */
 const DYNAMIC_IMPORT = /import\('\.\/((?:build|components)\/[^'?]+\.js)(?:\?v=[^']*)?'\)/g
 
-const hash = (path) =>
-  createHash('sha256').update(readFileSync(path)).digest('hex').slice(0, 8)
+/**
+ * 모듈이 모듈을 부르는 자리 — `import { … } from './products.js'`.
+ *
+ * 여기를 빼먹으면 배포 직후 화면이 빈 채로 뜹니다. HTML 이 부르는 find.js 는
+ * 이름이 바뀌어 새로 받아오는데, 그 안에서 부르는 products.js 는 이름이 그대로라
+ * 브라우저·CDN 이 10분 동안 옛 파일을 그대로 씁니다. 새 find.js 가 옛
+ * products.js 에 없는 것을 꺼내려다 모듈이 통째로 멈추고, 목록도 조건 바도
+ * 그려지지 않습니다.
+ */
+const STATIC_IMPORT = /(from\s+')(\.\/[^'?]+\.js)(?:\?v=[^']*)?(')/g
+
+const hashes = new Map()
+const hashOf = (abs) => {
+  if (!hashes.has(abs)) {
+    hashes.set(abs, createHash('sha256').update(readFileSync(abs)).digest('hex').slice(0, 8))
+  }
+  return hashes.get(abs)
+}
 
 let stamped = 0
+
+/* JS 는 부르는 쪽보다 불리는 쪽을 먼저 손봅니다. 안쪽 파일에 해시를 붙이면 그
+   파일의 내용이 바뀌고, 따라서 해시도 바뀌기 때문입니다 — 깊은 곳부터 확정한
+   뒤에야 그것을 부르는 파일의 해시가 의미를 갖습니다. */
+const done = new Set()
+const seen = new Set()
+
+function stampModule(abs) {
+  if (done.has(abs)) return
+  if (seen.has(abs)) return // 순환 import — 한 번만 지나갑니다.
+  seen.add(abs)
+
+  const before = readFileSync(abs, 'utf8')
+  const dir = dirname(abs)
+  const after = before.replace(STATIC_IMPORT, (whole, head, path, tail) => {
+    const target = resolve(dir, path)
+    /* 없는 파일이면 그대로 둡니다 — 파일 맨 위 설명에 적어둔 사용법
+       (`import { initFind } from './components/find.js'`)이 여기에 걸립니다. */
+    if (!existsSync(target)) return whole
+    stampModule(target)
+    stamped++
+    return `${head}${path}?v=${hashOf(target)}${tail}`
+  })
+  if (after !== before) {
+    writeFileSync(abs, after)
+    hashes.delete(abs)
+  }
+  done.add(abs)
+}
+
+const COMPONENTS = resolve(ROOT, 'components')
+if (existsSync(COMPONENTS)) {
+  for (const file of readdirSync(COMPONENTS).filter((f) => f.endsWith('.js'))) {
+    stampModule(resolve(COMPONENTS, file))
+  }
+}
 for (const file of readdirSync(ROOT).filter((f) => f.endsWith('.html'))) {
   const abs = resolve(ROOT, file)
   const before = readFileSync(abs, 'utf8')
@@ -31,7 +83,7 @@ for (const file of readdirSync(ROOT).filter((f) => f.endsWith('.html'))) {
     const target = resolve(ROOT, path)
     if (!existsSync(target)) throw new Error(`${file} 가 없는 파일을 참조합니다: ${path}`)
     stamped++
-    return hash(target)
+    return hashOf(target)
   }
   const after = before
     .replace(LINK, (_, attr, path) => `${attr}="./${path}?v=${stamp(path)}"`)

@@ -16,8 +16,8 @@
  * showModal() 로 띄우면 화면 한가운데에 목록만 덩그러니 뜹니다.
  */
 
-import { lockScroll, unlockScroll } from './scroll-lock.js'
-import { initDialogFocus } from './dialog-focus.js'
+import { lockScroll, unlockScroll } from './scroll-lock.js?v=40a2cd35'
+import { initDialogFocus } from './dialog-focus.js?v=a4704637'
 
 /**
  * 지금 이 요소가 시트로 동작하는지.

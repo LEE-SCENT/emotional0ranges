@@ -16,8 +16,8 @@
  * 목록과 같은 규칙이고, 값이 대표 일정이 아니라 그 회차에서 나오는 것만 다릅니다.
  */
 
-import { openMeetups, areaOf, cityOf, regionOf, seatTags } from './products.js'
-import { dateAfter, dateKey, dayText } from './schedule.js'
+import { openMeetups, areaOf, cityOf, regionOf, seatTags } from './products.js?v=a3926563'
+import { dateAfter, dateKey, dayText } from './schedule.js?v=a9e9003f'
 
 const won = (n) => `${n.toLocaleString('ko-KR')}원`
 

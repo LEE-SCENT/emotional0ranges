@@ -28,8 +28,8 @@
  * 것을 손을 떼고 나서야 확인하게 됩니다.
  */
 
-import { showToast } from './toast.js'
-import { openConfirm } from './confirm.js'
+import { showToast } from './toast.js?v=e8593860'
+import { openConfirm } from './confirm.js?v=f516d2db'
 
 const ICON = { on: '#icon-favoriteFilled', off: '#icon-favorite' }
 const LABEL = { on: '찜 해제', off: '찜하기' }

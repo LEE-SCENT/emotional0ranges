@@ -32,7 +32,7 @@
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
 <link rel="stylesheet" href="./components/segmented-control.css?v=a38c242f">
 <link rel="stylesheet" href="./components/tooltip.css?v=7ec024df">
-<link rel="stylesheet" href="./components/gnb.css?v=97ee337d">
+<link rel="stylesheet" href="./components/gnb.css?v=0a931eed">
 <link rel="stylesheet" href="./components/tag.css?v=fef5c195">
 <link rel="stylesheet" href="./components/product-card.css?v=82efa7cf">
 <link rel="stylesheet" href="./components/section-title.css?v=4a8451fd">
@@ -722,7 +722,7 @@
   initStickyGnb()
   // 일정·후기를 읽는 스크립트들보다 먼저 돕니다. 그들이 세어둔 뒤에 목록을
   // 갈아끼우면 서로 다른 것을 보게 됩니다.
-  const { initProduct } = await import('./components/product.js?v=b3b9d408')
+  const { initProduct } = await import('./components/product.js?v=e8abe224')
   initProduct()
   const { initSchedule } = await import('./components/schedule.js?v=a9e9003f')
   initSchedule()
@@ -730,27 +730,27 @@
   // 돌아갈 곳이 없으므로 홈으로 보냅니다 — 그 길은 data-back 에 적혀 있습니다.
   const { initBack } = await import('./components/back.js?v=c6d259cc')
   initBack()
-  const { initRecentReview } = await import('./components/recent-review.js?v=417e597f')
+  const { initRecentReview } = await import('./components/recent-review.js?v=57fdf519')
   initRecentReview()
-  const { initConfirms } = await import('./components/confirm.js?v=1929c179')
+  const { initConfirms } = await import('./components/confirm.js?v=f516d2db')
   initConfirms()
-  const { initParticipants } = await import('./components/participants.js?v=b9c7b8b3')
+  const { initParticipants } = await import('./components/participants.js?v=e091376b')
   initParticipants()
-  const { initSeatAlert } = await import('./components/seat-alert.js?v=479b45d8')
+  const { initSeatAlert } = await import('./components/seat-alert.js?v=65cf2cdd')
   initSeatAlert()
   const { initDiscounts } = await import('./components/discount.js?v=33cdc5c0')
   initDiscounts()
-  const { initFavorites } = await import('./components/favorite.js?v=798dc8b0')
+  const { initFavorites } = await import('./components/favorite.js?v=d087742c')
   initFavorites()
   // 비슷한 모임 카드도 목록과 같은 데이터에서 지역·일정 수를 받습니다.
-  const { initProductCards } = await import('./components/product-cards.js?v=b4d37f00')
+  const { initProductCards } = await import('./components/product-cards.js?v=62806e09')
   initProductCards()
   const { initDetailIntro } = await import('./components/detail-intro.js?v=c2d2bd44')
   initDetailIntro()
   const { initTabs } = await import('./components/tabs.js?v=e1b6027e')
   initTabs()
-  const { initImageViewers } = await import('./components/image-viewer.js?v=4f6cef9c')
+  const { initImageViewers } = await import('./components/image-viewer.js?v=cfe816fb')
   initImageViewers()
-  const { initSheets } = await import('./components/sheet.js?v=b6e86ec5')
+  const { initSheets } = await import('./components/sheet.js?v=30835160')
   initSheets()
 </script>

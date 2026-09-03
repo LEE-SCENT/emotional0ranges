@@ -27,8 +27,8 @@
  * 되기 때문입니다. 끝에 닿으면 그쪽 버튼이 꺼집니다.
  */
 
-import { lockScroll, unlockScroll } from './scroll-lock.js'
-import { initDialogFocus } from './dialog-focus.js'
+import { lockScroll, unlockScroll } from './scroll-lock.js?v=40a2cd35'
+import { initDialogFocus } from './dialog-focus.js?v=a4704637'
 
 const wantsLessMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches
 

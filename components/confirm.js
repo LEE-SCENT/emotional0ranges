@@ -17,8 +17,8 @@
  * 같은 모양의 창을 다시 쓸 수 없습니다.
  */
 
-import { lockScroll, unlockScroll } from './scroll-lock.js'
-import { initDialogFocus } from './dialog-focus.js'
+import { lockScroll, unlockScroll } from './scroll-lock.js?v=40a2cd35'
+import { initDialogFocus } from './dialog-focus.js?v=a4704637'
 
 /**
  * 버튼을 거치지 않고 코드에서 여는 길입니다.
