@@ -25,12 +25,12 @@
       href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@600&display=swap">
 <noscript><link rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@600&display=swap"></noscript>
-<link rel="stylesheet" href="./build/tokens.css?v=5d59497b">
+<link rel="stylesheet" href="./build/tokens.css?v=2e0fadf5">
 <link rel="stylesheet" href="./components/container.css?v=55694a09">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
-<link rel="stylesheet" href="./components/button.css?v=74e05141">
+<link rel="stylesheet" href="./components/button.css?v=581f311e">
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
-<link rel="stylesheet" href="./components/segmented-control.css?v=688cb4f0">
+<link rel="stylesheet" href="./components/segmented-control.css?v=a38c242f">
 <link rel="stylesheet" href="./components/tooltip.css?v=7ec024df">
 <link rel="stylesheet" href="./components/gnb.css?v=97ee337d">
 <link rel="stylesheet" href="./components/tag.css?v=fef5c195">
@@ -434,9 +434,9 @@
   // 일정을 읽는 스크립트들보다 먼저 돕니다. 상품이 정해져 있으면 목록을 그 상품의
   // 일정으로 갈아끼우는데, 날짜를 그린 뒤에 갈아끼우면 새로 그려진 목록의 날짜 칸이
   // 빈 채로 남습니다 — 시트에서 며칠 일정인지가 사라졌습니다.
-  const { initProduct } = await import('./components/product.js?v=70da48b7')
+  const { initProduct } = await import('./components/product.js?v=b3b9d408')
   initProduct()
-  const { initSchedule } = await import('./components/schedule.js?v=6b6ab0cc')
+  const { initSchedule } = await import('./components/schedule.js?v=a9e9003f')
   initSchedule()
   const { initDiscounts } = await import('./components/discount.js?v=33cdc5c0')
   initDiscounts()

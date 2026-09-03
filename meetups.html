@@ -1,0 +1,374 @@
+<!doctype html>
+<!-- 모임 찾기 화면 — 조건 바 + 추천 카테고리 + 회차 격자.
+     카드 한 장이 상품이 아니라 일정 하나입니다(policy.html: 찾기 화면). -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Safari 는 숫자 나열을 전화번호로 보고 스스로 링크를 겁니다. 푸터의 사업자
+     등록번호·고객센터 번호가 그렇게 파란 밑줄로 바뀌어 꺼둡니다. -->
+<meta name="format-detection" content="telephone=no">
+<!-- 파비콘. SVG 한 장으로 모든 크기를 감당합니다 — 크기별 PNG 를 따로 두면
+     하나만 바뀌어 탭마다 다른 그림이 뜨는 일이 생깁니다. -->
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<link rel="mask-icon" href="./favicon.svg" color="#F75D15">
+<meta name="theme-color" content="#FFFFFF">
+<title>모임 찾기 — 감정적인 오렌지들</title>
+<link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
+<link rel="stylesheet" href="./build/tokens.css?v=2e0fadf5">
+<link rel="stylesheet" href="./components/container.css?v=55694a09">
+<link rel="stylesheet" href="./components/badge.css?v=daa79c09">
+<link rel="stylesheet" href="./components/button.css?v=581f311e">
+<link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
+<link rel="stylesheet" href="./components/segmented-control.css?v=a38c242f">
+<link rel="stylesheet" href="./components/gnb.css?v=97ee337d">
+<link rel="stylesheet" href="./components/tag.css?v=fef5c195">
+<link rel="stylesheet" href="./components/product-card.css?v=82efa7cf">
+<link rel="stylesheet" href="./components/chip.css?v=8b5ea605">
+<link rel="stylesheet" href="./components/find-bar.css?v=7e99cc29">
+<link rel="stylesheet" href="./components/find.css?v=0210ce85">
+<link rel="stylesheet" href="./components/footer.css?v=090dd8fc">
+<link rel="stylesheet" href="./components/app-bar.css?v=7fbb6489">
+<style>
+  body { margin: 0; background: var(--colors-bg); color: var(--colors-fg); }
+  /* 화면에는 안 보이지만 스크린리더는 읽는 텍스트 */
+  .sr-only {
+    position: absolute; inline-size: 1px; block-size: 1px;
+    margin: -1px; padding: 0; overflow: hidden; white-space: nowrap;
+    clip-path: inset(50%);
+  }
+</style>
+
+<div id="sprite" hidden></div>
+
+<!-- ⚠️ 이 화면의 GNB 에는 data-auto-hide 를 달지 않습니다. 조건 바가 GNB 아래에
+     붙어 따라오는데, GNB 가 물러나면 바만 공중에 뜬 채 남습니다(find.css). -->
+<header class="gnb">
+  <div class="gnb__inner">
+    <div class="gnb__side gnb__side--start">
+      <a class="gnb__logo" href="./index.html" aria-label="감정적인 오렌지들 홈">
+        <svg width="126" height="40" role="img" aria-label="emotional oranges"><use href="#logo-eo"></use></svg>
+      </a>
+    </div>
+    <div class="gnb__center">
+      <div class="gnb__segmented">
+        <div class="segmented" role="tablist" aria-label="모임 형태">
+          <span class="segmented__thumb" aria-hidden="true"></span>
+          <button class="segmented__item is-selected" role="tab" aria-selected="true">온라인</button>
+          <button class="segmented__item" role="tab" aria-selected="false">오프라인</button>
+        </div>
+      </div>
+      <nav class="gnb__menu" aria-label="주요 메뉴">
+        <a class="btn btn--ghost btn--medium" href="./meetups.html" aria-current="page"><span class="btn__label">모임</span></a>
+        <button class="btn btn--ghost btn--medium"><span class="btn__label">매칭</span></button>
+        <button class="btn btn--ghost btn--medium"><span class="btn__label">모임 후기</span></button>
+        <button class="btn btn--ghost btn--medium"><span class="btn__label">자주 묻는 질문</span></button>
+        <button class="btn btn--ghost btn--medium"><span class="btn__label">저널</span></button>
+      </nav>
+    </div>
+    <div class="gnb__side gnb__side--end">
+      <div class="gnb__actions">
+        <button class="btn btn--ghost btn--medium btn--icon-only gnb__notify" aria-label="알림">
+          <svg class="btn__icon" aria-hidden="true"><use href="#icon-notifications"></use></svg>
+          <span class="badge btn__badge"></span>
+        </button>
+        <button class="btn btn--blur btn--medium btn--icon-only" aria-label="메뉴 열기">
+          <svg class="btn__icon" aria-hidden="true"><use href="#icon-menu"></use></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="container find">
+  <!-- 화면의 머리말은 조건 바 자체입니다. 제목을 글자로 두면 바 위에 한 줄이 더
+       얹혀 목록이 그만큼 밀려 내려가는데, 어느 화면인지는 이미 GNB 의 메뉴와 바가
+       말하고 있습니다. 화면을 읽어주는 쪽에는 필요하므로 이름만 남깁니다. -->
+  <h1 class="sr-only">모임 찾기</h1>
+
+  <!-- 아래로 읽어 내려가는 동안에는 바가 남아 있고, 위로 되돌아 올릴 때 물러납니다
+       (find-bar.js). GNB·앱바가 쓰는 auto-hide.js 와는 방향이 반대라 그것을
+       쓰지 않습니다 — 거리는 CSS 가 정합니다(find.css). -->
+  <div class="find-head" data-find>
+    <div class="find-bar" role="search" aria-label="모임 찾기">
+      <!-- 값이 없는 동안은 좁게, 하나라도 채워지면 컨테이너 폭까지 넓어집니다
+           (find-bar.css: has-value) — 채워진 값을 다 보여주려면 자리가 더
+           필요해지기 때문입니다. -->
+      <div class="find-bar__fields">
+        <div class="find-bar__field" data-find-field="area">
+          <button class="find-bar__field-open" type="button"
+                  data-find-open="find-area" aria-expanded="false" aria-controls="find-area">
+            <svg class="find-bar__icon" aria-hidden="true"><use href="#icon-search"></use></svg>
+            <span class="find-bar__text">
+              <span class="find-bar__name">지역</span>
+              <span class="find-bar__value" data-find-summary="area">어디서든</span>
+            </span>
+          </button>
+          <button class="find-bar__clear is-empty" type="button" data-find-clear="area" aria-label="지역 지우기">
+            <svg aria-hidden="true"><use href="#icon-close"></use></svg>
+          </button>
+          <div class="find-bar__panel find-bar__panel--location find-bar__panel--compact" id="find-area" tabindex="-1" role="group" aria-label="지역" hidden>
+          <div class="find-bar__panel-head">
+            <h2 class="find-bar__panel-title">지역</h2>
+            <button class="btn btn--ghost btn--medium btn--icon-only" type="button" data-find-close aria-label="닫기">
+              <svg class="btn__icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+            </button>
+          </div>
+          <!-- 수도권/비수도권 은 걸리는 조건이 아니라, 아래 목록 중 어느 지역
+               묶음을 보여줄지 고르는 탭입니다 — 실제로 거르는 것은 그 아래
+               버튼입니다(find-bar.js). -->
+          <div class="find-bar__panel-body" data-find-body="area"></div>
+          <div class="find-bar__panel-foot">
+            <button class="btn btn--ghost btn--medium" type="button" data-find-clear="area"><span class="btn__label">초기화</span></button>
+            <button class="btn btn--filled btn--medium" type="button" data-find-close><span class="btn__label">완료</span></button>
+          </div>
+        </div>
+        </div>
+        <div class="find-bar__field is-empty" data-find-field="date">
+          <button class="find-bar__field-open" type="button"
+                  data-find-open="find-date" aria-expanded="false" aria-controls="find-date">
+            <svg class="find-bar__icon" aria-hidden="true"><use href="#icon-calendar"></use></svg>
+            <span class="find-bar__text">
+              <span class="find-bar__name">날짜</span>
+              <span class="find-bar__value" data-find-summary="date">날짜 추가</span>
+            </span>
+          </button>
+          <button class="find-bar__clear is-empty" type="button" data-find-clear="date" aria-label="날짜 지우기">
+            <svg aria-hidden="true"><use href="#icon-close"></use></svg>
+          </button>
+
+        </div>
+        <div class="find-bar__field" data-find-field="kind">
+          <button class="find-bar__field-open" type="button"
+                  data-find-open="find-kind" aria-expanded="false" aria-controls="find-kind">
+            <svg class="find-bar__icon" aria-hidden="true"><use href="#icon-explorer"></use></svg>
+            <span class="find-bar__text">
+              <span class="find-bar__name">모임 유형</span>
+              <span class="find-bar__value" data-find-summary="kind">전체</span>
+            </span>
+          </button>
+          <button class="find-bar__clear is-empty" type="button" data-find-clear="kind" aria-label="모임 유형 지우기">
+            <svg aria-hidden="true"><use href="#icon-close"></use></svg>
+          </button>
+          <div class="find-bar__panel find-bar__panel--category find-bar__panel--compact" id="find-kind" tabindex="-1" role="group" aria-label="모임 유형" hidden>
+          <div class="find-bar__panel-head">
+            <h2 class="find-bar__panel-title">모임 유형</h2>
+            <button class="btn btn--ghost btn--medium btn--icon-only" type="button" data-find-close aria-label="닫기">
+              <svg class="btn__icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+            </button>
+          </div>
+          <div class="find-bar__panel-body" data-find-body="kind"></div>
+          <div class="find-bar__panel-foot">
+            <button class="btn btn--ghost btn--medium" type="button" data-find-clear="kind"><span class="btn__label">초기화</span></button>
+            <button class="btn btn--filled btn--medium" type="button" data-find-close><span class="btn__label">완료</span></button>
+          </div>
+        </div>
+        </div>
+        <div class="find-bar__field" data-find-field="seats">
+          <button class="find-bar__field-open" type="button"
+                  data-find-open="find-seats" aria-expanded="false" aria-controls="find-seats">
+            <svg class="find-bar__icon" aria-hidden="true"><use href="#icon-group"></use></svg>
+            <span class="find-bar__text">
+              <span class="find-bar__name">남은 자리</span>
+              <span class="find-bar__value" data-find-summary="seats">혼자 갈래요</span>
+            </span>
+          </button>
+          <button class="find-bar__clear is-empty" type="button" data-find-clear="seats" aria-label="남은 자리 지우기">
+            <svg aria-hidden="true"><use href="#icon-close"></use></svg>
+          </button>
+          <div class="find-bar__panel find-bar__panel--available find-bar__panel--compact" id="find-seats" tabindex="-1" role="group" aria-label="남은 자리" hidden>
+          <div class="find-bar__panel-head">
+            <h2 class="find-bar__panel-title">남은 자리</h2>
+            <button class="btn btn--ghost btn--medium btn--icon-only" type="button" data-find-close aria-label="닫기">
+              <svg class="btn__icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+            </button>
+          </div>
+          <div class="find-bar__panel-body">
+            <div class="find-btn-grid find-btn-grid--2col">
+              <label class="btn btn--ghost btn--medium find-btn-grid__item">
+                <input class="sr-only" type="radio" name="seats" value="one" checked><span class="btn__label">혼자 갈래요</span>
+              </label>
+              <label class="btn btn--ghost btn--medium find-btn-grid__item">
+                <input class="sr-only" type="radio" name="seats" value="two"><span class="btn__label">둘이 갈래요</span>
+              </label>
+            </div>
+            <p class="find-group__note">둘이 갈래요는 <b>같은 성별 자리가 두 개 남은</b> 모임만 보여줘요.
+              친구와 나란히 신청할 수 있는 자리입니다.</p>
+          </div>
+          <div class="find-bar__panel-foot">
+            <button class="btn btn--ghost btn--medium" type="button" data-find-clear="seats"><span class="btn__label">초기화</span></button>
+            <button class="btn btn--filled btn--medium" type="button" data-find-close><span class="btn__label">완료</span></button>
+          </div>
+        </div>
+        </div>
+      </div>
+
+      <!-- 날짜 판만 칸 밖에 둡니다. 판이 912 로 넓어 칸 아래에 붙이면 화면 밖으로
+           넘치고, 칸을 기준에서 빼면(position:static) 그 칸의 구분선까지 엉뚱한
+           곳에 붙습니다 — 바를 기준으로 두고 가운데에 세웁니다(find-bar.css). -->
+      <div class="find-bar__panel find-bar__panel--date" id="find-date" tabindex="-1" role="group" aria-label="날짜" hidden>
+          <div class="find-bar__panel-head">
+            <h2 class="find-bar__panel-title">날짜</h2>
+            <button class="btn btn--ghost btn--medium btn--icon-only" type="button" data-find-close aria-label="닫기">
+              <svg class="btn__icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+            </button>
+          </div>
+          <div class="find-bar__panel-body">
+            <!-- 모임이 열리는 날만 눌립니다. 날짜는 find-bar.js 가 그립니다 —
+                 적어둔 날짜는 하루만 지나도 지난 날이 됩니다.
+
+                 하루만 눌러 그 하루를, 두 번 눌러(시작 → 끝) 그 사이 기간을 담을 수
+                 있고, 담은 것은 최대 8개까지 쌓입니다 — 서로 다른 날들을 한 번에
+                 걸고 싶을 때(예: 5일과 10~12일) 하나로 길게 묶지 않아도 됩니다. -->
+            <div class="calendar" data-find-calendar></div>
+            <!-- 규칙을 세는 자리가 아니라 알려주는 자리입니다. 몇 개 담았는지는
+                 아래 알약이 이미 보여주고 있어, 여기서는 무엇을 할 수 있는지만
+                 말합니다. -->
+            <p class="find-help">
+              <svg aria-hidden="true"><use href="#icon-infoCircle"></use></svg>
+              하루만 고르거나 기간으로 담을 수 있어요. 여러 번 담을 수 있어요 (최대 8회)
+            </p>
+          </div>
+          <div class="find-bar__panel-foot find-bar__panel-foot--summary">
+            <div class="find-dates" data-find-dates></div>
+            <!-- 저장은 두지 않습니다 — 날짜는 누르는 즉시 목록에 걸리고, 담긴 것은
+                 옆의 알약이 이미 보여줍니다. 되돌릴 길만 남깁니다. -->
+            <div class="find-bar__panel-actions">
+              <button class="btn btn--ghost btn--small" type="button" data-find-clear="date"><span class="btn__label">초기화</span></button>
+            </div>
+          </div>
+        </div>
+
+      <!-- 좁은 화면에서 판이 올라와 있는 동안 뒤를 덮는 어둠. 넓은 화면에는 없습니다 —
+           바 아래에 붙은 판은 뒤 목록을 계속 볼 수 있어야 합니다. -->
+      <div class="find-bar__scrim" hidden></div>
+    </div>
+  </div>
+
+  <!-- 정렬 줄과 목록은 한 덩어리입니다(Figma 의 warpper) — 위아래 16 을 두고,
+       그 안에서 줄과 격자가 12 로 떨어집니다. -->
+  <div class="find__list">
+    <!-- 정렬 줄. 왼쪽은 지금 몇 개가 걸려 있는지("전체"에 총수를 적어두고, 나머지는
+         걸 수 있는 조건), 오른쪽은 어떤 차례로 볼지입니다. "전체"는 상태가 아니라
+         조건을 모두 지우는 버튼이고, 지금 조건이 비어 있을 때만 채운 모습입니다.
+         "친구 동반"은 남은자리의 "둘이 갈래요"와 같은 조건이라 한 상태를 두 자리에서
+         보여줍니다(find-bar.js: syncFriend). -->
+    <div class="find-sorting">
+      <div class="find-sorting__picks" role="group" aria-label="추천 카테고리">
+        <button class="btn btn--filled btn--small find-sorting__all" type="button" data-find-all aria-pressed="true">
+          <span class="btn__label">전체</span><b class="find-sorting__count" data-find-count>0</b>
+        </button>
+        <label class="btn btn--outlined btn--small find-sorting__pick">
+          <input class="sr-only" type="checkbox" name="pick" value="promo"><span class="btn__label">프로모션</span>
+        </label>
+        <label class="btn btn--outlined btn--small find-sorting__pick">
+          <input class="sr-only" type="checkbox" name="pick" value="closing"><span class="btn__label">마감 임박</span>
+        </label>
+        <label class="btn btn--outlined btn--small find-sorting__pick">
+          <input class="sr-only" type="checkbox" name="pick" value="friend"><span class="btn__label">친구 동반</span>
+        </label>
+        <label class="btn btn--outlined btn--small find-sorting__pick" data-find-pick="myage">
+          <input class="sr-only" type="checkbox" name="pick" value="myage"><span class="btn__label">내 나이</span>
+        </label>
+      </div>
+      <div class="find__sort">
+        <label class="sr-only" for="find-sort">정렬</label>
+        <!-- "추천순"을 두지 않습니다. 무엇을 근거로 추천한 차례인지 이 화면에는 없고,
+             이름만 있으면 어떤 순서로 서 있는지 알 수 없습니다. -->
+        <select id="find-sort" data-find-sort>
+          <option value="soon">날짜 빠른 순</option>
+          <option value="price">가격 낮은 순</option>
+          <option value="urgent">마감 임박 순</option>
+        </select>
+        <svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg>
+      </div>
+    </div>
+
+    <!-- 카드는 find.js 가 그립니다. 회차는 데이터에서 나오고 날짜는 오늘을 기준으로
+         계산되므로, 마크업에 한 장이라도 적어두면 그것만 지난 날짜로 남습니다. -->
+    <div class="find__grid" data-find-grid></div>
+
+    <p class="find__empty" data-find-empty hidden>
+      <b>고른 조건에 맞는 모임이 없어요</b>
+      날짜를 넓히거나 지역을 하나 더 골라보세요
+      <button class="btn btn--outlined btn--medium" type="button" data-find-clear-all>
+        <span class="btn__label">조건 모두 지우기</span>
+      </button>
+    </p>
+  </div>
+
+  <noscript>
+    <p class="find__noscript">모임 목록을 불러오려면 자바스크립트가 필요해요.</p>
+  </noscript>
+</main>
+
+<div class="container">
+  <footer class="footer">
+    <div class="footer__info">
+      <p class="footer__links">
+        <span>Ⓒ 2026 Emotional 0ranges</span>
+        <a class="is-strong" href="#">개인정보 처리방침</a>
+        <a href="#">이용약관</a>
+        <a href="#">의견 보내기</a>
+      </p>
+      <p class="footer__meta">
+        <span>(주)감정적인오렌지들</span>
+        <span>경기도 남양주시 별내중앙로 34, 502호(별내동)</span>
+        <span>emotional0ranges@naver.com</span>
+        <span>개인정보보호책임자: 권준혁</span>
+        <span>사업자 등록번호 480-88-03308</span>
+        <span>법인 등록번호 28411-0437652</span>
+        <span>결혼정보업체신고번호 경기-남양-국내-24-0001호</span>
+        <span>통신판매신고번호 2024-별내-0651</span>
+        <span>협업 및 비즈니스 제안 partner@emotional0range.com</span>
+        <span>채용문의 recruit@emotional0range.com</span>
+        <span>고객센터 0505-1922-2274 (평일 10시-19시, 주말 및 공휴일 제외)</span>
+      </p>
+    </div>
+    <ul class="footer__sns">
+      <li><a class="is-instagram" href="https://www.instagram.com/emotional_0ranges" target="_blank" rel="noopener noreferrer" aria-label="인스타그램 (새 창)"><img src="./logo/sns/instagram.png" alt=""></a></li>
+      <li><a class="is-naver-blog" href="https://blog.naver.com/emotional0ranges" target="_blank" rel="noopener noreferrer" aria-label="네이버 블로그 (새 창)"><img src="./logo/sns/naver-blog.png" alt=""></a></li>
+      <li><a href="https://www.somoim.co.kr/4b897e56-f085-11ed-85ea-0a4f64b569631" target="_blank" rel="noopener noreferrer" aria-label="소모임 (새 창)"><img src="./logo/sns/somoim.png" alt=""></a></li>
+    </ul>
+  </footer>
+</div>
+
+<nav class="app-bar app-bar--fixed" data-auto-hide="down" aria-label="주요 메뉴">
+  <a class="app-bar__item" href="./index.html">
+    <svg class="app-bar__icon" aria-hidden="true"><use href="#icon-home"></use></svg>
+    <span class="app-bar__label">홈</span>
+  </a>
+  <a class="app-bar__item is-active" href="./meetups.html" aria-current="page">
+    <svg class="app-bar__icon" aria-hidden="true"><use href="#icon-explorerFilled"></use></svg>
+    <span class="app-bar__label">모임</span>
+  </a>
+  <a class="app-bar__item" href="#">
+    <svg class="app-bar__icon" aria-hidden="true"><use href="#icon-match"></use></svg>
+    <span class="app-bar__label">매칭</span>
+  </a>
+  <a class="app-bar__item" href="#">
+    <svg class="app-bar__icon" aria-hidden="true"><use href="#icon-cardStar"></use></svg>
+    <span class="app-bar__label">추천</span>
+  </a>
+  <a class="app-bar__item" href="#">
+    <svg class="app-bar__icon" aria-hidden="true"><use href="#icon-my"></use></svg>
+    <span class="app-bar__label">마이</span>
+  </a>
+</nav>
+
+<script type="module">
+  document.getElementById('sprite').innerHTML =
+    await (await fetch('./build/icons.svg')).text() + await (await fetch('./build/logo.svg')).text()
+  // 뒤로 돌아온 화면은 맨 위에서 시작합니다.
+  await import('./components/scroll-restore.js?v=f612a7a5')
+  const { initStickyGnb } = await import('./components/gnb.js?v=ca09b963')
+  initStickyGnb()
+  const { initSegmentedControls } = await import('./components/segmented-control.js?v=bbd7c4b8')
+  initSegmentedControls()
+  const { initAutoHide } = await import('./components/auto-hide.js?v=ef9c163a')
+  initAutoHide()
+  // 목록이 먼저 귀를 엽니다. 조건 바는 붙자마자 지금 조건을 한 번 알리는데,
+  // 그때 듣는 쪽이 없으면 첫 목록이 그려지지 않습니다.
+  const { initFind } = await import('./components/find.js?v=a2da2a67')
+  initFind()
+  const { initFindBar } = await import('./components/find-bar.js?v=b8590cd3')
+  initFindBar()
+</script>

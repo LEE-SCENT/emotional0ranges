@@ -1,13 +1,22 @@
 {
   "components": {
     "segmentedControl": {
-      "$description": "서로 배타적인 선택지를 나란히 놓는 컨트롤. 선택된 항목만 브랜드 색으로 채워집니다.",
+      "$description": "서로 배타적인 선택지를 나란히 놓는 컨트롤. 변형이 둘입니다 — default 는 회색 트랙 위에서 고른 항목만 흰색으로 떠오르고(값을 고르는 자리), accent 는 반투명 흰 트랙 위에서 고른 항목이 브랜드 색으로 채워집니다(사진 위에 얹히는 전환).",
       "bg": {
         "$type": "color",
-        "$value": "{primitive.colors.whiteAlpha.90}",
-        "$description": "순백에서 90% 로 내려갔습니다. 사진 위에 얹히는 컨트롤이라 뒤가 조금 비쳐야 얹힌 것으로 읽힙니다 — 불투명한 흰 면은 사진에서 오려붙인 것처럼 보입니다."
+        "$value": "{primitive.colors.seriousGray.100}",
+        "$description": "default 변형의 트랙. 흰 항목이 떠오르려면 트랙이 그보다 어두워야 합니다."
       },
-      "border":  { "$type": "color", "$value": "{primitive.colors.seriousGray.alpha900.8}" },
+      "bgaccent": {
+        "$type": "color",
+        "$value": "{primitive.colors.whiteAlpha.90}",
+        "$description": "accent 변형의 트랙. 순백에서 90% 로 내려갔습니다 — 사진 위에 얹히는 컨트롤이라 뒤가 조금 비쳐야 얹힌 것으로 읽힙니다. 불투명한 흰 면은 사진에서 오려붙인 것처럼 보입니다."
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{primitive.colors.seriousGray.alpha900.8}",
+        "$description": "accent 변형에만 있습니다. default 는 트랙 자체가 회색이라 테두리 없이도 경계가 보입니다."
+      },
       "rounded": { "$type": "dimension", "$value": "{primitive.rounded.full}" },
       "borderWidth": {
         "$type": "dimension",
@@ -21,10 +30,12 @@
       },
 
       "item": {
-        "fg":          { "$type": "color", "$value": "{primitive.colors.seriousGray.800}" },
+        "fg":          { "$type": "color", "$value": "{primitive.colors.seriousGray.700}", "$description": "고르지 않은 항목. 두 변형이 같습니다." },
         "fg-disabled": { "$type": "color", "$value": "{primitive.colors.seriousGray.400}", "$description": "고를 수 없는 항목. Figma 의 #C5C3C2 가 seriousGray 400 과 같습니다." },
-        "fg-active": { "$type": "color", "$value": "{primitive.colors.white}" },
-        "bg-active": { "$type": "color", "$value": "{primitive.colors.twistOrange.500}" },
+        "fg-active":   { "$type": "color", "$value": "{primitive.colors.black}",           "$description": "default 변형에서 고른 항목의 글자. 흰 알약 위라 검정입니다." },
+        "bg-active":   { "$type": "color", "$value": "{primitive.colors.white}",           "$description": "default 변형에서 고른 항목의 알약." },
+        "fgaccent-active": { "$type": "color", "$value": "{primitive.colors.white}",              "$description": "accent 변형에서 고른 항목의 글자. 브랜드 색 위라 흰색입니다." },
+        "bgaccent-active": { "$type": "color", "$value": "{primitive.colors.twistOrange.500}",    "$description": "accent 변형에서 고른 항목의 알약." },
         "rounded":   { "$type": "dimension", "$value": "{primitive.rounded.full}" }
       }
     }

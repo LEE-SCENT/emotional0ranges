@@ -114,9 +114,17 @@ function renderSchedule(scope, schedule) {
     return group
   })
   list.replaceChildren(...(keep ? [keep, ...groups] : groups))
-  // 첫 일정을 골라둡니다. 아무것도 골라져 있지 않으면 신청 버튼이 갈 곳을 잃습니다.
-  const first = list.querySelector('[name="schedule"]')
-  if (first) first.checked = true
+  /* 목록에서 회차를 고르고 들어왔으면 그 일정을 골라둡니다(찾기 화면의 카드는
+     상품이 아니라 회차를 가리킵니다). 그러지 않으면 9월 5일 저녁 카드를 누르고
+     들어온 화면에 다른 날짜가 골라져 있어, 카드가 한 말과 어긋납니다.
+
+     없거나 못 찾으면 첫 일정입니다 — 아무것도 골라져 있지 않으면 신청 버튼이 갈
+     곳을 잃습니다. */
+  const wanted = new URLSearchParams(location.search).get('schedule')
+  const picked =
+    (wanted && list.querySelector(`[name="schedule"][value="${CSS.escape(wanted)}"]`)) ||
+    list.querySelector('[name="schedule"]')
+  if (picked) picked.checked = true
 }
 
 function renderReviews(scope, reviews) {

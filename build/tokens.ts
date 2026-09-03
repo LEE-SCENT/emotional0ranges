@@ -624,7 +624,8 @@ export const components = {
     "fgDescription": "#7D7B7A"
   },
   "segmentedControl": {
-    "bg": "#FFFFFFE6",
+    "bg": "#F8F6F5",
+    "bgaccent": "#FFFFFFE6",
     "border": "#27262514",
     "rounded": "9999px",
     "borderWidth": "1px",
@@ -633,10 +634,12 @@ export const components = {
       "easing": "cubic-bezier(0.2, 0, 0, 1)"
     },
     "item": {
-      "fg": "#494746",
+      "fg": "#686666",
       "fg-disabled": "#C5C3C2",
-      "fg-active": "#FFFFFF",
-      "bg-active": "#F75D15",
+      "fg-active": "#000000",
+      "bg-active": "#FFFFFF",
+      "fgaccent-active": "#FFFFFF",
+      "bgaccent-active": "#F75D15",
       "rounded": "9999px"
     }
   },

@@ -26,7 +26,7 @@
  * 문구, 가격. 이 파일은 그것을 옮긴 것이므로, 규칙이 바뀌면 그 문서가 먼저입니다.
  */
 
-import { PRODUCTS, isOpen, seatTags } from './products.js'
+import { PRODUCTS, areaOf, isOpen, seatTags } from './products.js'
 import { dateAfter, dayText } from './schedule.js'
 
 const won = (n) => `${n.toLocaleString('ko-KR')}원`
@@ -48,14 +48,6 @@ const represents = (schedule) =>
   [...schedule].filter(isOpen).sort((a, b) => a.in - b.in)[0] ?? null
 
 /**
- * 일정이 열리는 자리에서 지역만.
- *
- * 자리에는 특집 이름이 함께 적히기도 합니다("서울 한남 · 생활운동인 특집"). 목록에서
- * 세는 것은 지역이므로 가운뎃점 앞까지만 봅니다.
- */
-const areaOf = (s) => s.place.split(' · ')[0]
-
-/**
  * 지역과 일정 수 한 줄. policy.html 의 "장소 · 일정 문구"를 그대로 옮겼습니다.
  *
  *   한 곳     서울 강남
@@ -69,7 +61,7 @@ const areaOf = (s) => s.place.split(' · ')[0]
  * 일정이 하나뿐이면 개수를 적지 않습니다. "일정 1개"는 세어줄 것이 없다는 말입니다.
  */
 function placeText(schedule) {
-  const areas = [...new Set(schedule.map(areaOf))]
+  const areas = [...new Set(schedule.map((s) => areaOf(s.place)))]
   const where = areas.length > 1 ? `${areas[0]} 외 ${areas.length - 1}개 지역` : areas[0]
   return schedule.length > 1 ? `${where} · 일정 ${schedule.length}개` : where
 }

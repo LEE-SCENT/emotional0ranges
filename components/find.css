@@ -1,0 +1,266 @@
+/**
+ * 찾기 화면 레이아웃 — 조건 바 + 정렬 줄 + 결과.
+ *
+ *   <main class="container find">
+ *     <div class="find-head">
+ *       <form class="find-bar"> … </form>  ← find-bar.css
+ *     </div>
+ *     <div class="find-sorting">
+ *       <div class="find-sorting__picks"> … </div>  ← 추천 조건 알약(전체 + 프로모션…)
+ *       <div class="find__sort"> <select> … </select> </div>
+ *     </div>
+ *     <div class="find__grid"> product-card … </div>
+ *     <p class="find__empty" hidden> … </p>
+ *   </main>
+ *
+ * 홈의 목록은 한 장의 레일이지만(가로 스크롤 · 카드 사이 2px), 여기는 고른 조건에
+ * 맞는 것을 전부 펼쳐 보는 자리라 격자입니다. 그래서 카드가 낱장으로 읽혀야 하고,
+ * 모서리도 네 곳 모두 둥급니다 — 카테고리 카드가 같은 이유로 그렇습니다.
+ */
+
+.find {
+  /* 마지막 카드 아래로 푸터까지의 거리. 격자가 화면 끝에서 끊기지 않게 둡니다. */
+  padding-block-end: var(--spacing-2000);
+}
+
+/* ---- 머리 -------------------------------------------------------------
+   961 부터 GNB 아래에 붙어 따라옵니다. 목록을 한참 내려간 뒤에도 조건을 바꿀 수
+   있어야 하는데, 조건을 바꾸러 맨 위까지 올라가는 것은 스크롤을 되돌리는 일입니다.
+
+   붙는 자리가 GNB 높이(72)인 것은 그 폭에서 GNB 가 늘 그 높이로 서 있기 때문입니다.
+   960 이하에서는 GNB 가 스크롤에 따라 56 으로 줄고 물러나기까지 해서 붙일 자리가
+   고정되지 않습니다 — 그 폭에서는 머리도 함께 스크롤됩니다.
+
+   ⚠️ 이 화면의 GNB 에는 data-auto-hide 를 달지 않습니다. 물러나 버리면 머리만
+      공중에 떠 있게 됩니다.
+*/
+
+/* 머리가 붙는 시점을 재는 표식. 높이가 없어 레이아웃에 끼어들지 않고, 붙지 않으므로
+   스크롤과 함께 그대로 올라갑니다(find-bar.js). */
+.find-head__sentinel {
+  block-size: 0;
+}
+
+/* 머리에는 배경을 깔지 않습니다. 흰 띠를 두면 붙어 있는 동안 그 띠가 카드 위를
+   가로질러, 알약 하나가 떠 있는 것이 아니라 흰 판이 내려온 것처럼 보입니다 —
+   불투명한 배경은 GNB 만 갖습니다. */
+.find-head {
+  position: relative;
+  z-index: 15;
+}
+
+@media (min-width: 961px) {
+  .find-head {
+    position: sticky;
+    inset-block-start: var(--_gnb-max-height);
+    /* GNB 아래 여백은 상태에 따라 다릅니다.
+         기본   32 — Figma Card 의 py-32 (바 위쪽이 화면 기준 72 + 32 = 104)
+         스티키 12 — 붙어 있는 동안에는 더 바짝 붙습니다
+       붙으면서 바가 줄어들 때 이 여백도 함께 줄어, 위로 조금 당겨 올라갑니다. */
+    /* 위아래 모두 32 입니다 — 바가 GNB 와 아래 조건 알약 줄 사이에서 같은 만큼
+       떨어져 있어야 한 덩어리로 떠 있는 것으로 읽힙니다. */
+    padding-block: var(--spacing-800);
+    transition:
+      padding-block-start var(--_duration-base) var(--_easing-standard),
+      /* 물러나고 돌아오는 것은 한 단 느리게 갑니다 — 스크롤에 붙어 움직이는
+         것이라, 빠르면 화면이 튀는 것처럼 보입니다. */
+      translate var(--_duration-slow) var(--_easing-standard);
+  }
+
+  /* 아래로 읽어 내려가는 동안에는 물러납니다. 제 높이만큼 올리면 바가 GNB(불투명,
+     z-index 20) 뒤로 들어가 가려집니다 — 화면 밖으로 밀어내지 않아도 사라진 것과
+     같고, 돌아올 거리도 그만큼 짧습니다. */
+  .find-head.is-hidden { translate: 0 -100%; }
+
+  .find-head.is-sticky {
+    padding-block-start: var(--spacing-300);
+    /* 배경이 없으므로 아래 카드를 누르는 것을 막지 않도록, 바가 실제로 차지하는
+       자리 밖은 지나가게 둡니다. */
+    pointer-events: none;
+  }
+
+  .find-head > * { pointer-events: auto; }
+}
+
+/* ---- 정렬 줄 + 목록 ---------------------------------------------------
+   Figma 의 warpper — 위아래 16 을 두르고, 안에서 정렬 줄과 격자가 12 로
+   떨어집니다. 둘을 한 덩어리로 묶어두면 바와 목록 사이의 거리를 한 곳에서만
+   고치면 됩니다.
+*/
+
+.find__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-300);
+  padding-block: var(--spacing-400);
+}
+
+/* ---- 정렬 줄 ----------------------------------------------------------
+   왼쪽은 걸 수 있는 조건 알약("전체"에 지금 몇 개인지), 오른쪽은 어떤
+   차례로 볼지입니다.
+*/
+
+.find-sorting {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-400);
+  /* 위아래 여백은 감싼 .find__list 가 냅니다(위 16 · 아래는 gap 12). */
+  padding-block: 0;
+}
+
+.find-sorting__picks {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  gap: var(--spacing-150);
+  min-inline-size: 0;
+}
+
+/* "전체" 알약의 총수 배지. body-s-medium(알약 글자)보다 한 단 굵어 label 과
+   구분됩니다 — segmentedControl 의 지역 묶음 수와 같은 자리입니다. */
+.find-sorting__count {
+  font-weight: var(--typography-body-s-semibold-font-weight);
+}
+
+/* 조건이 하나도 안 걸려 있을 때만 채운 모습입니다 — "지금 전체를 보고 있다"는
+   사실이 곧 그 상태입니다. 뭔가 걸리는 순간 다른 알약과 같은 outlined 로
+   물러납니다. */
+.find-sorting__all[aria-pressed='false'] {
+  background: var(--_button-outlined-bg);
+  color: var(--_button-outlined-fg);
+  box-shadow: inset 0 0 0 var(--_button-border-width) var(--_button-outlined-border);
+}
+
+.find-sorting__all[aria-pressed='false'] .find-sorting__count { color: var(--colors-fg-lower); }
+
+/* 프로모션 · 마감 임박 · 친구 동반 · 내 나이. 체크박스가 켜진 채로 있어서
+   :has(:checked) 로 채운 모습을 얹습니다 — chip.css 와 같은 방식이되, 여기는
+   Button 컴포넌트(outlined/small)를 그대로 씁니다. */
+.find-sorting__pick:has(:checked) {
+  background: var(--_button-filled-bg);
+  color: var(--_button-filled-fg);
+  box-shadow: none;
+}
+
+/* ---- 정렬 -------------------------------------------------------------
+   진짜 <select> 입니다. 직접 만든 목록이 나은 자리가 아닙니다 — 폰에서는 기기의
+   고르개가 올라와 엄지로 돌려 고를 수 있고, 키보드에서는 위아래 화살표가 그대로
+   먹히고, 화면을 읽어주는 쪽은 "정렬, 날짜 빠른 순, 목록 상자"라고 읽습니다.
+   여기서 하는 일은 기본 화살표를 지우고 우리 화살표를 얹는 것뿐입니다.
+*/
+
+.find__sort {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* 생김새는 Button 의 ghost/small 입니다(Figma 49:22287) — 8/12 패딩, 12px
+   body-s-medium, 알약 모서리. 클래스를 얹지 못하는 것은 <select> 라서입니다.
+   오른쪽은 화살표 자리(16)와 그 사이 간격(2), 그리고 제 오른쪽 패딩(12)만큼
+   비워 둡니다. */
+.find__sort select {
+  appearance: none;
+  margin: 0;
+  padding: var(--spacing-200)
+    calc(var(--spacing-300) + var(--icon-size-xs) + var(--spacing-50))
+    var(--spacing-200) var(--spacing-300);
+  border: 0;
+  border-radius: var(--_rounded-full);
+  background: none;
+  color: var(--_button-ghost-fg);
+  font-family: var(--_font-family-pretendard);
+  font-size: var(--typography-body-s-medium-font-size);
+  font-weight: var(--typography-body-s-medium-font-weight);
+  line-height: var(--typography-body-s-medium-line-height);
+  letter-spacing: var(--typography-body-s-medium-letter-spacing);
+  cursor: pointer;
+}
+
+.find__sort select:focus-visible {
+  outline: 2px solid var(--colors-fg);
+  outline-offset: 2px;
+}
+
+.find__sort svg {
+  position: absolute;
+  inset-inline-end: var(--spacing-300);
+  inline-size: var(--icon-size-xs);
+  block-size: var(--icon-size-xs);
+  /* 글자와 같은 색입니다 — 하나의 버튼으로 읽혀야 합니다. */
+  color: var(--_button-ghost-fg);
+  /* 화살표를 눌러도 고르개가 열려야 합니다. */
+  pointer-events: none;
+}
+
+/* ---- 격자 -------------------------------------------------------------
+   Figma 의 찾기 화면은 한 줄에 넉 장입니다.
+
+     ~440      1열
+     441~960   2열
+     961~      4열  — 1280 안에서 카드가 308, 1440 안에서 345
+
+   세로 간격이 가로보다 넓은 것은, 카드가 제목·설명·가격까지 한 덩어리로 읽혀야
+   하기 때문입니다. 같은 간격이면 아래 카드의 사진이 위 카드의 가격에 붙어 어디까지가
+   한 장인지 흐려집니다.
+*/
+
+.find__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-800) var(--spacing-400);
+  align-items: start;
+}
+
+@media (min-width: 441px) {
+  .find__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 961px) {
+  .find__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+/* 낱장으로 놓이므로 네 모서리를 모두 둥글게 둡니다. 상품 카드의 기본값은 레일의
+   처음·마지막만 둥근 것이라 반지름이 없습니다(product-card.css). */
+.find__grid .product-card__media { border-radius: var(--_product-card-rounded); }
+
+/* ---- 빈 결과 ----------------------------------------------------------
+   조건에 맞는 것이 없을 때. 빈 격자를 그대로 두면 아직 불러오는 중인지, 없는
+   것인지 알 수 없습니다(schedule.css 의 __empty 와 같은 이유입니다).
+
+   되돌릴 버튼을 함께 두는 것은, 조건을 좁힌 사람이 어느 조건 때문에 비었는지를
+   알 수 없기 때문입니다 — 하나씩 되짚어 풀게 하는 대신 처음으로 돌아갈 길을 둡니다.
+*/
+
+.find__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-600);
+  margin: 0;
+  padding-block: var(--spacing-3000);
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-m-regular-font-size);
+  font-weight: var(--typography-body-m-regular-font-weight);
+  line-height: var(--typography-body-m-regular-line-height);
+  text-align: center;
+}
+
+.find__empty b {
+  color: var(--colors-fg);
+  font-size: var(--typography-body-l-semibold-font-size);
+  font-weight: var(--typography-body-l-semibold-font-weight);
+  line-height: var(--typography-body-l-semibold-line-height);
+}
+
+/* 스크립트가 오지 않으면 목록이 아예 그려지지 않습니다. 빈 화면을 그대로 두는
+   대신 그 사실을 적습니다. */
+.find__noscript {
+  margin: 0;
+  padding-block: var(--spacing-3000);
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-m-regular-font-size);
+  line-height: var(--typography-body-m-regular-line-height);
+  text-align: center;
+}

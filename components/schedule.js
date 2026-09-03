@@ -43,6 +43,15 @@ export function todayInSeoul() {
   return { y, m, d }
 }
 
+/**
+ * YYYY-MM-DD.
+ *
+ * <time datetime> 이 요구하는 모양이면서, 문자열끼리 견주면 그대로 날짜 순서입니다 —
+ * 달력에서 고른 기간과 주소(?from=&to=)가 이것을 그대로 씁니다.
+ */
+export const dateKey = (at) =>
+  `${at.getFullYear()}-${String(at.getMonth() + 1).padStart(2, '0')}-${String(at.getDate()).padStart(2, '0')}`
+
 /** 오늘부터 며칠 뒤의 날짜. */
 export function dateAfter(days) {
   const t = todayInSeoul()
@@ -89,7 +98,7 @@ export function initSchedule(scope = document) {
     // 날짜를 계산할 수 없으면 마크업에 적힌 것을 그대로 둡니다.
     if (at) {
       head.textContent = groupText(at)
-      head.dateTime = `${at.getFullYear()}-${String(at.getMonth() + 1).padStart(2, '0')}-${String(at.getDate()).padStart(2, '0')}`
+      head.dateTime = dateKey(at)
     }
   }
 

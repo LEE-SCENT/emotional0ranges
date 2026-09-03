@@ -65,8 +65,11 @@
 /* ---- size ---------------------------------------------------------------
    높이는 padding + 줄높이(또는 아이콘)로 결정됩니다 — 고정 height 를 주지 않습니다.
      small  : 8+8   + 12×130% ≈ 32
-     medium : 8+8   + 16×150% = 40
+     medium : 10+10 + 14×140% ≈ 40
      large  : 12+12 + 16×150% = 48
+
+   medium 은 글자가 14(body-m) 입니다 — 16 이던 때가 있었지만 Figma 의 Button 이
+   14 로 바뀌었습니다. 높이 40 은 그대로라 여백이 8 에서 10 으로 늘었습니다.
 */
 
 .btn--small {
@@ -80,11 +83,11 @@
 .btn--small .btn__icon { inline-size: var(--_button-icon-size-xs); block-size: var(--_button-icon-size-xs); }
 
 .btn--medium {
-  padding: var(--spacing-200) var(--spacing-400);
-  font-size: var(--typography-body-l-medium-font-size);
-  font-weight: var(--typography-body-l-medium-font-weight);
-  line-height: var(--typography-body-l-medium-line-height);
-  letter-spacing: var(--typography-body-l-medium-letter-spacing);
+  padding: var(--spacing-250) var(--spacing-400);
+  font-size: var(--typography-body-m-medium-font-size);
+  font-weight: var(--typography-body-m-medium-font-weight);
+  line-height: var(--typography-body-m-medium-line-height);
+  letter-spacing: var(--typography-body-m-medium-letter-spacing);
 }
 .btn--medium .btn__icon { inline-size: var(--_button-icon-size-m); block-size: var(--_button-icon-size-m); }
 

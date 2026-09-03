@@ -1,0 +1,50 @@
+/**
+ * Chip — 담은 것을 보여주고 빼는 알약(찾기 화면의 "담은 날짜" 목록 전용).
+ *
+ *   <span class="chip find-dates__item">
+ *     9.5(금)
+ *     <button class="find-dates__remove" type="button" aria-label="9.5(금) 빼기">×</button>
+ *   </span>
+ *
+ * 찾기 화면의 조건 알약(전체·프로모션·마감 임박 …)과 판 안의 선택지(지역·모임
+ * 유형·남은자리)는 Figma 팝오버 디자인이 나오면서 Button 컴포넌트(filled/outlined/
+ * ghost)로 옮겨갔습니다 — 이 파일은 그 디자인에 없는, 날짜를 여러 번 담는 목록에만
+ * 남아 있습니다(find-bar.css, find-bar.js).
+ *
+ * ⚠️ Figma 에 이 컴포넌트가 없습니다. 높이 40 · 알약 · 선택 시 검정 배경은
+ *    SegmentedControl 에서 가져왔습니다. 정식 디자인이 나오면 이 파일만 고치면
+ *    되도록 값은 전부 semantic 토큰으로 두었습니다.
+ */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-100);
+  box-sizing: border-box;
+  /* 10 + 글자 20 + 10 = 40. SegmentedControl 과 같은 높이라 한 줄에 섞여 서도
+     키가 맞습니다. */
+  padding: var(--spacing-250) var(--spacing-400);
+  border: 1px solid var(--colors-border);
+  border-radius: var(--_rounded-full);
+  background: var(--colors-bg);
+  color: var(--colors-fg-low);
+  font-family: var(--_font-family-pretendard);
+  font-size: var(--typography-body-m-medium-font-size);
+  font-weight: var(--typography-body-m-medium-font-weight);
+  line-height: var(--typography-body-m-medium-line-height);
+  letter-spacing: var(--typography-body-m-medium-letter-spacing);
+  /* 조건 이름이 두 줄로 접히면 줄마다 알약 높이가 달라집니다. */
+  white-space: nowrap;
+  /* 두 번 누르며 켜고 끄는 자리라 글자가 끌려 선택되면 방해가 됩니다. */
+  user-select: none;
+  cursor: pointer;
+  transition:
+    background var(--_duration-fast) var(--_easing-standard),
+    border-color var(--_duration-fast) var(--_easing-standard),
+    color var(--_duration-fast) var(--_easing-standard);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chip { transition: none; }
+}
