@@ -768,6 +768,14 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
       open(opener.dataset.findOpen ?? opener.dataset.sheetOpen)
       return
     }
+    /* 좁은 화면에서 바는 칸 넷이 아니라 하나의 자리입니다(Figma 의 filterBar).
+       칸과 칸 사이나 알약의 여백을 눌렀을 때 아무 일도 일어나지 않으면, 눌리는 자리를
+       글자에 맞춰 더듬어 찾게 됩니다 — 바 어디를 눌러도 판이 열립니다.
+       어느 칸을 눌렀는지 알 수 없으므로 층은 펼치지 않고 접힌 목록으로 엽니다. */
+    if (sheetWidth.matches && e.target.closest('.find-bar__fields')) {
+      showSheet(conditionSheet, { opener: root.querySelector('[data-find-open]') })
+      return
+    }
     // 필터 버튼은 조건이 아니라 그 밖의 것을 엽니다 — 정렬과 추천입니다.
     if (e.target.closest('[data-find-sorting]')) {
       showSheet(sortingSheet, { opener: sortingBtn })
@@ -799,6 +807,9 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
        바깥을 누른 것으로 읽히고 판이 닫혔습니다 — 기간의 끝을 고를 수가 없었습니다. */
     if (!e.target.isConnected) return
     if (e.target.closest('.find-bar__panel, .find-sheet, [data-find-open], [data-find-sorting]')) return
+    /* 좁은 화면에서는 바 전체가 판을 여는 자리입니다(위 root 핸들러) — 여기서 밖으로
+       세면 방금 연 판이 같은 누름에 도로 닫힙니다. 넓은 화면에서는 그대로 밖입니다. */
+    if (sheetWidth.matches && e.target.closest('.find-bar__fields')) return
     close({ restore: false })
   })
 

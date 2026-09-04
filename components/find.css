@@ -60,8 +60,6 @@
     padding-block-start: calc(var(--spacing-300) + env(safe-area-inset-top));
   }
 
-  /* 머리와 첫 카드 사이도 12 입니다(시안 warpper 의 첫 줄). */
-  .find__list { padding-block-start: var(--spacing-300); }
 }
 
 /* 좁은 화면에서 조건 판이 떠 있는 동안에는 GNB(20) 위로 올라섭니다. 머리가 그
@@ -115,6 +113,13 @@
   flex-direction: column;
   gap: var(--spacing-300);
   padding-block: var(--spacing-400);
+}
+
+/* 좁은 화면에서는 12 입니다 — 머리가 위아래로 12 를 두르고 있어, 그 아래 묶음도
+   같은 만큼 띄워야 머리와 목록이 한 자로 잰 것처럼 이어집니다.
+   ⚠️ 위 기본 규칙보다 뒤에 있어야 합니다. 앞에 두면 16 이 이것을 덮습니다. */
+@media (max-width: 960px) {
+  .find__list { padding-block: var(--spacing-300); }
 }
 
 /* ---- 정렬 줄 ----------------------------------------------------------
