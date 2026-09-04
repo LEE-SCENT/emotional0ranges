@@ -245,10 +245,10 @@
     column-gap: var(--spacing-100);
     padding: var(--spacing-300) var(--spacing-500);
     border-radius: var(--_rounded-full);
+    /* 바탕만 두고 그림자는 두지 않습니다(시안). 이 폭에서 바는 화면의 첫 줄로
+       가만히 놓여 있을 뿐, 목록 위에 떠 있는 것이 아닙니다 — 뜬 것처럼 보이려면
+       스크롤을 따라와야 하는데 여기서는 함께 흘러갑니다. */
     background: var(--colors-bg-low);
-    /* ⚠️ Figma 의 shadow/popover 는 토큰이지만 이 자리에 적힌 값은
-       drop-shadow(0 4px 10px #0000001a) 입니다. 아직 토큰이 아니라 값을 씁니다. */
-    box-shadow: 0 4px 10px rgb(0 0 0 / 0.1);
   }
 
   /* 지역이 첫 줄을 통째로 씁니다. */
