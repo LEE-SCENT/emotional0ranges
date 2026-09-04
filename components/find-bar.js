@@ -347,6 +347,35 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
     )
   }
 
+  /* ---- 담은 직후의 한마디 ------------------------------------------------
+     달력에서 이틀을 누른 것이 담긴 것인지 아직 고르는 중인지는 칸 색만으로는
+     헷갈립니다. 방금 무엇이 들어갔는지와 몇 개째인지를 2초만 말하고, 안내는 원래
+     문장으로 돌아갑니다 — 계속 남겨두면 다음에 무엇을 할 수 있는지를 말하는 자리를
+     지난 일이 차지합니다. 자리는 겹쳐 두어 바뀔 때 흔들리지 않습니다(find-bar.css). */
+
+  const help = root.querySelector('.find-help')
+  const addedSlot = root.querySelector('[data-find-added]')
+  /** 한마디가 서 있는 시간. */
+  const ADDED_FOR = 2000
+  let addedTimer = 0
+
+  /** 받침이 있으면 "이", 없으면 "가" — 끝이 요일 한 글자입니다(9.8(화) / 9.17(목)). */
+  const subjectMark = (label) => {
+    const code = label.replace(/\)\s*$/, '').slice(-1).charCodeAt(0)
+    const hasTail = code >= 0xac00 && code <= 0xd7a3 && (code - 0xac00) % 28 !== 0
+    return hasTail ? '이' : '가'
+  }
+
+  function announceAdded(sel) {
+    if (!help || !addedSlot) return
+    const label = dateLabel(sel)
+    addedSlot.textContent = `${label}${subjectMark(label)} 추가됐어요 · ${selections.length}/${MAX_DATES}`
+    help.classList.add('is-added')
+    // 이어서 담으면 다시 2초입니다 — 앞의 한마디가 남은 시간을 물려받지 않습니다.
+    clearTimeout(addedTimer)
+    addedTimer = setTimeout(() => help.classList.remove('is-added'), ADDED_FOR)
+  }
+
   /**
    * 날짜 하나를 누른 결과.
    *
@@ -362,22 +391,27 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
    */
   function pick(k) {
     const sel = pendingFrom ? null : selectionAt(k)
+    // 이번에 담긴 것. 빼거나 시작만 찍은 때는 없습니다 — 알릴 일이 아직 없습니다.
+    let added = null
     if (sel) {
       selections = selections.filter((s) => s !== sel)
     } else if (!pendingFrom) {
       if (selections.length >= MAX_DATES) return
       pendingFrom = k
     } else if (k === pendingFrom) {
-      selections.push({ from: k, to: k })
+      added = { from: k, to: k }
+      selections.push(added)
       pendingFrom = null
     } else if (k < pendingFrom) {
       pendingFrom = k
     } else {
-      selections.push({ from: pendingFrom, to: k })
+      added = { from: pendingFrom, to: k }
+      selections.push(added)
       pendingFrom = null
     }
     renderCalendar()
     update()
+    if (added) announceAdded(added)
   }
 
   calendar?.addEventListener('click', (e) => {
