@@ -16,7 +16,7 @@
  * 목록과 같은 규칙이고, 값이 대표 일정이 아니라 그 회차에서 나오는 것만 다릅니다.
  */
 
-import { openMeetups, areaOf, cityOf, regionOf, seatTags } from './products.js?v=a3926563'
+import { openMeetups, areaOf, cityOf, groupOf, regionOf, seatTags } from './products.js?v=f2996205'
 import { dateAfter, dateKey, dayText } from './schedule.js?v=a9e9003f'
 
 const won = (n) => `${n.toLocaleString('ko-KR')}원`
@@ -66,11 +66,14 @@ const net = (o) => o.price - (o.off ?? 0)
 
 function matches(m, cond) {
   if (cond.areas.length) {
-    /* 고른 것은 동네 이름이거나, 도시 이름이거나, 큰 갈래입니다 — "서울"을 고르면
-       서울 안의 동네가 모두, 탭 안의 "어디서든"(수도권·비수도권)을 고르면 그 묶음이
-       통째로 걸립니다(products.js: cityOf · regionOf). */
+    /* 고른 것은 동네 이름이거나, 도시 이름이거나, 판에서 묶어 보여주는 단위이거나,
+       큰 갈래입니다 — "서울"을 고르면 서울 안의 동네가 모두, "경기 · 인천"을 고르면
+       그 묶음이, 탭의 "수도권 전체"를 고르면 그 갈래가 통째로 걸립니다
+       (products.js: cityOf · groupOf · regionOf). */
     const area = areaOf(m.s.place)
-    if (!cond.areas.some((a) => a === area || a === cityOf(area) || a === regionOf(area))) return false
+    if (!cond.areas.some((a) => a === area || a === cityOf(area) || a === groupOf(area) || a === regionOf(area))) {
+      return false
+    }
   }
   if (cond.kinds.length && !cond.kinds.includes(m.slug)) return false
   if (cond.dates.length) {

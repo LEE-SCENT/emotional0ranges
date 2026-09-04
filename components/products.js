@@ -96,10 +96,32 @@ const CAPITAL_AREA = [
   '서울', '강남', '영등포', '성남', '분당', '수원', '인천', '고양', '경기', '화성', '용인', '안양', '부천',
 ]
 
-export const REGIONS = ['수도권', '비수도권']
+export const REGIONS = ['수도권', '그 외 지역']
 
 export const regionOf = (area) =>
   CAPITAL_AREA.includes(area.split(' ')[0]) ? REGIONS[0] : REGIONS[1]
+
+/**
+ * 지역 판에서 동네를 묶어 보여주는 단위(Figma 지역 팝오버의 소제목).
+ *
+ *   서울 강남 · 강남 역삼 · 영등포 여의도  ->  서울
+ *   경기 성남 · 고양 일산 · 인천 주안      ->  경기 · 인천
+ *
+ * 도시(cityOf)마다 묶지 않는 것은, 서울 말고는 도시마다 여는 곳이 하나뿐이라
+ * 이름 하나짜리 줄이 여섯 개 생기기 때문입니다. 서울만 제 이름으로 서고 나머지
+ * 수도권은 한 묶음입니다.
+ *
+ * 이 묶음도 고를 수 있는 조건입니다 — 묶음의 "전체"가 그 안의 회차를 모두
+ * 통과시킵니다(find.js).
+ */
+export const AREA_GROUPS = ['서울', '경기 · 인천']
+
+export const groupOf = (area) =>
+  regionOf(area) === REGIONS[0]
+    ? cityOf(area) === AREA_GROUPS[0]
+      ? AREA_GROUPS[0]
+      : AREA_GROUPS[1]
+    : REGIONS[1]
 
 /** 신청할 수 있는 자리가 하나라도 남았는지. 빈자리 알림만 받는 일정은 아닙니다. */
 export const isOpen = (o) =>

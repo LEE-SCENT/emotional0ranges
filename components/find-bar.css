@@ -655,25 +655,17 @@
     inline-size: 912px;
   }
 
-  .find-bar__panel--location { inline-size: 640px; }
+  .find-bar__panel--location { inline-size: 680px; }
   .find-bar__panel--category,
-  .find-bar__panel--available { inline-size: 336px; }
-}
+  .find-bar__panel--available { inline-size: 332px; }
 
-/* 조건 하나가 무엇을 뜻하는지 한 줄로 덧붙이는 자리. "둘이 갈래요"처럼 규칙이
-   숫자로만 드러나지 않는 조건에만 답니다 — 모든 조건에 설명을 달면 고르는 자리가
-   읽는 자리가 됩니다. */
-.find-group__note {
-  margin: var(--spacing-300) 0 0;
-  color: var(--colors-fg-lower);
-  font-size: var(--typography-body-s-regular-font-size);
-  font-weight: var(--typography-body-s-regular-font-weight);
-  line-height: var(--typography-body-s-regular-line-height);
-}
-
-.find-group__note b {
-  color: var(--colors-fg);
-  font-weight: var(--typography-body-s-semibold-font-weight);
+  /* 모임 유형·남은자리 판은 낱장 버튼 격자 하나가 전부입니다. 판의 여백을 8 로
+     좁혀 버튼과 판 사이에 격자의 사이 간격(8)과 같은 만큼만 남깁니다 — 20 을
+     두르면 버튼 다섯 개짜리 판이 제 내용보다 여백으로 더 커집니다(Figma). */
+  .find-bar__panel--category .find-bar__panel-body,
+  .find-bar__panel--available .find-bar__panel-body {
+    padding: var(--spacing-200);
+  }
 }
 
 /* ---- 낱장 버튼 격자 -----------------------------------------------------
@@ -689,12 +681,18 @@
 }
 
 .find-btn-grid--2col { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-/* 지역 격자는 넓은 화면(팝오버 640px)에서만 4열입니다. 좁은 화면의 시트는 그만한
-   폭이 없어 4열이면 "서울 강남"이 "서…"로 잘립니다 — 2열로 시작합니다. */
-.find-btn-grid--4col { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.find-btn-grid--3col { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+/* 세 칸이 332 를 나눠 가지면 한 칸이 100 입니다. 버튼의 좌우 여백(16)을 그대로 두면
+   "테마 로테이션"이 "테마 로테…"로 잘립니다 — 판을 넓히는 대신 이 격자에서만 여백을
+   줄입니다. 상품 이름은 데이터에서 오고, 판의 폭은 디자인이 정한 값입니다. */
+.find-btn-grid--3col .find-btn-grid__item { padding-inline: var(--spacing-200); }
+/* 지역 격자는 넓은 화면(팝오버 680px)에서만 6열입니다. 좁은 화면의 시트는 그만한
+   폭이 없어 여섯이면 "고양 일산"이 "고양…"으로 잘립니다 — 2열로 시작합니다. */
+.find-btn-grid--6col { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
 @media (min-width: 961px) {
-  .find-btn-grid--4col { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .find-btn-grid--6col { grid-template-columns: repeat(6, minmax(0, 1fr)); }
 }
 
 /* 크기는 Button 의 medium 을 그대로 씁니다(10/16 · 14px · 높이 40). */
@@ -706,6 +704,26 @@
 .find-btn-grid__item:has(:checked) {
   background: var(--_button-filled-bg);
   color: var(--_button-filled-fg);
+}
+
+/* 두 줄짜리 칸 — 고르는 말 아래에 그것이 무엇을 뜻하는지가 붙습니다(남은자리).
+   .btn__label 이 한 줄을 전제로 잘라내고 있어(overflow·nowrap) 세로로 쌓는 것은
+   그 안에서 합니다 — 버튼 자체는 여느 칸과 같은 컴포넌트 그대로입니다. */
+.find-btn-grid__stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 값이 아니라 그 값의 조건입니다 — 한 단 작고 옅게 두어 먼저 읽히지 않습니다.
+   색을 따로 두지 않는 것은 켜진 칸(검정)과 꺼진 칸(회색)에서 각각 제 바탕에 맞는
+   대비를 유지해야 하기 때문입니다 — 글자색을 물려받고 투명도만 낮춥니다. */
+.find-btn-grid__hint {
+  font-size: var(--typography-body-xs-medium-font-size);
+  font-weight: var(--typography-body-xs-medium-font-weight);
+  line-height: var(--typography-body-xs-medium-line-height);
+  letter-spacing: var(--typography-body-xs-medium-letter-spacing);
+  opacity: 0.7;
 }
 
 .find-btn-grid__item:has(:focus-visible) {
@@ -745,13 +763,18 @@
    있는지 말하는 탭이 위로 밀려 사라집니다 — 스크롤한 사람은 자기가 수도권을 보는지
    비수도권을 보는지 모른 채 이름만 읽게 됩니다. 탭은 자리에 두고 그 아래만 움직입니다.
 
-   높이는 줄 수로 셉니다 — 40(버튼) + 8(줄 사이) = 48 이 한 줄이고, 여섯 줄 반이
-   보입니다. 반 줄을 남기는 것은 그래야 아래가 더 있다는 것이 보이기 때문입니다.
-   화면이 낮은 기기에서는 그 높이가 판의 절반을 넘어 다른 조건이 밀려나므로, 화면
-   높이의 40% 를 넘지 않는 선에서 멈춥니다 — 그 폭에서는 여섯 줄 반이 아니라 다섯
-   줄 반쯤이 보입니다. */
+   넓은 화면에서는 한 줄에 여섯이 서서 지금 여는 지역이 모두 한눈에 들어옵니다 —
+   높이를 넉넉히 두어 스크롤이 생기지 않게 합니다. 지역이 늘어 넘치기 시작하면 그때
+   구르고, 아래가 더 있다는 것은 끝에 달린 그늘이 말합니다.
+   좁은 화면에서는 한 줄에 둘뿐이라 훨씬 길어지므로, 그쪽에서는 화면 높이의 40% 가
+   먼저 걸립니다 — 격자 하나가 판의 절반을 넘으면 다른 조건이 밀려납니다. */
 .find-bar__location-group {
-  max-block-size: min(312px, 40dvh);
+  /* 갈래의 몸통은 줄들의 묶음입니다 — 갈래 전체를 고르는 줄 하나와, 소제목이 붙은
+     묶음 줄들이 세로로 섭니다(Figma 의 location gap-300). */
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-300);
+  max-block-size: min(420px, 40dvh);
   overflow-y: auto;
   /* 다 내렸을 때 판이 이어서 움직이지 않게 막습니다. */
   overscroll-behavior: contain;
@@ -772,9 +795,31 @@
     linear-gradient(to top, rgb(0 0 0 / 0.045), transparent) bottom / 100% var(--spacing-300) no-repeat scroll;
 }
 
-/* 지금 탭이 아닌 묶음은 자리를 차지하지 않습니다 — 두 묶음을 겹쳐 두고 display 만
+/* 지금 탭이 아닌 갈래는 자리를 차지하지 않습니다 — 둘을 겹쳐 두고 display 만
    바꾸면 격자 높이가 더 큰 쪽에 맞춰 고정되어, 짧은 탭 아래에 빈 자리가 남습니다. */
 .find-bar__location-group[hidden] { display: none; }
+
+/* ---- 묶음 한 줄 ---------------------------------------------------------
+   소제목과 그 아래 격자. 소제목이 도시를 말하고 있어 칸에는 동네 이름만 남습니다
+   (find-bar.js: areaLabel) — "서울 강남 · 서울 성수"가 줄지어 서면 같은 두 글자가
+   칸마다 되풀이됩니다.
+*/
+
+.find-area-set {
+  display: flex;
+  flex-direction: column;
+  /* 소제목과 격자 사이는 격자의 사이 간격과 같습니다 — 한 덩어리로 읽혀야 합니다. */
+  gap: var(--spacing-200);
+}
+
+.find-area-set__name {
+  margin: 0;
+  color: var(--colors-fg-low);
+  font-size: var(--typography-body-s-medium-font-size);
+  font-weight: var(--typography-body-s-medium-font-weight);
+  line-height: var(--typography-body-s-medium-line-height);
+  letter-spacing: var(--typography-body-s-medium-letter-spacing);
+}
 
 /* ---- 달력 -------------------------------------------------------------
    Figma 의 datePicker 를 그대로 옮겼습니다.

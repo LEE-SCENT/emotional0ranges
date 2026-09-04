@@ -23,7 +23,7 @@
 <link rel="stylesheet" href="./components/tag.css?v=fef5c195">
 <link rel="stylesheet" href="./components/product-card.css?v=82efa7cf">
 <link rel="stylesheet" href="./components/chip.css?v=c4217661">
-<link rel="stylesheet" href="./components/find-bar.css?v=a6a96a82">
+<link rel="stylesheet" href="./components/find-bar.css?v=04e5ada4">
 <link rel="stylesheet" href="./components/find.css?v=5242746d">
 <link rel="stylesheet" href="./components/footer.css?v=090dd8fc">
 <link rel="stylesheet" href="./components/app-bar.css?v=7fbb6489">
@@ -186,17 +186,20 @@
               <svg class="btn__icon" aria-hidden="true"><use href="#icon-close"></use></svg>
             </button>
           </div>
+          <!-- 무엇이 걸리는 조건인지를 버튼 안에서 말합니다(Figma). 아래에 한 줄로
+               덧붙이면 고르고 나서야 읽게 되는데, 그때는 이미 고른 뒤입니다 —
+               고르기 전에 알아야 하는 말이라 버튼 안으로 들어옵니다. -->
           <div class="find-bar__panel-body">
             <div class="find-btn-grid find-btn-grid--2col">
               <label class="btn btn--ghost btn--medium find-btn-grid__item">
-                <input class="sr-only" type="radio" name="seats" value="one" checked><span class="btn__label">혼자 갈래요</span>
+                <input class="sr-only" type="radio" name="seats" value="one" checked>
+                <span class="btn__label find-btn-grid__stack">혼자 갈래요<b class="find-btn-grid__hint">1자리 이상</b></span>
               </label>
               <label class="btn btn--ghost btn--medium find-btn-grid__item">
-                <input class="sr-only" type="radio" name="seats" value="two"><span class="btn__label">둘이 갈래요</span>
+                <input class="sr-only" type="radio" name="seats" value="two">
+                <span class="btn__label find-btn-grid__stack">둘이 갈래요<b class="find-btn-grid__hint">동성 자리 2개 이상</b></span>
               </label>
             </div>
-            <p class="find-group__note">둘이 갈래요는 <b>같은 성별 자리가 두 개 남은</b> 모임만 보여줘요.
-              친구와 나란히 신청할 수 있는 자리입니다.</p>
           </div>
           <div class="find-bar__panel-foot">
             <button class="btn btn--ghost btn--medium" type="button" data-find-clear="seats"><span class="btn__label">초기화</span></button>
@@ -415,8 +418,8 @@
   initAutoHide()
   // 목록이 먼저 귀를 엽니다. 조건 바는 붙자마자 지금 조건을 한 번 알리는데,
   // 그때 듣는 쪽이 없으면 첫 목록이 그려지지 않습니다.
-  const { initFind } = await import('./components/find.js?v=0c470cfa')
+  const { initFind } = await import('./components/find.js?v=5c6b169e')
   initFind()
-  const { initFindBar } = await import('./components/find-bar.js?v=de0eb8a4')
+  const { initFindBar } = await import('./components/find-bar.js?v=9182a538')
   initFindBar()
 </script>

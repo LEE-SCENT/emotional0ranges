@@ -29,7 +29,7 @@
  * 차례로 펼칩니다. 마크업은 하나이고, 폭이 바뀌면 같은 판을 옮겨 답니다(dock).
  */
 
-import { PRODUCTS, REGIONS, areaOf, cityOf, openMeetups, regionOf } from './products.js?v=a3926563'
+import { AREA_GROUPS, PRODUCTS, REGIONS, areaOf, cityOf, groupOf, openMeetups, regionOf } from './products.js?v=f2996205'
 import { dateAfter, dateKey, isToday, todayInSeoul } from './schedule.js?v=a9e9003f'
 import { lockScroll, unlockScroll } from './scroll-lock.js?v=40a2cd35'
 import { initSegmentedControl } from './segmented-control.js?v=bbd7c4b8'
@@ -110,79 +110,106 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
 
   const areaBody = root.querySelector('[data-find-body="area"]')
   if (areaBody) {
+    /* 탭(갈래) → 묶음 → 그 안의 동네. 두 겹으로 세는 것은 판이 두 겹으로 서기
+       때문입니다 — 탭이 갈래를 고르고, 그 안에서 소제목이 붙은 줄이 묶음을 말합니다. */
     const areas = [...new Set(meetups.map((m) => areaOf(m.s.place)))]
-    const byRegion = new Map()
+    const byRegion = new Map(REGIONS.map((region) => [region, new Map()]))
     for (const area of areas) {
-      const region = regionOf(area)
-      if (!byRegion.has(region)) byRegion.set(region, [])
-      byRegion.get(region).push(area)
+      const groups = byRegion.get(regionOf(area))
+      if (!groups) continue
+      const group = groupOf(area)
+      if (!groups.has(group)) groups.set(group, [])
+      groups.get(group).push(area)
     }
 
-    /* 동네가 여럿인 도시에는 그 도시 전체를 고르는 항목을 하나 더 둡니다
-       (Figma 의 "서울"). 동네를 하나씩 다 누르지 않아도 되는 자리이고,
-       목록은 그 도시에 속한 회차를 모두 통과시킵니다(find.js). */
-    for (const [region, list] of byRegion) {
-      const cities = new Map()
-      for (const area of list) {
-        const city = cityOf(area)
-        cities.set(city, (cities.get(city) ?? 0) + 1)
-      }
-      const umbrellas = [...cities]
-        .filter(([city, count]) => count > 1 && !list.includes(city))
-        .map(([city]) => city)
-      if (umbrellas.length) byRegion.set(region, [...umbrellas, ...list])
-    }
-    /* 수도권/비수도권 은 거르는 조건이 아니라, 아래 격자가 어느 지역 묶음을
-       보여줄지 고르는 탭입니다(Figma 지역 팝오버). 지역이 하나도 없는 묶음은
-       탭을 지우지 않고 숫자 0 을 단 채 눌리지 않게 둡니다 — 지우면 탭 줄이
-       한 칸짜리가 되어 디자인과 어긋나고, 그냥 두면 눌러서 빈 격자를 만납니다. */
-    const first = REGIONS.find((region) => byRegion.get(region)?.length) ?? REGIONS[0]
+    const countOf = (region) =>
+      [...(byRegion.get(region)?.values() ?? [])].reduce((sum, list) => sum + list.length, 0)
+
+    /* 수도권/그 외 지역 은 거르는 조건이 아니라, 아래 격자가 어느 갈래를 보여줄지
+       고르는 탭입니다(Figma 지역 팝오버). 지역이 하나도 없는 갈래는 탭을 지우지 않고
+       눌리지 않게 둡니다 — 지우면 탭 줄이 한 칸짜리가 되어 디자인과 어긋나고,
+       그냥 두면 눌러서 빈 격자를 만납니다. */
+    const first = REGIONS.find((region) => countOf(region)) ?? REGIONS[0]
 
     const tabs = el('div', 'segmented segmented--default')
     tabs.setAttribute('role', 'tablist')
-    tabs.setAttribute('aria-label', '지역 묶음')
+    tabs.setAttribute('aria-label', '지역 갈래')
     tabs.append(el('span', 'segmented__thumb'))
     for (const region of REGIONS) {
-      const count = byRegion.get(region)?.length ?? 0
       const tab = el('button', `segmented__item${region === first ? ' is-selected' : ''}`)
       tab.type = 'button'
       tab.setAttribute('role', 'tab')
       tab.setAttribute('aria-selected', String(region === first))
-      tab.disabled = count === 0
+      tab.disabled = countOf(region) === 0
       tab.dataset.region = region
-      tab.append(el('span', null, region), el('b', null, String(count)))
+      tab.append(el('span', null, region))
       tabs.append(tab)
     }
 
-    /* 탭마다 첫 칸에 "어디서든"을 둡니다(Figma). 이것은 지우는 버튼이 아니라
-       그 묶음 전체를 고르는 항목입니다 — 수도권 탭에서 누르면 수도권에서 열리는
-       회차가 모두 걸리고, 바에는 어느 묶음인지가 함께 적힙니다("수도권 · 어디서든").
-       두 탭에 같은 이름이 하나씩 있어, 이름만으로는 어느 쪽인지 알 수 없기
-       때문입니다. 값은 갈래 이름(수도권/비수도권)이고 목록도 그것으로 거릅니다. */
-    const groups = REGIONS.map((region) => {
-      const grid = el('div', 'find-btn-grid find-btn-grid--4col find-bar__location-group')
-      grid.dataset.region = region
-      grid.hidden = region !== first
-      grid.append(
-        btnGridItem('area', region, '어디서든'),
-        ...(byRegion.get(region) ?? []).map((area) => btnGridItem('area', area, area)),
-      )
-      return grid
-    })
+    /* 묶음이 도시 하나면 이름 앞의 도시를 뗍니다 — 소제목이 이미 "서울"이라고
+       말하고 있어, 칸마다 그것을 되풀이하면 이름이 길어지기만 합니다.
+         서울 강남 · 강남 역삼 · 영등포 여의도  ->  강남 · 역삼 · 여의도
+       여러 도시를 묶은 줄(경기 · 인천)에서는 그대로 둡니다 — 거기서 도시를 떼면
+       "광교"·"주안"만 남아 어느 도시인지 알 수 없습니다. */
+    const areaLabel = (area, group) =>
+      cityOf(area) === group ? area.slice(area.indexOf(' ') + 1) : area
 
-    areaBody.replaceChildren(tabs, ...groups)
+    /**
+     * 한 갈래의 몸통.
+     *
+     * 묶음이 하나뿐이면(그 외 지역) 소제목을 달지 않고 갈래의 "전체"와 동네를 한 줄에
+     * 함께 둡니다 — 줄이 하나인데 이름을 붙이면 탭에 이미 적힌 말을 한 번 더 적는
+     * 셈입니다. 묶음이 여럿이면 갈래 전체를 고르는 칸이 맨 위에 혼자 서고, 그 아래로
+     * 묶음마다 소제목과 "전체"가 붙습니다(Figma).
+     */
+    function regionBody(region) {
+      const box = el('div', 'find-bar__location-group')
+      box.dataset.region = region
+      box.hidden = region !== first
+      const groups = [...(byRegion.get(region) ?? [])]
+
+      if (groups.length === 1) {
+        const grid = el('div', 'find-btn-grid find-btn-grid--6col')
+        grid.append(
+          btnGridItem('area', region, '전체'),
+          ...groups[0][1].map((area) => btnGridItem('area', area, area)),
+        )
+        box.append(grid)
+        return box
+      }
+
+      const head = el('div', 'find-btn-grid find-btn-grid--6col')
+      head.append(btnGridItem('area', region, `${region} 전체`))
+      box.append(head)
+
+      for (const [group, list] of groups) {
+        const set = el('div', 'find-area-set')
+        const grid = el('div', 'find-btn-grid find-btn-grid--6col')
+        grid.append(
+          btnGridItem('area', group, '전체'),
+          ...list.map((area) => btnGridItem('area', area, areaLabel(area, group))),
+        )
+        set.append(el('p', 'find-area-set__name', group), grid)
+        box.append(set)
+      }
+      return box
+    }
+
+    const bodies = REGIONS.map(regionBody)
+
+    areaBody.replaceChildren(tabs, ...bodies)
     initSegmentedControl(tabs)
     tabs.addEventListener('click', (e) => {
       const tab = e.target.closest('.segmented__item')
       if (!tab || tab.disabled) return
-      for (const g of groups) g.hidden = g.dataset.region !== tab.dataset.region
+      for (const box of bodies) box.hidden = box.dataset.region !== tab.dataset.region
     })
   }
 
   const kindBody = root.querySelector('[data-find-body="kind"]')
   if (kindBody) {
     const slugs = [...new Set(meetups.map((m) => m.slug))]
-    const grid = el('div', 'find-btn-grid find-btn-grid--2col')
+    const grid = el('div', 'find-btn-grid find-btn-grid--3col')
     grid.append(
       resetBtn('전체', 'kind'),
       ...slugs.map((slug) => btnGridItem('kind', slug, PRODUCTS[slug].short)),
@@ -834,7 +861,7 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
     for (const name of Object.keys(order)) order[name] = checked(name)
   }
 
-  /* 지역의 기본값은 "수도권 · 어디서든" 입니다.
+  /* 지역의 기본값은 "수도권 전체" 입니다.
      지금 여는 모임이 대부분 수도권이라, 처음 들어온 사람이 전국을 훑고 다시 좁히는
      것보다 여기서 시작해 넓히는 편이 짧습니다. 그래서 비어 있는 지역이라는 상태를
      두지 않고, 비면 늘 이 값으로 되돌립니다(전체 알약·× ·다 고르기 모두).
@@ -895,7 +922,12 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
    * 기본값(혼자)일 때는 지울 것이 없어 × 는 감춥니다.
    */
   function summaries(s) {
-    const areaLabel = (value) => (REGIONS.includes(value) ? `${value} · 어디서든` : value)
+    /* 판에서 누른 버튼에 적힌 말을 그대로 적습니다 — 갈래와 묶음은 "전체"를 달고
+       (수도권 전체 · 서울 전체), 동네는 제 이름 그대로입니다. 판에는 "전체"가 여럿
+       있어 이름만으로는 어느 줄의 전체인지 알 수 없으므로, 바에서는 무엇의 전체인지를
+       앞에 붙여 둡니다. */
+    const areaLabel = (value) =>
+      REGIONS.includes(value) || AREA_GROUPS.includes(value) ? `${value} 전체` : value
     const many = (list, unit) =>
       list.length > 1 ? `${list[0]} 외 ${list.length - 1}${unit}` : list[0]
 
@@ -904,11 +936,9 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
     return {
       // 지역·모임 유형·날짜 모두 "외 N건"으로 단위를 통일합니다 — Figma 예시가
       // 셋 다 "건"을 씁니다(곳·개로 나눠 쓰지 않습니다).
-      // 아무것도 안 고른 지역은 "어디서든" 입니다 — 판의 되돌리는 버튼과 같은 말이라,
-      // 무엇을 누르면 이 값으로 돌아오는지가 이름으로 이어집니다.
+      // 지역은 늘 무언가 걸려 있습니다(ensureArea) — 비어 있는 것은 판이 아직
+      // 그려지지 않은 첫 순간뿐이라, 그때만 "어디서든" 입니다.
       area: {
-        /* 묶음은 이름만으로는 어느 탭의 "어디서든"인지 알 수 없어 함께 적습니다.
-           아무것도 고르지 않았을 때의 "어디서든"과도 그렇게 구분됩니다. */
         text: s.areas.length ? many(s.areas.map(areaLabel), '건') : '어디서든',
         muted: false,
         // 기본값뿐이면 지울 것이 없습니다.
@@ -934,7 +964,7 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
       if (value) url.searchParams.set(name, value)
       else url.searchParams.delete(name)
     }
-    // 기본값(수도권 · 어디서든)은 싣지 않습니다 — 링크가 짧아지고, 주소에 지역이
+    // 기본값(수도권 전체)은 싣지 않습니다 — 링크가 짧아지고, 주소에 지역이
     // 없는 것과 기본값이 같은 뜻이 되어 새로 열어도 같은 목록이 나옵니다.
     set('area', isDefaultAreas(s.areas) ? '' : s.areas.join(','))
     set('kind', s.kinds.join(','))
@@ -989,8 +1019,8 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
     all?.setAttribute('aria-pressed', String(isDefault(s)))
 
     // "전체" 는 그 칸이 비어 있을 때만 채운 모습입니다 — 지금 아무 모임 유형도
-    // 안 골랐다는 사실을 스스로 보여줍니다. 지역의 "어디서든"은 이제 지우는
-    // 버튼이 아니라 고르는 항목이라, 켜진 모습은 :has(:checked) 가 맡습니다.
+    // 안 골랐다는 사실을 스스로 보여줍니다. 지역의 "전체"들은 지우는 버튼이 아니라
+    // 고르는 항목이라, 켜진 모습은 :has(:checked) 가 맡습니다.
     for (const btn of root.querySelectorAll('[data-find-clear="kind"].find-btn-grid__reset')) {
       btn.setAttribute('aria-pressed', String(!s.kinds.length))
     }
@@ -1027,16 +1057,17 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
   /**
    * 다 고른 것은 아무것도 고르지 않은 것과 같습니다.
    *
-   * 지역을 전부 켜면 걸리는 결과가 "어디서든"과 한 글자도 다르지 않은데, 화면에는
-   * "어디서든"이 꺼진 채 알약 열 개가 검게 켜져 있고 칸에는 "서울 강남 외 8건"이
+   * 지역을 전부 켜면 걸리는 결과가 "수도권 전체"와 한 글자도 다르지 않은데, 화면에는
+   * 그 칸이 꺼진 채 알약 열 개가 검게 켜져 있고 칸에는 "강남 외 8건"이
    * 적힙니다 — 같은 목록을 두 가지 상태로 말하는 셈입니다. 마지막 하나를 켜는
    * 순간 전부 끄고 "전체"로 되돌립니다. 주소에도 그 조건이 실리지 않습니다.
    */
   function collapseWhenAll(name) {
-    // 지역의 "어디서든"(묶음)은 동네가 아니므로 세지 않습니다 — 그것까지 켜야
+    // 지역의 "전체"들(갈래 · 묶음)은 동네가 아니므로 세지 않습니다 — 그것까지 켜야
     // 전부가 되는 것으로 두면 영영 이 자리에 닿지 않습니다.
     const all = [...scope.querySelectorAll(`input[name="${name}"]`)].filter(
-      (input) => !(name === 'area' && REGIONS.includes(input.value)),
+      (input) =>
+        !(name === 'area' && (REGIONS.includes(input.value) || AREA_GROUPS.includes(input.value))),
     )
     if (all.length && all.every((input) => input.checked)) {
       for (const input of all) input.checked = false
@@ -1044,23 +1075,29 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
   }
 
   /**
-   * 묶음("수도권 · 어디서든")과 그 안의 동네는 함께 설 수 없습니다.
+   * 갈래("수도권 전체") · 묶음("서울 전체") · 동네는 함께 설 수 없습니다.
    *
-   * 둘을 같이 켜두면 걸리는 결과는 묶음 하나만 켠 것과 똑같은데 칸에는
-   * "수도권 · 어디서든 외 1건"이라고 적혀, 하나가 더 걸린 것처럼 읽힙니다.
-   * 묶음을 켜면 그 안의 동네를 내리고, 동네를 켜면 묶음을 내립니다.
+   * 셋은 층입니다 — 위의 것을 켜면 그 아래가 이미 다 걸립니다. 같이 켜두면 걸리는
+   * 결과는 위의 것 하나만 켠 것과 똑같은데 칸에는 "수도권 전체 외 1건"이라고 적혀,
+   * 하나가 더 걸린 것처럼 읽힙니다. 어느 쪽을 켜든 겹치는 층을 내립니다.
    */
   function untangleAreas(input) {
     if (input.name !== 'area' || !input.checked) return
-    const isRegion = REGIONS.includes(input.value)
+    // 0 갈래 · 1 묶음 · 2 동네. 작을수록 넓습니다.
+    const rank = (v) => (REGIONS.includes(v) ? 0 : AREA_GROUPS.includes(v) ? 1 : 2)
+    /** 넓은 쪽이 좁은 쪽을 이미 담고 있는지. */
+    const holds = (wide, narrow) =>
+      REGIONS.includes(wide) ? regionOf(narrow) === wide : groupOf(narrow) === wide
+    const mine = rank(input.value)
     for (const other of root.querySelectorAll('input[name="area"]:checked')) {
       if (other === input) continue
-      const otherIsRegion = REGIONS.includes(other.value)
-      if (isRegion) {
-        if (!otherIsRegion && regionOf(other.value) === input.value) other.checked = false
-      } else if (otherIsRegion && other.value === regionOf(input.value)) {
-        other.checked = false
-      }
+      const theirs = rank(other.value)
+      // 같은 층끼리는 겹치지 않습니다 — 동네 둘, 묶음 둘은 나란히 설 수 있습니다.
+      if (mine === theirs) continue
+      const [wide, narrow] = mine < theirs ? [input.value, other.value] : [other.value, input.value]
+      // 내려가는 것은 언제나 방금 누르지 않은 쪽입니다. 누른 칸이 대신 꺼지면
+      // 누른 자리가 켜지지 않아, 아무 일도 일어나지 않은 것처럼 보입니다.
+      if (holds(wide, narrow)) other.checked = false
     }
   }
 
