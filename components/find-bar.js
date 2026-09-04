@@ -384,17 +384,16 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
   let addedTimer = 0
   let addedClearTimer = 0
 
-  /** 받침이 있으면 "이", 없으면 "가" — 끝이 요일 한 글자입니다(9.8(화) / 9.17(목)). */
-  const subjectMark = (label) => {
-    const code = label.replace(/\)\s*$/, '').slice(-1).charCodeAt(0)
-    const hasTail = code >= 0xac00 && code <= 0xd7a3 && (code - 0xac00) % 28 !== 0
-    return hasTail ? '이' : '가'
-  }
-
   function announceAdded(sel) {
     if (!help || !addedSlot) return
-    const label = dateLabel(sel)
-    addedSlot.textContent = `${label}${subjectMark(label)} 추가됐어요 · ${selections.length}/${MAX_DATES}`
+    /* 무엇이 들어갔는지는 적지 않습니다 — 방금 누른 날은 달력에 검게 남아 있고
+       아래 알약에도 그대로 있어, 같은 것을 세 번째로 적는 자리가 됩니다. 여기서는
+       "들어갔다"와 "몇 개째"만 말합니다. */
+    addedSlot.textContent = `선택한 날짜를 추가했어요 · ${selections.length}/${MAX_DATES}`
+    /* 읽어주는 쪽에는 날짜를 적어 보냅니다. "선택한 날짜"는 달력과 알약을 볼 수
+       있어야 무엇인지 아는 말이라, 소리로만 들으면 무엇이 들어갔는지 알 수 없습니다.
+       지울 때와 같은 자리로 갑니다(announce). */
+    announce(`${dateSpoken(sel)}를 추가했습니다 · ${selections.length}/${MAX_DATES}`)
     help.classList.add('is-added')
     // 이어서 담으면 다시 2초입니다 — 앞의 한마디가 남은 시간을 물려받지 않습니다.
     clearTimeout(addedTimer)
