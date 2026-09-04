@@ -269,7 +269,10 @@
             <!-- 저장은 두지 않습니다 — 날짜는 누르는 즉시 목록에 걸리고, 담긴 것은
                  옆의 알약이 이미 보여줍니다. 되돌릴 길만 남깁니다. -->
             <div class="find-bar__panel-actions">
-              <button class="btn btn--ghost btn--medium" type="button" data-find-clear="date"><span class="btn__label">초기화</span></button>
+              <!-- 채우지 않은 버튼이지만 바탕이 없지는 않습니다. 알약들 옆에 나란히
+                   서는 자리라, 글자만 두면 담긴 날짜 하나로 읽힙니다 — 옅은 바탕이
+                   "이건 누르는 것"이라고 말합니다(GNB 의 메뉴 버튼과 같은 blur). -->
+              <button class="btn btn--blur btn--medium" type="button" data-find-clear="date"><span class="btn__label">초기화</span></button>
             </div>
           </div>
         </div>
