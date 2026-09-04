@@ -23,9 +23,9 @@
         "base": {
           "$value": "{primitive.dimension}",
           "$extensions": {
-            "scale": 5
+            "scale": 4
           },
-          "$description": "20px — ~960"
+          "$description": "16px — ~960. 이 폭은 사진 격자가 화면을 꽉 채우는 자리라, 양옆에 남긴 자리만큼 카드가 좁아집니다. 읽는 글이 놓이는 화면이 아니어서 가장자리까지 가까이 가도 됩니다."
         },
         "md": {
           "$value": "{primitive.dimension}",

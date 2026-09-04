@@ -39,9 +39,14 @@
   /* 초광폭 화면에서 로고와 액션이 끝없이 벌어지지 않도록 잡습니다. */
   max-inline-size: var(--_gnb-max-width);
   margin-inline: auto;
-  /* small: 좌우가 비대칭입니다 (왼쪽 20, 오른쪽 12). 위아래는 16 이라 로고 40 과
-     합쳐 바 높이가 72 가 됩니다 — Figma 13:4186 과 같습니다. */
-  padding: var(--spacing-400) var(--spacing-300) var(--spacing-400) var(--spacing-500);
+  /* small: 좌우가 비대칭입니다 (왼쪽은 컨테이너 여백, 오른쪽 12). 위아래는 16 이라
+     로고 40 과 합쳐 바 높이가 72 가 됩니다 — Figma 13:4186 과 같습니다.
+
+     왼쪽을 토큰으로 두는 것은 로고가 그 아래 본문의 왼쪽 끝과 한 줄에 서야 하기
+     때문입니다. GNB 는 컨테이너 밖이라 여백을 직접 두르는데, 숫자로 적어두면 여백을
+     한 번 바꿀 때마다 여기만 남아 4 씩 어긋납니다. */
+  padding: var(--spacing-400) var(--spacing-300) var(--spacing-400)
+    var(--container-gutter-base);
   background: var(--colors-bg);
   color: var(--_gnb-fg);
   font-family: var(--_font-family-base);

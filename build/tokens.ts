@@ -179,7 +179,7 @@ export const semantic = {
   },
   "container": {
     "gutter": {
-      "base": "20px",
+      "base": "16px",
       "md": "24px"
     },
     "maxWidth": {

@@ -24,7 +24,12 @@
   gap: var(--spacing-200);
   box-sizing: border-box;
   block-size: var(--_bottom-cta-height);
-  padding: var(--_bottom-cta-padding-block) var(--_bottom-cta-padding-inline);
+  /* 좌우는 컨테이너 여백을 그대로 씁니다. 이 띠는 화면에 붙어 살아 컨테이너 밖이지만,
+     그 위로 본문이 이어져 보이는 자리라 버튼의 양 끝이 본문의 양 끝과 맞아야 합니다.
+     ⚠️ 컴포넌트 토큰(--_bottom-cta-padding-inline, Figma 의 20)이 아닙니다. 이 띠는
+        좁은 화면에만 서므로 그 폭의 여백을 따릅니다 — 두 값이 갈리면 띠만 4 안쪽으로
+        들어가 보입니다. */
+  padding: var(--_bottom-cta-padding-block) var(--container-gutter-base);
   /* 홈 표시줄이 있는 기기에서는 그만큼 더 띄웁니다. 값이 없는 기기에서는 0 이라
      높이가 그대로입니다. */
   padding-block-end: calc(var(--_bottom-cta-padding-block) + env(safe-area-inset-bottom));

@@ -117,7 +117,7 @@
   --breakpoint-sm: 441px;
   --breakpoint-md: 961px;
   --breakpoint-lg: 1601px;
-  --container-gutter-base: calc(var(--_dimension) * 5);
+  --container-gutter-base: calc(var(--_dimension) * 4);
   --container-gutter-md: calc(var(--_dimension) * 6);
   --container-max-width-md: 1280px;
   --container-max-width-lg: 1280px;

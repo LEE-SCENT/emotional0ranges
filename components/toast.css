@@ -30,7 +30,8 @@
   z-index: 25;
   display: flex;
   justify-content: center;
-  padding-inline: var(--spacing-500);
+  /* 화면 가장자리와의 거리. 컨테이너 밖이라 직접 두르되 같은 토큰을 봅니다. */
+  padding-inline: var(--container-gutter-base);
   /* 띠가 덮은 자리를 계속 누를 수 있어야 합니다 — 알림은 길을 막지 않습니다. */
   pointer-events: none;
 }
