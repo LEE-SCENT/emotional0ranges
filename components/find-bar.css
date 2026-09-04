@@ -58,6 +58,13 @@
      버리면 판이 통째로 보이지 않습니다. */
 }
 
+/* 칸 넷을 감싼 줄. 넓은 화면에서는 박스를 만들지 않아(display: contents) 칸들이
+   그대로 바의 아이가 됩니다 — 한 줄로 나란히 서는 자리는 바 자신입니다. */
+.find-bar__row { display: contents; }
+
+/* 돋보기는 좁은 화면에만 섭니다. 넓은 화면에서는 칸마다 제 아이콘이 있습니다. */
+.find-bar__search { display: none; }
+
 .find-bar__field {
   display: flex;
   align-items: center;
@@ -233,22 +240,40 @@
     gap: var(--spacing-150);
   }
 
+  /* 바는 돋보기와 두 줄짜리 묶음이 나란히 선 알약입니다. */
   .find-bar__fields {
     flex: 1 1 auto;
     min-inline-size: 0;
-    display: grid;
-    /* 둘째 줄은 세 조각이 가운데로 모입니다. minmax(0,auto) 라 값이 길어지면
-       칸이 넘치지 않고 제 안에서 잘립니다. */
-    grid-template-columns: repeat(3, minmax(0, auto));
-    justify-content: center;
+    display: flex;
     align-items: center;
-    column-gap: var(--spacing-100);
+    gap: var(--spacing-200);
     padding: var(--spacing-300) var(--spacing-500);
     border-radius: var(--_rounded-full);
     /* 바탕만 두고 그림자는 두지 않습니다(시안). 이 폭에서 바는 화면의 첫 줄로
        가만히 놓여 있을 뿐, 목록 위에 떠 있는 것이 아닙니다 — 뜬 것처럼 보이려면
        스크롤을 따라와야 하는데 여기서는 함께 흘러갑니다. */
     background: var(--colors-bg-low);
+  }
+
+  .find-bar__search {
+    display: block;
+    flex: none;
+    inline-size: var(--icon-size-s);
+    block-size: var(--icon-size-s);
+    color: var(--colors-fg);
+  }
+
+  /* 값 두 줄은 남는 자리를 다 쓰고, 그 안에서 가운데로 모입니다. */
+  .find-bar__row {
+    display: grid;
+    flex: 1 1 auto;
+    min-inline-size: 0;
+    /* 둘째 줄은 세 조각이 가운데로 모입니다. minmax(0,auto) 라 값이 길어지면
+       칸이 넘치지 않고 제 안에서 잘립니다. */
+    grid-template-columns: repeat(3, minmax(0, auto));
+    justify-content: center;
+    align-items: center;
+    column-gap: var(--spacing-100);
   }
 
   /* 지역이 첫 줄을 통째로 씁니다. */

@@ -741,10 +741,11 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
   }
 
   function open(id) {
-    // 좁은 화면에서는 칸을 눌러도 그 칸만 열리지 않습니다 — 조건 판이 뜨고 그 층이
-    // 펼쳐집니다. 어느 칸을 눌렀는지는 어느 층에서 시작할지로 남습니다.
+    /* 좁은 화면에서 바는 칸 넷이 아니라 하나의 자리입니다 — 어느 글자를 눌렀든 같은
+       판이 같은 모습으로 열립니다. 누른 칸의 층을 펼쳐주면 빨라 보이지만, 글자마다
+       다른 것이 열리는 셈이라 어디를 눌러야 무엇이 나오는지 외워야 합니다. */
     if (sheetWidth.matches) {
-      showSheet(conditionSheet, { id, opener: fieldOf(id) })
+      showSheet(conditionSheet, { opener: fieldOf(id) })
       return
     }
     if (openId === id) return close()
@@ -762,10 +763,16 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
   }
 
   root.addEventListener('click', (e) => {
-    // 바의 칸과 조건 판의 층 머리가 같은 일을 합니다 — 그 조건을 여는 것입니다.
-    const opener = e.target.closest('[data-find-open], [data-sheet-open]')
+    // 판 안의 층 머리 — 누른 층을 펼치고, 펼쳐져 있던 것은 접습니다.
+    const row = e.target.closest('[data-sheet-open]')
+    if (row) {
+      showSheet(conditionSheet, { id: row.dataset.sheetOpen })
+      return
+    }
+    // 바의 칸.
+    const opener = e.target.closest('[data-find-open]')
     if (opener) {
-      open(opener.dataset.findOpen ?? opener.dataset.sheetOpen)
+      open(opener.dataset.findOpen)
       return
     }
     /* 좁은 화면에서 바는 칸 넷이 아니라 하나의 자리입니다(Figma 의 filterBar).
