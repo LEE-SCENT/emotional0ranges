@@ -547,7 +547,9 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
     /* 발의 두 버튼. 조건은 누르는 즉시 걸리므로 "적용" 이 아닙니다 — 닫으면 무엇을
        보게 되는지를 미리 말하는 자리라 개수를 답니다(update 가 씁니다). */
     const foot = el('div', 'find-sheet__foot')
-    const reset = el('button', 'btn btn--ghost btn--medium find-sheet__reset')
+    /* 날짜 줄의 초기화와 같은 버튼입니다(blur) — 한 화면에 초기화가 둘 있는데
+       하나는 글자만, 하나는 바탕이 있으면 서로 다른 일을 하는 것으로 보입니다. */
+    const reset = el('button', 'btn btn--blur btn--medium')
     reset.type = 'button'
     reset.dataset.sheetReset = which
     reset.append(el('span', 'btn__label', '초기화'))

@@ -1459,10 +1459,6 @@
     box-shadow: inset 0 1px 0 0 var(--colors-divider-low);
   }
 
-  /* 초기화는 지우는 버튼이라 채우지 않습니다 — 밑줄만 그어 글자로 남깁니다
-     (Figma 의 Reset). */
-  .find-sheet__reset .btn__label { text-decoration: underline; }
-
   /* 걸린 조건이 바뀔 때마다 적히는 개수가 달라집니다("모임 25개 보기" → "닫기").
      폭을 내용에만 맡기면 조건을 하나 고칠 때마다 버튼이 늘었다 줄어, 누르려던
      자리가 손 밑에서 움직입니다 — 바닥을 두어 그 자리에서 글자만 바뀝니다. */
