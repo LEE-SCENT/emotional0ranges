@@ -284,6 +284,18 @@
   }
 }
 
+/* 가격도 한 단 작아집니다(20 → 16). 카드가 188 로 좁아지면 20 은 두 자리 수만 되어도
+   줄의 절반을 차지해, 가격이 카드에서 가장 크게 읽힙니다 — 이 화면에서 먼저 읽혀야
+   하는 것은 사진과 제목입니다. 제목과 같은 크기가 되지만 굵기가 한 단 위라(semibold)
+   여전히 값으로 도드라집니다. "할인가" 라벨은 그대로 12 입니다. */
+@media (max-width: 960px) {
+  .find__grid .product-card__price {
+    font-size: var(--typography-body-l-semibold-font-size);
+    font-weight: var(--typography-body-l-semibold-font-weight);
+    line-height: var(--typography-body-l-semibold-line-height);
+  }
+}
+
 /* 좁은 화면에서는 태그가 사진의 모서리에 한 단 더 붙습니다(12 → 8). 카드가 180
    남짓으로 작아지면 12 가 사진 안쪽으로 깊이 들어와, 태그가 아니라 사진 위에 얹힌
    작은 판처럼 보입니다 — 모서리와 같은 이유로 크기에 비례해 줄입니다. */
