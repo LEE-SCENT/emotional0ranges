@@ -337,9 +337,11 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
         remove.setAttribute('aria-label', `${label} 빼기`)
         remove.innerHTML = '<svg aria-hidden="true"><use href="#icon-close"></use></svg>'
         remove.addEventListener('click', () => {
+          const gone = selections[i]
           selections.splice(i, 1)
           renderCalendar()
           update()
+          announce(`${dateSpoken(gone)}가 삭제되었습니다`)
         })
         item.append(remove)
         return item
@@ -355,6 +357,27 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
 
   const help = root.querySelector('.find-help')
   const addedSlot = root.querySelector('[data-find-added]')
+
+  /* 지워진 것을 읽어주는 쪽에만 알리는 자리(meetups.html).
+     더하는 것은 위 한마디가 눈과 귀에 함께 말하지만, 지우는 것은 알약이 사라지는
+     모습으로만 남습니다 — 그 모습을 볼 수 없는 사람에게는 아무 일도 일어나지 않은
+     것과 같습니다. 화면에는 아무것도 더하지 않고 여기에만 적습니다. */
+  const live = root.querySelector('[data-find-live]')
+
+  function announce(text) {
+    if (!live) return
+    /* 같은 말을 잇달아 넣으면 바뀐 것이 없다고 보고 읽지 않는 리더가 있습니다
+       (알약 둘을 연달아 지우면 두 번째가 조용했습니다). 한 번 비웠다가 다음 프레임에
+       넣어, 언제나 새로 들어온 말이 되게 합니다. */
+    live.textContent = ''
+    requestAnimationFrame(() => {
+      live.textContent = text
+    })
+  }
+
+  /** "9.8(화) - 9.17(목) 날짜 범위" / "9.6(일) 날짜" */
+  const dateSpoken = (sel) =>
+    `${dateLabel(sel)} 날짜${sel.from === sel.to ? '' : ' 범위'}`
   /** 한마디가 서 있는 시간. */
   const ADDED_FOR = 2000
   let addedTimer = 0
@@ -395,6 +418,7 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
     let added = null
     if (sel) {
       selections = selections.filter((s) => s !== sel)
+      announce(`${dateSpoken(sel)}가 삭제되었습니다`)
     } else if (!pendingFrom) {
       if (selections.length >= MAX_DATES) return
       pendingFrom = k
@@ -714,8 +738,13 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
     const reset = e.target.closest('[data-sheet-reset]')
     if (reset) {
       // 판은 제가 담은 것만 되돌립니다.
-      if (reset.dataset.sheetReset === 'sorting') clearSorting()
-      else clearConditions()
+      if (reset.dataset.sheetReset === 'sorting') {
+        clearSorting()
+        announce('정렬과 추천이 삭제되었습니다')
+      } else {
+        clearConditions()
+        announce('조건이 모두 삭제되었습니다')
+      }
       return
     }
     if (e.target.closest('[data-find-close], [data-sheet-done]')) close()
@@ -1036,6 +1065,11 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
 
   sort?.addEventListener('change', update)
 
+  /** 칸에 적힌 이름(지역 · 날짜 · 모임 유형 · 남은 자리). 여기에 다시 적어두면
+      이름이 바뀔 때 고칠 곳이 두 군데가 됩니다. */
+  const fieldName = (name) =>
+    root.querySelector(`[data-find-field="${name}"] .find-bar__name`)?.textContent ?? name
+
   /** 지역 · 날짜 · 모임 유형 · 남은 자리 — 조건 판이 담은 것들. */
   function clearConditions({ apply = true } = {}) {
     for (const input of scope.querySelectorAll('input[name="area"], input[name="kind"]')) {
@@ -1072,6 +1106,7 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
   scope.addEventListener('click', (e) => {
     if (e.target.closest('[data-find-all]')) {
       clearAll()
+      announce('조건이 모두 삭제되었습니다')
       return
     }
     const clear = e.target.closest('[data-find-clear]')
@@ -1089,6 +1124,7 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
       for (const input of root.querySelectorAll(`input[name="${which}"]`)) input.checked = false
     }
     update()
+    announce(`${fieldName(which)} 조건이 삭제되었습니다`)
   })
 
   document.addEventListener('find:clear', clearAll)

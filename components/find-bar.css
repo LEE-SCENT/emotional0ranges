@@ -1037,9 +1037,16 @@
 
 /* 문장 둘이 같은 칸에 겹칩니다 — 하나가 다른 하나로 바뀔 때 아래 달력과 알약이
    밀려 내려가지 않아야 합니다. 격자 한 칸에 둘을 포개면 칸의 높이는 늘 둘 중
-   높은 쪽이라, 짧은 문장이 서 있는 동안에도 자리는 그대로입니다. */
+   높은 쪽이라, 짧은 문장이 서 있는 동안에도 자리는 그대로입니다.
+
+   바뀌는 모습은 한 줄짜리 롤입니다 — 있던 문장이 위로 밀려 나가고 새 문장이 아래
+   에서 올라옵니다. 돌아올 때는 반대로, 나갔던 문장이 다시 내려옵니다. 제자리에서
+   흐려졌다 나타나면 두 문장이 같은 자리를 두고 겹쳐 보이는데, 한 방향으로 흐르면
+   "이것이 저것을 밀어내고 왔다"가 그대로 보입니다.
+   창 밖으로 나간 문장은 잘라냅니다 — 그래야 밀려나는 것이 판 밖으로 새지 않습니다. */
 .find-help {
   display: grid;
+  overflow: clip;
 }
 
 .find-help__line {
@@ -1054,30 +1061,30 @@
   font-weight: var(--typography-body-s-regular-font-weight);
   line-height: var(--typography-body-s-regular-line-height);
   text-align: center;
-  /* 나타나는 쪽이 180ms — 눈에 띄되 걸리적거리지 않는 만큼입니다. visibility 를
-     함께 전환해야 사라진 문장이 초점·읽어주기에서도 빠집니다. */
+  /* ⚠️ 200ms 는 토큰에 없는 값입니다(fast 120 은 롤이 튀고, base 240 은 한 줄이
+     흐르기에 깁니다). 이 길이를 쓰는 곳이 늘면 토큰으로 올립니다.
+     글자는 그보다 짧게 흐려져, 자리를 옮기는 중에는 이미 옅어져 있습니다. */
   transition:
-    opacity 180ms var(--_easing-standard),
-    translate 180ms var(--_easing-decelerate),
-    visibility 180ms;
+    translate 200ms var(--_easing-standard),
+    opacity var(--_duration-fast) var(--_easing-standard);
 }
 
-/* 담은 직후의 한마디는 평소에는 없는 것과 같습니다. 아래에서 4px 올라오며 뜹니다. */
+/* 담은 직후의 한마디는 평소에 창 아래에 숨어 있습니다. */
 .find-help__added {
+  translate: 0 100%;
   opacity: 0;
-  visibility: hidden;
-  translate: 0 var(--spacing-100);
 }
 
+/* 있던 문장은 위로 밀려 나가고 */
 .find-help.is-added .find-help__line {
+  translate: 0 -100%;
   opacity: 0;
-  visibility: hidden;
 }
 
+/* 새 문장이 그 자리로 올라옵니다. */
 .find-help.is-added .find-help__added {
-  opacity: 1;
-  visibility: visible;
   translate: 0 0;
+  opacity: 1;
 }
 
 .find-help svg {
@@ -1086,6 +1093,8 @@
   block-size: var(--icon-size-xs);
 }
 
+/* 흐르는 것을 원하지 않는 사람에게는 자리에서 바로 갈아 끼웁니다 — 두 문장이 같은
+   칸에 겹쳐 있어, 옮기지 않아도 보이는 것은 늘 하나입니다. */
 @media (prefers-reduced-motion: reduce) {
   .find-help__line {
     transition: none;
