@@ -380,7 +380,7 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
     `${dateLabel(sel)} 날짜${sel.from === sel.to ? '' : ' 범위'}`
   /** 한마디가 서 있는 시간과, 한 줄이 흐르는 데 걸리는 시간(find-bar.css). */
   const ADDED_FOR = 2000
-  const ROLL = 200
+  const ROLL = 160
   let addedTimer = 0
   let addedClearTimer = 0
 
