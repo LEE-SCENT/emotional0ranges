@@ -393,8 +393,8 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
 
   /* ---- 판 여닫기 -------------------------------------------------------
      넓은 화면에서는 눌린 칸 아래에 붙는 판이 하나씩 열립니다. 좁은 화면에서는
-     그렇게 하지 않습니다 — 네 조건이 한 판에 층으로 서고, 누른 칸이 펼쳐진 채로
-     열립니다(아래 "좁은 화면: 조건 한 판").
+     그렇게 하지 않습니다 — 아래에서 판이 올라오고, 그 안에 여러 조건이 함께
+     섭니다(아래 "좁은 화면: 두 개의 판").
 
      showModal() 을 쓸 수 없어(find-bar.css) 판이 떠 있는 동안 필요한 것들을 여기서
      냅니다 — 뒤 페이지 잠그기, 초점 가두기, Esc, 바깥 누르기. */
@@ -402,7 +402,7 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
   const scrim = root.querySelector('.find-bar__scrim')
   const sheetWidth = matchMedia('(max-width: 960px)')
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)')
-  /** 지금 열린(넓은 화면) 또는 펼쳐진(좁은 화면) 조건. 없으면 null 입니다. */
+  /** 지금 열린(넓은 화면) 또는 펼쳐진(좁은 화면 조건 판) 조건. 없으면 null 입니다. */
   let openId = null
   let locked = false
 
@@ -416,22 +416,28 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
       (node) => !node.disabled && node.tabIndex !== -1 && node.offsetParent !== null,
     )
 
-  /* ---- 좁은 화면: 조건 한 판 --------------------------------------------
+  /* ---- 좁은 화면: 두 개의 판 --------------------------------------------
      폰에서 칸마다 판이 따로 올라오면, 지역을 고르고 날짜를 고르고 유형을 고르는 데
      판을 네 번 열고 네 번 닫습니다. 조건은 대개 한자리에서 한 번에 정하는 것이라,
-     좁은 화면에서는 네 조건이 한 판 안에 층으로 섭니다(Airbnb 의 찾기 시트).
+     좁은 화면에서는 여러 조건이 한 판 안에 함께 섭니다.
 
-       접힌 층   지역          수도권 · 어디서든   ← 이름과 지금 걸린 값
-       펼친 층   날짜          + 달력 · 담은 날짜
-       발        초기화                    모임 12개 보기
+     판은 둘이고, 무엇을 여느냐가 곧 그 안에 무엇이 들었는지입니다.
 
-     한 번에 한 층만 펼칩니다. 넷을 다 펼쳐두면 판이 화면 세 배 길이가 되어, 무엇을
-     고르는 중인지 스크롤 없이는 알 수 없습니다.
+       조건 판   (바를 누르면)     지역 · 날짜 · 모임 유형 · 남은 자리
+       정렬 판   (필터 버튼을)     정렬 · 추천
 
-     판은 하나뿐이고 마크업도 하나입니다 — 폭이 바뀌면 같은 판을 옮겨 답니다(dock).
-     폭마다 다른 DOM 을 두면 고르던 것이 폭이 바뀌는 순간 사라집니다. */
+     한 판에 여섯을 다 담지 않는 것은, 그러면 바를 눌러도 필터 버튼을 눌러도 같은
+     것이 나와 두 자리를 나눠 둔 이유가 사라지기 때문입니다. 바는 무엇을 볼지를,
+     버튼은 그 밖의 것(어느 차례로 볼지 · 어떤 것을 먼저 볼지)을 맡습니다.
 
-  /** 바의 칸에서 그대로 읽어옵니다 — 칸이 하나 늘면 층도 함께 늡니다. */
+     조건 판은 한 번에 한 층만 펼칩니다 — 넷을 다 펼쳐두면 판이 화면 세 배 길이가
+     되어, 무엇을 고르는 중인지 스크롤 없이는 알 수 없습니다. 정렬 판은 담긴 것이
+     둘뿐이라 접지 않고 그대로 폅니다.
+
+     담기는 것은 어느 쪽이든 화면에 이미 있던 그 노드입니다 — 폭이 바뀌면 옮겨
+     답니다(dock). 폭마다 다른 DOM 을 두면 고르던 것이 폭이 바뀌는 순간 사라집니다. */
+
+  /** 조건 판의 층 — 바의 칸에서 그대로 읽어옵니다. 칸이 하나 늘면 층도 함께 늡니다. */
   const sheetFields = [...root.querySelectorAll('[data-find-field]')]
     .map((field) => ({
       name: field.dataset.findField,
@@ -440,25 +446,26 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
     }))
     .filter((f) => f.id && panelOf(f.id))
 
-  /* 추천 조건은 바의 칸이 아닙니다 — 넓은 화면에서는 목록 바로 위에 알약으로 늘
-     펼쳐져 있고, 좁은 화면에서만 판의 마지막 층으로 들어옵니다. `bare` 는 판 밖에서
-     펼쳐진 채로 사는 것이라는 표시입니다(제자리로 돌려놓을 때 다시 펴야 합니다). */
-  if (panelOf('find-pick')) {
-    sheetFields.push({ name: 'pick', id: 'find-pick', label: '추천', bare: true })
-  }
-
   const bar = root.querySelector('.find-bar') ?? root
+  const sortingBtn = root.querySelector('[data-find-sorting]')
   /** 판이 원래 있던 자리. 넓은 화면으로 돌아갈 때 그 자리에 되돌립니다. */
   const homes = new Map()
-  let sheetOpen = false
+  /** 지금 떠 있는 판. 없으면 null 입니다. */
+  let sheetUp = null
+  /** 그 판을 연 버튼 — 닫을 때 초점을 되돌릴 자리입니다. */
+  let sheetOpener = null
 
-  function buildSheet() {
+  /* 두 판이 같은 껍데기를 씁니다 — 머리(제목 + ×), 몸통, 발(초기화 + 개수 버튼).
+     which 는 발의 초기화가 무엇을 되돌릴지입니다: 판은 제가 담은 것만 되돌립니다.
+     조건 판의 초기화가 정렬까지 되돌리면, 지역을 다시 고르려던 사람이 정렬을 잃습니다. */
+  function sheetShell(id, title, which) {
     const box = el('div', 'find-sheet')
+    box.id = id
     box.hidden = true
     box.tabIndex = -1
     box.setAttribute('role', 'dialog')
     box.setAttribute('aria-modal', 'true')
-    box.setAttribute('aria-label', '모임 조건')
+    box.setAttribute('aria-label', title)
 
     const head = el('div', 'find-sheet__head')
     const x = el('button', 'btn btn--ghost btn--medium btn--icon-only')
@@ -466,9 +473,31 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
     x.dataset.findClose = ''
     x.setAttribute('aria-label', '닫기')
     x.innerHTML = '<svg class="btn__icon" aria-hidden="true"><use href="#icon-close"></use></svg>'
-    head.append(el('h2', 'find-sheet__title', '조건'), x)
+    head.append(el('h2', 'find-sheet__title', title), x)
 
     const body = el('div', 'find-sheet__body')
+
+    /* 발의 두 버튼. 조건은 누르는 즉시 걸리므로 "적용" 이 아닙니다 — 닫으면 무엇을
+       보게 되는지를 미리 말하는 자리라 개수를 답니다(update 가 씁니다). */
+    const foot = el('div', 'find-sheet__foot')
+    const reset = el('button', 'btn btn--ghost btn--medium find-sheet__reset')
+    reset.type = 'button'
+    reset.dataset.sheetReset = which
+    reset.append(el('span', 'btn__label', '초기화'))
+    const done = el('button', 'btn btn--filled btn--large')
+    done.type = 'button'
+    done.dataset.sheetDone = ''
+    done.append(el('span', 'btn__label', '모임 보기'))
+    foot.append(reset, done)
+
+    box.append(head, body, foot)
+    return box
+  }
+
+  /* 조건 판 — 층 넷. */
+  const conditionSheet = sheetShell('find-conditions', '조건', 'condition')
+  {
+    const body = conditionSheet.querySelector('.find-sheet__body')
     for (const f of sheetFields) {
       const section = el('section', 'find-sheet__section')
       section.dataset.sheetSection = f.name
@@ -486,46 +515,39 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
       section.append(row)
       body.append(section)
     }
-
-    /* 정렬은 조건이 아니라 순서입니다 — 무엇을 볼지가 아니라 어느 차례로 볼지라,
-       펼쳤다 접는 층이 아니라 값 하나를 고르는 줄로 둡니다. 고르개는 목록 위에 있던
-       <select> 를 그대로 옮겨 옵니다(dock) — 같은 것을 두 벌 두면 한쪽만 바뀝니다. */
-    const sortRow = el('div', 'find-sheet__sort')
-    sortRow.append(el('span', 'find-sheet__label', '정렬'))
-    body.append(sortRow)
-
-    /* 발의 두 버튼. 조건은 누르는 즉시 걸리므로 "적용" 이 아닙니다 — 닫으면 무엇을
-       보게 되는지를 미리 말하는 자리라 개수를 답니다(update 가 씁니다). */
-    const foot = el('div', 'find-sheet__foot')
-    const reset = el('button', 'btn btn--ghost btn--medium find-sheet__reset')
-    reset.type = 'button'
-    reset.dataset.sheetReset = ''
-    reset.append(el('span', 'btn__label', '초기화'))
-    const done = el('button', 'btn btn--filled btn--large')
-    done.type = 'button'
-    done.dataset.sheetDone = ''
-    done.append(el('span', 'btn__label', '모임 보기'))
-    foot.append(reset, done)
-
-    box.append(head, body, foot)
-    return box
   }
 
-  const sheet = buildSheet()
-  const sheetBody = sheet.querySelector('.find-sheet__body')
-  const sheetDone = sheet.querySelector('[data-sheet-done] .btn__label')
-  bar.append(sheet)
+  /* 정렬 판 — 정렬 한 줄과 추천 알약. 둘 다 접지 않습니다.
+     정렬이 위인 것은 값이 하나뿐이라 짧고, 목록의 차례를 정하는 것이 먼저 눈에
+     들어와야 하기 때문입니다. */
+  const sortingSheet = sheetShell('find-sorting-sheet', '정렬과 추천', 'sorting')
+  {
+    const body = sortingSheet.querySelector('.find-sheet__body')
+    /* 정렬은 조건이 아니라 순서입니다 — 무엇을 볼지가 아니라 어느 차례로 볼지라,
+       값 하나를 고르는 줄로 둡니다. 고르개는 목록 위에 있던 <select> 를 그대로
+       옮겨 옵니다(dock) — 같은 것을 두 벌 두면 한쪽만 바뀝니다. */
+    const sortRow = el('div', 'find-sheet__sort')
+    sortRow.append(el('span', 'find-sheet__label', '정렬'))
+    const pickSection = el('section', 'find-sheet__section')
+    pickSection.dataset.sheetSection = 'pick'
+    pickSection.append(el('h3', 'find-sheet__heading', '추천'))
+    body.append(sortRow, pickSection)
+  }
 
-  const rowOf = (id) => sheet.querySelector(`[data-sheet-open="${CSS.escape(id)}"]`)
+  bar.append(conditionSheet, sortingSheet)
+
+  const conditionBody = conditionSheet.querySelector('.find-sheet__body')
+  const rowOf = (id) => conditionSheet.querySelector(`[data-sheet-open="${CSS.escape(id)}"]`)
   const sectionOf = (id) => rowOf(id)?.closest('.find-sheet__section')
 
-  /** 옮겨 담을 것과 담길 자리 — 층 다섯과 정렬 줄. */
+  /** 옮겨 담을 것과 담길 자리 — 조건 판의 층 넷, 정렬 판의 정렬 줄과 추천. */
   const cargo = () => [
-    ...sheetFields.map((f) => ({ node: panelOf(f.id), into: sectionOf(f.id), bare: f.bare })),
-    { node: scope.querySelector('.find__sort'), into: sheet.querySelector('.find-sheet__sort') },
+    ...sheetFields.map((f) => ({ node: panelOf(f.id), into: sectionOf(f.id) })),
+    { node: scope.querySelector('.find__sort'), into: sortingSheet.querySelector('.find-sheet__sort') },
+    { node: panelOf('find-pick'), into: sortingSheet.querySelector('[data-sheet-section="pick"]'), bare: true },
   ]
 
-  /** 한 판 안으로 옮기거나(좁은 화면), 원래 자리로 되돌립니다. */
+  /** 판 안으로 옮기거나(좁은 화면), 원래 자리로 되돌립니다. */
   function dock(into) {
     for (const { node, into: box, bare } of cargo()) {
       if (!node || !box) continue
@@ -535,13 +557,13 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
       } else {
         const home = homes.get(node)
         home?.parent.insertBefore(node, home.next)
-        // 판 안에서 접혀 있던 것이라도 제자리에서는 다시 펴져 있어야 합니다.
-        if (bare) node.hidden = false
       }
+      // 접었다 펴는 층이 아닌 것(추천)은 어느 자리에서든 펴져 있습니다.
+      if (bare) node.hidden = false
     }
   }
 
-  /** 한 층만 펼칩니다. id 가 없으면 모두 접습니다(값만 남은 목록이 됩니다). */
+  /** 조건 판의 한 층만 펼칩니다. id 가 없으면 모두 접습니다(값만 남은 목록이 됩니다). */
   function expand(id) {
     for (const f of sheetFields) {
       const on = f.id === id
@@ -557,47 +579,54 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
     /* 펼친 층은 아래로 자랍니다 — 달력이 펼쳐지면 그 머리가 판 위쪽으로 밀려
        올라가 무엇을 펼친 것인지 보이지 않습니다. 층의 머리를 판 맨 위로 끌어옵니다. */
     requestAnimationFrame(() => {
-      sheetBody.scrollTo({
-        top: Math.max(0, section.offsetTop - sheetBody.offsetTop),
+      conditionBody.scrollTo({
+        top: Math.max(0, section.offsetTop - conditionBody.offsetTop),
         behavior: reduceMotion.matches ? 'auto' : 'smooth',
       })
     })
   }
 
-  function openSheet(id) {
-    // 이미 떠 있으면 층만 갈아탑니다. 펼친 층을 다시 누르면 접힙니다.
-    if (sheetOpen) {
-      expand(openId === id ? null : id)
+  function showSheet(box, { id = null, opener = null } = {}) {
+    // 이미 그 판이 떠 있으면 층만 갈아탑니다. 펼친 층을 다시 누르면 접힙니다.
+    if (sheetUp === box) {
+      if (box === conditionSheet) expand(openId === id ? null : id)
       return
     }
-    sheetOpen = true
-    sheet.hidden = false
+    if (sheetUp) close({ restore: false })
+    sheetUp = box
+    sheetOpener = opener
+    box.hidden = false
     if (scrim) scrim.hidden = false
     lockScroll()
     locked = true
-    expand(id)
+    if (box === conditionSheet) expand(id)
+    else sortingBtn?.setAttribute('aria-expanded', 'true')
     /* 초점은 판이 받습니다 — 열자마자 첫 층이나 날짜에 테가 둘리면 그것이 이 판에서
        해야 할 일인 양 보입니다(dialog-focus.js 와 같은 이유입니다). */
-    sheet.focus()
+    box.focus()
   }
 
   /* ---- 여닫기 ---------------------------------------------------------- */
 
   function close({ restore = true } = {}) {
-    if (!openId && !sheetOpen) return
+    if (!openId && !sheetUp) return
     // 판 안에 초점이 있을 때만 되돌립니다. 다른 곳을 눌러 닫은 사람의 초점을
     // 빼앗아 바로 끌어오면, 누른 자리에서 하려던 일이 끊깁니다.
-    const box = sheetOpen ? sheet : panelOf(openId)
+    const box = sheetUp ?? panelOf(openId)
     const inside = box.contains(document.activeElement)
-    const field = fieldOf(openId)
+    // 마지막으로 펼친 층의 칸으로 돌아갑니다 — 판 안에서 층을 갈아탔다면 처음 누른
+    // 자리가 아니라 방금까지 보던 자리가 눈이 있던 곳입니다.
+    const back = fieldOf(openId) ?? sheetOpener
 
-    if (sheetOpen) {
-      expand(null)
-      sheetOpen = false
-      sheet.hidden = true
+    if (sheetUp) {
+      if (sheetUp === conditionSheet) expand(null)
+      sortingBtn?.setAttribute('aria-expanded', 'false')
+      sheetUp.hidden = true
+      sheetUp = null
+      sheetOpener = null
     } else {
       box.hidden = true
-      field?.setAttribute('aria-expanded', 'false')
+      fieldOf(openId)?.setAttribute('aria-expanded', 'false')
       openId = null
     }
 
@@ -607,7 +636,7 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
       unlockScroll()
       locked = false
     }
-    if (restore && inside) field?.focus()
+    if (restore && inside) back?.focus()
 
     /* 판을 여닫는 사이 목록이 줄어 화면이 따라 움직였을 수 있습니다. 그 거리는
        사람이 되짚은 것이 아니므로 버리고, 지금 위치에서 다시 셉니다. */
@@ -616,15 +645,12 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
   }
 
   function open(id) {
-    // 좁은 화면에서는 칸을 눌러도 그 칸만 열리지 않습니다 — 한 판이 뜨고 그 층이
+    // 좁은 화면에서는 칸을 눌러도 그 칸만 열리지 않습니다 — 조건 판이 뜨고 그 층이
     // 펼쳐집니다. 어느 칸을 눌렀는지는 어느 층에서 시작할지로 남습니다.
     if (sheetWidth.matches) {
-      openSheet(id)
+      showSheet(conditionSheet, { id, opener: fieldOf(id) })
       return
     }
-    /* 추천은 넓은 화면에서 목록 위에 그대로 펼쳐져 있어 열 것이 없습니다 — 그
-       버튼도 그 폭에서는 없습니다. 칸에 달린 판만 아래로 엽니다. */
-    if (!fieldOf(id)?.closest('.find-bar__field')) return
     if (openId === id) return close()
     close()
     const panel = panelOf(id)
@@ -640,14 +666,22 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
   }
 
   root.addEventListener('click', (e) => {
-    // 바의 칸과 판 안의 층 머리가 같은 일을 합니다 — 그 조건을 여는 것입니다.
+    // 바의 칸과 조건 판의 층 머리가 같은 일을 합니다 — 그 조건을 여는 것입니다.
     const opener = e.target.closest('[data-find-open], [data-sheet-open]')
     if (opener) {
       open(opener.dataset.findOpen ?? opener.dataset.sheetOpen)
       return
     }
-    if (e.target.closest('[data-sheet-reset]')) {
-      clearAll()
+    // 필터 버튼은 조건이 아니라 그 밖의 것을 엽니다 — 정렬과 추천입니다.
+    if (e.target.closest('[data-find-sorting]')) {
+      showSheet(sortingSheet, { opener: sortingBtn })
+      return
+    }
+    const reset = e.target.closest('[data-sheet-reset]')
+    if (reset) {
+      // 판은 제가 담은 것만 되돌립니다.
+      if (reset.dataset.sheetReset === 'sorting') clearSorting()
+      else clearConditions()
       return
     }
     if (e.target.closest('[data-find-close], [data-sheet-done]')) close()
@@ -657,18 +691,18 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
 
   // 판과 칸 밖을 누르면 닫습니다. 넓은 화면에는 어둠이 없어 이것이 유일한 길입니다.
   document.addEventListener('click', (e) => {
-    if (!openId && !sheetOpen) return
+    if (!openId && !sheetUp) return
     /* 눌린 것이 이미 문서에서 빠졌으면 밖을 누른 것이 아닙니다.
        달력은 날짜를 누르는 순간 다시 그려지므로, 눌린 칸은 이 줄에 닿기 전에
        문서에서 사라집니다. 그러면 closest() 가 판을 찾지 못해, 날짜를 고른 것이
        바깥을 누른 것으로 읽히고 판이 닫혔습니다 — 기간의 끝을 고를 수가 없었습니다. */
     if (!e.target.isConnected) return
-    if (e.target.closest('.find-bar__panel, .find-sheet, [data-find-open]')) return
+    if (e.target.closest('.find-bar__panel, .find-sheet, [data-find-open], [data-find-sorting]')) return
     close({ restore: false })
   })
 
   document.addEventListener('keydown', (e) => {
-    if (!openId && !sheetOpen) return
+    if (!openId && !sheetUp) return
     if (e.key === 'Escape') {
       e.preventDefault()
       close()
@@ -678,7 +712,7 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
        가두지 않습니다 — 바 아래에 붙은 판은 뒤 화면을 가리지 않아, Tab 으로
        빠져나가 목록을 읽는 것이 자연스럽습니다. */
     if (e.key !== 'Tab' || !sheetWidth.matches) return
-    const box = sheetOpen ? sheet : panelOf(openId)
+    const box = sheetUp ?? panelOf(openId)
     const stops = focusables(box)
     if (!stops.length) return
     const first = stops[0]
@@ -692,9 +726,9 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
     }
   })
 
-  /* 폭이 경계를 넘으면 판이 서는 자리가 통째로 바뀝니다 — 좁은 쪽에서는 네 판이
-     한 판 안에 층으로, 넓은 쪽에서는 칸마다 하나씩입니다. 열린 채로 갈아타게 두면
-     잠금이 남거나 어둠만 남는 상태가 생기므로 닫고 나서 옮겨 답니다. */
+  /* 폭이 경계를 넘으면 판이 서는 자리가 통째로 바뀝니다 — 좁은 쪽에서는 두 판 안에,
+     넓은 쪽에서는 칸마다 하나씩과 목록 위입니다. 열린 채로 갈아타게 두면 잠금이
+     남거나 어둠만 남는 상태가 생기므로 닫고 나서 옮겨 답니다. */
   sheetWidth.addEventListener('change', () => {
     close({ restore: false })
     dock(sheetWidth.matches)
@@ -793,14 +827,6 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
 
     const date = s.dates.length ? many(s.dates.map(dateLabel), '건') : null
 
-    /* 추천 알약의 이름은 알약에 적힌 것을 그대로 읽어옵니다 — 여기에 다시 적어두면
-       알약이 하나 늘 때 고칠 곳이 두 군데가 됩니다. */
-    const pickLabel = (value) =>
-      scope
-        .querySelector(`input[name="pick"][value="${CSS.escape(value)}"]`)
-        ?.closest('.btn')
-        ?.textContent.trim() ?? value
-
     return {
       // 지역·모임 유형·날짜 모두 "외 N건"으로 단위를 통일합니다 — Figma 예시가
       // 셋 다 "건"을 씁니다(곳·개로 나눠 쓰지 않습니다).
@@ -825,13 +851,6 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
         clearable: !!s.kinds.length,
       },
       seats: { text: s.seats === 'two' ? '둘이 갈래요' : '혼자 갈래요', muted: false, clearable: s.seats === 'two' },
-      /* 추천은 좁은 화면의 판에서만 한 층으로 섭니다 — 바에는 이 칸이 없어
-         (data-find-summary="pick") 아래 renderSummaries 가 판에만 적습니다. */
-      pick: {
-        text: s.picks.length ? many(s.picks.map(pickLabel), '건') : '전체',
-        muted: false,
-        clearable: !!s.picks.length,
-      },
     }
   }
 
@@ -858,11 +877,11 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
   /** 칸에 적히는 글자만 다시 씁니다. 붙고 풀릴 때도 이것만 부르면 됩니다. */
   function renderSummaries(s) {
     for (const [name, { text, muted, clearable }] of Object.entries(summaries(s))) {
-      /* 좁은 화면의 판에서는 같은 값이 층 머리에 한 번 더 적힙니다 — 접힌 층은
-         값만으로 무엇이 걸려 있는지 말해야 합니다. 글자를 여기서 함께 쓰는 것은,
-         두 곳에서 따로 지어내면 바에는 "어디서든", 판에는 "전국" 이라고 적히는
-         날이 오기 때문입니다. */
-      const sheetSlot = sheet.querySelector(`[data-sheet-summary="${name}"]`)
+      /* 좁은 화면의 조건 판에서는 같은 값이 층 머리에 한 번 더 적힙니다 — 접힌
+         층은 값만으로 무엇이 걸려 있는지 말해야 합니다. 글자를 여기서 함께 쓰는
+         것은, 두 곳에서 따로 지어내면 바에는 "어디서든", 판에는 "전국" 이라고
+         적히는 날이 오기 때문입니다. */
+      const sheetSlot = conditionSheet.querySelector(`[data-sheet-summary="${name}"]`)
       if (sheetSlot) {
         sheetSlot.textContent = text
         sheetSlot.classList.toggle('is-empty', muted)
@@ -925,9 +944,9 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
        같은 것을 여기서 한 번 더 세면 거르는 규칙이 두 곳에 생깁니다.
        하나도 없을 때 "모임 0개 보기" 라고 적으면 볼 것이 없는데 보러 가라는 말이
        됩니다. 그때는 닫는 버튼으로만 남고, 무엇을 해야 하는지는 빈 목록이 말합니다. */
-    if (sheetDone) {
-      const n = Number(document.querySelector('[data-find-count]')?.textContent ?? 0)
-      sheetDone.textContent = n > 0 ? `모임 ${n}개 보기` : '닫기'
+    const n = Number(document.querySelector('[data-find-count]')?.textContent ?? 0)
+    for (const label of root.querySelectorAll('[data-sheet-done] .btn__label')) {
+      label.textContent = n > 0 ? `모임 ${n}개 보기` : '닫기'
     }
   }
 
@@ -983,16 +1002,36 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
 
   sort?.addEventListener('change', update)
 
-  /** 조건을 하나도 걸지 않은 처음 상태로. "전체" 알약과 빈 목록의 버튼이 함께 씁니다. */
-  function clearAll() {
-    for (const input of scope.querySelectorAll('input[name="area"], input[name="kind"], input[name="pick"]')) {
+  /** 지역 · 날짜 · 모임 유형 · 남은 자리 — 조건 판이 담은 것들. */
+  function clearConditions({ apply = true } = {}) {
+    for (const input of scope.querySelectorAll('input[name="area"], input[name="kind"]')) {
       input.checked = false
     }
     const one = root.querySelector('input[name="seats"][value="one"]')
     if (one) one.checked = true
+    // 남은자리를 되돌리면 그것과 한 몸인 "친구 동반" 알약도 함께 꺼집니다.
+    syncFriend('seats')
     selections = []
     pendingFrom = null
     renderCalendar()
+    if (apply) update()
+  }
+
+  /** 정렬 · 추천 — 정렬 판이 담은 것들. */
+  function clearSorting({ apply = true } = {}) {
+    for (const input of scope.querySelectorAll('input[name="pick"]')) input.checked = false
+    // "친구 동반" 이 꺼지면 남은자리도 혼자로 돌아갑니다 — 둘은 같은 조건입니다.
+    syncFriend('pick')
+    if (sort) sort.value = SORTS[0]
+    if (apply) update()
+  }
+
+  /** 조건을 하나도 걸지 않은 처음 상태로. "전체" 알약과 빈 목록의 버튼이 함께 씁니다.
+      정렬은 되돌리지 않습니다 — 무엇을 볼지를 지우는 자리이지 어느 차례로 볼지를
+      바꾸는 자리가 아니고, 목록이 빈 이유도 정렬에는 없습니다. */
+  function clearAll() {
+    clearConditions({ apply: false })
+    for (const input of scope.querySelectorAll('input[name="pick"]')) input.checked = false
     update()
   }
 

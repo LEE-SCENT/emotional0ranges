@@ -1328,6 +1328,18 @@
     padding-inline: var(--spacing-400);
   }
 
+  /* 정렬 판의 섹션 제목. 접었다 펴는 층이 아니라 늘 펼쳐진 자리라 누르는 머리가
+     아니지만, 펼친 층의 제목과 같은 크기로 적어 두 판이 같은 결로 읽히게 합니다. */
+  .find-sheet__heading {
+    margin: 0;
+    padding: var(--spacing-400) var(--spacing-500) var(--spacing-200);
+    color: var(--colors-fg);
+    font-size: var(--typography-heading-xs-semibold-font-size);
+    font-weight: var(--typography-heading-xs-semibold-font-weight);
+    line-height: var(--typography-heading-xs-semibold-line-height);
+    letter-spacing: var(--typography-heading-xs-semibold-letter-spacing);
+  }
+
   /* ---- 정렬 줄 ----------------------------------------------------------
      펼쳤다 접는 층이 아닙니다 — 무엇을 볼지가 아니라 어느 차례로 볼지라, 값 하나가
      늘 보이는 한 줄로 둡니다. 고르개는 목록 위에 있던 <select> 를 그대로 옮겨온
