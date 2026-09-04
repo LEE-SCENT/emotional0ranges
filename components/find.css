@@ -53,9 +53,15 @@
    줄입니다. 상태바 바로 아래에 붙지 않도록 그만큼 띄웁니다 — 노치가 있는 기기에서는
    그 높이까지 함께 셉니다. */
 @media (max-width: 960px) {
+  /* 시안의 Header 는 높이 84 — 필터바 60 에 위아래 12 입니다. 노치가 있는 기기에서는
+     그 높이까지 함께 셉니다. */
   .find-head {
-    padding-block-start: calc(var(--spacing-400) + env(safe-area-inset-top));
+    padding-block: var(--spacing-300);
+    padding-block-start: calc(var(--spacing-300) + env(safe-area-inset-top));
   }
+
+  /* 머리와 첫 카드 사이도 12 입니다(시안 warpper 의 첫 줄). */
+  .find__list { padding-block-start: var(--spacing-300); }
 }
 
 /* 좁은 화면에서 조건 판이 떠 있는 동안에는 GNB(20) 위로 올라섭니다. 머리가 그
@@ -229,19 +235,23 @@
    한 장인지 흐려집니다.
 */
 
+/* 열은 둘 아니면 셋입니다(Figma BreakPoint). 넷으로 두면 넓은 화면에서 카드가
+   300 아래로 내려가 사진이 우표만 해집니다 — 이 화면의 카드는 사진이 먼저 읽혀야
+   합니다.
+
+   ⚠️ 912 는 컨테이너의 티어(441 · 961 · 1601)가 아닙니다. 카드가 좁아지지 않는
+      한계에서 나온 값입니다 — 셋이 서려면 카드 280 × 3 + 사이 32 = 872 가 필요하고,
+      좌우 여백 40 을 더하면 912 입니다. 시안도 그 위(960)에서 셋, 아래(720)에서
+      둘입니다. */
 .find__grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--spacing-800) var(--spacing-400);
   align-items: start;
 }
 
-@media (min-width: 441px) {
-  .find__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-
-@media (min-width: 961px) {
-  .find__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (min-width: 912px) {
+  .find__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 /* 낱장으로 놓이므로 네 모서리를 모두 둥글게 둡니다. 상품 카드의 기본값은 레일의

@@ -160,20 +160,19 @@
 .find-bar__more { display: none; }
 
 @media (max-width: 960px) {
+  /* 크기는 아이콘만 있는 버튼(medium)과 같습니다 — 아이콘 24 에 좌우 16, 위아래 8 을
+     둘러 56×40 입니다(Figma). 바탕은 두지 않습니다. 바가 이미 옅은 회색 알약이라
+     그 옆에 또 하나를 두면 어느 쪽이 조건을 말하는 자리인지 흐려집니다. */
   .find-bar__more {
     position: relative;
     flex: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    inline-size: 48px;
-    block-size: 48px;
-    padding: 0;
+    padding: var(--spacing-200) var(--spacing-400);
     border: 0;
     border-radius: var(--_rounded-full);
-    /* 바와 같은 바탕·그림자입니다 — 나란히 선 둘이 한 벌로 읽혀야 합니다. */
-    background: var(--colors-bg-low);
-    box-shadow: 0 4px 10px rgb(0 0 0 / 0.1);
+    background: none;
     color: var(--colors-fg);
     cursor: pointer;
   }
@@ -189,8 +188,10 @@
      때문입니다 — 하나도 없으면 통째로 감춥니다. */
   .find-bar__more-count {
     position: absolute;
-    inset-block-start: -2px;
-    inset-inline-end: -2px;
+    /* 아이콘의 오른쪽 위 모서리에 얹습니다. 버튼에 바탕이 없어 기댈 테두리가 없으므로,
+       버튼의 여백(위 8 · 오른쪽 16) 안쪽에서 아이콘 모서리를 찾아 붙입니다. */
+    inset-block-start: var(--spacing-50);
+    inset-inline-end: var(--spacing-250);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -229,7 +230,7 @@
   .find-bar {
     display: flex;
     align-items: center;
-    gap: var(--spacing-200);
+    gap: var(--spacing-150);
   }
 
   .find-bar__fields {
