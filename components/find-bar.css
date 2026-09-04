@@ -548,17 +548,33 @@
   padding: var(--spacing-300) var(--spacing-500);
 }
 
-/* 날짜 판의 발 — 왼쪽에 담은 알약들이 줄바꿈하며 쌓이고, 오른쪽에 초기화·저장이
-   붙습니다(Figma 의 summary). 알약이 여러 줄이 되어도 버튼은 위에 붙어 있어야
-   눈이 버튼을 다시 찾지 않습니다. */
+/* 날짜 판의 발 — 왼쪽에 담은 알약들이 줄바꿈하며 쌓이고, 오른쪽에 초기화가
+   붙습니다(Figma 의 summary).
+
+   담은 것이 하나뿐일 때도 이 줄은 56 을 지킵니다. 알약 하나만 남으면 줄이 얇아져
+   달력과 판의 아래 모서리 사이가 좁아지는데, 알약을 하나 더 담는 순간 다시
+   벌어집니다 — 고르는 동안 판의 키가 오르내리는 것으로 보입니다.
+
+   버튼은 알약이 몇 줄이 되든 그 가운데에 섭니다. 위에 붙여두면 알약이 두 줄일 때
+   버튼만 위로 떠서 두 덩어리가 서로 다른 줄에 선 것처럼 보입니다. */
 .find-bar__panel-foot--summary {
-  align-items: flex-start;
+  /* 56 은 위아래 여백까지 넣은 줄 전체의 높이입니다 — 이것 없이는(content-box)
+     여백 24 가 그 위에 더 붙어 80 이 됩니다.
+     위의 구분선은 이 높이에 들어가지 않습니다. 안쪽 그림자로 긋고 있어(아래
+     box-shadow) 자리를 차지하지 않기 때문입니다 — 테두리로 그으면 1px 이 줄의
+     높이에 더해집니다. */
+  box-sizing: border-box;
+  min-block-size: 56px;
+  align-items: center;
   gap: var(--spacing-400);
+  /* 56 은 초기화 버튼(medium · 40)에 위아래 8 을 둘러 나온 값입니다. 판의 다른
+     발이 쓰는 12 를 그대로 두면 64 가 되어, 최소 높이가 아무 일도 하지 않습니다. */
+  padding-block: var(--spacing-200);
   /* 잘린 자리를 알리는 선입니다. 목록이 이 아래로 이어지지 않는다는 뜻이 아니라,
      버튼 줄이 목록 위에 고정되어 있다는 뜻입니다. */
   box-shadow: inset 0 1px 0 0 var(--colors-divider-low);
   /* 홈 표시줄이 있는 기기에서는 아래를 그만큼 더 비웁니다. */
-  padding-block-end: calc(var(--spacing-300) + env(safe-area-inset-bottom));
+  padding-block-end: calc(var(--spacing-200) + env(safe-area-inset-bottom));
 }
 
 @media (min-width: 961px) {
@@ -614,7 +630,12 @@
      위아래를 맡고 있어 몸통이 다른 값을 씁니다(위 기본 규칙). */
   .find-bar__panel-body { padding: var(--spacing-400) var(--spacing-500); }
 
-  .find-bar__panel-foot { padding-block-end: var(--spacing-300); }
+  /* 넓은 화면에는 홈 표시줄이 없어 아래를 그만큼 더 비울 이유가 없습니다.
+     날짜 판의 요약 줄은 뺍니다 — 그쪽은 56 을 지키느라 제 여백(8)을 갖고 있어,
+     여기서 12 로 덮으면 줄이 64 가 되어 최소 높이가 아무 일도 하지 않습니다. */
+  .find-bar__panel-foot:not(.find-bar__panel-foot--summary) {
+    padding-block-end: var(--spacing-300);
+  }
 
   /* 지역·모임 유형·남은자리는 누르는 즉시 적용되는 낱장 버튼들이라, 완료를
      따로 누를 일이 없습니다 — 눌러서 담다가 밖을 누르면 그걸로 끝입니다.

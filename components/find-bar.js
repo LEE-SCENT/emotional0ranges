@@ -384,16 +384,15 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
   let addedTimer = 0
   let addedClearTimer = 0
 
-  function announceAdded(sel) {
+  function announceAdded() {
     if (!help || !addedSlot) return
     /* 무엇이 들어갔는지는 적지 않습니다 — 방금 누른 날은 달력에 검게 남아 있고
        아래 알약에도 그대로 있어, 같은 것을 세 번째로 적는 자리가 됩니다. 여기서는
        "들어갔다"와 "몇 개째"만 말합니다. */
     addedSlot.textContent = `선택한 날짜를 추가했어요 · ${selections.length}/${MAX_DATES}`
-    /* 읽어주는 쪽에는 날짜를 적어 보냅니다. "선택한 날짜"는 달력과 알약을 볼 수
-       있어야 무엇인지 아는 말이라, 소리로만 들으면 무엇이 들어갔는지 알 수 없습니다.
-       지울 때와 같은 자리로 갑니다(announce). */
-    announce(`${dateSpoken(sel)}를 추가했습니다 · ${selections.length}/${MAX_DATES}`)
+    /* 이 문장이 읽어주는 쪽에도 그대로 갑니다(meetups.html: role="status") — 더한
+       것은 화면에 한마디가 뜨므로 소리도 같은 말이면 됩니다. 지우는 것만 라이브
+       영역이 따로 맡습니다. 그때는 화면에 아무 말도 남지 않아서입니다. */
     help.classList.add('is-added')
     // 이어서 담으면 다시 2초입니다 — 앞의 한마디가 남은 시간을 물려받지 않습니다.
     clearTimeout(addedTimer)
@@ -445,7 +444,7 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
     }
     renderCalendar()
     update()
-    if (added) announceAdded(added)
+    if (added) announceAdded()
   }
 
   calendar?.addEventListener('click', (e) => {
