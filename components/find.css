@@ -49,6 +49,13 @@
   z-index: 15;
 }
 
+/* 좁은 화면에서 조건 판이 떠 있는 동안에는 GNB(20) 위로 올라섭니다. 머리가 그
+   아래에 머물면 판과 뒤를 덮은 어둠이 GNB 아래로 깔려, 어두워진 화면 위에 GNB
+   만 환하게 남습니다 — 판이 화면의 주인이 아닌 것처럼 보입니다. */
+@media (max-width: 960px) {
+  .find-head:has(.find-sheet:not([hidden])) { z-index: 30; }
+}
+
 @media (min-width: 961px) {
   .find-head {
     position: sticky;

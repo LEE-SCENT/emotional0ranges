@@ -25,9 +25,10 @@
  * 바 아래에 놓을 수가 없습니다. 그래서 판은 보통 요소이고, showModal() 이 공짜로
  * 주던 것(Esc·바깥 누르기·초점 되돌리기·뒤 화면 잠그기)은 find-bar.js 가 냅니다.
  *
- * 좁은 화면에서는 같은 판이 화면 아래에 붙어 시트처럼 올라옵니다. 마크업은 하나이고
- * CSS 가 자리만 바꿉니다 — 폭에 따라 다른 DOM 을 쓰면 고르던 것이 폭이 바뀌는
- * 순간 사라집니다(sheet.css 와 같은 이유입니다).
+ * 좁은 화면에서는 그 판 넷이 화면 아래에서 올라오는 한 판(.find-sheet) 안에 층으로
+ * 섭니다 — 조건은 대개 한자리에서 한 번에 정하는 것이라, 판을 네 번 열고 닫게 하지
+ * 않습니다. 마크업은 하나이고 판을 옮겨 담습니다(find-bar.js: dock) — 폭에 따라
+ * 다른 DOM 을 쓰면 고르던 것이 폭이 바뀌는 순간 사라집니다(sheet.css 와 같은 이유입니다).
  *
  * ⚠️ Figma 에 이 컴포넌트가 없습니다. 값은 전부 semantic 토큰이거나, 이미 있는
  *    컴포넌트에서 가져온 것입니다(판의 모서리·그림자·어둠은 Sheet, 알약 높이는
@@ -162,8 +163,8 @@
              한 단 물러나 안내로 읽힙니다(날짜 추가).
 
    칸 이름(지역·날짜…)과 아이콘, 지우는 × 는 나오지 않습니다 — 값만으로 무엇을
-   말하는지 읽히고, 자리가 그만큼 좁습니다. 누르는 자리는 그대로 넷이라, 첫 줄을
-   누르면 지역이, 둘째 줄의 각 조각을 누르면 그 조건이 열립니다.
+   말하는지 읽히고, 자리가 그만큼 좁습니다. 누르는 자리는 그대로 넷이라, 어디를
+   누르든 조건 판이 올라오고 누른 것이 펼쳐진 층으로 열립니다(아래 .find-sheet).
 */
 
 @media (max-width: 960px) {
@@ -1009,4 +1010,239 @@
 
 @media (prefers-reduced-motion: reduce) {
   .find-bar__caret { transition: none; }
+}
+
+/* ---- 좁은 화면: 조건 한 판 ----------------------------------------------
+   폰에서는 칸마다 판이 따로 올라오지 않습니다. 네 조건이 한 판 안에 층으로 서고,
+   누른 칸이 펼쳐진 채로 열립니다(find-bar.js). 판을 네 번 열고 네 번 닫아야
+   조건 하나를 다 정할 수 있던 것이 한 번으로 줄어듭니다.
+
+     머리   조건                              ×
+     ┌────────────────────────────────────────┐
+     │ 지역                  수도권 · 어디서든 │  ← 접힌 층: 이름과 지금 걸린 값
+     ├────────────────────────────────────────┤
+     │ 날짜                                    │  ← 펼친 층: 이름이 커지고 값이
+     │ [달력]                                  │     빠집니다(아래가 곧 값입니다)
+     └────────────────────────────────────────┘
+     발     초기화                모임 12개 보기
+
+   층은 판(.find-bar__panel)을 그대로 옮겨 담은 것입니다 — 마크업이 하나여야 폭이
+   바뀌어도 고르던 것이 남습니다. 여기서는 그 판이 떠 있는 것을 그만두고(fixed →
+   static) 층 안에 눕도록 되돌립니다.
+*/
+
+.find-sheet { display: none; }
+
+@media (max-width: 960px) {
+  .find-sheet {
+    position: fixed;
+    inset: auto 0 0 0;
+    /* 판 하나와 같은 높이입니다(.find-bar__panel) — 앱바·하단 전환(10)과
+       GNB(20) 위입니다. */
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    /* 네 조건이 한 판에 들어와 76dvh 로는 달력이 다 서지 않습니다. 화면 위쪽을
+       한 뼘 남기는 것은, 뒤에 목록이 있다는 것과 판을 닫고 돌아갈 곳이 있다는
+       것을 그 틈이 말해주기 때문입니다. */
+    max-block-size: calc(100dvh - var(--spacing-1000));
+    /* 층이 흰 카드로 서므로 판의 바탕은 한 단 내려갑니다 — 같은 흰색이면 층의
+       경계가 사라져 네 조건이 한 덩어리 글로 읽힙니다. */
+    background: var(--colors-bg-low);
+    border-start-start-radius: var(--_sheet-rounded);
+    border-start-end-radius: var(--_sheet-rounded);
+    box-shadow: var(--_sheet-shadow);
+    opacity: 1;
+    translate: 0 0;
+    transition:
+      opacity var(--_duration-fast) var(--_easing-standard),
+      translate var(--_duration-base) var(--_easing-decelerate),
+      display var(--_duration-base) allow-discrete;
+  }
+
+  .find-sheet[hidden] {
+    opacity: 0;
+    translate: 0 100%;
+  }
+
+  @starting-style {
+    .find-sheet:not([hidden]) {
+      opacity: 0;
+      translate: 0 100%;
+    }
+  }
+
+  /* 초점은 판이 받습니다(find-bar.js) — 열자마자 첫 층에 테가 둘리지 않게 하려는
+     것이라, 판에 대신 테를 두르면 아무것도 나아지지 않습니다. */
+  .find-sheet:focus { outline: none; }
+
+  .find-sheet__head {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: var(--spacing-300);
+    padding: var(--spacing-300) var(--spacing-300) var(--spacing-300) var(--spacing-500);
+  }
+
+  .find-sheet__title {
+    flex: 1 1 auto;
+    margin: 0;
+    color: var(--colors-fg);
+    font-size: var(--typography-body-l-medium-font-size);
+    font-weight: var(--typography-body-l-medium-font-weight);
+    line-height: var(--typography-body-l-medium-line-height);
+  }
+
+  .find-sheet__body {
+    /* 층의 머리를 판 맨 위로 끌어올릴 때 기준이 되는 자리입니다(find-bar.js). */
+    position: relative;
+    flex: 1 1 auto;
+    min-block-size: 0;
+    overflow-y: auto;
+    /* 판 안에서 다 내렸을 때 뒤 페이지가 이어서 움직이지 않게 막습니다. */
+    overscroll-behavior: contain;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-200);
+    padding: 0 var(--spacing-400) var(--spacing-400);
+  }
+
+  .find-sheet__section {
+    background: var(--colors-bg);
+    border-radius: var(--_rounded-2xl);
+  }
+
+  /* 층의 머리 — 접혔을 때는 이름과 값이 양 끝으로 갈라섭니다(칸과 같은 말입니다). */
+  .find-sheet__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-400);
+    inline-size: 100%;
+    box-sizing: border-box;
+    padding: var(--spacing-400) var(--spacing-500);
+    border: 0;
+    border-radius: var(--_rounded-2xl);
+    background: none;
+    font-family: inherit;
+    text-align: start;
+    cursor: pointer;
+  }
+
+  .find-sheet__label {
+    flex: none;
+    color: var(--colors-fg-lower);
+    font-size: var(--typography-body-m-regular-font-size);
+    font-weight: var(--typography-body-m-regular-font-weight);
+    line-height: var(--typography-body-m-regular-line-height);
+    letter-spacing: var(--typography-body-m-regular-letter-spacing);
+  }
+
+  /* 값이 길어지면 잘립니다 — 이름이 밀려나면 무엇에 대한 값인지 알 수 없습니다.
+     무엇을 골랐는지는 펼치면 판이 다시 말합니다. */
+  .find-sheet__value {
+    overflow: hidden;
+    color: var(--colors-fg);
+    font-size: var(--typography-body-m-medium-font-size);
+    font-weight: var(--typography-body-m-medium-font-weight);
+    line-height: var(--typography-body-m-medium-line-height);
+    letter-spacing: var(--typography-body-m-medium-letter-spacing);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-feature-settings: 'lnum' 1;
+  }
+
+  /* 아직 고르지 않은 것(날짜 추가)은 값이 아니라 안내입니다. */
+  .find-sheet__value.is-empty { color: var(--colors-fg-lowest); }
+
+  /* 펼친 층. 이름이 제목이 되고 값은 빠집니다 — 바로 아래에 그 값을 고르는 자리가
+     펼쳐져 있어, 같은 것을 위에서 한 번 더 말할 이유가 없습니다. */
+  .find-sheet__section.is-open .find-sheet__row {
+    padding-block-end: var(--spacing-200);
+  }
+
+  .find-sheet__section.is-open .find-sheet__label {
+    color: var(--colors-fg);
+    font-size: var(--typography-heading-xs-semibold-font-size);
+    font-weight: var(--typography-heading-xs-semibold-font-weight);
+    line-height: var(--typography-heading-xs-semibold-line-height);
+    letter-spacing: var(--typography-heading-xs-semibold-letter-spacing);
+  }
+
+  .find-sheet__section.is-open .find-sheet__value { display: none; }
+
+  /* ---- 층 안에 담긴 판 --------------------------------------------------
+     떠 있기를 그만두고 층 안에 눕습니다. 스크롤은 판 몸통이 아니라 시트가 맡습니다 —
+     층마다 따로 스크롤되면 판 안에 스크롤이 둘 겹칩니다. */
+  .find-sheet .find-bar__panel {
+    position: static;
+    z-index: auto;
+    max-block-size: none;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    opacity: 1;
+    translate: none;
+    transition: none;
+  }
+
+  /* 층의 머리가 이미 이름과 닫는 길을 말하고 있습니다. 판마다 제목과 ×,
+     초기화·완료를 또 두면 한 화면에 닫는 버튼이 다섯 개가 됩니다. */
+  .find-sheet .find-bar__panel-head,
+  .find-sheet .find-bar__panel-foot {
+    display: none;
+  }
+
+  /* 담은 날짜만 남깁니다 — 무엇을 담았는지는 달력만 보아서는 알 수 없습니다.
+     그 줄의 초기화는 발의 초기화와 같은 자리에 겹치므로 뺍니다. */
+  .find-sheet .find-bar__panel-foot--summary {
+    display: flex;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .find-sheet .find-bar__panel-actions { display: none; }
+
+  .find-sheet .find-bar__panel-body {
+    flex: none;
+    overflow: visible;
+    padding: 0 var(--spacing-500) var(--spacing-400);
+  }
+
+  /* 달력 판만 몸통과 담은 날짜 사이가 벌어집니다(위 foot 이 붙어 서므로). */
+  .find-sheet .find-bar__panel--date .find-bar__panel-foot--summary {
+    padding: 0 var(--spacing-500) var(--spacing-400);
+  }
+
+  /* ---- 발 -------------------------------------------------------------
+     조건은 누르는 즉시 걸립니다 — 여기 버튼은 "적용"이 아니라 닫으면 무엇을 보게
+     되는지를 미리 말하는 자리입니다(find-bar.js 가 개수를 적습니다). */
+  .find-sheet__foot {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-300);
+    padding: var(--spacing-300) var(--spacing-400);
+    /* 홈 표시줄이 있는 기기에서는 아래를 그만큼 더 비웁니다. */
+    padding-block-end: calc(var(--spacing-300) + env(safe-area-inset-bottom));
+    background: var(--colors-bg);
+    /* 목록이 이 아래로 이어지지 않는다는 뜻이 아니라, 두 버튼이 판 아래에
+       고정되어 있다는 뜻의 선입니다. */
+    box-shadow: inset 0 1px 0 0 var(--colors-divider-low);
+  }
+
+  /* 초기화는 지우는 버튼이라 채우지 않습니다 — 밑줄만 그어 글자로 남깁니다
+     (Figma 의 Reset). */
+  .find-sheet__reset .btn__label { text-decoration: underline; }
+
+  /* 걸린 조건이 바뀔 때마다 적히는 개수가 달라집니다("모임 25개 보기" → "닫기").
+     폭을 내용에만 맡기면 조건을 하나 고칠 때마다 버튼이 늘었다 줄어, 누르려던
+     자리가 손 밑에서 움직입니다 — 바닥을 두어 그 자리에서 글자만 바뀝니다. */
+  .find-sheet__foot .btn--filled { min-inline-size: 40%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .find-sheet { transition: none; }
 }

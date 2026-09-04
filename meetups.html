@@ -23,8 +23,8 @@
 <link rel="stylesheet" href="./components/tag.css?v=fef5c195">
 <link rel="stylesheet" href="./components/product-card.css?v=82efa7cf">
 <link rel="stylesheet" href="./components/chip.css?v=8b5ea605">
-<link rel="stylesheet" href="./components/find-bar.css?v=7e99cc29">
-<link rel="stylesheet" href="./components/find.css?v=0210ce85">
+<link rel="stylesheet" href="./components/find-bar.css?v=dec7daca">
+<link rel="stylesheet" href="./components/find.css?v=3c6324e0">
 <link rel="stylesheet" href="./components/footer.css?v=090dd8fc">
 <link rel="stylesheet" href="./components/app-bar.css?v=7fbb6489">
 <style>
@@ -237,8 +237,9 @@
           </div>
         </div>
 
-      <!-- 좁은 화면에서 판이 올라와 있는 동안 뒤를 덮는 어둠. 넓은 화면에는 없습니다 —
-           바 아래에 붙은 판은 뒤 목록을 계속 볼 수 있어야 합니다. -->
+      <!-- 좁은 화면에서 조건 판이 올라와 있는 동안 뒤를 덮는 어둠. 넓은 화면에는
+           없습니다 — 바 아래에 붙은 판은 뒤 목록을 계속 볼 수 있어야 합니다.
+           그 판(네 조건이 층으로 선 시트)은 find-bar.js 가 짓습니다. -->
       <div class="find-bar__scrim" hidden></div>
     </div>
   </div>
@@ -369,6 +370,6 @@
   // 그때 듣는 쪽이 없으면 첫 목록이 그려지지 않습니다.
   const { initFind } = await import('./components/find.js?v=0c470cfa')
   initFind()
-  const { initFindBar } = await import('./components/find-bar.js?v=9cf209e0')
+  const { initFindBar } = await import('./components/find-bar.js?v=acfc82c6')
   initFindBar()
 </script>
