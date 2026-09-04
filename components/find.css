@@ -287,17 +287,18 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   /* 둘이 서는 폭에서는 가로만 절반으로 좁힙니다(8). 한 줄에 둘뿐이라 사이가 넓으면
      그만큼 카드가 좁아지는데, 이 화면의 카드는 사진이 먼저 읽혀야 합니다.
-     세로는 그대로 32 입니다 — 가로는 카드와 카드를 가르지만 세로는 한 장의 끝과 다음
-     장의 시작을 가릅니다. 여기가 좁으면 가격 바로 아래에 다음 사진이 붙어, 어디까지가
-     한 장인지 흐려집니다. */
-  gap: var(--spacing-800) var(--spacing-200);
+     세로는 한 단 줄여 28 입니다(32 → 28) — 가로는 카드와 카드를 가르지만 세로는 한
+     장의 끝과 다음 장의 시작을 가르므로, 가로만큼 좁힐 수는 없습니다. 여기가 좁으면
+     가격 바로 아래에 다음 사진이 붙어 어디까지가 한 장인지 흐려집니다. 28 은 가격
+     줄(24)보다는 넓어, 사이가 줄의 간격이 아니라 장의 경계로 남습니다. */
+  gap: var(--spacing-700) var(--spacing-200);
   align-items: start;
 }
 
 @media (min-width: 912px) {
   .find__grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--spacing-800) var(--spacing-400);
+    gap: var(--spacing-700) var(--spacing-400);
   }
 }
 
