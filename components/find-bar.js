@@ -378,9 +378,11 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
   /** "9.8(화) - 9.17(목) 날짜 범위" / "9.6(일) 날짜" */
   const dateSpoken = (sel) =>
     `${dateLabel(sel)} 날짜${sel.from === sel.to ? '' : ' 범위'}`
-  /** 한마디가 서 있는 시간. */
+  /** 한마디가 서 있는 시간과, 한 줄이 흐르는 데 걸리는 시간(find-bar.css). */
   const ADDED_FOR = 2000
+  const ROLL = 200
   let addedTimer = 0
+  let addedClearTimer = 0
 
   /** 받침이 있으면 "이", 없으면 "가" — 끝이 요일 한 글자입니다(9.8(화) / 9.17(목)). */
   const subjectMark = (label) => {
@@ -396,7 +398,16 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
     help.classList.add('is-added')
     // 이어서 담으면 다시 2초입니다 — 앞의 한마디가 남은 시간을 물려받지 않습니다.
     clearTimeout(addedTimer)
-    addedTimer = setTimeout(() => help.classList.remove('is-added'), ADDED_FOR)
+    clearTimeout(addedClearTimer)
+    addedTimer = setTimeout(() => {
+      help.classList.remove('is-added')
+      /* 다 내려간 뒤에 글자를 비웁니다. 창 밖으로 나갔을 뿐 지워진 것이 아니라,
+         남겨두면 화면을 읽어주는 쪽에서는 지난 한마디가 안내 옆에 계속 붙어
+         있습니다. 내려가는 도중에 비우면 글자가 사라진 채로 흐릅니다. */
+      addedClearTimer = setTimeout(() => {
+        addedSlot.textContent = ''
+      }, ROLL + 40)
+    }, ADDED_FOR)
   }
 
   /**

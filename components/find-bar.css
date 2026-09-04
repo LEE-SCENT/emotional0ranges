@@ -1061,30 +1061,27 @@
   font-weight: var(--typography-body-s-regular-font-weight);
   line-height: var(--typography-body-s-regular-line-height);
   text-align: center;
-  /* ⚠️ 200ms 는 토큰에 없는 값입니다(fast 120 은 롤이 튀고, base 240 은 한 줄이
-     흐르기에 깁니다). 이 길이를 쓰는 곳이 늘면 토큰으로 올립니다.
-     글자는 그보다 짧게 흐려져, 자리를 옮기는 중에는 이미 옅어져 있습니다. */
-  transition:
-    translate 200ms var(--_easing-standard),
-    opacity var(--_duration-fast) var(--_easing-standard);
+  /* 옮기는 것만 전환합니다. 함께 흐리게 하면 흐르는 동안 두 문장이 각자 반투명한
+     채로 스쳐, 글자가 한 번 깜빡인 것처럼 보입니다 — 창이 이미 잘라내고 있어
+     흐릴 이유가 없습니다.
+     ⚠️ 200ms 는 토큰에 없는 값입니다(fast 120 은 롤이 튀고, base 240 은 한 줄이
+        흐르기에 깁니다). 이 길이를 쓰는 곳이 늘면 토큰으로 올립니다. */
+  transition: translate 200ms var(--_easing-standard);
 }
 
 /* 담은 직후의 한마디는 평소에 창 아래에 숨어 있습니다. */
 .find-help__added {
   translate: 0 100%;
-  opacity: 0;
 }
 
 /* 있던 문장은 위로 밀려 나가고 */
 .find-help.is-added .find-help__line {
   translate: 0 -100%;
-  opacity: 0;
 }
 
 /* 새 문장이 그 자리로 올라옵니다. */
 .find-help.is-added .find-help__added {
   translate: 0 0;
-  opacity: 1;
 }
 
 .find-help svg {
@@ -1093,13 +1090,18 @@
   block-size: var(--icon-size-xs);
 }
 
-/* 흐르는 것을 원하지 않는 사람에게는 자리에서 바로 갈아 끼웁니다 — 두 문장이 같은
-   칸에 겹쳐 있어, 옮기지 않아도 보이는 것은 늘 하나입니다. */
+/* 흐르는 것을 원하지 않는 사람에게는 자리에서 바로 갈아 끼웁니다. 옮기지 않으면 두
+   문장이 같은 칸에 겹치므로, 그때만 보이는 쪽을 따로 정해 줍니다 — 흐르는 동안에는
+   창이 그 일을 하고 있어 필요 없던 것입니다. */
 @media (prefers-reduced-motion: reduce) {
   .find-help__line {
     transition: none;
     translate: none;
   }
+
+  .find-help__added { opacity: 0; }
+  .find-help.is-added .find-help__line { opacity: 0; }
+  .find-help.is-added .find-help__added { opacity: 1; }
 }
 
 /* ---- 담은 날짜 목록 -----------------------------------------------------
