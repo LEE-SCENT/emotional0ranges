@@ -39,7 +39,7 @@
   /* 판이 붙는 기준입니다. 스티키인 .find-head 는 한 겹 위에 있어, 그쪽에 붙이면
      판이 칸이 아니라 칩 줄까지 감싼 머리 전체를 기준으로 놓입니다. */
   position: relative;
-  font-family: var(--_font-family-pretendard);
+  font-family: var(--_font-family-base);
 }
 
 /* ---- 칸 네 개 ------------------------------------------------------------
@@ -152,6 +152,62 @@
   block-size: var(--icon-size-xs);
 }
 
+/* ---- 수납한 조건을 여는 버튼 --------------------------------------------
+   추천 조건과 정렬은 폰에서 목록 위에 펼쳐두지 않고 이 버튼 안에 넣습니다(수납).
+   넓은 화면에는 그것들이 목록 위에 그대로 있어 이 버튼이 없습니다.
+*/
+
+.find-bar__more { display: none; }
+
+@media (max-width: 960px) {
+  .find-bar__more {
+    position: relative;
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: 48px;
+    block-size: 48px;
+    padding: 0;
+    border: 0;
+    border-radius: var(--_rounded-full);
+    /* 바와 같은 바탕·그림자입니다 — 나란히 선 둘이 한 벌로 읽혀야 합니다. */
+    background: var(--colors-bg-low);
+    box-shadow: 0 4px 10px rgb(0 0 0 / 0.1);
+    color: var(--colors-fg);
+    cursor: pointer;
+  }
+
+  .find-bar__more svg {
+    display: block;
+    inline-size: var(--icon-size-m);
+    block-size: var(--icon-size-m);
+  }
+
+  /* 수납한 만큼 보이지 않으므로 숫자로 남깁니다(find-bar.js 가 셉니다). 점(Badge)이
+     아니라 숫자인 것은, 무언가 있다는 사실만이 아니라 몇 개인지가 조건이기
+     때문입니다 — 하나도 없으면 통째로 감춥니다. */
+  .find-bar__more-count {
+    position: absolute;
+    inset-block-start: -2px;
+    inset-inline-end: -2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-inline-size: 18px;
+    block-size: 18px;
+    padding-inline: var(--spacing-100);
+    box-sizing: border-box;
+    border-radius: var(--_rounded-full);
+    background: var(--colors-bg-contrast);
+    color: var(--colors-fg-contrast);
+    font-size: var(--typography-body-xs-semibold-font-size);
+    font-weight: var(--typography-body-xs-semibold-font-weight);
+    line-height: 1;
+    font-feature-settings: 'lnum' 1, 'tnum' 1;
+  }
+}
+
 /* ---- 좁은 화면(~960) ----------------------------------------------------
    폰에서는 칸 넷을 나란히 둘 자리가 없습니다. 네 칸을 2×2 로 세우면 목록이
    화면 밖으로 밀려나고, 한 줄로 세우면 값마다 두 글자씩 남습니다. 그래서
@@ -168,7 +224,17 @@
 */
 
 @media (max-width: 960px) {
+  /* 바(알약)와 필터 버튼이 한 줄에 나란히 섭니다. 판·어둠·시트는 모두 화면에
+     붙어 있어(fixed) 이 줄에 끼어들지 않습니다. */
+  .find-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-200);
+  }
+
   .find-bar__fields {
+    flex: 1 1 auto;
+    min-inline-size: 0;
     display: grid;
     /* 둘째 줄은 세 조각이 가운데로 모입니다. minmax(0,auto) 라 값이 길어지면
        칸이 넘치지 않고 제 안에서 잘립니다. */
@@ -1214,6 +1280,49 @@
   .find-sheet .find-bar__panel--date .find-bar__panel-foot--summary {
     padding: 0 var(--spacing-500) var(--spacing-400);
   }
+
+  /* ---- 추천 층 ----------------------------------------------------------
+     넓은 화면에서 목록 위에 있던 알약 줄을 그대로 옮겨 담습니다. "전체"만 빼는
+     것은, 그것이 조건이 아니라 모두 지우는 버튼이고 판의 발에 이미 초기화가
+     있어서입니다. */
+  .find-sheet .find-sorting__picks {
+    padding: 0 var(--spacing-500) var(--spacing-400);
+  }
+
+  .find-sheet .find-sorting__all { display: none; }
+
+  /* 알약은 목록 위에서 쓰던 small 그대로입니다. 다만 손가락으로 누르는 자리라
+     높이만 다른 선택지들과 같은 40 으로 맞춥니다. */
+  .find-sheet .find-sorting__pick {
+    min-block-size: 40px;
+    padding-inline: var(--spacing-400);
+  }
+
+  /* ---- 정렬 줄 ----------------------------------------------------------
+     펼쳤다 접는 층이 아닙니다 — 무엇을 볼지가 아니라 어느 차례로 볼지라, 값 하나가
+     늘 보이는 한 줄로 둡니다. 고르개는 목록 위에 있던 <select> 를 그대로 옮겨온
+     것이라(find-bar.js: dock) 기기의 고르개가 그대로 올라옵니다. */
+  .find-sheet__sort {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-400);
+    padding: var(--spacing-200) var(--spacing-300) var(--spacing-200) var(--spacing-500);
+    background: var(--colors-bg);
+    border-radius: var(--_rounded-2xl);
+  }
+
+  /* 값은 층의 값과 같은 자리·같은 크기로 오른쪽에 섭니다 — 접힌 층과 한 줄로
+     읽혀야 합니다(정렬만 다른 글씨면 다른 성격의 줄로 보입니다). */
+  .find-sheet__sort select {
+    font-size: var(--typography-body-m-medium-font-size);
+    font-weight: var(--typography-body-m-medium-font-weight);
+    line-height: var(--typography-body-m-medium-line-height);
+    letter-spacing: var(--typography-body-m-medium-letter-spacing);
+    color: var(--colors-fg);
+  }
+
+  .find-sheet__sort svg { color: var(--colors-fg); }
 
   /* ---- 발 -------------------------------------------------------------
      조건은 누르는 즉시 걸립니다 — 여기 버튼은 "적용"이 아니라 닫으면 무엇을 보게

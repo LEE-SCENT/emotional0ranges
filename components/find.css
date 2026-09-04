@@ -49,6 +49,15 @@
   z-index: 15;
 }
 
+/* GNB 가 서지 않는 폭에서는(meetups.html: gnb--wide-only) 조건 바가 화면의 첫
+   줄입니다. 상태바 바로 아래에 붙지 않도록 그만큼 띄웁니다 — 노치가 있는 기기에서는
+   그 높이까지 함께 셉니다. */
+@media (max-width: 960px) {
+  .find-head {
+    padding-block-start: calc(var(--spacing-400) + env(safe-area-inset-top));
+  }
+}
+
 /* 좁은 화면에서 조건 판이 떠 있는 동안에는 GNB(20) 위로 올라섭니다. 머리가 그
    아래에 머물면 판과 뒤를 덮은 어둠이 GNB 아래로 깔려, 어두워진 화면 위에 GNB
    만 환하게 남습니다 — 판이 화면의 주인이 아닌 것처럼 보입니다. */
@@ -116,6 +125,13 @@
   padding-block: 0;
 }
 
+/* 좁은 화면에서는 이 줄의 알맹이(추천 알약 · 정렬)가 조건 판 안으로 들어가고
+   (find-bar.js: dock) 빈 껍데기만 남습니다 — 자리도 함께 비웁니다. 두 줄이었던
+   알약 자리를 목록에 돌려주는 것이 이 수납의 목적입니다. */
+@media (max-width: 960px) {
+  .find-sorting { display: none; }
+}
+
 .find-sorting__picks {
   display: flex;
   flex: 1 1 auto;
@@ -177,7 +193,7 @@
   border-radius: var(--_rounded-full);
   background: none;
   color: var(--_button-ghost-fg);
-  font-family: var(--_font-family-pretendard);
+  font-family: var(--_font-family-base);
   font-size: var(--typography-body-s-medium-font-size);
   font-weight: var(--typography-body-s-medium-font-weight);
   line-height: var(--typography-body-s-medium-line-height);

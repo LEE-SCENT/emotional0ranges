@@ -407,7 +407,9 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
   let locked = false
 
   const fieldOf = (id) => root.querySelector(`[data-find-open="${id}"]`)
-  const panelOf = (id) => root.querySelector(`#${CSS.escape(id)}`)
+  /* 머리(root) 가 아니라 화면 전체(scope)에서 찾습니다 — 좁은 화면에서 판으로
+     들어오는 것 중 추천 알약은 목록 바로 위, 머리 밖에 있습니다. */
+  const panelOf = (id) => scope.querySelector(`#${CSS.escape(id)}`)
 
   const focusables = (box) =>
     [...box.querySelectorAll('button, [href], input, select, [tabindex]')].filter(
@@ -437,6 +439,13 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
       label: field.querySelector('.find-bar__name')?.textContent ?? '',
     }))
     .filter((f) => f.id && panelOf(f.id))
+
+  /* 추천 조건은 바의 칸이 아닙니다 — 넓은 화면에서는 목록 바로 위에 알약으로 늘
+     펼쳐져 있고, 좁은 화면에서만 판의 마지막 층으로 들어옵니다. `bare` 는 판 밖에서
+     펼쳐진 채로 사는 것이라는 표시입니다(제자리로 돌려놓을 때 다시 펴야 합니다). */
+  if (panelOf('find-pick')) {
+    sheetFields.push({ name: 'pick', id: 'find-pick', label: '추천', bare: true })
+  }
 
   const bar = root.querySelector('.find-bar') ?? root
   /** 판이 원래 있던 자리. 넓은 화면으로 돌아갈 때 그 자리에 되돌립니다. */
@@ -478,6 +487,13 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
       body.append(section)
     }
 
+    /* 정렬은 조건이 아니라 순서입니다 — 무엇을 볼지가 아니라 어느 차례로 볼지라,
+       펼쳤다 접는 층이 아니라 값 하나를 고르는 줄로 둡니다. 고르개는 목록 위에 있던
+       <select> 를 그대로 옮겨 옵니다(dock) — 같은 것을 두 벌 두면 한쪽만 바뀝니다. */
+    const sortRow = el('div', 'find-sheet__sort')
+    sortRow.append(el('span', 'find-sheet__label', '정렬'))
+    body.append(sortRow)
+
     /* 발의 두 버튼. 조건은 누르는 즉시 걸리므로 "적용" 이 아닙니다 — 닫으면 무엇을
        보게 되는지를 미리 말하는 자리라 개수를 답니다(update 가 씁니다). */
     const foot = el('div', 'find-sheet__foot')
@@ -503,17 +519,24 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
   const rowOf = (id) => sheet.querySelector(`[data-sheet-open="${CSS.escape(id)}"]`)
   const sectionOf = (id) => rowOf(id)?.closest('.find-sheet__section')
 
-  /** 판 넷을 한 판 안으로 옮기거나(좁은 화면), 원래 자리로 되돌립니다. */
+  /** 옮겨 담을 것과 담길 자리 — 층 다섯과 정렬 줄. */
+  const cargo = () => [
+    ...sheetFields.map((f) => ({ node: panelOf(f.id), into: sectionOf(f.id), bare: f.bare })),
+    { node: scope.querySelector('.find__sort'), into: sheet.querySelector('.find-sheet__sort') },
+  ]
+
+  /** 한 판 안으로 옮기거나(좁은 화면), 원래 자리로 되돌립니다. */
   function dock(into) {
-    for (const f of sheetFields) {
-      const panel = panelOf(f.id)
-      if (!panel) continue
+    for (const { node, into: box, bare } of cargo()) {
+      if (!node || !box) continue
       if (into) {
-        if (!homes.has(f.id)) homes.set(f.id, { parent: panel.parentNode, next: panel.nextSibling })
-        sectionOf(f.id)?.append(panel)
+        if (!homes.has(node)) homes.set(node, { parent: node.parentNode, next: node.nextSibling })
+        box.append(node)
       } else {
-        const home = homes.get(f.id)
-        home?.parent.insertBefore(panel, home.next)
+        const home = homes.get(node)
+        home?.parent.insertBefore(node, home.next)
+        // 판 안에서 접혀 있던 것이라도 제자리에서는 다시 펴져 있어야 합니다.
+        if (bare) node.hidden = false
       }
     }
   }
@@ -599,6 +622,9 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
       openSheet(id)
       return
     }
+    /* 추천은 넓은 화면에서 목록 위에 그대로 펼쳐져 있어 열 것이 없습니다 — 그
+       버튼도 그 폭에서는 없습니다. 칸에 달린 판만 아래로 엽니다. */
+    if (!fieldOf(id)?.closest('.find-bar__field')) return
     if (openId === id) return close()
     close()
     const panel = panelOf(id)
@@ -767,6 +793,14 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
 
     const date = s.dates.length ? many(s.dates.map(dateLabel), '건') : null
 
+    /* 추천 알약의 이름은 알약에 적힌 것을 그대로 읽어옵니다 — 여기에 다시 적어두면
+       알약이 하나 늘 때 고칠 곳이 두 군데가 됩니다. */
+    const pickLabel = (value) =>
+      scope
+        .querySelector(`input[name="pick"][value="${CSS.escape(value)}"]`)
+        ?.closest('.btn')
+        ?.textContent.trim() ?? value
+
     return {
       // 지역·모임 유형·날짜 모두 "외 N건"으로 단위를 통일합니다 — Figma 예시가
       // 셋 다 "건"을 씁니다(곳·개로 나눠 쓰지 않습니다).
@@ -791,6 +825,13 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
         clearable: !!s.kinds.length,
       },
       seats: { text: s.seats === 'two' ? '둘이 갈래요' : '혼자 갈래요', muted: false, clearable: s.seats === 'two' },
+      /* 추천은 좁은 화면의 판에서만 한 층으로 섭니다 — 바에는 이 칸이 없어
+         (data-find-summary="pick") 아래 renderSummaries 가 판에만 적습니다. */
+      pick: {
+        text: s.picks.length ? many(s.picks.map(pickLabel), '건') : '전체',
+        muted: false,
+        clearable: !!s.picks.length,
+      },
     }
   }
 
@@ -859,6 +900,21 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
     // 버튼이 아니라 고르는 항목이라, 켜진 모습은 :has(:checked) 가 맡습니다.
     for (const btn of root.querySelectorAll('[data-find-clear="kind"].find-btn-grid__reset')) {
       btn.setAttribute('aria-pressed', String(!s.kinds.length))
+    }
+
+    /* 폰에서는 추천과 정렬이 필터 버튼 안에 수납되어 보이지 않습니다. 걸어둔 것이
+       있는데 아무 표시가 없으면 목록이 왜 이만큼인지 알 수 없으므로, 그 버튼이
+       대신 셉니다 — 추천으로 건 조건과, 기본이 아닌 정렬을 함께 셉니다.
+       하나도 없으면 숫자를 감춥니다. 0 이라고 적으면 그것도 하나의 표시가 되어,
+       걸린 것이 있는 것처럼 보입니다. */
+    const moreCount = root.querySelector('[data-find-more-count]')
+    if (moreCount) {
+      const n = s.picks.length + (s.sort === SORTS[0] ? 0 : 1)
+      moreCount.textContent = String(n)
+      moreCount.hidden = n === 0
+      moreCount
+        .closest('.find-bar__more')
+        ?.setAttribute('aria-label', n ? `추천 조건과 정렬, ${n}개 적용됨` : '추천 조건과 정렬')
     }
 
     writeUrl(s)
