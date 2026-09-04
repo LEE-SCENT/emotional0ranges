@@ -26,8 +26,8 @@
  * 주던 것(Esc·바깥 누르기·초점 되돌리기·뒤 화면 잠그기)은 find-bar.js 가 냅니다.
  *
  * 좁은 화면에서는 그 판 넷이 화면 아래에서 올라오는 한 판(.find-sheet) 안에 층으로
- * 섭니다 — 조건은 대개 한자리에서 한 번에 정하는 것이라, 판을 네 번 열고 닫게 하지
- * 않습니다. 마크업은 하나이고 판을 옮겨 담습니다(find-bar.js: dock) — 폭에 따라
+ * 나란히 섭니다 — 넷이 다 펼쳐진 채로 열려, 조건을 한자리에서 한 번에 정합니다.
+ * 판을 네 번 열고 닫게 하지도, 한 판 안에서 층을 네 번 펴고 접게 하지도 않습니다. 마크업은 하나이고 판을 옮겨 담습니다(find-bar.js: dock) — 폭에 따라
  * 다른 DOM 을 쓰면 고르던 것이 폭이 바뀌는 순간 사라집니다(sheet.css 와 같은 이유입니다).
  *
  * ⚠️ Figma 에 이 컴포넌트가 없습니다. 값은 전부 semantic 토큰이거나, 이미 있는
@@ -225,7 +225,7 @@
 
    칸 이름(지역·날짜…)과 아이콘, 지우는 × 는 나오지 않습니다 — 값만으로 무엇을
    말하는지 읽히고, 자리가 그만큼 좁습니다. 누르는 자리는 그대로 넷이라, 어디를
-   누르든 조건 판이 올라오고 누른 것이 펼쳐진 층으로 열립니다(아래 .find-sheet).
+   누르든 네 조건이 다 펼쳐진 같은 판이 올라옵니다(아래 .find-sheet).
 */
 
 @media (max-width: 960px) {
@@ -1342,7 +1342,6 @@
   }
 
   .find-sheet__body {
-    /* 층의 머리를 판 맨 위로 끌어올릴 때 기준이 되는 자리입니다(find-bar.js). */
     position: relative;
     flex: 1 1 auto;
     min-block-size: 0;
@@ -1360,23 +1359,6 @@
     border-radius: var(--_rounded-2xl);
   }
 
-  /* 층의 머리 — 접혔을 때는 이름과 값이 양 끝으로 갈라섭니다(칸과 같은 말입니다). */
-  .find-sheet__row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--spacing-400);
-    inline-size: 100%;
-    box-sizing: border-box;
-    padding: var(--spacing-400) var(--spacing-500);
-    border: 0;
-    border-radius: var(--_rounded-2xl);
-    background: none;
-    font-family: inherit;
-    text-align: start;
-    cursor: pointer;
-  }
-
   .find-sheet__label {
     flex: none;
     color: var(--colors-fg-lower);
@@ -1385,39 +1367,6 @@
     line-height: var(--typography-body-m-regular-line-height);
     letter-spacing: var(--typography-body-m-regular-letter-spacing);
   }
-
-  /* 값이 길어지면 잘립니다 — 이름이 밀려나면 무엇에 대한 값인지 알 수 없습니다.
-     무엇을 골랐는지는 펼치면 판이 다시 말합니다. */
-  .find-sheet__value {
-    overflow: hidden;
-    color: var(--colors-fg);
-    font-size: var(--typography-body-m-medium-font-size);
-    font-weight: var(--typography-body-m-medium-font-weight);
-    line-height: var(--typography-body-m-medium-line-height);
-    letter-spacing: var(--typography-body-m-medium-letter-spacing);
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    font-feature-settings: 'lnum' 1;
-  }
-
-  /* 아직 고르지 않은 것(날짜 추가)은 값이 아니라 안내입니다. */
-  .find-sheet__value.is-empty { color: var(--colors-fg-lowest); }
-
-  /* 펼친 층. 이름이 제목이 되고 값은 빠집니다 — 바로 아래에 그 값을 고르는 자리가
-     펼쳐져 있어, 같은 것을 위에서 한 번 더 말할 이유가 없습니다. */
-  .find-sheet__section.is-open .find-sheet__row {
-    padding-block-end: var(--spacing-200);
-  }
-
-  .find-sheet__section.is-open .find-sheet__label {
-    color: var(--colors-fg);
-    font-size: var(--typography-heading-xs-semibold-font-size);
-    font-weight: var(--typography-heading-xs-semibold-font-weight);
-    line-height: var(--typography-heading-xs-semibold-line-height);
-    letter-spacing: var(--typography-heading-xs-semibold-letter-spacing);
-  }
-
-  .find-sheet__section.is-open .find-sheet__value { display: none; }
 
   /* ---- 층 안에 담긴 판 --------------------------------------------------
      떠 있기를 그만두고 층 안에 눕습니다. 스크롤은 판 몸통이 아니라 시트가 맡습니다 —
@@ -1434,8 +1383,8 @@
     transition: none;
   }
 
-  /* 층의 머리가 이미 이름과 닫는 길을 말하고 있습니다. 판마다 제목과 ×,
-     초기화·완료를 또 두면 한 화면에 닫는 버튼이 다섯 개가 됩니다. */
+  /* 층의 이름표가 이미 이름을 말하고 있고, 닫는 길은 판 머리의 × 하나입니다.
+     판마다 제목과 ×, 초기화·완료를 또 두면 한 화면에 닫는 버튼이 다섯 개가 됩니다. */
   .find-sheet .find-bar__panel-head,
   .find-sheet .find-bar__panel-foot {
     display: none;
@@ -1456,6 +1405,13 @@
     overflow: visible;
     padding: 0 var(--spacing-500) var(--spacing-400);
   }
+
+  /* 지역 격자는 제 높이(40dvh)를 넘으면 안에서 구릅니다. 넓은 화면에서는 그 판이
+     떠 있어 다 내린 뒤 뒤 페이지가 이어 움직이면 안 되므로 거기서 끊었는데,
+     이 판 안에서는 다 내린 다음 시트가 이어서 움직여야 합니다 — 끊어 두면 손가락이
+     격자 위에 있는 동안 아래 조건으로 내려갈 수가 없습니다. 뒤 페이지는 시트 몸통이
+     따로 막고 있습니다(.find-sheet__body). */
+  .find-sheet .find-bar__location-group { overscroll-behavior: auto; }
 
   /* 달력 판만 몸통과 담은 날짜 사이가 벌어집니다(위 foot 이 붙어 서므로). */
   .find-sheet .find-bar__panel--date .find-bar__panel-foot--summary {
@@ -1479,8 +1435,8 @@
     padding-inline: var(--spacing-400);
   }
 
-  /* 정렬 판의 섹션 제목. 접었다 펴는 층이 아니라 늘 펼쳐진 자리라 누르는 머리가
-     아니지만, 펼친 층의 제목과 같은 크기로 적어 두 판이 같은 결로 읽히게 합니다. */
+  /* 층의 이름표. 두 판 모두 접었다 펴는 층이 아니라 늘 펼쳐진 자리이므로, 누르는
+     머리가 아니라 제목입니다 — 커서도 바뀌지 않고 초점도 받지 않습니다. */
   .find-sheet__heading {
     margin: 0;
     padding: var(--spacing-400) var(--spacing-500) var(--spacing-200);

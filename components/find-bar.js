@@ -524,9 +524,10 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
      것이 나와 두 자리를 나눠 둔 이유가 사라지기 때문입니다. 바는 무엇을 볼지를,
      버튼은 그 밖의 것(어느 차례로 볼지 · 어떤 것을 먼저 볼지)을 맡습니다.
 
-     조건 판은 한 번에 한 층만 펼칩니다 — 넷을 다 펼쳐두면 판이 화면 세 배 길이가
-     되어, 무엇을 고르는 중인지 스크롤 없이는 알 수 없습니다. 정렬 판은 담긴 것이
-     둘뿐이라 접지 않고 그대로 폅니다.
+     두 판 모두 접지 않습니다. 조건 판은 넷을 다 펼쳐 두고 스크롤로 이어 보게 합니다 —
+     접어 두면 지역을 펴고 접고 날짜를 펴고 접는 식으로, 판이 하나가 되었을 뿐 조건을
+     하나씩 여는 일은 그대로 남습니다. 한자리에서 한 번에 정하자는 것이 이 판을 만든
+     이유이므로, 여는 동작을 없애고 길어진 만큼 스크롤로 갑니다.
 
      담기는 것은 어느 쪽이든 화면에 이미 있던 그 노드입니다 — 폭이 바뀌면 옮겨
      답니다(dock). 폭마다 다른 DOM 을 두면 고르던 것이 폭이 바뀌는 순간 사라집니다. */
@@ -597,18 +598,11 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
     for (const f of sheetFields) {
       const section = el('section', 'find-sheet__section')
       section.dataset.sheetSection = f.name
-      /* 층의 머리는 칸과 같은 것을 말합니다(이름 + 지금 걸린 값). 값은 바와 한
-         곳에서 함께 씁니다(renderSummaries) — 두 곳에서 따로 지어내면 바에는
-         "어디서든", 판에는 "전국" 이라고 적히는 날이 옵니다. */
-      const row = el('button', 'find-sheet__row')
-      row.type = 'button'
-      row.dataset.sheetOpen = f.id
-      row.setAttribute('aria-expanded', 'false')
-      row.setAttribute('aria-controls', f.id)
-      const value = el('span', 'find-sheet__value')
-      value.dataset.sheetSummary = f.name
-      row.append(el('span', 'find-sheet__label', f.label), value)
-      section.append(row)
+      /* 머리는 누르는 자리가 아니라 이름표입니다 — 아래에 고르는 자리가 이미 펼쳐져
+         있어 열 것이 없습니다. 걸린 값도 적지 않습니다. 접힌 층에서는 값만이 무엇이
+         걸렸는지 말해주지만, 펼쳐 두면 그 값이 바로 아래에 선택된 모습으로 보입니다 —
+         같은 것을 위에서 한 번 더 적으면 어느 쪽이 지금인지 헷갈립니다. */
+      section.append(el('h3', 'find-sheet__heading', f.label))
       body.append(section)
     }
   }
@@ -633,8 +627,10 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
   bar.append(conditionSheet, sortingSheet)
 
   const conditionBody = conditionSheet.querySelector('.find-sheet__body')
-  const rowOf = (id) => conditionSheet.querySelector(`[data-sheet-open="${CSS.escape(id)}"]`)
-  const sectionOf = (id) => rowOf(id)?.closest('.find-sheet__section')
+  /** 판 id(find-area…) 로 그 층을 찾습니다 — 층은 칸 이름(area…) 으로 표시돼 있습니다. */
+  const sheetNameOf = new Map(sheetFields.map((f) => [f.id, f.name]))
+  const sectionOf = (id) =>
+    conditionSheet.querySelector(`[data-sheet-section="${CSS.escape(sheetNameOf.get(id) ?? '')}"]`)
 
   /** 옮겨 담을 것과 담길 자리 — 조건 판의 층 넷, 정렬 판의 정렬 줄과 추천. */
   const cargo = () => [
@@ -659,35 +655,26 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
     }
   }
 
-  /** 조건 판의 한 층만 펼칩니다. id 가 없으면 모두 접습니다(값만 남은 목록이 됩니다). */
-  function expand(id) {
+  /** 조건 판의 네 층을 한꺼번에 펴거나(열 때) 접습니다(닫을 때). 층을 골라 펴는
+      길은 없습니다 — 판이 뜨면 넷이 다 서 있습니다.
+
+      바의 칸에도 같은 것을 적습니다. 이 폭에서 칸은 제 판을 여는 버튼이 아니라
+      넷이 함께 든 판을 여는 버튼이지만, 그 칸이 가리키는 판(aria-controls)이
+      실제로 보이게 되는 것은 맞으므로 넷 모두 펼쳐진 것으로 알립니다. */
+  function showConditions(on) {
     for (const f of sheetFields) {
-      const on = f.id === id
       const panel = panelOf(f.id)
       if (panel) panel.hidden = !on
-      rowOf(f.id)?.setAttribute('aria-expanded', String(on))
-      sectionOf(f.id)?.classList.toggle('is-open', on)
       fieldOf(f.id)?.setAttribute('aria-expanded', String(on))
     }
-    openId = id
-    const section = id && sectionOf(id)
-    if (!section) return
-    /* 펼친 층은 아래로 자랍니다 — 달력이 펼쳐지면 그 머리가 판 위쪽으로 밀려
-       올라가 무엇을 펼친 것인지 보이지 않습니다. 층의 머리를 판 맨 위로 끌어옵니다. */
-    requestAnimationFrame(() => {
-      conditionBody.scrollTo({
-        top: Math.max(0, section.offsetTop - conditionBody.offsetTop),
-        behavior: reduceMotion.matches ? 'auto' : 'smooth',
-      })
-    })
+    // 좁은 화면에는 "지금 펼친 하나" 가 없습니다.
+    openId = null
+    if (on) conditionBody.scrollTop = 0
   }
 
-  function showSheet(box, { id = null, opener = null } = {}) {
-    // 이미 그 판이 떠 있으면 층만 갈아탑니다. 펼친 층을 다시 누르면 접힙니다.
-    if (sheetUp === box) {
-      if (box === conditionSheet) expand(openId === id ? null : id)
-      return
-    }
+  function showSheet(box, { opener = null } = {}) {
+    // 이미 떠 있으면 아무 일도 없습니다 — 판 안에서 갈아탈 층이 없습니다.
+    if (sheetUp === box) return
     if (sheetUp) close({ restore: false })
     sheetUp = box
     sheetOpener = opener
@@ -695,7 +682,7 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
     if (scrim) scrim.hidden = false
     lockScroll()
     locked = true
-    if (box === conditionSheet) expand(id)
+    if (box === conditionSheet) showConditions(true)
     else sortingBtn?.setAttribute('aria-expanded', 'true')
     /* 초점은 판이 받습니다 — 열자마자 첫 층이나 날짜에 테가 둘리면 그것이 이 판에서
        해야 할 일인 양 보입니다(dialog-focus.js 와 같은 이유입니다). */
@@ -715,7 +702,7 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
     const back = fieldOf(openId) ?? sheetOpener
 
     if (sheetUp) {
-      if (sheetUp === conditionSheet) expand(null)
+      if (sheetUp === conditionSheet) showConditions(false)
       sortingBtn?.setAttribute('aria-expanded', 'false')
       sheetUp.hidden = true
       sheetUp = null
@@ -741,9 +728,10 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
   }
 
   function open(id) {
-    /* 좁은 화면에서 바는 칸 넷이 아니라 하나의 자리입니다 — 어느 글자를 눌렀든 같은
-       판이 같은 모습으로 열립니다. 누른 칸의 층을 펼쳐주면 빨라 보이지만, 글자마다
-       다른 것이 열리는 셈이라 어디를 눌러야 무엇이 나오는지 외워야 합니다. */
+    /* 좁은 화면에서 바는 칸 넷이 아니라 하나의 자리입니다 — 어느 글자를 눌렀든 네
+       조건이 다 펼쳐진 같은 판이 열립니다. 칸마다 그 조건만 여는 길은 두지 않습니다.
+       글자마다 다른 것이 열리면 어디를 눌러야 무엇이 나오는지 외워야 하고, 조건 하나를
+       고치러 판을 네 번 여닫게 됩니다. */
     if (sheetWidth.matches) {
       showSheet(conditionSheet, { opener: fieldOf(id) })
       return
@@ -763,12 +751,6 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
   }
 
   root.addEventListener('click', (e) => {
-    // 판 안의 층 머리 — 누른 층을 펼치고, 펼쳐져 있던 것은 접습니다.
-    const row = e.target.closest('[data-sheet-open]')
-    if (row) {
-      showSheet(conditionSheet, { id: row.dataset.sheetOpen })
-      return
-    }
     // 바의 칸.
     const opener = e.target.closest('[data-find-open]')
     if (opener) {
@@ -778,7 +760,7 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
     /* 좁은 화면에서 바는 칸 넷이 아니라 하나의 자리입니다(Figma 의 filterBar).
        칸과 칸 사이나 알약의 여백을 눌렀을 때 아무 일도 일어나지 않으면, 눌리는 자리를
        글자에 맞춰 더듬어 찾게 됩니다 — 바 어디를 눌러도 판이 열립니다.
-       어느 칸을 눌렀는지 알 수 없으므로 층은 펼치지 않고 접힌 목록으로 엽니다. */
+       어느 칸을 눌렀든 여는 것은 같은 판입니다. */
     if (sheetWidth.matches && e.target.closest('.find-bar__fields')) {
       showSheet(conditionSheet, { opener: root.querySelector('[data-find-open]') })
       return
@@ -999,15 +981,6 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
   /** 칸에 적히는 글자만 다시 씁니다. 붙고 풀릴 때도 이것만 부르면 됩니다. */
   function renderSummaries(s) {
     for (const [name, { text, muted, clearable }] of Object.entries(summaries(s))) {
-      /* 좁은 화면의 조건 판에서는 같은 값이 층 머리에 한 번 더 적힙니다 — 접힌
-         층은 값만으로 무엇이 걸려 있는지 말해야 합니다. 글자를 여기서 함께 쓰는
-         것은, 두 곳에서 따로 지어내면 바에는 "어디서든", 판에는 "전국" 이라고
-         적히는 날이 오기 때문입니다. */
-      const sheetSlot = conditionSheet.querySelector(`[data-sheet-summary="${name}"]`)
-      if (sheetSlot) {
-        sheetSlot.textContent = text
-        sheetSlot.classList.toggle('is-empty', muted)
-      }
       const slot = root.querySelector(`[data-find-summary="${name}"]`)
       if (!slot) continue
       slot.textContent = text
