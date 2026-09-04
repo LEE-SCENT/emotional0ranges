@@ -223,7 +223,23 @@
        가만히 놓여 있을 뿐, 목록 위에 떠 있는 것이 아닙니다 — 뜬 것처럼 보이려면
        스크롤을 따라와야 하는데 여기서는 함께 흘러갑니다. */
     background: var(--colors-bg-low);
+    /* 이 폭에서 알약 자체가 버튼입니다(find-bar.js: barMode). */
+    cursor: pointer;
   }
+
+  /* 초점 테는 알약 하나에만 그립니다 — 안의 칸들은 초점을 받지 않습니다. */
+  .find-bar__fields:focus-visible {
+    outline: 2px solid var(--colors-fg);
+    outline-offset: 2px;
+  }
+
+  /* ⚠️ 알약 안에는 눌리는 자리가 없습니다. 손가락은 칸을 지나쳐 알약에 닿습니다 —
+     칸이 눌리면 누른 그 글자에만 회색 테(브라우저 기본)가 떠서, 넷이 여는 것이 같은
+     판 하나인데도 그 조건만 고르는 자리로 보입니다.
+     판 넷은 이 폭에서 칸 안에 없습니다(find-bar.js: dock) — 시트 안에 있어 이 규칙에
+     걸리지 않습니다. */
+  .find-bar__field,
+  .find-bar__field-open { pointer-events: none; }
 
   .find-bar__search {
     display: block;

@@ -542,6 +542,7 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
     .filter((f) => f.id && panelOf(f.id))
 
   const bar = root.querySelector('.find-bar') ?? root
+  const barFields = root.querySelector('.find-bar__fields')
   const sortingBtn = root.querySelector('[data-find-sorting]')
   /** 판이 원래 있던 자리. 넓은 화면으로 돌아갈 때 그 자리에 되돌립니다. */
   const homes = new Map()
@@ -639,6 +640,35 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
     { node: panelOf('find-pick'), into: sortingSheet.querySelector('[data-sheet-section="pick"]'), bare: true },
   ]
 
+  /* ---- 좁은 화면에서 바는 하나의 자리입니다 ------------------------------
+     칸 넷은 넓은 화면에서 저마다 제 판을 여는 버튼입니다. 좁은 화면에서는 넷이
+     여는 것이 같은 판 하나뿐이라, 넷이 각각 눌리는 자리로 남아 있을 이유가
+     없습니다 — 글자 하나만 눌리는 자리로 보이면(누른 그 글자에만 회색 테가 뜹니다)
+     그 조건만 고르는 자리로 읽힙니다.
+
+     그래서 이 폭에서는 알약이 버튼이고 칸 넷은 그 안의 글자입니다.
+     손가락은 칸을 지나쳐 알약에 닿고(pointer-events: none),
+     키보드는 칸을 건너뛰어 알약에 섭니다(tabindex -1).
+
+     넓은 화면으로 돌아가면 그대로 되돌립니다 — 거기서는 칸마다 다른 판이 열립니다. */
+  function barMode(narrow) {
+    for (const f of sheetFields) {
+      const btn = fieldOf(f.id)
+      if (btn) btn.tabIndex = narrow ? -1 : 0
+    }
+    if (!barFields) return
+    if (narrow) {
+      barFields.setAttribute('role', 'button')
+      barFields.tabIndex = 0
+      barFields.setAttribute('aria-controls', 'find-conditions')
+      barFields.setAttribute('aria-expanded', 'false')
+    } else {
+      for (const name of ['role', 'tabindex', 'aria-controls', 'aria-expanded', 'aria-label']) {
+        barFields.removeAttribute(name)
+      }
+    }
+  }
+
   /** 판 안으로 옮기거나(좁은 화면), 원래 자리로 되돌립니다. */
   function dock(into) {
     for (const { node, into: box, bare } of cargo()) {
@@ -666,6 +696,10 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
       const panel = panelOf(f.id)
       if (panel) panel.hidden = !on
       fieldOf(f.id)?.setAttribute('aria-expanded', String(on))
+    }
+    // 이 폭에서 판을 여는 것은 알약입니다(barMode).
+    if (barFields?.getAttribute('role') === 'button') {
+      barFields.setAttribute('aria-expanded', String(on))
     }
     // 좁은 화면에는 "지금 펼친 하나" 가 없습니다.
     openId = null
@@ -782,7 +816,7 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
        글자에 맞춰 더듬어 찾게 됩니다 — 바 어디를 눌러도 판이 열립니다.
        어느 칸을 눌렀든 여는 것은 같은 판입니다. */
     if (sheetWidth.matches && e.target.closest('.find-bar__fields')) {
-      showSheet(conditionSheet, { opener: root.querySelector('[data-find-open]') })
+      showSheet(conditionSheet, { opener: barFields })
       return
     }
     // 필터 버튼은 조건이 아니라 그 밖의 것을 엽니다 — 정렬과 추천입니다.
@@ -803,6 +837,16 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
       return
     }
     if (e.target.closest('[data-find-close], [data-sheet-done]')) close()
+  })
+
+  /* 알약은 <div> 라 키보드가 그냥은 누르지 못합니다 — role="button" 을 붙인 쪽이
+     Enter·Space 를 직접 받습니다. Space 는 누른 순간 화면이 내려가므로 기본 동작을
+     막습니다. 넓은 화면에서는 role 이 없어 이 줄들이 걸리지 않습니다. */
+  barFields?.addEventListener('keydown', (e) => {
+    if (barFields.getAttribute('role') !== 'button') return
+    if (e.key !== 'Enter' && e.key !== ' ') return
+    e.preventDefault()
+    showSheet(conditionSheet, { opener: barFields })
   })
 
   scrim?.addEventListener('click', () => close())
@@ -853,9 +897,11 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
   sheetWidth.addEventListener('change', () => {
     close({ restore: false })
     dock(sheetWidth.matches)
+    barMode(sheetWidth.matches)
   })
 
   dock(sheetWidth.matches)
+  barMode(sheetWidth.matches)
 
   /* ---- 조건 ------------------------------------------------------------ */
 
@@ -1000,7 +1046,9 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
 
   /** 칸에 적히는 글자만 다시 씁니다. 붙고 풀릴 때도 이것만 부르면 됩니다. */
   function renderSummaries(s) {
+    const said = []
     for (const [name, { text, muted, clearable }] of Object.entries(summaries(s))) {
+      said.push(text)
       const slot = root.querySelector(`[data-find-summary="${name}"]`)
       if (!slot) continue
       slot.textContent = text
@@ -1010,6 +1058,13 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
          바뀌어 옆 칸 글자까지 밀립니다. */
       const clear = field?.querySelector('.find-bar__clear')
       if (clear) clear.classList.toggle('is-empty', !clearable)
+    }
+
+    /* 좁은 화면에서 알약은 버튼 하나입니다(barMode) — 이름은 안에 든 글자 넷을
+       그대로 읽는 대신 여기서 지어 줍니다. 안의 글자만 읽으면 "수도권 전체 날짜 추가
+       전체 모임 혼자 갈래요" 로 이어져, 무엇을 하는 버튼인지가 빠집니다. */
+    if (barFields?.getAttribute('role') === 'button') {
+      barFields.setAttribute('aria-label', `모임 찾기 조건: ${said.join(' · ')}`)
     }
   }
 
