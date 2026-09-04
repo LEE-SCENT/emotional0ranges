@@ -1044,18 +1044,20 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
     }
 
     /* 폰에서는 추천과 정렬이 필터 버튼 안에 수납되어 보이지 않습니다. 걸어둔 것이
-       있는데 아무 표시가 없으면 목록이 왜 이만큼인지 알 수 없으므로, 그 버튼이
-       대신 셉니다 — 추천으로 건 조건과, 기본이 아닌 정렬을 함께 셉니다.
-       하나도 없으면 숫자를 감춥니다. 0 이라고 적으면 그것도 하나의 표시가 되어,
-       걸린 것이 있는 것처럼 보입니다. */
-    const moreCount = root.querySelector('[data-find-more-count]')
-    if (moreCount) {
-      const n = s.picks.length + (s.sort === SORTS[0] ? 0 : 1)
-      moreCount.textContent = String(n)
-      moreCount.hidden = n === 0
-      moreCount
+       있는데 아무 표시가 없으면 목록이 왜 이만큼인지 알 수 없으므로, 그 버튼에 점을
+       띄웁니다 — 추천으로 건 조건이나, 기본이 아닌 정렬 중 하나라도 있으면 켭니다.
+
+       몇 개인지는 세지 않습니다. 안에 든 것은 추천 조건과 정렬 하나뿐이라 2 와 3 을
+       가려도 할 일이 달라지지 않고, 무엇이 걸렸는지는 열면 바로 보입니다.
+
+       점은 읽어주는 쪽에 아무 말도 하지 못하므로 버튼 이름이 대신 말합니다. */
+    const moreBadge = root.querySelector('[data-find-more-badge]')
+    if (moreBadge) {
+      const on = s.picks.length > 0 || s.sort !== SORTS[0]
+      moreBadge.hidden = !on
+      moreBadge
         .closest('.find-bar__more')
-        ?.setAttribute('aria-label', n ? `추천 조건과 정렬, ${n}개 적용됨` : '추천 조건과 정렬')
+        ?.setAttribute('aria-label', on ? '정렬과 추천, 적용됨' : '정렬과 추천')
     }
 
     writeUrl(s)

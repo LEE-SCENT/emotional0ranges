@@ -221,11 +221,20 @@
   line-height: var(--typography-body-l-medium-line-height);
 }
 
-/* 설명은 1줄. 지역명이 길어지면 넘칩니다. */
+/* 메타(지역 · 일정)는 2줄까지 보여주고 넘치면 … 로 자릅니다. 한 줄로 자르면
+   "경기 성남시 외 4개 지역 · 일정 5개" 에서 뒤쪽 일정 수가 통째로 사라지는데, 앞의
+   지역만으로는 이 모임을 고를지 정할 수 없습니다 — 좁은 화면에서 카드가 188 까지
+   줄면 한 줄에 열 몇 글자라, 거의 늘 뒤가 잘립니다.
+
+   제목과 같은 2줄입니다. 3줄까지 열면 어드민에서 등록하는 값이라 길이를 통제할 수
+   없어, 그 카드만 키가 커져 옆 카드와 가격 줄이 어긋납니다.
+
+   2줄분 높이를 미리 잡아두지는 않습니다. 1줄짜리 아래에 빈 줄이 남으면 가격과의
+   간격이 벌어져 보입니다 — 제목과 같은 이유입니다. */
 .product-card__desc {
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
+  -webkit-line-clamp: 2;
   overflow: hidden;
   color: var(--colors-fg-lower);
   font-size: var(--typography-body-m-regular-font-size);
