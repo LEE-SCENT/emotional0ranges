@@ -691,6 +691,26 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
 
   /* ---- 여닫기 ---------------------------------------------------------- */
 
+  /* 마지막으로 무엇으로 조작했는지. 판을 닫고 초점을 되돌릴 때 그 자리에 테를 그릴지
+     정합니다 — 캡처 단계에서 듣는 것은 판이 제 핸들러로 닫히기 전에 알아야 하기
+     때문입니다. */
+  let byPointer = false
+  document.addEventListener('pointerdown', () => { byPointer = true }, true)
+  document.addEventListener('keydown', () => { byPointer = false }, true)
+
+  /** 초점을 되돌리되, 포인터로 닫았으면 테는 그리지 않습니다. 테는 다음에 키를
+      누르거나 초점이 떠나는 순간 다시 살아납니다 — 지운 것은 이번 한 번뿐입니다. */
+  function restoreFocus(node) {
+    if (!node) return
+    if (byPointer) {
+      node.dataset.findQuiet = ''
+      const wake = () => delete node.dataset.findQuiet
+      node.addEventListener('blur', wake, { once: true })
+      node.addEventListener('keydown', wake, { once: true })
+    }
+    node.focus()
+  }
+
   function close({ restore = true } = {}) {
     if (!openId && !sheetUp) return
     // 판 안에 초점이 있을 때만 되돌립니다. 다른 곳을 눌러 닫은 사람의 초점을
@@ -719,7 +739,7 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
       unlockScroll()
       locked = false
     }
-    if (restore && inside) back?.focus()
+    if (restore && inside) restoreFocus(back)
 
     /* 판을 여닫는 사이 목록이 줄어 화면이 따라 움직였을 수 있습니다. 그 거리는
        사람이 되짚은 것이 아니므로 버리고, 지금 위치에서 다시 셉니다. */
