@@ -24,8 +24,13 @@
  *
  * 등급은 글자로 들고 있지 않고 `black` 하나에서 나옵니다 — 글자와 표시를 따로
  * 두면 "일반 회원"이라고 적힌 옆에 블랙회원 표시가 붙는 화면이 생깁니다.
+ *
+ * null 이면 로그인하지 않은 것입니다. 로그인한 모습을 보려면 아래 한 줄을
+ * 되돌리면 됩니다:
+ *
+ *   const ME = { name: '정우진', black: true, hasNotice: true }
  */
-const ME = { name: '정우진', black: true, hasNotice: true }
+const ME = null
 
 /** 등급 이름과 이름 앞 표시는 한 값에서 함께 나옵니다. */
 const gradeOf = (me) => (me.black ? '블랙 회원' : '일반 회원')
@@ -38,7 +43,11 @@ const gradeOf = (me) => (me.black ? '블랙 회원' : '일반 회원')
  * 마지막이 서비스에 대한 것과 로그아웃입니다.
  */
 const ITEMS = [
-  { label: '알림', icon: 'notifications', badge: true, href: '', auth: true },
+  /* 알림은 판에서만 나옵니다. 폰에서는 GNB 오른쪽 위에 알림 아이콘이 이미 서 있어
+     (gnb.css), 마이 화면에 한 줄을 더 두면 같은 곳으로 가는 길이 한 화면에 둘이
+     됩니다 — 넓은 화면에서는 그 아이콘이 medium 폭에서 접히므로 판이 유일한
+     길입니다. */
+  { label: '알림', icon: 'notifications', badge: true, href: '', auth: true, panelOnly: true },
   null,
   { label: '기본 프로필', href: '', auth: true },
   { label: '상세 프로필', desc: '작성할수록 매칭 가능성이 높아져요', href: '', auth: true },
@@ -169,13 +178,16 @@ function signedOut() {
  * 씁니다. 담기는 자리가 달라도 담기는 것은 같아야 합니다 — 항목이 하나 늘 때
  * 두 곳을 고치게 두지 않습니다.
  */
-export function renderMyMenu(box) {
+export function renderMyMenu(box, { page = false } = {}) {
   if (!box) return
 
   /* 로그인해야 쓸 수 있는 것은 로그인하기 전에는 아예 두지 않습니다 — 눌러서
      로그인 화면으로 튕겨 나오는 것보다, 지금 할 수 있는 것만 보이는 편이 짧습니다.
-     그러고 나면 구분선이 잇달아 남거나 맨 앞뒤에 서게 되므로 함께 걷어냅니다. */
-  const shown = ITEMS.filter((entry) => !entry || ME || !entry.auth)
+     화면(폰)에만 없는 것도 여기서 빠집니다. 그러고 나면 구분선이 잇달아 남거나
+     맨 앞뒤에 서게 되므로 함께 걷어냅니다. */
+  const shown = ITEMS.filter(
+    (entry) => !entry || ((ME || !entry.auth) && !(page && entry.panelOnly)),
+  )
   const lines = shown.filter((entry, i) => entry || (shown[i - 1] && shown[i + 1]))
 
   box.replaceChildren(
@@ -264,5 +276,5 @@ export function initMyMenus(scope = document) {
 
 /** 폰의 마이 화면. 판이 아니라 화면이라 여닫을 것이 없고, 내용만 그립니다. */
 export function initMyPage(el = document.querySelector('[data-my-page]')) {
-  renderMyMenu(el)
+  renderMyMenu(el, { page: true })
 }
