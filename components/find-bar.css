@@ -243,9 +243,12 @@
   .find-bar__name,
   .find-bar__clear { display: none; }
 
-  /* 첫 줄(지역)은 14 medium, 둘째 줄은 12 로 한 단 물러납니다. 한 줄로 설
-     때에도 지역이 그 줄의 머리라 굵기가 다릅니다. */
-  .find-bar__field:not([data-find-field='area']) .find-bar__value {
+  /* 아무것도 고르지 않았을 때는 셋이 한 줄에 같은 무게로 섭니다(Figma) —
+     어느 하나가 머리가 될 이유가 없습니다. 값 글자(14 medium · fg)를 그대로
+     씁니다.
+
+     무엇이든 고른 뒤에야 지역이 첫 줄의 머리가 되고, 나머지가 한 단 물러납니다. */
+  .has-value .find-bar__field:not([data-find-field='area']) .find-bar__value {
     color: var(--colors-fg-low);
     font-size: var(--typography-body-s-medium-font-size);
     font-weight: var(--typography-body-s-medium-font-weight);
@@ -253,21 +256,27 @@
     letter-spacing: var(--typography-body-s-medium-letter-spacing);
   }
 
-  /* 아직 고르지 않은 것은 한 단 더 물러납니다. */
-  .find-bar__field:not([data-find-field='area']).is-empty .find-bar__value {
-    color: var(--colors-fg-lower);
-    font-weight: var(--typography-body-s-regular-font-weight);
-  }
+  /* 둘째 줄에서는 고른 것과 아직 고르지 않은 것을 나누지 않습니다 — `날짜 전체`
+     도 지금 걸려 있는 조건이라(모든 날짜) `혼자 갈래요` 와 같은 무게입니다.
+     한쪽만 흐리면 무엇이 빠진 것처럼 읽힙니다. 흐려지는 것은 넓은 화면의
+     칸에서뿐입니다(위 기본 규칙). */
+  .find-bar__field.is-empty .find-bar__value { color: inherit; }
 
   /* 조각 사이의 가운뎃점. 값 사이를 잇는 글자라 선(divider)이 아니라 글자로
-     둡니다 — 줄 안에서 글자와 같은 높이에 앉아야 합니다. 지역이 제 줄을 차지한
-     뒤에는 그 앞에 점이 남지 않아야 하므로, 줄이 나뉘는 규칙과 같은 조건을 씁니다. */
+     둡니다 — 줄 안에서 글자와 같은 높이에 앉아야 합니다. 옆 값과 같은 크기로
+     서다가, 둘째 줄이 생기면 그 줄을 따라 함께 물러납니다. */
   .find-bar__field + .find-bar__field::before {
     content: '·';
     margin-inline-end: var(--spacing-100);
+    color: var(--colors-fg);
+    font-size: var(--typography-body-m-regular-font-size);
+    font-weight: var(--typography-body-m-regular-font-weight);
+    line-height: var(--typography-body-m-regular-line-height);
+  }
+
+  .has-value .find-bar__field + .find-bar__field::before {
     color: var(--colors-fg-lower);
     font-size: var(--typography-body-s-regular-font-size);
-    font-weight: var(--typography-body-s-regular-font-weight);
     line-height: var(--typography-body-s-regular-line-height);
   }
 
@@ -635,7 +644,13 @@
   overflow-y: auto;
   /* 시트 안에서 다 내렸을 때 뒤 페이지가 이어서 움직이지 않게 막습니다. */
   overscroll-behavior: contain;
-  padding: var(--spacing-200) var(--spacing-400) var(--spacing-600);
+  /* 마지막 조건과 아래 버튼 줄 사이는 64 입니다. 마지막 알약이 버튼에 가깝게
+     붙으면 그 알약이 버튼 줄의 일부처럼 보이고, 다 내렸다는 것도 알기 어렵습니다 —
+     끝났다는 것이 보이려면 사이가 그만큼 떠 있어야 합니다.
+
+     ⚠️ spacing 토큰에 64 가 없습니다(60 과 72 사이). 32 의 두 배로 적어 값이
+        토큰에서 나오게 둡니다. */
+  padding: var(--spacing-200) var(--spacing-400) calc(var(--spacing-800) * 2);
 }
 
 /* 섹션 사이의 연한 구분선. 어디까지가 한 조건인지가 이것으로만 나뉩니다 —
@@ -1055,8 +1070,13 @@
   /* 그림은 상자 폭에 맞춰 늘립니다. 104 로 못 박으면 칸이 56 일 때(넓은 화면)만
      맞고, 칸 폭이 화면을 따라가는 폰에서는 상자가 그보다 넓어져 양쪽에 빈 자리가
      남습니다 — 시작일·종료일의 검은 알약과 띠 사이가 그만큼 끊겨 보였습니다.
-     세로는 칸 높이 그대로(44)입니다. */
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='104' height='44' viewBox='0 0 104 44' fill='none'%3E%3Cpath d='M20 22C20 34.1503 11.0457 44 0 44H104C92.9543 44 84 34.1503 84 22C84 9.84974 92.9543 0 104 0H0C11.0457 0 20 9.84974 20 22Z' fill='%23F8F6F5'/%3E%3C/svg%3E") center / 100% 44px no-repeat;
+     세로는 칸 높이 그대로(44)입니다.
+
+     ⚠️ 그림에 preserveAspectRatio='none' 이 있어야 합니다. 없으면 SVG 가 제
+        비율을 지키려고 안에서 다시 맞춰 그려, 폭이 104 가 아닌 폰에서는 띠가
+        칸보다 낮아집니다(44 → 39.6) — 시작·종료일의 검은 알약보다 얇아 보이던
+        것이 이것입니다. */
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='104' height='44' viewBox='0 0 104 44' preserveAspectRatio='none' fill='none'%3E%3Cpath d='M20 22C20 34.1503 11.0457 44 0 44H104C92.9543 44 84 34.1503 84 22C84 9.84974 92.9543 0 104 0H0C11.0457 0 20 9.84974 20 22Z' fill='%23F8F6F5'/%3E%3C/svg%3E") center / 100% 44px no-repeat;
 }
 
 /* 달을 넘어가는 기간. 그 달의 마지막 날은 오른쪽에서, 다음 달 1일은 왼쪽에서
@@ -1077,7 +1097,7 @@
 }
 
 .calendar__day.is-between:disabled::before {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='104' height='44' viewBox='0 0 104 44' fill='none'%3E%3Cpath d='M20 22C20 34.1503 11.0457 44 0 44H104C92.9543 44 84 34.1503 84 22C84 9.84974 92.9543 0 104 0L0 0C11.0457 0 20 9.84974 20 22Z' fill='%23F8F6F5'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='104' height='44' viewBox='0 0 104 44' preserveAspectRatio='none' fill='none'%3E%3Cpath d='M20 22C20 34.1503 11.0457 44 0 44H104C92.9543 44 84 34.1503 84 22C84 9.84974 92.9543 0 104 0L0 0C11.0457 0 20 9.84974 20 22Z' fill='%23F8F6F5'/%3E%3C/svg%3E");
 }
 
 /* 고른 기간의 양 끝. */

@@ -38,25 +38,25 @@ const gradeOf = (me) => (me.black ? '블랙 회원' : '일반 회원')
  * 마지막이 서비스에 대한 것과 로그아웃입니다.
  */
 const ITEMS = [
-  { label: '알림', icon: 'notifications', badge: true, href: '' },
+  { label: '알림', icon: 'notifications', badge: true, href: '', auth: true },
   null,
-  { label: '기본 프로필', href: '' },
-  { label: '상세 프로필', desc: '작성할수록 매칭 가능성이 높아져요', href: '' },
-  { label: '블랙회원 인증', href: '' },
+  { label: '기본 프로필', href: '', auth: true },
+  { label: '상세 프로필', desc: '작성할수록 매칭 가능성이 높아져요', href: '', auth: true },
+  { label: '블랙회원 인증', href: '', auth: true },
   null,
-  { label: '찜한 모임', href: '' },
-  { label: '결제 내역', href: '' },
-  { label: '내가 작성한 리뷰', href: '' },
-  { label: '쿠폰함', href: '' },
-  { label: '아는 사람 피하기', href: '' },
+  { label: '찜한 모임', href: '', auth: true },
+  { label: '결제 내역', href: '', auth: true },
+  { label: '내가 작성한 리뷰', href: '', auth: true },
+  { label: '쿠폰함', href: '', auth: true },
+  { label: '아는 사람 피하기', href: '', auth: true },
   null,
-  { label: '초대 코드', href: '' },
-  { label: '계정 설정', href: '' },
+  { label: '초대 코드', href: '', auth: true },
+  { label: '계정 설정', href: '', auth: true },
   null,
   { label: '공지사항', href: '' },
   { label: '문의·의견 보내기', href: '' },
   null,
-  { label: '로그아웃', quiet: true, href: '' },
+  { label: '로그아웃', quiet: true, href: '', auth: true },
 ]
 
 const el = (tag, className, text) => {
@@ -137,19 +137,55 @@ function profile() {
 }
 
 /**
+ * 로그인하지 않았을 때의 머리.
+ *
+ * 없는 이름 자리를 비워두는 대신 무엇을 할 수 있는지를 적습니다 — 빈 자리는
+ * 불러오는 중인지 없는 것인지 알 수 없고, 이 화면에 처음 들어온 사람에게 가장
+ * 먼저 필요한 것은 로그인입니다.
+ *
+ * ⚠️ 이 상태의 디자인은 아직 없습니다. 담을 것(권하는 말 + 로그인)만 정해두고,
+ *    생김새는 로그인한 상태의 배너를 그대로 따랐습니다.
+ */
+function signedOut() {
+  const box = el('div', 'my-menu__profile')
+  const card = el('a', 'my-menu__card')
+  card.href = '#'
+  card.setAttribute('role', 'menuitem')
+  const text = el('span', 'my-menu__card-text')
+  text.append(
+    el('span', 'my-menu__card-label', '로그인하고 시작하기'),
+    el('span', 'my-menu__card-desc', '프로필과 신청 내역은 로그인 후에 볼 수 있어요'),
+  )
+  card.append(text)
+  card.insertAdjacentHTML('beforeend', '<svg aria-hidden="true"><use href="#icon-chevronRight"></use></svg>')
+  box.append(card)
+  return box
+}
+
+/**
  * 내 메뉴의 내용을 그립니다 — 누구인지, 프로필 카드, 그리고 열넷.
  *
  * 넓은 화면의 판(GNB 아래 팝오버)과 폰의 마이 화면(my.html)이 이것을 함께
  * 씁니다. 담기는 자리가 달라도 담기는 것은 같아야 합니다 — 항목이 하나 늘 때
  * 두 곳을 고치게 두지 않습니다.
  */
-export function renderMyMenu(el) {
-  if (!el) return
-  el.replaceChildren(
-    profile(),
-    ...ITEMS.map((entry) => (entry ? item(entry) : document.createElement('hr'))),
+export function renderMyMenu(box) {
+  if (!box) return
+
+  /* 로그인해야 쓸 수 있는 것은 로그인하기 전에는 아예 두지 않습니다 — 눌러서
+     로그인 화면으로 튕겨 나오는 것보다, 지금 할 수 있는 것만 보이는 편이 짧습니다.
+     그러고 나면 구분선이 잇달아 남거나 맨 앞뒤에 서게 되므로 함께 걷어냅니다. */
+  const shown = ITEMS.filter((entry) => !entry || ME || !entry.auth)
+  const lines = shown.filter((entry, i) => entry || (shown[i - 1] && shown[i + 1]))
+
+  box.replaceChildren(
+    ME ? profile() : signedOut(),
+    ...lines.map((entry) => (entry ? item(entry) : el('hr', 'my-menu__divider'))),
   )
-  for (const hr of el.querySelectorAll('hr')) hr.className = 'my-menu__divider'
+
+  /* GNB 의 로그인 버튼과 같은 사실을 말합니다 — 로그인한 사람에게 로그인 버튼이
+     남아 있으면 둘 중 어느 것이 참인지 알 수 없습니다. */
+  if (ME) document.querySelector('.gnb__login')?.remove()
 }
 
 export function initMyMenu(root = document.querySelector('[data-my-menu]')) {

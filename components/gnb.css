@@ -196,20 +196,29 @@
       block-size var(--_duration-fast) var(--_easing-standard);
   }
 
-  .gnb.is-sticky { padding-block: var(--spacing-200); }
+  /* 스크롤해도 줄지 않습니다. 로고와 바 높이가 스크롤 도중에 바뀌면 그 아래에
+     붙어 따라오는 것들(모임 찾기의 필터바)이 함께 흔들리고, 무엇보다 로고가
+     작아졌다 커지는 것 자체가 읽는 일과 아무 상관이 없습니다.
+     `is-sticky` 는 여전히 붙지만(gnb.js) 지금은 크기를 바꾸지 않습니다. */
 
-  /* 아래로 읽어 내려가는 동안에는 물러나 있습니다. 위로 올리면 바로 돌아옵니다. */
-  .gnb.is-hidden { translate: 0 -100%; }
+  /* 폰의 GNB 는 64 입니다(Figma 의 small) — 위아래 12 에 로고 30. */
+  .gnb {
+    padding: var(--spacing-300) var(--spacing-300) var(--spacing-300) var(--spacing-400);
+    min-block-size: 64px;
+  }
 
-  .gnb.is-sticky .gnb__logo {
+  .gnb__logo {
     inline-size: var(--_gnb-logo-sticky-width);
     block-size: var(--_gnb-logo-sticky-height);
   }
+
+  /* 아래로 읽어 내려가는 동안에는 물러나 있습니다. 위로 올리면 바로 돌아옵니다. */
+  .gnb.is-hidden { translate: 0 -100%; }
 }
 
 /* 화면 맨 위가 제 머리를 갖는 화면(모임 찾기의 필터바)에서는 폰에서 GNB 를
    두지 않습니다 — 로고 줄과 그 머리가 두 겹으로 쌓이면 목록이 그만큼 밀려
-   내려가고, 좁은 화면에서 그 한 줄이 카드 한 장만큼입니다. */
+   내려가고, 좁은 화면에서 그 한 줄이 카드 반 장만큼입니다. */
 @media (max-width: 960px) {
   .gnb--wide-only { display: none; }
 }
