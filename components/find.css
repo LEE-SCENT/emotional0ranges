@@ -1,21 +1,29 @@
 /**
- * 찾기 화면 레이아웃 — 조건 바 + 정렬 줄 + 결과.
+ * 찾기 화면 레이아웃 — 통합 필터바 → 모임 유형 퀵필터 → 하위 필터 → 걸린 추천
+ * 조건 → 결과 수와 정렬 → 카드.
  *
- *   <main class="container find">
+ *   <main class="container find" data-find>
  *     <div class="find-head">
- *       <form class="find-bar"> … </form>  ← find-bar.css
+ *       <div class="find-bar"> … </div>            ← find-bar.css
  *     </div>
- *     <div class="find-sorting">
- *       <div class="find-sorting__picks"> … </div>  ← 추천 조건 알약(전체 + 프로모션…)
- *       <div class="find__sort"> <select> … </select> </div>
+ *     <div class="find-types">
+ *       <div class="find-types__row"> … </div>     ← 모임 유형(단일 선택)
+ *       <div class="find-types__sub"> … </div>     ← 고른 유형의 하위 필터(복수)
  *     </div>
- *     <div class="find__grid"> product-card … </div>
- *     <p class="find__empty" hidden> … </p>
+ *     <div class="find__list">
+ *       <div class="find-applied"> … </div>        ← [프로모션 ×] [마감 임박 ×]
+ *       <div class="find-sorting"> … </div>        ← 모임 25개 / 날짜 빠른 순
+ *       <div class="find__grid"> product-card … </div>
+ *     </div>
+ *     <div class="find-sheet"> … </div>            ← 폰의 통합 필터 시트
  *   </main>
  *
+ * 순서가 정책입니다. 조건을 넓은 것에서 좁은 것으로 늘어놓고, 그 결과가 몇 개인지
+ * 바로 위에서 한 번 말한 다음 목록이 옵니다 — 모임 유형 알약에는 개수를 달지
+ * 않습니다. 같은 수를 두 자리에서 말하면 어느 쪽이 지금 걸린 결과인지 흐려집니다.
+ *
  * 홈의 목록은 한 장의 레일이지만(가로 스크롤 · 카드 사이 2px), 여기는 고른 조건에
- * 맞는 것을 전부 펼쳐 보는 자리라 격자입니다. 그래서 카드가 낱장으로 읽혀야 하고,
- * 모서리도 네 곳 모두 둥급니다 — 카테고리 카드가 같은 이유로 그렇습니다.
+ * 맞는 것을 전부 펼쳐 보는 자리라 격자입니다.
  */
 
 .find {
@@ -27,10 +35,6 @@
    961 부터 GNB 아래에 붙어 따라옵니다. 목록을 한참 내려간 뒤에도 조건을 바꿀 수
    있어야 하는데, 조건을 바꾸러 맨 위까지 올라가는 것은 스크롤을 되돌리는 일입니다.
 
-   붙는 자리가 GNB 높이(72)인 것은 그 폭에서 GNB 가 늘 그 높이로 서 있기 때문입니다.
-   960 이하에서는 GNB 가 스크롤에 따라 56 으로 줄고 물러나기까지 해서 붙일 자리가
-   고정되지 않습니다 — 그 폭에서는 머리도 함께 스크롤됩니다.
-
    ⚠️ 이 화면의 GNB 에는 data-auto-hide 를 달지 않습니다. 물러나 버리면 머리만
       공중에 떠 있게 됩니다.
 */
@@ -41,12 +45,60 @@
   block-size: 0;
 }
 
-/* 머리에는 배경을 깔지 않습니다. 흰 띠를 두면 붙어 있는 동안 그 띠가 카드 위를
-   가로질러, 알약 하나가 떠 있는 것이 아니라 흰 판이 내려온 것처럼 보입니다 —
-   불투명한 배경은 GNB 만 갖습니다. */
 .find-head {
   position: relative;
   z-index: 15;
+}
+
+/* ---- 폰의 붙는 규칙 ----------------------------------------------------
+   처음 들어오면 필터바 · 퀵필터 · 결과 수와 정렬이 모두 보입니다.
+
+     아래로 내려가면  →  퀵필터가 물러나고 필터바만 위에 남습니다. 읽는 자리가
+                        그만큼 넓어집니다.
+     위로 올리면      →  필터바 아래에 퀵필터가 다시 붙습니다. 되돌아 올린다는
+                        것은 다른 유형을 보려는 뜻일 때가 많습니다.
+     맨 위에 닿으면   →  결과 수와 정렬까지 원래 자리로 돌아옵니다.
+
+   결과 수와 정렬은 붙지 않습니다 — 스크롤과 함께 그냥 지나갑니다. 위로 올릴 때
+   그것까지 따라 내려오면 목록 위가 세 줄로 두꺼워집니다.
+
+   퀵필터는 접힐 때에도 자리를 그대로 차지합니다(visibility). display 나 높이로
+   접으면 붙어 있는 동안 문서가 그만큼 짧아져, 읽던 자리가 통째로 위로 튑니다.
+*/
+
+@media (max-width: 960px) {
+  .find-head {
+    position: sticky;
+    /* GNB 가 붙었을 때의 높이 — 위아래 8 과 로고 30(gnb.css). 그 아래에 섭니다. */
+    inset-block-start: calc(2 * var(--spacing-200) + var(--_gnb-logo-sticky-height));
+    padding-block: var(--spacing-250);
+    /* 붙어 있는 동안 카드가 바 뒤로 비쳐서는 안 됩니다. */
+    background: var(--colors-bg);
+  }
+
+  .find-types {
+    position: sticky;
+    /* 필터바 아래 — 바의 높이는 값이 한 줄인지 두 줄인지에 따라 달라져
+       find-bar.js 가 재서 넣습니다. */
+    inset-block-start: var(--_find-types-top, 96px);
+    z-index: 14;
+    padding-block-end: var(--spacing-250);
+    background: var(--colors-bg);
+    opacity: 1;
+    visibility: visible;
+    translate: 0 0;
+    /* 헤더가 나타나고 사라지는 시간은 160~200 입니다(정책). */
+    transition:
+      opacity 180ms var(--_easing-standard),
+      translate 180ms var(--_easing-standard),
+      visibility 180ms var(--_easing-standard);
+  }
+
+  .find-types.is-collapsed {
+    opacity: 0;
+    visibility: hidden;
+    translate: 0 calc(-1 * var(--spacing-200));
+  }
 }
 
 @media (min-width: 961px) {
@@ -55,10 +107,7 @@
     inset-block-start: var(--_gnb-max-height);
     /* GNB 아래 여백은 상태에 따라 다릅니다.
          기본   32 — Figma Card 의 py-32 (바 위쪽이 화면 기준 72 + 32 = 104)
-         스티키 12 — 붙어 있는 동안에는 더 바짝 붙습니다
-       붙으면서 바가 줄어들 때 이 여백도 함께 줄어, 위로 조금 당겨 올라갑니다. */
-    /* 위아래 모두 32 입니다 — 바가 GNB 와 아래 조건 알약 줄 사이에서 같은 만큼
-       떨어져 있어야 한 덩어리로 떠 있는 것으로 읽힙니다. */
+         스티키 12 — 붙어 있는 동안에는 더 바짝 붙습니다 */
     padding-block: var(--spacing-800);
     transition:
       padding-block-start var(--_duration-base) var(--_easing-standard),
@@ -82,10 +131,261 @@
   .find-head > * { pointer-events: auto; }
 }
 
-/* ---- 정렬 줄 + 목록 ---------------------------------------------------
-   Figma 의 warpper — 위아래 16 을 두르고, 안에서 정렬 줄과 격자가 12 로
-   떨어집니다. 둘을 한 덩어리로 묶어두면 바와 목록 사이의 거리를 한 곳에서만
-   고치면 됩니다.
+@media (prefers-reduced-motion: reduce) {
+  .find-head,
+  .find-types,
+  .find-types__sub { transition: none; }
+}
+
+/* ---- 모임 유형 퀵필터 ---------------------------------------------------
+   위 줄은 모임 유형(단일 선택), 아래 줄은 그 유형의 하위 필터(복수 선택)입니다.
+   하위 줄은 유형을 고른 경우에만 나오고, 유형을 바꾸면 비워집니다(find-bar.js).
+
+   하위 알약이 상위보다 옅은 것은 위계입니다 — 상위는 채운 검정(filled), 하위는
+   눌러도 옅은 회색(blur)에서 멈춥니다. 둘 다 검게 채우면 무엇이 무엇의 아래인지
+   줄의 차례로만 알 수 있습니다.
+*/
+
+.find-types {
+  display: flex;
+  flex-direction: column;
+  /* 두 줄 사이는 8 입니다(Figma). 한 줄 안의 알약 사이(6)보다 넓어야 위아래
+     줄이 다른 층이라는 것이 보입니다. */
+  gap: var(--spacing-200);
+}
+
+.find-types__row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-150);
+  min-inline-size: 0;
+}
+
+/* 알약 사이는 6 입니다. Figma 의 퀵필터는 4 였는데, 알약이 medium(높이 40)으로
+   커지면서 4 는 서로 붙어 보입니다 — 줄 안에서 낱개로 읽히려면 그만큼 벌어져야
+   합니다. 아래 걸린 조건 줄도 같은 값을 씁니다. */
+.find-types__list,
+.find-types__sub-list {
+  display: flex;
+  flex: 1 1 auto;
+  gap: var(--spacing-150);
+  min-inline-size: 0;
+}
+
+/* 한 줄에서 넘치는 알약은 옆으로 흐릅니다. 막대는 감추고, 오른쪽 끝을 옅게 해서
+   뒤에 더 있다는 것을 보입니다(Figma 의 gradient). */
+.find-types__list,
+.find-types__sub-list {
+  overflow-x: auto;
+  scrollbar-width: none;
+  mask: linear-gradient(to right, #000 calc(100% - 32px), transparent);
+}
+
+.find-types__list::-webkit-scrollbar,
+.find-types__sub-list::-webkit-scrollbar { display: none; }
+
+/* ---- 하위 필터가 열리고 닫히는 동안 ------------------------------------
+   유형을 고르면 이 줄이 나타나면서 결과 수·소팅·카드를 아래로 밉니다. 줄만
+   툭 생기면 아래가 한 칸씩 뛰어내린 것처럼 보이므로, 높이도 함께 움직입니다.
+
+   높이는 `grid-template-rows: 0fr -> 1fr` 로 폅니다 — 내용 높이를 미리 재지
+   않아도 되고(알약이 두 줄이 되는 폭도 있습니다), 자바스크립트가 픽셀을
+   들고 있지 않아도 됩니다. 잘라내는 것은 안쪽 한 겹이 맡습니다.
+
+   [hidden] 은 그대로 display:none 입니다 — allow-discrete 가 전환이 끝난 뒤에
+   적용해 주어, 닫히는 동안에는 화면에 남아 있고 다 닫히면 Tab 순서에서도
+   빠집니다(팝오버와 같은 방식입니다). */
+.find-types__sub {
+  display: grid;
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transition:
+    grid-template-rows 200ms var(--_easing-standard),
+    opacity 200ms var(--_easing-standard),
+    display 200ms allow-discrete;
+}
+
+.find-types__sub[hidden] {
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
+
+@starting-style {
+  .find-types__sub:not([hidden]) {
+    grid-template-rows: 0fr;
+    opacity: 0;
+  }
+}
+
+.find-types__sub-inner {
+  min-block-size: 0;
+  overflow: hidden;
+}
+
+/* 펼침 버튼 — 폰에서만 나옵니다. 목록을 덮는 창이 아니라 그 자리에서 줄이 늘어나고,
+   아래 것들이 함께 밀려 내려갑니다. 접으면 원래 자리로 돌아옵니다. */
+.find-types__more {
+  flex: none;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  /* 알약과 같은 높이(medium, 40)입니다 — 한 줄에 나란히 서는 것들이라
+     하나만 작으면 그 줄의 가운데선이 흔들려 보입니다. */
+  inline-size: 40px;
+  block-size: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--_rounded-full);
+  background: var(--_button-outlined-bg);
+  box-shadow: inset 0 0 0 var(--_button-border-width) var(--_button-outlined-border);
+  color: var(--colors-fg);
+  cursor: pointer;
+}
+
+.find-types__more svg {
+  display: block;
+  inline-size: var(--icon-size-xs);
+  block-size: var(--icon-size-xs);
+  /* 펼침 애니메이션은 180~220 입니다(정책). */
+  transition: rotate 200ms var(--_easing-standard);
+}
+
+.find-types__more[aria-expanded='true'] svg { rotate: 180deg; }
+
+@media (max-width: 960px) {
+  .find-types__more { display: flex; }
+
+  /* 펼친 뒤에는 모든 유형이 여러 줄로 섭니다 — 흐르던 줄이 아니라 그냥 목록이
+     되므로 옅어지는 끝도 없습니다. */
+  .find-types__row.is-expanded .find-types__list {
+    flex-wrap: wrap;
+    overflow: visible;
+    mask: none;
+  }
+}
+
+@media (min-width: 961px) {
+  /* 넓은 화면에는 줄을 접을 이유가 없습니다 — 알약이 한 줄에 다 섭니다. */
+  .find-types__list,
+  .find-types__sub-list {
+    flex-wrap: wrap;
+    overflow: visible;
+    mask: none;
+  }
+}
+
+/* 모임 유형 알약. 고른 것은 검은 바탕에 흰 글씨이고, 나머지는 테두리만 있습니다
+   (Figma). 개수는 달지 않습니다. */
+.find-types__kind { flex: none; cursor: pointer; }
+
+.find-types__kind:has(:checked) {
+  background: var(--_button-filled-bg);
+  color: var(--_button-filled-fg);
+  box-shadow: none;
+}
+
+/* 하위 필터 알약. 꺼져 있을 때는 글자만(ghost), 켜지면 옅은 바탕이 깔립니다(blur) —
+   상위보다 한 단 낮은 강도입니다. */
+.find-types__tag {
+  flex: none;
+  /* 글자와 × 사이 4. Button 의 기본값 2 로는 × 가 글자에 달라붙어 마지막
+     글자처럼 읽힙니다 — 추천 조건 알약과 같은 값입니다. */
+  gap: var(--spacing-100);
+  color: var(--_button-ghost-fg);
+  cursor: pointer;
+}
+
+/* 켜지면 옅은 바탕이 깔리고 뒤에 × 가 붙습니다 — 바탕만으로는 옆의 꺼진 알약과
+   차이가 옅어, 뺄 수 있다는 표시를 함께 답니다(find-bar.css 의 .find-mark). */
+.find-types__tag:has(:checked) {
+  background: var(--_button-blur-bg);
+  color: var(--_button-blur-fg);
+  backdrop-filter: blur(var(--_button-blur-radius));
+}
+
+.find-types__tag:has(:checked) .find-mark { display: block; }
+
+/* 켜진 뒤에는 × 로만 뺍니다 — 추천 조건 알약과 같은 규칙입니다(find-bar.css). */
+.find-types__tag:has(:checked) {
+  pointer-events: none;
+  cursor: default;
+}
+
+.find-types__tag:has(:checked) .find-mark {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.find-types__kind:has(:focus-visible),
+.find-types__tag:has(:focus-visible),
+.find-types__more:focus-visible {
+  outline: 2px solid var(--colors-fg);
+  outline-offset: 2px;
+}
+
+/* ---- 걸린 추천 조건 -----------------------------------------------------
+   지금 목록에 걸려 있는 추천 조건을 알약으로 다시 보여줍니다. 통합 필터바의
+   아이콘은 "걸린 것이 있다"만 말하고, 무엇이 걸렸는지는 여기에서 말합니다 —
+   팝오버를 열어봐야 아는 조건은 걸어둔 것을 잊게 됩니다.
+*/
+
+.find-applied {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-150);
+  /* 위쪽 선은 여기부터가 "지금 걸린 것"이라는 표시입니다(Figma 의 divider). */
+  padding-block-start: var(--spacing-300);
+  border-block-start: 1px solid var(--colors-divider-low);
+}
+
+.find-applied[hidden] { display: none; }
+
+.find-applied__item {
+  gap: var(--spacing-100);
+  color: var(--colors-fg);
+  /* 알약은 지금 걸린 조건을 보여주는 자리입니다 — 누르는 것은 × 하나이고,
+     손가락 커서도 그 위에만 뜹니다(find-bar.css 의 날짜 알약과 같습니다). */
+  cursor: default;
+}
+
+/* 아이콘만 브랜드색입니다 — 알약 전체를 오렌지로 두면 걸린 조건이 경고처럼
+   읽히고, 옆의 모임 유형 알약과 무게가 뒤바뀝니다. */
+.find-applied__item .btn__icon { color: var(--colors-fg-brand); }
+
+/* 알약을 통째로 누르는 것이 아니라 이 × 를 눌러야 빠집니다 — 조건을 확인하려고
+   알약에 손이 닿았다가 조건이 사라지면, 무엇이 지워졌는지 알기 어렵습니다.
+   그래서 보이는 크기(16)는 그대로 두고 누를 수 있는 자리만 32 로 넓힙니다
+   (find-bar.css 의 날짜 알약과 같은 값입니다). */
+.find-applied__remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc((32px - var(--icon-size-xs)) / 2);
+  margin: calc((32px - var(--icon-size-xs)) / -2);
+  border: 0;
+  background: none;
+  color: var(--colors-fg-lower);
+  cursor: pointer;
+}
+
+.find-applied__remove svg {
+  display: block;
+  inline-size: var(--icon-size-xs);
+  block-size: var(--icon-size-xs);
+}
+
+.find-applied__remove:focus-visible {
+  outline: 2px solid var(--colors-fg);
+  outline-offset: 1px;
+  border-radius: var(--_rounded-xs);
+}
+
+/* ---- 결과 수와 정렬 + 목록 ---------------------------------------------
+   Figma 의 warpper — 마지막 필터 줄과 결과 사이를 두고, 안에서 줄과 격자가
+   12 로 떨어집니다.
+
+   ⚠️ 정책은 이 사이를 "약 18px" 로 적고 있는데 spacing 토큰에는 18 이 없습니다
+      (16 과 20 사이). 가까운 쪽인 16(spacing/400)을 씁니다.
 */
 
 .find__list {
@@ -95,59 +395,36 @@
   padding-block: var(--spacing-400);
 }
 
-/* ---- 정렬 줄 ----------------------------------------------------------
-   왼쪽은 걸 수 있는 조건 알약("전체"에 지금 몇 개인지), 오른쪽은 어떤
-   차례로 볼지입니다.
-*/
-
 .find-sorting {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--spacing-400);
-  /* 위아래 여백은 감싼 .find__list 가 냅니다(위 16 · 아래는 gap 12). */
-  padding-block: 0;
 }
 
-.find-sorting__picks {
-  display: flex;
-  flex: 1 1 auto;
-  flex-wrap: wrap;
-  gap: var(--spacing-150);
-  min-inline-size: 0;
-}
-
-/* "전체" 알약의 총수 배지. body-s-medium(알약 글자)보다 한 단 굵어 label 과
-   구분됩니다 — segmentedControl 의 지역 묶음 수와 같은 자리입니다. */
+/* 결과 수는 목록 위에서 한 번만 적습니다. 숫자만 굵어 어디를 읽어야 하는지가
+   눈에 먼저 들어옵니다. */
 .find-sorting__count {
-  font-weight: var(--typography-body-s-semibold-font-weight);
+  margin: 0;
+  color: var(--colors-fg);
+  font-size: var(--typography-body-m-regular-font-size);
+  font-weight: var(--typography-body-m-regular-font-weight);
+  line-height: var(--typography-body-m-regular-line-height);
+  letter-spacing: var(--typography-body-m-regular-letter-spacing);
+  font-feature-settings: 'lnum' 1;
 }
 
-/* 조건이 하나도 안 걸려 있을 때만 채운 모습입니다 — "지금 전체를 보고 있다"는
-   사실이 곧 그 상태입니다. 뭔가 걸리는 순간 다른 알약과 같은 outlined 로
-   물러납니다. */
-.find-sorting__all[aria-pressed='false'] {
-  background: var(--_button-outlined-bg);
-  color: var(--_button-outlined-fg);
-  box-shadow: inset 0 0 0 var(--_button-border-width) var(--_button-outlined-border);
-}
-
-.find-sorting__all[aria-pressed='false'] .find-sorting__count { color: var(--colors-fg-lower); }
-
-/* 프로모션 · 마감 임박 · 친구 동반 · 내 나이. 체크박스가 켜진 채로 있어서
-   :has(:checked) 로 채운 모습을 얹습니다 — chip.css 와 같은 방식이되, 여기는
-   Button 컴포넌트(outlined/small)를 그대로 씁니다. */
-.find-sorting__pick:has(:checked) {
-  background: var(--_button-filled-bg);
-  color: var(--_button-filled-fg);
-  box-shadow: none;
-}
+.find-sorting__count b { font-weight: var(--typography-body-m-semibold-font-weight); }
 
 /* ---- 정렬 -------------------------------------------------------------
    진짜 <select> 입니다. 직접 만든 목록이 나은 자리가 아닙니다 — 폰에서는 기기의
    고르개가 올라와 엄지로 돌려 고를 수 있고, 키보드에서는 위아래 화살표가 그대로
    먹히고, 화면을 읽어주는 쪽은 "정렬, 날짜 빠른 순, 목록 상자"라고 읽습니다.
    여기서 하는 일은 기본 화살표를 지우고 우리 화살표를 얹는 것뿐입니다.
+
+   ⚠️ Figma 는 이 버튼의 왼쪽에 정렬 아이콘(↑↓)을 답니다. 아이콘 세트에 그것이
+      없어 지금은 오른쪽의 chevronDown 만 둡니다 — 비슷한 아이콘으로 대신하지
+      않았습니다.
 */
 
 .find__sort {
@@ -156,10 +433,8 @@
   align-items: center;
 }
 
-/* 생김새는 Button 의 ghost/small 입니다(Figma 49:22287) — 8/12 패딩, 12px
-   body-s-medium, 알약 모서리. 클래스를 얹지 못하는 것은 <select> 라서입니다.
-   오른쪽은 화살표 자리(16)와 그 사이 간격(2), 그리고 제 오른쪽 패딩(12)만큼
-   비워 둡니다. */
+/* 생김새는 Button 의 ghost/small 입니다 — 8/12 패딩, 12px body-s-medium, 알약
+   모서리. 클래스를 얹지 못하는 것은 <select> 라서입니다. */
 .find__sort select {
   appearance: none;
   margin: 0;
@@ -170,7 +445,7 @@
   border-radius: var(--_rounded-full);
   background: none;
   color: var(--_button-ghost-fg);
-  font-family: var(--_font-family-pretendard);
+  font-family: var(--_font-family-base);
   font-size: var(--typography-body-s-medium-font-size);
   font-weight: var(--typography-body-s-medium-font-weight);
   line-height: var(--typography-body-s-medium-line-height);

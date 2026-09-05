@@ -16,8 +16,8 @@
  *   아무도 없으면    한 줄만 남기고 버튼을 만들지 않습니다 — 열어봐야 빈 창입니다.
  */
 
-import { PRODUCTS, peopleOf, peopleSummary } from './products.js?v=a3926563'
-import { currentProduct } from './product.js?v=e8abe224'
+import { PRODUCTS, peopleOf, peopleSummary } from './products.js?v=49fbe067'
+import { currentProduct } from './product.js?v=604e8878'
 import { openConfirm } from './confirm.js?v=f516d2db'
 import { dateAfter, dayText } from './schedule.js?v=a9e9003f'
 

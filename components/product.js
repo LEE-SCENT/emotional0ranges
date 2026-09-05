@@ -16,7 +16,7 @@
  * 먼저 돌아야 합니다. 그들이 세어둔 뒤에 목록을 갈아끼우면 서로 다른 것을 보게 됩니다.
  */
 
-import { PRODUCTS, seatsText, startTime } from './products.js?v=a3926563'
+import { PRODUCTS, seatsText, startTime } from './products.js?v=49fbe067'
 
 export const currentProduct = () => {
   const slug = new URLSearchParams(location.search).get('product')

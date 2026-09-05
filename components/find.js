@@ -16,7 +16,7 @@
  * 목록과 같은 규칙이고, 값이 대표 일정이 아니라 그 회차에서 나오는 것만 다릅니다.
  */
 
-import { openMeetups, areaOf, cityOf, regionOf, seatTags } from './products.js?v=a3926563'
+import { openMeetups, areaOf, cityOf, groupOf, regionOf, seatTags, tagsOf } from './products.js?v=49fbe067'
 import { dateAfter, dateKey, dayText } from './schedule.js?v=a9e9003f'
 
 const won = (n) => `${n.toLocaleString('ko-KR')}원`
@@ -46,14 +46,19 @@ const isClosing = (o) => seatTags(o).some((t) => !t.closed)
 /** 남은 자리를 다 더한 수. "마감 임박 순"이 이것을 오름차순으로 봅니다. */
 const seatsLeft = (o) => Object.values(o.seats ?? {}).reduce((sum, n) => sum + n, 0)
 
+/**
+ * 추천 조건 — 프로모션 · 마감 임박 · 내 나이로 신청 가능.
+ *
+ * "친구 동반"은 없습니다. 그것이 뜻하던 것(동성 자리 두 개)은 신청 인원의
+ * "친구와 갈래요"와 같은 조건이라, 한 조건을 두 자리에서 켜고 끄게 두면 한쪽만
+ * 켜진 화면이 생기고 목록은 어느 쪽을 따라야 할지 알 수 없습니다.
+ */
 const PICKS = {
   // 시간이 걸린 할인이 아니라, 할인이 걸려 있다는 사실만 봅니다.
   promo: (o) => (o.off ?? 0) > 0,
   closing: (o) => isClosing(o),
+  // 생년월일이 없으면 걸 수 있는 조건이 아닙니다 — 그 자리에서 알약을 지웁니다.
   myage: (o) => (ME ? fitsAge(o.age, ME.age) : true),
-  // "친구 동반" 은 남은자리 조건과 같은 것을 말합니다(find-bar.js: syncFriend).
-  // 그쪽에서 이미 걸러지므로 여기서는 통과시킵니다.
-  friend: () => true,
 }
 
 const SORTS = {
@@ -66,13 +71,22 @@ const net = (o) => o.price - (o.off ?? 0)
 
 function matches(m, cond) {
   if (cond.areas.length) {
-    /* 고른 것은 동네 이름이거나, 도시 이름이거나, 큰 갈래입니다 — "서울"을 고르면
-       서울 안의 동네가 모두, 탭 안의 "어디서든"(수도권·비수도권)을 고르면 그 묶음이
-       통째로 걸립니다(products.js: cityOf · regionOf). */
+    /* 고른 것은 동네 이름이거나, 묶음 이름(서울 · 경기 · 인천)이거나, 큰 갈래
+       (수도권 · 그 외 지역)입니다 — 위의 것을 고르면 그 아래 것이 모두 걸립니다
+       (products.js: cityOf · groupOf · regionOf). */
     const area = areaOf(m.s.place)
-    if (!cond.areas.some((a) => a === area || a === cityOf(area) || a === regionOf(area))) return false
+    if (!cond.areas.some((a) => a === area || a === cityOf(area) || a === groupOf(area) || a === regionOf(area))) {
+      return false
+    }
   }
-  if (cond.kinds.length && !cond.kinds.includes(m.slug)) return false
+  // 모임 유형은 하나만 걸립니다 — 빈 값이 "전체" 입니다(find-bar.js).
+  if (cond.kind && m.slug !== cond.kind) return false
+  /* 하위 필터는 여럿 걸 수 있고 서로 OR 입니다. AND 로 두면 두 개를 고르는 순간
+     목록이 거의 반드시 빕니다 — 한 회차가 여섯 조건을 다 들고 있을 리 없습니다. */
+  if (cond.tags.length) {
+    const tags = tagsOf(m.s)
+    if (!cond.tags.some((tag) => tags.includes(tag))) return false
+  }
   if (cond.dates.length) {
     // 담긴 것 중 어느 하나에라도 걸리면 통과입니다(find-bar.js: OR).
     const day = dateKey(dateAfter(m.s.in))
@@ -80,6 +94,17 @@ function matches(m, cond) {
   }
   if (cond.seats === 'two' && !hasPair(m.s)) return false
   return cond.picks.every((pick) => PICKS[pick]?.(m.s) ?? true)
+}
+
+/**
+ * 조건에 걸리는 회차가 몇 개인지만.
+ *
+ * 폰의 통합 필터 시트가 씁니다 — 거기서는 고른 것이 곧바로 목록에 걸리지 않고
+ * 개수만 앞서 바뀌다가, `모임 N개 보기` 를 눌러야 한꺼번에 걸립니다. 세는 규칙이
+ * 두 곳에 있으면 시트가 약속한 수와 실제 목록의 수가 어긋나는 날이 옵니다.
+ */
+export function countMatches(cond) {
+  return openMeetups().filter((m) => matches(m, cond)).length
 }
 
 /**
@@ -136,14 +161,13 @@ export function initFind(root = document.querySelector('[data-find]')) {
   const empty = document.querySelector('[data-find-empty]')
   if (!root || !grid) return
 
-  if (!ME) document.querySelector('[data-find-pick="myage"]')?.remove()
-
   const meetups = openMeetups()
 
   function render(cond) {
     const list = meetups.filter((m) => matches(m, cond)).sort(SORTS[cond.sort] ?? SORTS.soon)
 
     grid.innerHTML = list.map(card).join('')
+    // 결과 수는 목록 위에서 한 번만 적습니다 — 모임 유형 알약에는 수를 달지 않습니다.
     if (count) count.textContent = String(list.length)
     // 격자와 안내는 함께 뒤바뀝니다. 빈 격자를 남겨두면 안내 아래에 빈 자리가 남습니다.
     grid.hidden = list.length === 0

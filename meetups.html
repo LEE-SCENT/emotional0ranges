@@ -16,19 +16,24 @@
 <link rel="stylesheet" href="./build/tokens.css?v=2e0fadf5">
 <link rel="stylesheet" href="./components/container.css?v=55694a09">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
-<link rel="stylesheet" href="./components/button.css?v=581f311e">
+<link rel="stylesheet" href="./components/button.css?v=517aa973">
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
-<link rel="stylesheet" href="./components/segmented-control.css?v=a38c242f">
+<link rel="stylesheet" href="./components/segmented-control.css?v=027af639">
 <link rel="stylesheet" href="./components/gnb.css?v=0a931eed">
+<link rel="stylesheet" href="./components/my-menu.css?v=c1916fec">
 <link rel="stylesheet" href="./components/tag.css?v=fef5c195">
 <link rel="stylesheet" href="./components/product-card.css?v=82efa7cf">
-<link rel="stylesheet" href="./components/chip.css?v=8b5ea605">
-<link rel="stylesheet" href="./components/find-bar.css?v=7e99cc29">
-<link rel="stylesheet" href="./components/find.css?v=0210ce85">
+<link rel="stylesheet" href="./components/chip.css?v=c4217661">
+<link rel="stylesheet" href="./components/find-bar.css?v=bb7f602c">
+<link rel="stylesheet" href="./components/find.css?v=6f5cba62">
 <link rel="stylesheet" href="./components/footer.css?v=090dd8fc">
 <link rel="stylesheet" href="./components/app-bar.css?v=7fbb6489">
 <style>
-  body { margin: 0; background: var(--colors-bg); color: var(--colors-fg); }
+  /* 본문 기본 서체. 컴포넌트마다 제 서체를 정하고 있지만, 그 밖의 글자
+     (결과 수·안내 문구 같은 것)가 브라우저 기본 서체로 떨어지지 않도록
+     여기에서 한 번 못 박습니다. */
+  body { margin: 0; background: var(--colors-bg); color: var(--colors-fg);
+         font-family: var(--_font-family-base); }
   /* 화면에는 안 보이지만 스크린리더는 읽는 텍스트 */
   .sr-only {
     position: absolute; inline-size: 1px; block-size: 1px;
@@ -70,134 +75,152 @@
           <svg class="btn__icon" aria-hidden="true"><use href="#icon-notifications"></use></svg>
           <span class="badge btn__badge"></span>
         </button>
-        <button class="btn btn--blur btn--medium btn--icon-only" aria-label="메뉴 열기">
-          <svg class="btn__icon" aria-hidden="true"><use href="#icon-menu"></use></svg>
-        </button>
+        <!-- 내 메뉴. GNB 가운데 줄의 메뉴가 서비스를 둘러보는 길이라면, 여기는
+             내 프로필·결제·설정처럼 나에게만 해당하는 것들이 섭니다(my-menu.js). -->
+        <div class="my-menu" data-my-menu>
+          <button class="btn btn--blur btn--medium btn--icon-only" type="button"
+                  data-my-menu-open aria-label="내 메뉴 열기"
+                  aria-expanded="false" aria-controls="my-menu-panel" aria-haspopup="true">
+            <svg class="btn__icon" aria-hidden="true"><use href="#icon-menu"></use></svg>
+          </button>
+          <div class="my-menu__panel" id="my-menu-panel" role="menu" aria-label="내 메뉴" tabindex="-1" hidden></div>
+        </div>
       </div>
     </div>
   </div>
 </header>
 
-<main class="container find">
+<main class="container find" data-find>
   <!-- 화면의 머리말은 조건 바 자체입니다. 제목을 글자로 두면 바 위에 한 줄이 더
        얹혀 목록이 그만큼 밀려 내려가는데, 어느 화면인지는 이미 GNB 의 메뉴와 바가
        말하고 있습니다. 화면을 읽어주는 쪽에는 필요하므로 이름만 남깁니다. -->
   <h1 class="sr-only">모임 찾기</h1>
 
-  <!-- 아래로 읽어 내려가는 동안에는 바가 남아 있고, 위로 되돌아 올릴 때 물러납니다
-       (find-bar.js). GNB·앱바가 쓰는 auto-hide.js 와는 방향이 반대라 그것을
-       쓰지 않습니다 — 거리는 CSS 가 정합니다(find.css). -->
-  <div class="find-head" data-find>
+  <!-- 1) 통합 필터바 — 지역 · 날짜 · 신청 인원, 그리고 오른쪽 끝의 추천 조건.
+       모임 유형은 여기에 없습니다. 아래 퀵필터에서만 고릅니다(policy.html). -->
+  <div class="find-head">
     <div class="find-bar" role="search" aria-label="모임 찾기">
-      <!-- 값이 없는 동안은 좁게, 하나라도 채워지면 컨테이너 폭까지 넓어집니다
-           (find-bar.css: has-value) — 채워진 값을 다 보여주려면 자리가 더
-           필요해지기 때문입니다. -->
       <div class="find-bar__fields">
+        <!-- 세 칸을 감싸는 자리. 넓은 화면에서는 감싼 것이 없는 것처럼 빠지고,
+             좁은 화면에서만 두 줄짜리 요약으로 접힙니다(find-bar.css). -->
+        <div class="find-bar__summary">
         <div class="find-bar__field" data-find-field="area">
           <button class="find-bar__field-open" type="button"
                   data-find-open="find-area" aria-expanded="false" aria-controls="find-area">
             <svg class="find-bar__icon" aria-hidden="true"><use href="#icon-search"></use></svg>
             <span class="find-bar__text">
               <span class="find-bar__name">지역</span>
-              <span class="find-bar__value" data-find-summary="area">어디서든</span>
+              <span class="find-bar__value" data-find-summary="area">수도권 전체</span>
             </span>
           </button>
           <button class="find-bar__clear is-empty" type="button" data-find-clear="area" aria-label="지역 지우기">
             <svg aria-hidden="true"><use href="#icon-close"></use></svg>
           </button>
-          <div class="find-bar__panel find-bar__panel--location find-bar__panel--compact" id="find-area" tabindex="-1" role="group" aria-label="지역" hidden>
-          <div class="find-bar__panel-head">
-            <h2 class="find-bar__panel-title">지역</h2>
-            <button class="btn btn--ghost btn--medium btn--icon-only" type="button" data-find-close aria-label="닫기">
-              <svg class="btn__icon" aria-hidden="true"><use href="#icon-close"></use></svg>
-            </button>
-          </div>
-          <!-- 수도권/비수도권 은 걸리는 조건이 아니라, 아래 목록 중 어느 지역
-               묶음을 보여줄지 고르는 탭입니다 — 실제로 거르는 것은 그 아래
-               버튼입니다(find-bar.js). -->
-          <div class="find-bar__panel-body" data-find-body="area"></div>
-          <div class="find-bar__panel-foot">
-            <button class="btn btn--ghost btn--medium" type="button" data-find-clear="area"><span class="btn__label">초기화</span></button>
-            <button class="btn btn--filled btn--medium" type="button" data-find-close><span class="btn__label">완료</span></button>
+          <div class="find-bar__panel find-bar__panel--location" id="find-area" tabindex="-1" role="group" aria-label="지역" hidden>
+            <!-- 넓은 화면에서는 이 자리에서 팝오버로 열리고, 좁은 화면에서는 이
+                 섹션이 통째로 아래 통합 필터 시트로 옮겨 갑니다(find-bar.js).
+                 옮기는 것이지 복제하는 것이 아닙니다 — 같은 이름의 입력이 문서에
+                 둘 있으면 어느 쪽에서 고른 것인지 서로 모르게 됩니다. -->
+            <section class="find-section" data-find-section="area">
+              <h2 class="find-section__title">지역</h2>
+              <div class="find-section__body" data-find-body="area"></div>
+            </section>
           </div>
         </div>
-        </div>
+
         <div class="find-bar__field is-empty" data-find-field="date">
           <button class="find-bar__field-open" type="button"
                   data-find-open="find-date" aria-expanded="false" aria-controls="find-date">
             <svg class="find-bar__icon" aria-hidden="true"><use href="#icon-calendar"></use></svg>
             <span class="find-bar__text">
               <span class="find-bar__name">날짜</span>
-              <span class="find-bar__value" data-find-summary="date">날짜 추가</span>
+              <span class="find-bar__value" data-find-summary="date">날짜 전체</span>
             </span>
           </button>
           <button class="find-bar__clear is-empty" type="button" data-find-clear="date" aria-label="날짜 지우기">
             <svg aria-hidden="true"><use href="#icon-close"></use></svg>
           </button>
+        </div>
 
-        </div>
-        <div class="find-bar__field" data-find-field="kind">
-          <button class="find-bar__field-open" type="button"
-                  data-find-open="find-kind" aria-expanded="false" aria-controls="find-kind">
-            <svg class="find-bar__icon" aria-hidden="true"><use href="#icon-explorer"></use></svg>
-            <span class="find-bar__text">
-              <span class="find-bar__name">모임 유형</span>
-              <span class="find-bar__value" data-find-summary="kind">전체</span>
-            </span>
-          </button>
-          <button class="find-bar__clear is-empty" type="button" data-find-clear="kind" aria-label="모임 유형 지우기">
-            <svg aria-hidden="true"><use href="#icon-close"></use></svg>
-          </button>
-          <div class="find-bar__panel find-bar__panel--category find-bar__panel--compact" id="find-kind" tabindex="-1" role="group" aria-label="모임 유형" hidden>
-          <div class="find-bar__panel-head">
-            <h2 class="find-bar__panel-title">모임 유형</h2>
-            <button class="btn btn--ghost btn--medium btn--icon-only" type="button" data-find-close aria-label="닫기">
-              <svg class="btn__icon" aria-hidden="true"><use href="#icon-close"></use></svg>
-            </button>
-          </div>
-          <div class="find-bar__panel-body" data-find-body="kind"></div>
-          <div class="find-bar__panel-foot">
-            <button class="btn btn--ghost btn--medium" type="button" data-find-clear="kind"><span class="btn__label">초기화</span></button>
-            <button class="btn btn--filled btn--medium" type="button" data-find-close><span class="btn__label">완료</span></button>
-          </div>
-        </div>
-        </div>
         <div class="find-bar__field" data-find-field="seats">
           <button class="find-bar__field-open" type="button"
                   data-find-open="find-seats" aria-expanded="false" aria-controls="find-seats">
             <svg class="find-bar__icon" aria-hidden="true"><use href="#icon-group"></use></svg>
             <span class="find-bar__text">
-              <span class="find-bar__name">남은 자리</span>
+              <span class="find-bar__name">신청 인원</span>
               <span class="find-bar__value" data-find-summary="seats">혼자 갈래요</span>
             </span>
           </button>
-          <button class="find-bar__clear is-empty" type="button" data-find-clear="seats" aria-label="남은 자리 지우기">
+          <button class="find-bar__clear is-empty" type="button" data-find-clear="seats" aria-label="신청 인원 지우기">
             <svg aria-hidden="true"><use href="#icon-close"></use></svg>
           </button>
-          <div class="find-bar__panel find-bar__panel--available find-bar__panel--compact" id="find-seats" tabindex="-1" role="group" aria-label="남은 자리" hidden>
-          <div class="find-bar__panel-head">
-            <h2 class="find-bar__panel-title">남은 자리</h2>
-            <button class="btn btn--ghost btn--medium btn--icon-only" type="button" data-find-close aria-label="닫기">
-              <svg class="btn__icon" aria-hidden="true"><use href="#icon-close"></use></svg>
-            </button>
-          </div>
-          <div class="find-bar__panel-body">
-            <div class="find-btn-grid find-btn-grid--2col">
-              <label class="btn btn--ghost btn--medium find-btn-grid__item">
-                <input class="sr-only" type="radio" name="seats" value="one" checked><span class="btn__label">혼자 갈래요</span>
-              </label>
-              <label class="btn btn--ghost btn--medium find-btn-grid__item">
-                <input class="sr-only" type="radio" name="seats" value="two"><span class="btn__label">둘이 갈래요</span>
-              </label>
-            </div>
-            <p class="find-group__note">둘이 갈래요는 <b>같은 성별 자리가 두 개 남은</b> 모임만 보여줘요.
-              친구와 나란히 신청할 수 있는 자리입니다.</p>
-          </div>
-          <div class="find-bar__panel-foot">
-            <button class="btn btn--ghost btn--medium" type="button" data-find-clear="seats"><span class="btn__label">초기화</span></button>
-            <button class="btn btn--filled btn--medium" type="button" data-find-close><span class="btn__label">완료</span></button>
+          <div class="find-bar__panel find-bar__panel--seats" id="find-seats" tabindex="-1" role="group" aria-label="신청 인원" hidden>
+            <section class="find-section" data-find-section="seats">
+              <h2 class="find-section__title">신청 인원</h2>
+              <div class="find-section__body">
+                <!-- 둘 중 하나입니다. "친구 동반"을 따로 두지 않는 것은 그것이
+                     "친구와 갈래요"와 같은 조건이기 때문입니다 — 한 조건을 두
+                     자리에서 켜고 끄면 한쪽만 켜진 화면이 생깁니다. -->
+                <div class="find-seats">
+                  <label class="find-seats__item">
+                    <input class="sr-only" type="radio" name="seats" value="one" checked>
+                    <b class="find-seats__label">혼자 갈래요</b>
+                    <span class="find-seats__note">1자리 이상</span>
+                  </label>
+                  <label class="find-seats__item">
+                    <input class="sr-only" type="radio" name="seats" value="two">
+                    <b class="find-seats__label">친구와 갈래요</b>
+                    <span class="find-seats__note">동성 자리 2개 이상</span>
+                  </label>
+                </div>
+              </div>
+            </section>
           </div>
         </div>
+        </div>
+
+        <!-- 추천 조건. 다른 칸과 달리 값을 적지 않고 아이콘만 둡니다 — 걸린 조건은
+             목록 바로 위에 알약으로 다시 나오고(find-applied), 여기에는 걸렸다는
+             사실만 점으로 남습니다. -->
+        <div class="find-bar__filter" data-find-field="picks">
+          <button class="btn btn--ghost btn--small btn--icon-only" type="button"
+                  data-find-open="find-picks" aria-expanded="false" aria-controls="find-picks" aria-label="추천 조건">
+            <svg class="btn__icon" aria-hidden="true"><use href="#icon-filter"></use></svg>
+            <span class="badge btn__badge" data-find-picks-badge hidden></span>
+          </button>
+          <div class="find-bar__panel find-bar__panel--picks" id="find-picks" tabindex="-1" role="group" aria-label="추천 조건" hidden>
+            <section class="find-section" data-find-section="picks">
+              <h2 class="find-section__title">추천 조건</h2>
+              <div class="find-section__body">
+                <div class="find-picks">
+                  <label class="btn btn--outlined btn--medium find-picks__item">
+                    <input class="sr-only" type="checkbox" name="pick" value="promo">
+                    <svg class="btn__icon" aria-hidden="true"><use href="#icon-promotionFilled"></use></svg>
+                    <span class="btn__label">프로모션</span>
+                    <svg class="find-mark" aria-hidden="true"><use href="#icon-close"></use></svg>
+                  </label>
+                  <label class="btn btn--outlined btn--medium find-picks__item">
+                    <input class="sr-only" type="checkbox" name="pick" value="closing">
+                    <svg class="btn__icon" aria-hidden="true"><use href="#icon-scheduleFilled"></use></svg>
+                    <span class="btn__label">마감 임박</span>
+                    <svg class="find-mark" aria-hidden="true"><use href="#icon-close"></use></svg>
+                  </label>
+                  <!-- 아이콘이 없는 것은 이것만입니다(Figma). 프로모션·마감 임박은
+                       상품에 붙는 표시라 그림이 있지만, 이것은 보는 사람 쪽의
+                       조건이라 가리킬 그림이 없습니다.
+
+                       생년월일이 없으면 이 알약은 화면에서 지웁니다(find-bar.js) —
+                       눌러도 아무것도 걸러지지 않는 조건을 남겨두면 걸린 줄 알고
+                       목록을 믿게 됩니다. -->
+                  <label class="btn btn--outlined btn--medium find-picks__item" data-find-pick="myage">
+                    <input class="sr-only" type="checkbox" name="pick" value="myage">
+                    <span class="btn__label">내 나이 신청 가능</span>
+                    <svg class="find-mark" aria-hidden="true"><use href="#icon-close"></use></svg>
+                  </label>
+                </div>
+              </div>
+            </section>
+          </div>
         </div>
       </div>
 
@@ -205,70 +228,63 @@
            넘치고, 칸을 기준에서 빼면(position:static) 그 칸의 구분선까지 엉뚱한
            곳에 붙습니다 — 바를 기준으로 두고 가운데에 세웁니다(find-bar.css). -->
       <div class="find-bar__panel find-bar__panel--date" id="find-date" tabindex="-1" role="group" aria-label="날짜" hidden>
-          <div class="find-bar__panel-head">
-            <h2 class="find-bar__panel-title">날짜</h2>
-            <button class="btn btn--ghost btn--medium btn--icon-only" type="button" data-find-close aria-label="닫기">
-              <svg class="btn__icon" aria-hidden="true"><use href="#icon-close"></use></svg>
-            </button>
-          </div>
-          <div class="find-bar__panel-body">
-            <!-- 모임이 열리는 날만 눌립니다. 날짜는 find-bar.js 가 그립니다 —
-                 적어둔 날짜는 하루만 지나도 지난 날이 됩니다.
-
-                 하루만 눌러 그 하루를, 두 번 눌러(시작 → 끝) 그 사이 기간을 담을 수
-                 있고, 담은 것은 최대 8개까지 쌓입니다 — 서로 다른 날들을 한 번에
-                 걸고 싶을 때(예: 5일과 10~12일) 하나로 길게 묶지 않아도 됩니다. -->
+        <section class="find-section" data-find-section="date">
+          <h2 class="find-section__title">날짜</h2>
+          <div class="find-section__body">
+            <!-- 날짜는 find-bar.js 가 그립니다 — 적어둔 날짜는 하루만 지나도
+                 지난 날이 됩니다. 하루만 눌러 그 하루를, 두 번 눌러(시작 → 끝)
+                 그 사이 기간을 담을 수 있고, 담은 것은 최대 8개까지 쌓입니다. -->
             <div class="calendar" data-find-calendar></div>
-            <!-- 규칙을 세는 자리가 아니라 알려주는 자리입니다. 몇 개 담았는지는
-                 아래 알약이 이미 보여주고 있어, 여기서는 무엇을 할 수 있는지만
-                 말합니다. -->
             <p class="find-help">
               <svg aria-hidden="true"><use href="#icon-infoCircle"></use></svg>
-              하루만 고르거나 기간으로 담을 수 있어요. 여러 번 담을 수 있어요 (최대 8회)
+              <span data-find-date-help>하루 또는 기간으로 선택할 수 있어요 · 최대 8개</span>
             </p>
-          </div>
-          <div class="find-bar__panel-foot find-bar__panel-foot--summary">
-            <div class="find-dates" data-find-dates></div>
-            <!-- 저장은 두지 않습니다 — 날짜는 누르는 즉시 목록에 걸리고, 담긴 것은
-                 옆의 알약이 이미 보여줍니다. 되돌릴 길만 남깁니다. -->
-            <div class="find-bar__panel-actions">
-              <button class="btn btn--ghost btn--small" type="button" data-find-clear="date"><span class="btn__label">초기화</span></button>
+            <!-- 담은 날짜와 초기화. 넓은 화면에서는 판 아래에 선 하나로 나뉜 줄로
+                 서고, 시트에서는 달력 바로 아래에 한 줄로 흐릅니다 — 시트에는
+                 아래에 제 초기화가 따로 있어 이 버튼이 나오지 않습니다. -->
+            <div class="find-dates-bar">
+              <div class="find-dates" data-find-dates></div>
+              <button class="btn btn--blur btn--medium find-dates-bar__clear" type="button" data-find-clear="date">
+                <span class="btn__label">초기화</span>
+              </button>
             </div>
           </div>
-        </div>
-
-      <!-- 좁은 화면에서 판이 올라와 있는 동안 뒤를 덮는 어둠. 넓은 화면에는 없습니다 —
-           바 아래에 붙은 판은 뒤 목록을 계속 볼 수 있어야 합니다. -->
-      <div class="find-bar__scrim" hidden></div>
+        </section>
+      </div>
     </div>
   </div>
 
-  <!-- 정렬 줄과 목록은 한 덩어리입니다(Figma 의 warpper) — 위아래 16 을 두고,
-       그 안에서 줄과 격자가 12 로 떨어집니다. -->
-  <div class="find__list">
-    <!-- 정렬 줄. 왼쪽은 지금 몇 개가 걸려 있는지("전체"에 총수를 적어두고, 나머지는
-         걸 수 있는 조건), 오른쪽은 어떤 차례로 볼지입니다. "전체"는 상태가 아니라
-         조건을 모두 지우는 버튼이고, 지금 조건이 비어 있을 때만 채운 모습입니다.
-         "친구 동반"은 남은자리의 "둘이 갈래요"와 같은 조건이라 한 상태를 두 자리에서
-         보여줍니다(find-bar.js: syncFriend). -->
-    <div class="find-sorting">
-      <div class="find-sorting__picks" role="group" aria-label="추천 카테고리">
-        <button class="btn btn--filled btn--small find-sorting__all" type="button" data-find-all aria-pressed="true">
-          <span class="btn__label">전체</span><b class="find-sorting__count" data-find-count>0</b>
-        </button>
-        <label class="btn btn--outlined btn--small find-sorting__pick">
-          <input class="sr-only" type="checkbox" name="pick" value="promo"><span class="btn__label">프로모션</span>
-        </label>
-        <label class="btn btn--outlined btn--small find-sorting__pick">
-          <input class="sr-only" type="checkbox" name="pick" value="closing"><span class="btn__label">마감 임박</span>
-        </label>
-        <label class="btn btn--outlined btn--small find-sorting__pick">
-          <input class="sr-only" type="checkbox" name="pick" value="friend"><span class="btn__label">친구 동반</span>
-        </label>
-        <label class="btn btn--outlined btn--small find-sorting__pick" data-find-pick="myage">
-          <input class="sr-only" type="checkbox" name="pick" value="myage"><span class="btn__label">내 나이</span>
-        </label>
+  <!-- 2·3) 모임 유형 퀵필터와, 고른 유형의 하위 필터.
+       알약에는 결과 수를 달지 않습니다 — 총합은 아래 "모임 25개" 한 곳에서만
+       말합니다(policy.html). 알약은 데이터에서 만듭니다. -->
+  <div class="find-types" data-find-types>
+    <div class="find-types__row">
+      <div class="find-types__list" data-find-kinds role="radiogroup" aria-label="모임 유형"></div>
+      <!-- 폰에서는 한 줄만 보이고 이 버튼으로 나머지를 펼칩니다. 넓은 화면에는
+           줄을 접을 이유가 없어 나오지 않습니다(find.css). -->
+      <button class="find-types__more" type="button" data-find-types-more aria-expanded="false">
+        <svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg>
+        <span class="sr-only">모임 유형 모두 보기</span>
+      </button>
+    </div>
+    <!-- 유형을 고르면 이 줄이 열리며 아래 것들을 밀어 내립니다. 줄이 툭 나타나면
+         결과 수와 카드가 한 칸씩 뛰어내린 것처럼 보여, 높이를 함께 움직입니다
+         (find.css). 안쪽 한 겹은 그 높이를 잘라주는 자리입니다. -->
+    <div class="find-types__sub" data-find-tags-box hidden>
+      <div class="find-types__sub-inner">
+        <div class="find-types__sub-list" data-find-tags role="group" aria-label="세부 조건"></div>
       </div>
+    </div>
+  </div>
+
+  <!-- 정렬 줄과 목록은 한 덩어리입니다(Figma 의 warpper). -->
+  <div class="find__list">
+    <!-- 4) 지금 걸려 있는 추천 조건. 알약의 × 로 그 자리에서 뺍니다. -->
+    <div class="find-applied" data-find-applied hidden></div>
+
+    <!-- 5) 결과 수와 정렬. 결과 수는 목록 위에서 한 번만 적습니다. -->
+    <div class="find-sorting">
+      <p class="find-sorting__count">모임 <b data-find-count>0</b>개</p>
       <div class="find__sort">
         <label class="sr-only" for="find-sort">정렬</label>
         <!-- "추천순"을 두지 않습니다. 무엇을 근거로 추천한 차례인지 이 화면에는 없고,
@@ -282,8 +298,9 @@
       </div>
     </div>
 
-    <!-- 카드는 find.js 가 그립니다. 회차는 데이터에서 나오고 날짜는 오늘을 기준으로
-         계산되므로, 마크업에 한 장이라도 적어두면 그것만 지난 날짜로 남습니다. -->
+    <!-- 6) 카드는 find.js 가 그립니다. 회차는 데이터에서 나오고 날짜는 오늘을
+         기준으로 계산되므로, 마크업에 한 장이라도 적어두면 그것만 지난 날짜로
+         남습니다. -->
     <div class="find__grid" data-find-grid></div>
 
     <p class="find__empty" data-find-empty hidden>
@@ -293,6 +310,27 @@
         <span class="btn__label">조건 모두 지우기</span>
       </button>
     </p>
+  </div>
+
+  <!-- 폰의 통합 필터 시트. 위의 네 섹션이 열릴 때 이 안으로 옮겨 옵니다.
+       여기서 고른 것은 곧바로 목록에 걸리지 않습니다 — 개수만 앞서 바뀌다가
+       "모임 N개 보기" 를 눌러야 한꺼번에 걸립니다(policy.html). -->
+  <div class="find-sheet" data-find-sheet hidden>
+    <div class="find-sheet__scrim" data-find-sheet-close></div>
+    <div class="find-sheet__panel" role="dialog" aria-modal="true" aria-label="필터" tabindex="-1">
+      <div class="find-sheet__head">
+        <button class="find-sheet__handle" type="button" data-find-sheet-close aria-label="필터 닫기"></button>
+      </div>
+      <div class="find-sheet__body" data-find-sheet-body></div>
+      <div class="find-sheet__foot">
+        <button class="btn btn--ghost btn--large" type="button" data-find-clear="all">
+          <span class="btn__label">초기화</span>
+        </button>
+        <button class="btn btn--filled btn--large find-sheet__apply" type="button" data-find-apply>
+          <span class="btn__label">모임 <b data-find-draft-count>0</b>개 보기</span>
+        </button>
+      </div>
+    </div>
   </div>
 
   <noscript>
@@ -331,7 +369,10 @@
   </footer>
 </div>
 
-<nav class="app-bar app-bar--fixed" data-auto-hide="down" aria-label="주요 메뉴">
+<!-- 이 화면의 앱바는 물러나지 않습니다(data-auto-hide 없음). 조건을 좁혀 가는
+     동안 화면 위는 필터바만 남기고 비워지는데, 아래까지 함께 비면 지금 어느
+     화면에 있는지 짚을 곳이 없어집니다. -->
+<nav class="app-bar app-bar--fixed" aria-label="주요 메뉴">
   <a class="app-bar__item" href="./index.html">
     <svg class="app-bar__icon" aria-hidden="true"><use href="#icon-home"></use></svg>
     <span class="app-bar__label">홈</span>
@@ -361,14 +402,16 @@
   await import('./components/scroll-restore.js?v=f612a7a5')
   const { initStickyGnb } = await import('./components/gnb.js?v=ca09b963')
   initStickyGnb()
+  const { initMyMenus } = await import('./components/my-menu.js?v=8a7ae585')
+  initMyMenus()
   const { initSegmentedControls } = await import('./components/segmented-control.js?v=bbd7c4b8')
   initSegmentedControls()
   const { initAutoHide } = await import('./components/auto-hide.js?v=ef9c163a')
   initAutoHide()
   // 목록이 먼저 귀를 엽니다. 조건 바는 붙자마자 지금 조건을 한 번 알리는데,
   // 그때 듣는 쪽이 없으면 첫 목록이 그려지지 않습니다.
-  const { initFind } = await import('./components/find.js?v=0c470cfa')
+  const { initFind } = await import('./components/find.js?v=64f50320')
   initFind()
-  const { initFindBar } = await import('./components/find-bar.js?v=9cf209e0')
+  const { initFindBar } = await import('./components/find-bar.js?v=a51c3392')
   initFindBar()
 </script>

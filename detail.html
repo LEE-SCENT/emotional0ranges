@@ -28,11 +28,12 @@
 <link rel="stylesheet" href="./build/tokens.css?v=2e0fadf5">
 <link rel="stylesheet" href="./components/container.css?v=55694a09">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
-<link rel="stylesheet" href="./components/button.css?v=581f311e">
+<link rel="stylesheet" href="./components/button.css?v=517aa973">
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
-<link rel="stylesheet" href="./components/segmented-control.css?v=a38c242f">
+<link rel="stylesheet" href="./components/segmented-control.css?v=027af639">
 <link rel="stylesheet" href="./components/tooltip.css?v=7ec024df">
 <link rel="stylesheet" href="./components/gnb.css?v=0a931eed">
+<link rel="stylesheet" href="./components/my-menu.css?v=c1916fec">
 <link rel="stylesheet" href="./components/tag.css?v=fef5c195">
 <link rel="stylesheet" href="./components/product-card.css?v=82efa7cf">
 <link rel="stylesheet" href="./components/section-title.css?v=4a8451fd">
@@ -56,6 +57,9 @@
     margin: 0;
     background: var(--colors-bg);
     color: var(--colors-fg);
+    /* 본문 기본 서체. 컴포넌트마다 제 서체를 정하고 있지만, 그 밖의 글자가
+       브라우저 기본 서체로 떨어지지 않도록 여기에서 한 번 못 박습니다. */
+    font-family: var(--_font-family-base);
     /* 컴포넌트마다 따로 걸지 않고 여기서 한 번 정합니다. 이 화면에는 어느 컴포넌트에도
        속하지 않는 글(제목·설명)이 있어, 빠뜨리면 그 부분만 시스템 글꼴로 나옵니다. */
     font-family: var(--_font-family-base);
@@ -98,9 +102,16 @@
           <svg class="btn__icon" aria-hidden="true"><use href="#icon-notifications"></use></svg>
           <span class="badge btn__badge"></span>
         </button>
-        <button class="btn btn--blur btn--medium btn--icon-only" aria-label="메뉴 열기">
-          <svg class="btn__icon" aria-hidden="true"><use href="#icon-menu"></use></svg>
-        </button>
+        <!-- 내 메뉴. GNB 가운데 줄의 메뉴가 서비스를 둘러보는 길이라면, 여기는
+             내 프로필·결제·설정처럼 나에게만 해당하는 것들이 섭니다(my-menu.js). -->
+        <div class="my-menu" data-my-menu>
+          <button class="btn btn--blur btn--medium btn--icon-only" type="button"
+                  data-my-menu-open aria-label="내 메뉴 열기"
+                  aria-expanded="false" aria-controls="my-menu-panel" aria-haspopup="true">
+            <svg class="btn__icon" aria-hidden="true"><use href="#icon-menu"></use></svg>
+          </button>
+          <div class="my-menu__panel" id="my-menu-panel" role="menu" aria-label="내 메뉴" tabindex="-1" hidden></div>
+        </div>
       </div>
     </div>
   </div>
@@ -720,9 +731,11 @@
   await import('./components/scroll-restore.js?v=f612a7a5')
   const { initStickyGnb } = await import('./components/gnb.js?v=ca09b963')
   initStickyGnb()
+  const { initMyMenus } = await import('./components/my-menu.js?v=8a7ae585')
+  initMyMenus()
   // 일정·후기를 읽는 스크립트들보다 먼저 돕니다. 그들이 세어둔 뒤에 목록을
   // 갈아끼우면 서로 다른 것을 보게 됩니다.
-  const { initProduct } = await import('./components/product.js?v=e8abe224')
+  const { initProduct } = await import('./components/product.js?v=604e8878')
   initProduct()
   const { initSchedule } = await import('./components/schedule.js?v=a9e9003f')
   initSchedule()
@@ -734,7 +747,7 @@
   initRecentReview()
   const { initConfirms } = await import('./components/confirm.js?v=f516d2db')
   initConfirms()
-  const { initParticipants } = await import('./components/participants.js?v=e091376b')
+  const { initParticipants } = await import('./components/participants.js?v=29b60ec8')
   initParticipants()
   const { initSeatAlert } = await import('./components/seat-alert.js?v=65cf2cdd')
   initSeatAlert()
@@ -743,7 +756,7 @@
   const { initFavorites } = await import('./components/favorite.js?v=d087742c')
   initFavorites()
   // 비슷한 모임 카드도 목록과 같은 데이터에서 지역·일정 수를 받습니다.
-  const { initProductCards } = await import('./components/product-cards.js?v=62806e09')
+  const { initProductCards } = await import('./components/product-cards.js?v=e6823005')
   initProductCards()
   const { initDetailIntro } = await import('./components/detail-intro.js?v=c2d2bd44')
   initDetailIntro()
