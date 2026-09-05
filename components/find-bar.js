@@ -285,12 +285,23 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
 
   /* 폰에서는 한 줄만 보이고 펼침 버튼으로 나머지를 폅니다. 목록을 덮는 창이
      아니라 그 자리에서 줄이 늘어나고, 결과 수·소팅·카드가 함께 밀려 내려갑니다. */
-  moreBtn?.addEventListener('click', () => {
-    const next = moreBtn.getAttribute('aria-expanded') !== 'true'
+  function setTypesExpanded(next) {
+    if (!moreBtn) return
     moreBtn.setAttribute('aria-expanded', String(next))
     typesRow?.classList.toggle('is-expanded', next)
     moreBtn.querySelector('.sr-only').textContent = next ? '모임 유형 접기' : '모임 유형 모두 보기'
     measureTypesTop()
+  }
+
+  /* 화면이 움직이면 펼쳐둔 줄은 접습니다. 여러 줄로 벌어진 채 위에 붙어 따라오면
+     읽으려던 목록을 그만큼 가리고, 유형을 고르러 편 줄이 목록을 보는 내내 남습니다 —
+     펴는 것은 고르기 위해서지 계속 보기 위해서가 아닙니다. */
+  const collapseTypes = () => {
+    if (moreBtn?.getAttribute('aria-expanded') === 'true') setTypesExpanded(false)
+  }
+
+  moreBtn?.addEventListener('click', () => {
+    setTypesExpanded(moreBtn.getAttribute('aria-expanded') !== 'true')
   })
 
   /* ---- 날짜 --------------------------------------------------------------
@@ -1102,8 +1113,13 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
     if (moved <= -HIDE_DISTANCE) setHidden(true)
     else if (moved >= SHOW_DISTANCE) setHidden(false)
 
-    if (moved >= TYPES_DISTANCE) setCollapsed(true)
-    else if (moved <= -TYPES_DISTANCE) setCollapsed(false)
+    if (moved >= TYPES_DISTANCE) {
+      setCollapsed(true)
+      collapseTypes()
+    } else if (moved <= -TYPES_DISTANCE) {
+      setCollapsed(false)
+      collapseTypes()
+    }
   }
 
   addEventListener(

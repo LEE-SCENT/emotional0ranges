@@ -82,7 +82,9 @@
        find-bar.js 가 재서 넣습니다. */
     inset-block-start: var(--_find-types-top, 96px);
     z-index: 14;
-    padding-block-end: var(--spacing-250);
+    /* 아래 12 는 퀵필터가 제 여백으로 갖습니다 — 붙어 있는 동안 흰 띠가 알약
+       아래까지 덮어야 하기 때문입니다. 목록은 그만큼 위 여백을 비웁니다. */
+    padding-block-end: var(--spacing-300);
     background: var(--colors-bg);
     opacity: 1;
     visibility: visible;
@@ -224,36 +226,24 @@
 
 /* 펼침 버튼 — 폰에서만 나옵니다. 목록을 덮는 창이 아니라 그 자리에서 줄이 늘어나고,
    아래 것들이 함께 밀려 내려갑니다. 접으면 원래 자리로 돌아옵니다. */
+/* Button 컴포넌트(outlined/medium/iconOnly)를 그대로 씁니다 — 옆 알약과 같은
+   높이(40)의 알약 모양입니다. 정원으로 두면 이 줄에서 혼자 다른 도형이 되어,
+   알약들 사이에 낀 표식처럼 보입니다. */
 .find-types__more {
   flex: none;
   display: none;
-  align-items: center;
-  justify-content: center;
-  /* 알약과 같은 높이(medium, 40)입니다 — 한 줄에 나란히 서는 것들이라
-     하나만 작으면 그 줄의 가운데선이 흔들려 보입니다. */
-  inline-size: 40px;
-  block-size: 40px;
-  padding: 0;
-  border: 0;
-  border-radius: var(--_rounded-full);
-  background: var(--_button-outlined-bg);
-  box-shadow: inset 0 0 0 var(--_button-border-width) var(--_button-outlined-border);
   color: var(--colors-fg);
-  cursor: pointer;
 }
 
-.find-types__more svg {
-  display: block;
-  inline-size: var(--icon-size-xs);
-  block-size: var(--icon-size-xs);
+.find-types__more .btn__icon {
   /* 펼침 애니메이션은 180~220 입니다(정책). */
   transition: rotate 200ms var(--_easing-standard);
 }
 
-.find-types__more[aria-expanded='true'] svg { rotate: 180deg; }
+.find-types__more[aria-expanded='true'] .btn__icon { rotate: 180deg; }
 
 @media (max-width: 960px) {
-  .find-types__more { display: flex; }
+  .find-types__more { display: inline-flex; }
 
   /* 펼친 뒤에는 모든 유형이 여러 줄로 섭니다 — 흐르던 줄이 아니라 그냥 목록이
      되므로 옅어지는 끝도 없습니다. */
@@ -262,6 +252,11 @@
     overflow: visible;
     mask: none;
   }
+
+  /* 접기 버튼은 첫 줄에 붙어 있습니다. 여러 줄 가운데로 내려가면 어느 줄에 딸린
+     버튼인지 알 수 없고, 접었을 때 서 있던 자리에서도 멀어집니다 — 누른 자리에
+     그대로 있어야 다시 누를 곳을 찾지 않습니다. */
+  .find-types__row.is-expanded { align-items: flex-start; }
 }
 
 @media (min-width: 961px) {
@@ -392,7 +387,14 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-300);
-  padding-block: var(--spacing-400);
+  /* 마지막 필터 줄과 그 아래 사이는 12 입니다(Figma) — 퀵필터 → 걸린 조건 →
+     결과 수 → 카드가 모두 같은 12 로 떨어져 한 덩어리로 읽힙니다. */
+  padding-block: var(--spacing-300) var(--spacing-400);
+}
+
+@media (max-width: 960px) {
+  /* 폰에서는 그 12 를 퀵필터가 이미 갖고 있습니다(위). */
+  .find__list { padding-block-start: 0; }
 }
 
 .find-sorting {
@@ -470,11 +472,14 @@
 }
 
 /* ---- 격자 -------------------------------------------------------------
-   Figma 의 찾기 화면은 한 줄에 넉 장입니다.
+   Figma 의 BreakPoint 시트를 그대로 옮겼습니다.
 
-     ~440      1열
-     441~960   2열
-     961~      4열  — 1280 안에서 카드가 308, 1440 안에서 345
+     ~720      2열  — 430 에서 카드가 200, 720 에서 340
+     721~960   3열  — 960 에서 카드가 304
+     961~      4열  — 1280 에서 296, 1440 에서 345
+
+   사이는 넓은 화면만 다릅니다 — 3열까지는 24/8, 4열부터 32/16. 카드가 넓어질수록
+   사이도 함께 넓어져야 낱장으로 읽힙니다.
 
    세로 간격이 가로보다 넓은 것은, 카드가 제목·설명·가격까지 한 덩어리로 읽혀야
    하기 때문입니다. 같은 간격이면 아래 카드의 사진이 위 카드의 가격에 붙어 어디까지가
@@ -483,17 +488,20 @@
 
 .find__grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--spacing-800) var(--spacing-400);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--spacing-600) var(--spacing-200);
   align-items: start;
 }
 
-@media (min-width: 441px) {
-  .find__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (min-width: 721px) {
+  .find__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 @media (min-width: 961px) {
-  .find__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .find__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--spacing-800) var(--spacing-400);
+  }
 }
 
 /* 낱장으로 놓이므로 네 모서리를 모두 둥글게 둡니다. 상품 카드의 기본값은 레일의

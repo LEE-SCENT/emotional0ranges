@@ -196,12 +196,16 @@
     display: flex;
     align-items: center;
     gap: var(--spacing-300);
-    padding: var(--spacing-250) var(--spacing-400) var(--spacing-250) var(--spacing-500);
+    /* 왼쪽 16 · 오른쪽 8 (Figma). 오른쪽이 좁은 것은 그 끝이 아이콘 버튼이라
+       버튼 제 여백이 이미 12 를 갖고 있기 때문입니다. 높이는 52 에서 시작해
+       값이 두 줄이 되면 그만큼 자랍니다. */
+    padding-inline: var(--spacing-400) var(--spacing-200);
+    min-block-size: 52px;
     border-radius: var(--_rounded-full);
+    /* 그림자는 없습니다. 이 바는 목록 위에 떠 있는 것이 아니라 화면의 한 줄로
+       앉아 있어, 그림자를 두면 아래 알약 줄과 사이가 벌어져 보입니다 —
+       떠 있는 것은 넓은 화면에서 스크롤해 붙었을 때뿐입니다. */
     background: var(--colors-bg-low);
-    /* ⚠️ Figma 의 shadow/popover 는 토큰이지만 이 자리에 적힌 값은
-       drop-shadow(0 4px 10px #0000001a) 입니다. 아직 토큰이 아니라 값을 씁니다. */
-    box-shadow: 0 4px 10px rgb(0 0 0 / 0.1);
   }
 
   /* 바 전체를 대표하는 돋보기. 스프라이트를 CSS 에서 참조할 수 없어(＜use＞ 는
@@ -269,13 +273,15 @@
 
   .has-value .find-bar__field[data-find-field='date']::before { content: none; }
 
-  /* 필터 아이콘은 바 안쪽 오른쪽입니다. 왼쪽에 얇은 구분선을 둡니다(Figma). */
+  /* 필터 아이콘은 바 안쪽 오른쪽입니다. 왼쪽에 얇은 구분선을 두고, 그 사이는
+     4 입니다(Figma) — 넓은 화면의 8 보다 좁아 아이콘이 선에 붙어 한 덩어리로
+     읽힙니다. */
   .find-bar__filter::before {
     content: '';
     flex: none;
     inline-size: 1px;
     block-size: 20px;
-    margin-inline-end: var(--spacing-200);
+    margin-inline-end: var(--spacing-100);
     background: var(--colors-divider);
   }
 
@@ -762,6 +768,8 @@
    한 페이지짜리 시트가 그만큼 길어집니다. */
 .find-sheet .find-seats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
+/* 고르지 않은 쪽은 글자만 있습니다(ghost) — 테두리를 두르면 둘 다 담긴 칸으로
+   보여, 검게 찬 쪽이 "고른 것"이 아니라 "다른 종류"처럼 읽힙니다. */
 .find-seats__item {
   display: flex;
   flex-direction: column;
@@ -771,8 +779,7 @@
   box-sizing: border-box;
   padding: var(--spacing-150) var(--spacing-300);
   border-radius: var(--_rounded-full);
-  background: var(--_button-outlined-bg);
-  box-shadow: inset 0 0 0 var(--_button-border-width) var(--_button-outlined-border);
+  background: none;
   text-align: center;
   user-select: none;
   cursor: pointer;
@@ -782,7 +789,7 @@
 }
 
 .find-seats__label {
-  color: var(--colors-fg);
+  color: var(--_button-ghost-fg);
   font-size: var(--typography-body-m-medium-font-size);
   font-weight: var(--typography-body-m-medium-font-weight);
   line-height: var(--typography-body-m-medium-line-height);
@@ -798,7 +805,6 @@
 
 .find-seats__item:has(:checked) {
   background: var(--_button-filled-bg);
-  box-shadow: none;
 }
 
 .find-seats__item:has(:checked) .find-seats__label { color: var(--_button-filled-fg); }
@@ -1043,7 +1049,11 @@
   z-index: -1;
   inset-block: 0;
   inset-inline: -24px;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='104' height='44' viewBox='0 0 104 44' fill='none'%3E%3Cpath d='M20 22C20 34.1503 11.0457 44 0 44H104C92.9543 44 84 34.1503 84 22C84 9.84974 92.9543 0 104 0H0C11.0457 0 20 9.84974 20 22Z' fill='%23F8F6F5'/%3E%3C/svg%3E") center / 104px 44px no-repeat;
+  /* 그림은 상자 폭에 맞춰 늘립니다. 104 로 못 박으면 칸이 56 일 때(넓은 화면)만
+     맞고, 칸 폭이 화면을 따라가는 폰에서는 상자가 그보다 넓어져 양쪽에 빈 자리가
+     남습니다 — 시작일·종료일의 검은 알약과 띠 사이가 그만큼 끊겨 보였습니다.
+     세로는 칸 높이 그대로(44)입니다. */
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='104' height='44' viewBox='0 0 104 44' fill='none'%3E%3Cpath d='M20 22C20 34.1503 11.0457 44 0 44H104C92.9543 44 84 34.1503 84 22C84 9.84974 92.9543 0 104 0H0C11.0457 0 20 9.84974 20 22Z' fill='%23F8F6F5'/%3E%3C/svg%3E") center / 100% 44px no-repeat;
 }
 
 /* 달을 넘어가는 기간. 그 달의 마지막 날은 오른쪽에서, 다음 달 1일은 왼쪽에서
