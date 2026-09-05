@@ -19,13 +19,13 @@
 <link rel="stylesheet" href="./components/button.css?v=517aa973">
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
 <link rel="stylesheet" href="./components/segmented-control.css?v=027af639">
-<link rel="stylesheet" href="./components/gnb.css?v=0a931eed">
+<link rel="stylesheet" href="./components/gnb.css?v=77de0467">
 <link rel="stylesheet" href="./components/my-menu.css?v=c1916fec">
 <link rel="stylesheet" href="./components/tag.css?v=fef5c195">
 <link rel="stylesheet" href="./components/product-card.css?v=82efa7cf">
 <link rel="stylesheet" href="./components/chip.css?v=c4217661">
-<link rel="stylesheet" href="./components/find-bar.css?v=468c49d9">
-<link rel="stylesheet" href="./components/find.css?v=5ce8c0f2">
+<link rel="stylesheet" href="./components/find-bar.css?v=ecd3efc6">
+<link rel="stylesheet" href="./components/find.css?v=849cf3b3">
 <link rel="stylesheet" href="./components/footer.css?v=090dd8fc">
 <link rel="stylesheet" href="./components/app-bar.css?v=7fbb6489">
 <style>
@@ -45,8 +45,11 @@
 <div id="sprite" hidden></div>
 
 <!-- ⚠️ 이 화면의 GNB 에는 data-auto-hide 를 달지 않습니다. 조건 바가 GNB 아래에
-     붙어 따라오는데, GNB 가 물러나면 바만 공중에 뜬 채 남습니다(find.css). -->
-<header class="gnb">
+     붙어 따라오는데, GNB 가 물러나면 바만 공중에 뜬 채 남습니다(find.css).
+
+     폰에서는 아예 나오지 않습니다(gnb--wide-only) — 이 화면의 머리는 필터바이고,
+     그 위에 로고 줄이 한 겹 더 얹히면 목록이 그만큼 밀려 내려갑니다. -->
+<header class="gnb gnb--wide-only">
   <div class="gnb__inner">
     <div class="gnb__side gnb__side--start">
       <a class="gnb__logo" href="./index.html" aria-label="감정적인 오렌지들 홈">
@@ -243,7 +246,7 @@
                  서고, 시트에서는 달력 바로 아래에 한 줄로 흐릅니다 — 시트에는
                  아래에 제 초기화가 따로 있어 이 버튼이 나오지 않습니다. -->
             <div class="find-dates-bar">
-              <div class="find-dates" data-find-dates></div>
+              <div class="find-dates" data-scroll-fade data-find-dates></div>
               <button class="btn btn--blur btn--medium find-dates-bar__clear" type="button" data-find-clear="date">
                 <span class="btn__label">초기화</span>
               </button>
@@ -259,7 +262,7 @@
        말합니다(policy.html). 알약은 데이터에서 만듭니다. -->
   <div class="find-types" data-find-types>
     <div class="find-types__row">
-      <div class="find-types__list" data-find-kinds role="radiogroup" aria-label="모임 유형"></div>
+      <div class="find-types__list" data-scroll-fade data-find-kinds role="radiogroup" aria-label="모임 유형"></div>
       <!-- 폰에서는 한 줄만 보이고 이 버튼으로 나머지를 펼칩니다. 넓은 화면에는
            줄을 접을 이유가 없어 나오지 않습니다(find.css). -->
       <button class="btn btn--outlined btn--medium btn--icon-only find-types__more" type="button"
@@ -273,7 +276,7 @@
          (find.css). 안쪽 한 겹은 그 높이를 잘라주는 자리입니다. -->
     <div class="find-types__sub" data-find-tags-box hidden>
       <div class="find-types__sub-inner">
-        <div class="find-types__sub-list" data-find-tags role="group" aria-label="세부 조건"></div>
+        <div class="find-types__sub-list" data-scroll-fade data-find-tags role="group" aria-label="세부 조건"></div>
       </div>
     </div>
   </div>
@@ -415,4 +418,7 @@
   initFind()
   const { initFindBar } = await import('./components/find-bar.js?v=3e01e82d')
   initFindBar()
+  // 옆으로 흐르는 줄들(모임 유형·하위 필터·담은 날짜)의 양 끝을 옅게 합니다.
+  const { initScrollFades } = await import('./components/scroll-fade.js?v=c4feee7e')
+  initScrollFades()
 </script>

@@ -187,6 +187,13 @@
   }
 }
 
+/* 화면 맨 위가 제 머리를 갖는 화면(모임 찾기의 필터바)에서는 폰에서 GNB 를
+   두지 않습니다 — 로고 줄과 그 머리가 두 겹으로 쌓이면 목록이 그만큼 밀려
+   내려가고, 좁은 화면에서 그 한 줄이 카드 한 장만큼입니다. */
+@media (max-width: 960px) {
+  .gnb--wide-only { display: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .gnb,
   .gnb__logo { transition: none; }

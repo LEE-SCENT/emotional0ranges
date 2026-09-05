@@ -1188,8 +1188,6 @@
      잘려 보이는 것으로 더 있다는 것을 말합니다. */
   overflow-x: auto;
   scrollbar-width: none;
-  /* 끝에서 옅어져 뒤에 더 있다는 것을 보입니다. */
-  mask: linear-gradient(to right, #000 calc(100% - 32px), transparent);
 }
 
 .find-dates::-webkit-scrollbar { display: none; }
@@ -1218,7 +1216,6 @@
     row-gap: var(--spacing-150);
     max-block-size: 70px;
     overflow: hidden;
-    mask: none;
   }
 
   .find-dates-bar__clear { flex: none; }

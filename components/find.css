@@ -69,8 +69,9 @@
 @media (max-width: 960px) {
   .find-head {
     position: sticky;
-    /* GNB 가 붙었을 때의 높이 — 위아래 8 과 로고 30(gnb.css). 그 아래에 섭니다. */
-    inset-block-start: calc(2 * var(--spacing-200) + var(--_gnb-logo-sticky-height));
+    /* 이 폭에는 GNB 가 없습니다(gnb--wide-only) — 필터바가 곧 화면의 머리라
+       화면 맨 위에 붙습니다. */
+    inset-block-start: 0;
     padding-block: var(--spacing-250);
     /* 붙어 있는 동안 카드가 바 뒤로 비쳐서는 안 됩니다. */
     background: var(--colors-bg);
@@ -174,13 +175,13 @@
   min-inline-size: 0;
 }
 
-/* 한 줄에서 넘치는 알약은 옆으로 흐릅니다. 막대는 감추고, 오른쪽 끝을 옅게 해서
-   뒤에 더 있다는 것을 보입니다(Figma 의 gradient). */
+/* 한 줄에서 넘치는 알약은 옆으로 흐릅니다. 막대는 감추고, 더 있는 쪽 끝을 옅게
+   해서 그 사실을 보입니다(Figma 의 gradient) — 어느 쪽에 더 있는지는
+   scroll-fade.js 가 적어줍니다. */
 .find-types__list,
 .find-types__sub-list {
   overflow-x: auto;
   scrollbar-width: none;
-  mask: linear-gradient(to right, #000 calc(100% - 32px), transparent);
 }
 
 .find-types__list::-webkit-scrollbar,
@@ -265,7 +266,6 @@
   .find-types__sub-list {
     flex-wrap: wrap;
     overflow: visible;
-    mask: none;
   }
 }
 
@@ -546,4 +546,32 @@
   font-size: var(--typography-body-m-regular-font-size);
   line-height: var(--typography-body-m-regular-line-height);
   text-align: center;
+}
+
+/* ---- 옆으로 흐르는 줄의 양 끝 -------------------------------------------
+   옅어지는 것은 "이쪽에 더 있다"는 표시입니다 — 더 없는 쪽은 옅어지지 않습니다.
+   지금 어느 쪽에 더 있는지는 scroll-fade.js 가 data-fade 로 적어둡니다.
+
+   32 는 알약 하나가 반쯤 걸치는 폭입니다. 그보다 좁으면 잘린 글자가 또렷해
+   옅어진 것으로 읽히지 않고, 넓으면 멀쩡한 알약까지 흐려집니다.
+*/
+
+[data-scroll-fade] { --_fade: 32px; }
+
+[data-scroll-fade][data-fade='end'] {
+  mask: linear-gradient(to right, #000 calc(100% - var(--_fade)), transparent);
+}
+
+[data-scroll-fade][data-fade='start'] {
+  mask: linear-gradient(to right, transparent, #000 var(--_fade));
+}
+
+[data-scroll-fade][data-fade='both'] {
+  mask: linear-gradient(
+    to right,
+    transparent,
+    #000 var(--_fade),
+    #000 calc(100% - var(--_fade)),
+    transparent
+  );
 }
