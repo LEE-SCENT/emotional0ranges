@@ -33,6 +33,7 @@
 <link rel="stylesheet" href="./components/segmented-control.css?v=a38c242f">
 <link rel="stylesheet" href="./components/tooltip.css?v=7ec024df">
 <link rel="stylesheet" href="./components/gnb.css?v=83d1eec2">
+<link rel="stylesheet" href="./components/my-menu.css?v=862836f8">
 <link rel="stylesheet" href="./components/kv.css?v=c97007b8">
 <link rel="stylesheet" href="./components/tag.css?v=fef5c195">
 <link rel="stylesheet" href="./components/product-card.css?v=69393a13">
@@ -83,9 +84,16 @@
           <svg class="btn__icon" aria-hidden="true"><use href="#icon-notifications"></use></svg>
           <span class="badge btn__badge"></span>
         </button>
-        <button class="btn btn--blur btn--medium btn--icon-only" aria-label="메뉴 열기">
-          <svg class="btn__icon" aria-hidden="true"><use href="#icon-menu"></use></svg>
-        </button>
+        <!-- 내 메뉴. GNB 가운데 줄의 메뉴가 서비스를 둘러보는 길이라면, 여기는
+             내 프로필·결제·설정처럼 나에게만 해당하는 것들이 섭니다(my-menu.js). -->
+        <div class="my-menu" data-my-menu>
+          <button class="btn btn--blur btn--medium btn--icon-only" type="button"
+                  data-my-menu-open aria-label="내 메뉴 열기"
+                  aria-expanded="false" aria-controls="my-menu-panel" aria-haspopup="true">
+            <svg class="btn__icon" aria-hidden="true"><use href="#icon-menu"></use></svg>
+          </button>
+          <div class="my-menu__panel" id="my-menu-panel" role="menu" aria-label="내 메뉴" tabindex="-1" hidden></div>
+        </div>
       </div>
     </div>
   </div>
@@ -414,7 +422,7 @@
     <svg class="app-bar__icon" aria-hidden="true"><use href="#icon-cardStar"></use></svg>
     <span class="app-bar__label">추천</span>
   </a>
-  <a class="app-bar__item" href="#">
+  <a class="app-bar__item" href="./my.html">
     <svg class="app-bar__icon" aria-hidden="true"><use href="#icon-my"></use></svg>
     <span class="app-bar__label">마이</span>
   </a>
@@ -431,6 +439,8 @@
   initKvCarousels()
   const { initStickyGnb } = await import('./components/gnb.js?v=ca09b963')
   initStickyGnb()
+  const { initMyMenus } = await import('./components/my-menu.js?v=d62edc05')
+  initMyMenus()
   const { initAutoHide } = await import('./components/auto-hide.js?v=ef9c163a')
   initAutoHide()
   // 카드의 날짜·잔여석·가격은 상세와 같은 데이터에서 나옵니다. 적어두면 어긋납니다.
