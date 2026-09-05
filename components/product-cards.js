@@ -26,7 +26,7 @@
  * 문구, 가격. 이 파일은 그것을 옮긴 것이므로, 규칙이 바뀌면 그 문서가 먼저입니다.
  */
 
-import { PRODUCTS, areaOf, isOpen, seatTags } from './products.js?v=f2996205'
+import { PRODUCTS, areaOf, isOpen, seatTags } from './products.js?v=49fbe067'
 import { dateAfter, dayText } from './schedule.js?v=a9e9003f'
 
 const won = (n) => `${n.toLocaleString('ko-KR')}원`

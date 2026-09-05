@@ -28,11 +28,11 @@
 <link rel="stylesheet" href="./build/tokens.css?v=8ab2646f">
 <link rel="stylesheet" href="./components/container.css?v=2407269a">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
-<link rel="stylesheet" href="./components/button.css?v=581f311e">
+<link rel="stylesheet" href="./components/button.css?v=517aa973">
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
-<link rel="stylesheet" href="./components/segmented-control.css?v=a38c242f">
+<link rel="stylesheet" href="./components/segmented-control.css?v=027af639">
 <link rel="stylesheet" href="./components/tooltip.css?v=7ec024df">
-<link rel="stylesheet" href="./components/gnb.css?v=83d1eec2">
+<link rel="stylesheet" href="./components/gnb.css?v=93bd0b1f">
 <link rel="stylesheet" href="./components/my-menu.css?v=862836f8">
 <link rel="stylesheet" href="./components/kv.css?v=c97007b8">
 <link rel="stylesheet" href="./components/tag.css?v=fef5c195">
@@ -43,7 +43,11 @@
 <link rel="stylesheet" href="./components/mobile-switch.css?v=1daf555e">
 <link rel="stylesheet" href="./components/app-bar.css?v=7fbb6489">
 <style>
-  body { margin: 0; background: var(--colors-bg); color: var(--colors-fg); }
+  /* 본문 기본 서체. 컴포넌트마다 제 서체를 정하고 있지만, 그 밖의 글자
+     (결과 수·안내 문구 같은 것)가 브라우저 기본 서체로 떨어지지 않도록
+     여기에서 한 번 못 박습니다. */
+  body { margin: 0; background: var(--colors-bg); color: var(--colors-fg);
+         font-family: var(--_font-family-base); }
   /* 화면에는 안 보이지만 스크린리더는 읽는 텍스트 */
   .sr-only {
     position: absolute; inline-size: 1px; block-size: 1px;
@@ -64,10 +68,16 @@
     <!-- 로고와 액션은 화면 끝에 두고, 가운데 블록만 본문과 같은 1280 에서 멈춥니다. -->
     <div class="gnb__center">
       <div class="gnb__segmented">
+        <!-- 지금 열려 있는 것은 오프라인뿐입니다. 온라인은 자리만 잡아두고, 아래
+             말풍선이 그리로 가는 길을 알립니다 — 눌러도 아무 데도 가지 않는 칸을
+             다른 칸과 같은 무게로 두면 이미 열린 것으로 읽힙니다. -->
         <div class="segmented" role="tablist" aria-label="모임 형태">
           <span class="segmented__thumb" aria-hidden="true"></span>
-          <button class="segmented__item is-selected" role="tab" aria-selected="true">온라인</button>
-          <button class="segmented__item" role="tab" aria-selected="false">오프라인</button>
+          <button class="segmented__item is-selected" role="tab" aria-selected="true">오프라인</button>
+          <button class="segmented__item" role="tab" aria-selected="false" aria-disabled="true">온라인</button>
+        </div>
+        <div class="tooltip tooltip--bottom gnb__tip">
+          <span class="tooltip__label">온라인 매칭 지금 보러 가기</span>
         </div>
       </div>
       <nav class="gnb__menu" aria-label="주요 메뉴">
@@ -80,6 +90,11 @@
     </div>
     <div class="gnb__side gnb__side--end">
       <div class="gnb__actions">
+        <!-- 로그인은 폰에서만 나옵니다 — 넓은 화면에서는 메뉴 버튼 아래 내 메뉴가
+             그 자리를 대신합니다. -->
+        <button class="btn btn--ghost btn--medium gnb__login" type="button">
+          <span class="btn__label">로그인</span>
+        </button>
         <button class="btn btn--ghost btn--medium btn--icon-only gnb__notify" aria-label="알림">
           <svg class="btn__icon" aria-hidden="true"><use href="#icon-notifications"></use></svg>
           <span class="badge btn__badge"></span>
@@ -446,6 +461,6 @@
   // 카드의 날짜·잔여석·가격은 상세와 같은 데이터에서 나옵니다. 적어두면 어긋납니다.
   // 뒤로 돌아온 화면은 맨 위에서 시작합니다.
   await import('./components/scroll-restore.js?v=f612a7a5')
-  const { initProductCards } = await import('./components/product-cards.js?v=aff7986b')
+  const { initProductCards } = await import('./components/product-cards.js?v=e6823005')
   initProductCards()
 </script>

@@ -13,9 +13,10 @@
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
 <link rel="stylesheet" href="./build/tokens.css?v=8ab2646f">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
-<link rel="stylesheet" href="./components/button.css?v=581f311e">
-<link rel="stylesheet" href="./components/gnb.css?v=83d1eec2">
-<link rel="stylesheet" href="./components/segmented-control.css?v=a38c242f">
+<link rel="stylesheet" href="./components/button.css?v=517aa973">
+<link rel="stylesheet" href="./components/gnb.css?v=93bd0b1f">
+<link rel="stylesheet" href="./components/segmented-control.css?v=027af639">
+<link rel="stylesheet" href="./components/tooltip.css?v=7ec024df">
 <link rel="stylesheet" href="./components/my-menu.css?v=862836f8">
 <link rel="stylesheet" href="./components/app-bar.css?v=7fbb6489">
 <style>
@@ -35,7 +36,8 @@
 
 <div id="sprite" hidden></div>
 
-<!-- 다른 화면과 같은 GNB 입니다 — 화면을 옮길 때마다 위가 바뀌지 않아야 합니다. -->
+<!-- 다른 화면과 같은 GNB 입니다. 폰에서는 로고와 로그인·알림만 남습니다
+     (gnb.css) — 이 화면의 나머지는 아래 목록이 다 말하고 있습니다. -->
 <header class="gnb">
   <div class="gnb__inner">
     <div class="gnb__side gnb__side--start">
@@ -43,13 +45,18 @@
         <svg width="126" height="40" role="img" aria-label="emotional oranges"><use href="#logo-eo"></use></svg>
       </a>
     </div>
-    <!-- 로고와 액션은 화면 끝에 두고, 가운데 블록만 본문과 같은 1280 에서 멈춥니다. -->
     <div class="gnb__center">
       <div class="gnb__segmented">
+        <!-- 지금 열려 있는 것은 오프라인뿐입니다. 온라인은 자리만 잡아두고, 아래
+             말풍선이 그리로 가는 길을 알립니다 — 눌러도 아무 데도 가지 않는 칸을
+             다른 칸과 같은 무게로 두면 이미 열린 것으로 읽힙니다. -->
         <div class="segmented" role="tablist" aria-label="모임 형태">
           <span class="segmented__thumb" aria-hidden="true"></span>
-          <button class="segmented__item is-selected" role="tab" aria-selected="true">온라인</button>
-          <button class="segmented__item" role="tab" aria-selected="false">오프라인</button>
+          <button class="segmented__item is-selected" role="tab" aria-selected="true">오프라인</button>
+          <button class="segmented__item" role="tab" aria-selected="false" aria-disabled="true">온라인</button>
+        </div>
+        <div class="tooltip tooltip--bottom gnb__tip">
+          <span class="tooltip__label">온라인 매칭 지금 보러 가기</span>
         </div>
       </div>
       <nav class="gnb__menu" aria-label="주요 메뉴">
@@ -62,6 +69,11 @@
     </div>
     <div class="gnb__side gnb__side--end">
       <div class="gnb__actions">
+        <!-- 로그인하지 않았을 때만 남습니다. 로그인한 사람에게는 아래 목록이
+             누구인지 말하고 있어 my-menu.js 가 이 버튼을 지웁니다. -->
+        <button class="btn btn--ghost btn--medium gnb__login" type="button">
+          <span class="btn__label">로그인</span>
+        </button>
         <button class="btn btn--ghost btn--medium btn--icon-only gnb__notify" aria-label="알림">
           <svg class="btn__icon" aria-hidden="true"><use href="#icon-notifications"></use></svg>
           <span class="badge btn__badge"></span>

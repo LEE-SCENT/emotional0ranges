@@ -48,6 +48,17 @@
   color: var(--_button-filled-fg);
 }
 
+/* 글자만 있는 버튼도 같습니다 — 바탕이 없는 버튼이 꺼졌다고 회색 바탕을 얻으면,
+   없던 판이 하나 생겨 오히려 더 눈에 띕니다. 그대로 흐립니다(25%).
+
+   ⚠️ 흐림값은 `components/button/filled/disabledOpacity` 하나뿐이라 그것을
+      함께 씁니다. 두 종류가 같은 25% 라 값은 맞지만, 이름은 filled 것입니다. */
+.btn--ghost:disabled {
+  opacity: var(--_button-filled-disabled-opacity);
+  background: none;
+  color: var(--_button-ghost-fg);
+}
+
 .btn__label {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -144,9 +155,27 @@
    위치만 여기서 잡습니다.
 */
 
+/* 점(8)은 아이콘의 오른쪽 위 모서리에 걸칩니다 — 왼쪽 끝이 아이콘의 오른쪽
+   변에 닿고, 세로 가운데가 아이콘의 윗변에 놓입니다. 버튼 여백에서 그만큼을
+   빼면 크기마다 같은 자리가 나옵니다(Figma 의 filterBar 버튼: 위 2 · 오른쪽 4).
+
+     small  6/12  ->  위 2 · 오른쪽 4
+     medium 8/16  ->  위 4 · 오른쪽 8
+     large  10/16 ->  위 6 · 오른쪽 8
+
+   모서리 정중앙에 두지 않는 것은, 점이 아이콘을 파고들면 그림이 무엇인지
+   읽기 어려워지기 때문입니다 — 바깥으로 반 칸 밀어 얹습니다. */
 .btn__badge {
   position: absolute;
-  inset-block-start: var(--spacing-200);
-  inset-inline-end: var(--spacing-200);
+  inset-block-start: calc(var(--spacing-200) - var(--_badge-size-m) / 2);
+  inset-inline-end: calc(var(--spacing-400) - var(--_badge-size-m));
 }
-.btn--large .btn__badge { inset-block-start: var(--spacing-250); }
+
+.btn--icon-only.btn--small .btn__badge {
+  inset-block-start: calc(var(--spacing-150) - var(--_badge-size-m) / 2);
+  inset-inline-end: calc(var(--spacing-300) - var(--_badge-size-m));
+}
+
+.btn--icon-only.btn--large .btn__badge {
+  inset-block-start: calc(var(--spacing-250) - var(--_badge-size-m) / 2);
+}
