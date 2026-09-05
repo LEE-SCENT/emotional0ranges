@@ -522,9 +522,12 @@
   gap: var(--spacing-200);
 }
 
+/* 섹션 이름은 fg 입니다 — 아래 알약들이 이미 옅은 회색과 검정으로 나뉘어 있어,
+   제목까지 한 단 흐리면 어디부터가 새 조건인지 눈에 걸리지 않습니다. 넓은 화면의
+   추천 조건 팝오버도 같습니다. */
 .find-section__title {
   margin: 0;
-  color: var(--colors-fg-low);
+  color: var(--colors-fg);
   font-size: var(--typography-body-s-medium-font-size);
   font-weight: var(--typography-body-s-medium-font-weight);
   line-height: var(--typography-body-s-medium-line-height);

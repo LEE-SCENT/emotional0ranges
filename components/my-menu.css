@@ -233,7 +233,9 @@
   cursor: pointer;
 }
 
-.my-menu__item:hover { background: var(--colors-bg-low); }
+/* hover 색은 없습니다 — Button 을 비롯해 이 시스템의 어느 것도 마우스를 올렸다고
+   색을 바꾸지 않습니다(button.css). 이 목록만 배경이 깔리면 여기가 유일하게
+   마우스에 반응하는 자리가 됩니다. */
 
 .my-menu__item:focus-visible {
   outline: 2px solid var(--colors-fg);
@@ -302,4 +304,26 @@
   margin-inline: var(--spacing-600);
   border: 0;
   background: var(--colors-divider-low);
+}
+
+/* ---- 폰의 마이 화면 -----------------------------------------------------
+   같은 내용이 판이 아니라 화면으로 섭니다(my.html). 담기는 것은 그대로이고
+   담는 그릇만 달라집니다 — 떠 있지 않으니 그림자도 모서리도 없고, 항목은
+   화면 폭을 다 씁니다.
+
+   폰 전용 화면이지만 넓은 화면에서 열어도 깨지지 않아야 합니다. 판과 같은
+   폭에서 멈추고 가운데에 섭니다 — 목록 한 줄이 화면 끝까지 늘어나면 오른쪽
+   화살표가 이름에서 한참 떨어져 어느 줄에 딸린 것인지 알 수 없습니다.
+*/
+
+.my-page {
+  /* 아래 앱바가 마지막 줄을 가리지 않도록 그만큼 비웁니다. */
+  padding-block-end: calc(var(--_app-bar-height) + var(--spacing-600) + env(safe-area-inset-bottom));
+}
+
+.my-page__list {
+  margin-inline: auto;
+  max-inline-size: 480px;
+  padding-block: var(--spacing-200);
+  font-family: var(--_font-family-base);
 }

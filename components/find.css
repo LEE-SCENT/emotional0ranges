@@ -177,7 +177,7 @@
 
 /* 한 줄에서 넘치는 알약은 옆으로 흐릅니다. 막대는 감추고, 더 있는 쪽 끝을 옅게
    해서 그 사실을 보입니다(Figma 의 gradient) — 어느 쪽에 더 있는지는
-   scroll-fade.js 가 적어줍니다. */
+   scroll-row.js 가 적어줍니다. */
 .find-types__list,
 .find-types__sub-list {
   overflow-x: auto;
@@ -243,8 +243,61 @@
 
 .find-types__more[aria-expanded='true'] .btn__icon { rotate: 180deg; }
 
+/* ---- 폰에서는 알약이 한 단 작습니다 ------------------------------------
+   Figma 의 폰 화면은 퀵필터·하위 필터·걸린 조건이 모두 small(32) 이고 사이가
+   4 입니다. 넓은 화면의 medium(40)·6 을 그대로 두면 좁은 화면에서 한 줄에 두
+   개도 서지 못합니다.
+
+   Button 은 크기를 클래스로 갖고 있어(btn--small) 폭에 따라 갈아끼우려면
+   자바스크립트가 화면 폭을 보고 클래스를 바꿔야 합니다 — 그 대신 여기서
+   small 의 값을 그대로 다시 적습니다. 값은 Button 이 쓰는 토큰 그대로라
+   한쪽만 바뀌는 일은 없습니다(button.css 의 .btn--small).
+*/
+
 @media (max-width: 960px) {
+  .find-types__kind,
+  .find-types__tag,
+  .find-applied__item {
+    padding: var(--spacing-200) var(--spacing-300);
+    font-size: var(--typography-body-s-medium-font-size);
+    font-weight: var(--typography-body-s-medium-font-weight);
+    line-height: var(--typography-body-s-medium-line-height);
+    letter-spacing: var(--typography-body-s-medium-letter-spacing);
+  }
+
+  /* 알약이 작아진 만큼 사이도 4 로 좁아집니다. 알약과 접기 버튼 사이만 8 입니다 —
+     성격이 다른 것끼리라 알약 사이보다 벌어져야 합니다(Figma). */
+  .find-types__list,
+  .find-types__sub-list,
+  .find-applied { gap: var(--spacing-100); }
+
+  .find-types__row { gap: var(--spacing-200); }
+
+  /* 12px 글자 옆에 서는 × 도 한 단 작습니다 — 담은 날짜 알약과 같은 값입니다. */
+  .find-types__tag .find-mark,
+  .find-applied__item .btn__icon,
+  .find-applied__remove svg {
+    inline-size: var(--icon-size-2xs);
+    block-size: var(--icon-size-2xs);
+  }
+
+  .find-applied__remove {
+    padding: calc((32px - var(--icon-size-2xs)) / 2);
+    margin: calc((32px - var(--icon-size-2xs)) / -2);
+  }
+
   .find-types__more { display: inline-flex; }
+
+  /* 접기 버튼도 small 입니다 — 44×32(Figma). Button 의 iconOnly/medium 여백이
+     같은 무게(0,2,0)라 클래스를 하나 더 겹쳐 이깁니다. */
+  .btn.find-types__more {
+    padding: var(--spacing-150) var(--spacing-300);
+  }
+
+  .find-types__more .btn__icon {
+    inline-size: var(--_button-icon-size-s);
+    block-size: var(--_button-icon-size-s);
+  }
 
   /* 펼친 뒤에는 모든 유형이 여러 줄로 섭니다 — 흐르던 줄이 아니라 그냥 목록이
      되므로 옅어지는 끝도 없습니다. */
@@ -550,23 +603,23 @@
 
 /* ---- 옆으로 흐르는 줄의 양 끝 -------------------------------------------
    옅어지는 것은 "이쪽에 더 있다"는 표시입니다 — 더 없는 쪽은 옅어지지 않습니다.
-   지금 어느 쪽에 더 있는지는 scroll-fade.js 가 data-fade 로 적어둡니다.
+   지금 어느 쪽에 더 있는지는 scroll-row.js 가 data-fade 로 적어둡니다.
 
    32 는 알약 하나가 반쯤 걸치는 폭입니다. 그보다 좁으면 잘린 글자가 또렷해
    옅어진 것으로 읽히지 않고, 넓으면 멀쩡한 알약까지 흐려집니다.
 */
 
-[data-scroll-fade] { --_fade: 32px; }
+[data-scroll-row] { --_fade: 32px; }
 
-[data-scroll-fade][data-fade='end'] {
+[data-scroll-row][data-fade='end'] {
   mask: linear-gradient(to right, #000 calc(100% - var(--_fade)), transparent);
 }
 
-[data-scroll-fade][data-fade='start'] {
+[data-scroll-row][data-fade='start'] {
   mask: linear-gradient(to right, transparent, #000 var(--_fade));
 }
 
-[data-scroll-fade][data-fade='both'] {
+[data-scroll-row][data-fade='both'] {
   mask: linear-gradient(
     to right,
     transparent,

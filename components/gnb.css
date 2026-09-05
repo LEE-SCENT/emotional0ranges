@@ -111,11 +111,30 @@
   --_button-blur-fg: var(--_gnb-fg);
 }
 
+/* 말풍선이 이 안에서 자리를 잡습니다. */
+.gnb__segmented { position: relative; }
+
+/* 아직 열리지 않은 쪽(온라인) 아래를 가리키므로 세그먼티드 가운데가 아니라
+   그 절반의 가운데에 섭니다(Figma). 글자가 두 칸보다 넓어 줄을 바꾸지 않게
+   묶어두고, 넘치는 쪽은 좌우로 흘러도 됩니다 — 가리키는 자리가 어긋나는 것보다
+   낫습니다. */
+.gnb__tip {
+  position: absolute;
+  inset-block-start: calc(100% + var(--spacing-200));
+  inset-inline-start: 75%;
+  translate: -50% 0;
+  white-space: nowrap;
+}
+
 /* small 에서는 segmentedControl 과 메뉴가 접힙니다. */
 .gnb__segmented,
 .gnb__menu {
   display: none;
 }
+
+/* 로그인은 폰에서만 나옵니다. 넓은 화면에서는 메뉴 버튼 아래 내 메뉴가 그 자리를
+   대신합니다 — 로그인 여부도 그 판이 첫 줄에서 말합니다. */
+.gnb__login { display: inline-flex; }
 
 /* small 의 오른쪽에는 알림만 둡니다. 이 폭에서는 화면 아래 앱바가 이동을 맡고,
    햄버거가 열던 화면도 앱바의 "마이"가 들고 있습니다. 위쪽에는 지금 볼 것만
@@ -141,6 +160,7 @@
   /* 이 폭부터는 앱바가 없으므로 메뉴 버튼이 돌아오고, 알림은 large 에서만 붙습니다. */
   .gnb__actions .btn--blur { display: inline-flex; }
   .gnb__notify { display: none; }
+  .gnb__login { display: none; }
 }
 
 /* ---- large (1601px~) --------------------------------------------------- */

@@ -19,13 +19,14 @@
 <link rel="stylesheet" href="./components/button.css?v=517aa973">
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
 <link rel="stylesheet" href="./components/segmented-control.css?v=027af639">
-<link rel="stylesheet" href="./components/gnb.css?v=77de0467">
-<link rel="stylesheet" href="./components/my-menu.css?v=c1916fec">
+<link rel="stylesheet" href="./components/gnb.css?v=e4b292f9">
+<link rel="stylesheet" href="./components/tooltip.css?v=7ec024df">
+<link rel="stylesheet" href="./components/my-menu.css?v=862836f8">
 <link rel="stylesheet" href="./components/tag.css?v=fef5c195">
 <link rel="stylesheet" href="./components/product-card.css?v=82efa7cf">
 <link rel="stylesheet" href="./components/chip.css?v=c4217661">
-<link rel="stylesheet" href="./components/find-bar.css?v=ecd3efc6">
-<link rel="stylesheet" href="./components/find.css?v=849cf3b3">
+<link rel="stylesheet" href="./components/find-bar.css?v=5ee9f653">
+<link rel="stylesheet" href="./components/find.css?v=9843e63b">
 <link rel="stylesheet" href="./components/footer.css?v=090dd8fc">
 <link rel="stylesheet" href="./components/app-bar.css?v=7fbb6489">
 <style>
@@ -58,10 +59,16 @@
     </div>
     <div class="gnb__center">
       <div class="gnb__segmented">
+        <!-- 지금 열려 있는 것은 오프라인뿐입니다. 온라인은 자리만 잡아두고, 아래
+             말풍선이 그리로 가는 길을 알립니다 — 눌러도 아무 데도 가지 않는 칸을
+             다른 칸과 같은 무게로 두면 이미 열린 것으로 읽힙니다. -->
         <div class="segmented" role="tablist" aria-label="모임 형태">
           <span class="segmented__thumb" aria-hidden="true"></span>
-          <button class="segmented__item is-selected" role="tab" aria-selected="true">온라인</button>
-          <button class="segmented__item" role="tab" aria-selected="false">오프라인</button>
+          <button class="segmented__item is-selected" role="tab" aria-selected="true">오프라인</button>
+          <button class="segmented__item" role="tab" aria-selected="false" aria-disabled="true">온라인</button>
+        </div>
+        <div class="tooltip tooltip--bottom gnb__tip">
+          <span class="tooltip__label">온라인 매칭 지금 보러 가기</span>
         </div>
       </div>
       <nav class="gnb__menu" aria-label="주요 메뉴">
@@ -74,6 +81,11 @@
     </div>
     <div class="gnb__side gnb__side--end">
       <div class="gnb__actions">
+        <!-- 로그인은 폰에서만 나옵니다 — 넓은 화면에서는 메뉴 버튼 아래 내 메뉴가
+             그 자리를 대신합니다. -->
+        <button class="btn btn--ghost btn--medium gnb__login" type="button">
+          <span class="btn__label">로그인</span>
+        </button>
         <button class="btn btn--ghost btn--medium btn--icon-only gnb__notify" aria-label="알림">
           <svg class="btn__icon" aria-hidden="true"><use href="#icon-notifications"></use></svg>
           <span class="badge btn__badge"></span>
@@ -246,7 +258,7 @@
                  서고, 시트에서는 달력 바로 아래에 한 줄로 흐릅니다 — 시트에는
                  아래에 제 초기화가 따로 있어 이 버튼이 나오지 않습니다. -->
             <div class="find-dates-bar">
-              <div class="find-dates" data-scroll-fade data-find-dates></div>
+              <div class="find-dates" data-scroll-row data-find-dates></div>
               <button class="btn btn--blur btn--medium find-dates-bar__clear" type="button" data-find-clear="date">
                 <span class="btn__label">초기화</span>
               </button>
@@ -262,7 +274,7 @@
        말합니다(policy.html). 알약은 데이터에서 만듭니다. -->
   <div class="find-types" data-find-types>
     <div class="find-types__row">
-      <div class="find-types__list" data-scroll-fade data-find-kinds role="radiogroup" aria-label="모임 유형"></div>
+      <div class="find-types__list" data-scroll-row data-find-kinds role="radiogroup" aria-label="모임 유형"></div>
       <!-- 폰에서는 한 줄만 보이고 이 버튼으로 나머지를 펼칩니다. 넓은 화면에는
            줄을 접을 이유가 없어 나오지 않습니다(find.css). -->
       <button class="btn btn--outlined btn--medium btn--icon-only find-types__more" type="button"
@@ -276,7 +288,7 @@
          (find.css). 안쪽 한 겹은 그 높이를 잘라주는 자리입니다. -->
     <div class="find-types__sub" data-find-tags-box hidden>
       <div class="find-types__sub-inner">
-        <div class="find-types__sub-list" data-scroll-fade data-find-tags role="group" aria-label="세부 조건"></div>
+        <div class="find-types__sub-list" data-scroll-row data-find-tags role="group" aria-label="세부 조건"></div>
       </div>
     </div>
   </div>
@@ -373,10 +385,10 @@
   </footer>
 </div>
 
-<!-- 이 화면의 앱바는 물러나지 않습니다(data-auto-hide 없음). 조건을 좁혀 가는
-     동안 화면 위는 필터바만 남기고 비워지는데, 아래까지 함께 비면 지금 어느
-     화면에 있는지 짚을 곳이 없어집니다. -->
-<nav class="app-bar app-bar--fixed" aria-label="주요 메뉴">
+<!-- 아래로 읽어 내려가는 동안에는 물러납니다(auto-hide.js). 좁은 화면에서
+     앱바 한 줄이 카드 반 장만큼이라, 목록을 훑는 동안에는 비워 두고 위로
+     되돌릴 때 돌아옵니다. -->
+<nav class="app-bar app-bar--fixed" data-auto-hide="down" aria-label="주요 메뉴">
   <a class="app-bar__item" href="./index.html">
     <svg class="app-bar__icon" aria-hidden="true"><use href="#icon-home"></use></svg>
     <span class="app-bar__label">홈</span>
@@ -393,7 +405,7 @@
     <svg class="app-bar__icon" aria-hidden="true"><use href="#icon-cardStar"></use></svg>
     <span class="app-bar__label">추천</span>
   </a>
-  <a class="app-bar__item" href="#">
+  <a class="app-bar__item" href="./my.html">
     <svg class="app-bar__icon" aria-hidden="true"><use href="#icon-my"></use></svg>
     <span class="app-bar__label">마이</span>
   </a>
@@ -406,7 +418,7 @@
   await import('./components/scroll-restore.js?v=f612a7a5')
   const { initStickyGnb } = await import('./components/gnb.js?v=ca09b963')
   initStickyGnb()
-  const { initMyMenus } = await import('./components/my-menu.js?v=8a7ae585')
+  const { initMyMenus } = await import('./components/my-menu.js?v=8a49ec5e')
   initMyMenus()
   const { initSegmentedControls } = await import('./components/segmented-control.js?v=bbd7c4b8')
   initSegmentedControls()
@@ -418,7 +430,8 @@
   initFind()
   const { initFindBar } = await import('./components/find-bar.js?v=3e01e82d')
   initFindBar()
-  // 옆으로 흐르는 줄들(모임 유형·하위 필터·담은 날짜)의 양 끝을 옅게 합니다.
-  const { initScrollFades } = await import('./components/scroll-fade.js?v=c4feee7e')
-  initScrollFades()
+  // 옆으로 흐르는 줄들(모임 유형·하위 필터·담은 날짜) — 양 끝을 옅게 하고,
+  // 고른 알약을 줄 가운데로 데려옵니다.
+  const { initScrollRows } = await import('./components/scroll-row.js?v=ea4b5fb8')
+  initScrollRows()
 </script>

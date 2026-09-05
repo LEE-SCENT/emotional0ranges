@@ -32,8 +32,8 @@
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
 <link rel="stylesheet" href="./components/segmented-control.css?v=027af639">
 <link rel="stylesheet" href="./components/tooltip.css?v=7ec024df">
-<link rel="stylesheet" href="./components/gnb.css?v=77de0467">
-<link rel="stylesheet" href="./components/my-menu.css?v=c1916fec">
+<link rel="stylesheet" href="./components/gnb.css?v=e4b292f9">
+<link rel="stylesheet" href="./components/my-menu.css?v=862836f8">
 <link rel="stylesheet" href="./components/tag.css?v=fef5c195">
 <link rel="stylesheet" href="./components/footer.css?v=090dd8fc">
 <link rel="stylesheet" href="./components/option-card.css?v=9cca1493">
@@ -77,10 +77,16 @@
     <!-- 로고와 액션은 화면 끝에 두고, 가운데 블록만 본문과 같은 1280 에서 멈춥니다. -->
     <div class="gnb__center">
       <div class="gnb__segmented">
+        <!-- 지금 열려 있는 것은 오프라인뿐입니다. 온라인은 자리만 잡아두고, 아래
+             말풍선이 그리로 가는 길을 알립니다 — 눌러도 아무 데도 가지 않는 칸을
+             다른 칸과 같은 무게로 두면 이미 열린 것으로 읽힙니다. -->
         <div class="segmented" role="tablist" aria-label="모임 형태">
           <span class="segmented__thumb" aria-hidden="true"></span>
-          <button class="segmented__item is-selected" role="tab" aria-selected="true">온라인</button>
-          <button class="segmented__item" role="tab" aria-selected="false">오프라인</button>
+          <button class="segmented__item is-selected" role="tab" aria-selected="true">오프라인</button>
+          <button class="segmented__item" role="tab" aria-selected="false" aria-disabled="true">온라인</button>
+        </div>
+        <div class="tooltip tooltip--bottom gnb__tip">
+          <span class="tooltip__label">온라인 매칭 지금 보러 가기</span>
         </div>
       </div>
       <nav class="gnb__menu" aria-label="주요 메뉴">
@@ -93,6 +99,11 @@
     </div>
     <div class="gnb__side gnb__side--end">
       <div class="gnb__actions">
+        <!-- 로그인은 폰에서만 나옵니다 — 넓은 화면에서는 메뉴 버튼 아래 내 메뉴가
+             그 자리를 대신합니다. -->
+        <button class="btn btn--ghost btn--medium gnb__login" type="button">
+          <span class="btn__label">로그인</span>
+        </button>
         <button class="btn btn--ghost btn--medium btn--icon-only gnb__notify" aria-label="알림">
           <svg class="btn__icon" aria-hidden="true"><use href="#icon-notifications"></use></svg>
           <span class="badge btn__badge"></span>
@@ -442,7 +453,7 @@
   await import('./components/scroll-restore.js?v=f612a7a5')
   const { initStickyGnb } = await import('./components/gnb.js?v=ca09b963')
   initStickyGnb()
-  const { initMyMenus } = await import('./components/my-menu.js?v=8a7ae585')
+  const { initMyMenus } = await import('./components/my-menu.js?v=8a49ec5e')
   initMyMenus()
   // 일정을 읽는 스크립트들보다 먼저 돕니다. 상품이 정해져 있으면 목록을 그 상품의
   // 일정으로 갈아끼우는데, 날짜를 그린 뒤에 갈아끼우면 새로 그려진 목록의 날짜 칸이

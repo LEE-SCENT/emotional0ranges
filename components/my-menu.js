@@ -136,6 +136,22 @@ function profile() {
   return box
 }
 
+/**
+ * 내 메뉴의 내용을 그립니다 — 누구인지, 프로필 카드, 그리고 열넷.
+ *
+ * 넓은 화면의 판(GNB 아래 팝오버)과 폰의 마이 화면(my.html)이 이것을 함께
+ * 씁니다. 담기는 자리가 달라도 담기는 것은 같아야 합니다 — 항목이 하나 늘 때
+ * 두 곳을 고치게 두지 않습니다.
+ */
+export function renderMyMenu(el) {
+  if (!el) return
+  el.replaceChildren(
+    profile(),
+    ...ITEMS.map((entry) => (entry ? item(entry) : document.createElement('hr'))),
+  )
+  for (const hr of el.querySelectorAll('hr')) hr.className = 'my-menu__divider'
+}
+
 export function initMyMenu(root = document.querySelector('[data-my-menu]')) {
   if (!root || root.dataset.myMenuReady) return
   root.dataset.myMenuReady = '1'
@@ -144,10 +160,7 @@ export function initMyMenu(root = document.querySelector('[data-my-menu]')) {
   const panel = root.querySelector('.my-menu__panel')
   if (!opener || !panel) return
 
-  panel.replaceChildren(
-    profile(),
-    ...ITEMS.map((entry) => (entry ? item(entry) : el('hr', 'my-menu__divider'))),
-  )
+  renderMyMenu(panel)
 
   const focusables = () =>
     [...panel.querySelectorAll('a, button')].filter((node) => !node.disabled)
@@ -211,4 +224,9 @@ export function initMyMenu(root = document.querySelector('[data-my-menu]')) {
 
 export function initMyMenus(scope = document) {
   for (const root of scope.querySelectorAll('[data-my-menu]')) initMyMenu(root)
+}
+
+/** 폰의 마이 화면. 판이 아니라 화면이라 여닫을 것이 없고, 내용만 그립니다. */
+export function initMyPage(el = document.querySelector('[data-my-page]')) {
+  renderMyMenu(el)
 }
