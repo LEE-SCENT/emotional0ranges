@@ -34,9 +34,9 @@
 
 .my-menu__panel {
   position: absolute;
-  /* 버튼 아래 8. 오른쪽 끝을 버튼에 맞춥니다 — GNB 의 오른쪽 끝이라 왼쪽으로
-     붙이면 판이 화면 밖으로 나갑니다. */
-  inset: calc(100% + var(--spacing-200)) 0 auto auto;
+  /* 버튼 아래 6(Figma). 오른쪽 끝을 버튼에 맞춥니다 — GNB 의 오른쪽 끝이라
+     왼쪽으로 붙이면 판이 화면 밖으로 나갑니다. */
+  inset: calc(100% + var(--spacing-150)) 0 auto auto;
   z-index: 30;
   box-sizing: border-box;
   inline-size: 260px;
