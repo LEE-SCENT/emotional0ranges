@@ -518,6 +518,25 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
     update()
   }
 
+  /**
+   * 날짜 조건을 처음 상태로. 담은 것과 담는 중인 것을 비우고, 보고 있던 달도
+   * 이번 달로 되돌립니다.
+   *
+   * 담은 날짜만 지우면 달력은 12월에 선 채로 남습니다. 지웠다는 말과 달리 화면에는
+   * 이번 달이 없고, 폰에서는 달력이 한 달만 서서 오늘이 아예 보이지 않습니다 —
+   * 지운 사람이 다시 고르려면 넘겨 온 만큼 되돌아가야 합니다.
+   *
+   * 시트의 초기화, 빈 목록의 필터 초기화, 날짜 칸의 지우기가 모두 이것을 씁니다 —
+   * 지우는 자리마다 되돌리는 범위가 다르면 어느 것을 눌렀는지에 따라 달력이
+   * 남기도 하고 돌아가기도 합니다.
+   */
+  function clearDates() {
+    selections = []
+    pendingFrom = null
+    monthOffset = 0
+    renderCalendar()
+  }
+
   calendar?.addEventListener('click', (e) => {
     const nav = e.target.closest('.calendar__nav')
     if (nav && !nav.disabled) {
@@ -975,13 +994,7 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
     const anyKind = root.querySelector('input[name="kind"][value=""]')
     if (anyKind) anyKind.checked = true
     renderTags()
-    selections = []
-    pendingFrom = null
-    /* 보고 있던 달도 이번 달로 되돌립니다. 담은 날짜만 지우면 달력은 12월에 선 채로
-       남아, 조건을 다 지웠는데도 이번 주 모임이 달력에 보이지 않습니다 — 처음
-       상태로 돌리는 버튼이 돌려놓지 않은 자리가 하나 남는 셈입니다. */
-    monthOffset = 0
-    renderCalendar()
+    clearDates()
     update()
   }
 
@@ -994,9 +1007,7 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
       return
     }
     if (which === 'date') {
-      selections = []
-      pendingFrom = null
-      renderCalendar()
+      clearDates()
     } else if (which === 'seats') {
       const one = root.querySelector('input[name="seats"][value="one"]')
       if (one) one.checked = true
