@@ -512,12 +512,19 @@
    프로필 블록은 이미 바깥 16 이라 안쪽에서 8 을 더 주던 것만 거둡니다.
 */
 
+/* 줄도 판보다 한 단 높습니다 — 위아래 12 로 44 (판은 8 로 36). 손가락으로
+   짚는 자리라 그만큼은 있어야 하고, 화면 하나를 목록이 통째로 쓰고 있어
+   판에서처럼 아껴 담을 이유도 없습니다(Figma 67:87010). */
 .my-page .my-menu__item {
+  padding-block: var(--spacing-300);
   padding-inline: var(--spacing-400)
     calc(var(--spacing-400) + var(--icon-size-xs) + var(--spacing-200));
 }
 
 .my-page .my-menu__arrow { inset-inline-end: var(--spacing-400); }
+
+/* 구분선도 글자와 같은 자리에서 시작하고 끝납니다. */
+.my-page .my-menu__divider { margin-inline: var(--spacing-400); }
 
 .my-page .my-menu__who,
 .my-page .my-menu__intro,
