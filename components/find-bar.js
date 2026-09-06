@@ -977,6 +977,10 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
     renderTags()
     selections = []
     pendingFrom = null
+    /* 보고 있던 달도 이번 달로 되돌립니다. 담은 날짜만 지우면 달력은 12월에 선 채로
+       남아, 조건을 다 지웠는데도 이번 주 모임이 달력에 보이지 않습니다 — 처음
+       상태로 돌리는 버튼이 돌려놓지 않은 자리가 하나 남는 셈입니다. */
+    monthOffset = 0
     renderCalendar()
     update()
   }
