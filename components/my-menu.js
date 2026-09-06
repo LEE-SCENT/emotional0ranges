@@ -149,28 +149,33 @@ function profile() {
 }
 
 /**
- * 로그인하지 않았을 때의 머리.
+ * 로그인하지 않았을 때의 머리(Figma 67:86252).
  *
- * 없는 이름 자리를 비워두는 대신 무엇을 할 수 있는지를 적습니다 — 빈 자리는
- * 불러오는 중인지 없는 것인지 알 수 없고, 이 화면에 처음 들어온 사람에게 가장
- * 먼저 필요한 것은 로그인입니다.
+ * 없는 이름 자리를 비워두는 대신 권하는 말과 로그인 하나를 둡니다 — 빈 자리는
+ * 불러오는 중인지 없는 것인지 알 수 없고, 이 판을 처음 연 사람에게 가장 먼저
+ * 필요한 것은 로그인입니다.
  *
- * ⚠️ 이 상태의 디자인은 아직 없습니다. 담을 것(권하는 말 + 로그인)만 정해두고,
- *    생김새는 로그인한 상태의 배너를 그대로 따랐습니다.
+ * 로그인한 쪽의 프로필 카드가 배너(누를 수 있는 줄)인 것과 달리 이쪽은 채운
+ * 버튼입니다. 여기서 할 수 있는 일이 하나뿐이라, 고를 것이 아니라 눌러야 할
+ * 것으로 서야 합니다.
  */
 function signedOut() {
-  const box = el('div', 'my-menu__profile')
-  const card = el('a', 'my-menu__card')
-  card.href = '#'
-  card.setAttribute('role', 'menuitem')
-  const text = el('span', 'my-menu__card-text')
-  text.append(
-    el('span', 'my-menu__card-label', '로그인하고 시작하기'),
-    el('span', 'my-menu__card-desc', '프로필과 신청 내역은 로그인 후에 볼 수 있어요'),
+  const box = el('div', 'my-menu__profile my-menu__profile--out')
+
+  const intro = el('div', 'my-menu__intro')
+  intro.append(
+    el('p', 'my-menu__intro-title', '로그인하고 시작하기'),
+    el('p', 'my-menu__intro-desc', '취향이 맞는 새로운 인연을 만나보세요'),
   )
-  card.append(text)
-  card.insertAdjacentHTML('beforeend', '<svg aria-hidden="true"><use href="#icon-chevronRight"></use></svg>')
-  box.append(card)
+
+  /* 아직 로그인 화면이 없어 <button> 입니다 — 주소가 없는 <a> 는 키보드가 지나가지
+     못하고, 눌러도 아무 일이 없다는 것을 미리 말해주지도 못합니다. */
+  const login = el('button', 'btn btn--filled btn--medium my-menu__login')
+  login.type = 'button'
+  login.setAttribute('role', 'menuitem')
+  login.append(el('span', 'btn__label', '로그인'))
+
+  box.append(intro, login)
   return box
 }
 
@@ -191,7 +196,16 @@ export function renderMyMenu(box, { page = false } = {}) {
   const shown = ITEMS.filter(
     (entry) => !entry || ((ME || !entry.auth) && !(page && entry.panelOnly)),
   )
-  const lines = shown.filter((entry, i) => entry || (shown[i - 1] && shown[i + 1]))
+
+  /* 잇달아 남은 구분선은 하나로 합치고 끝에 남은 것은 버립니다. 맨 앞의 것은
+     남깁니다 — 위에 늘 프로필 블록이 서 있어, 그 선이 나눌 것이 있습니다
+     (Figma: 로그인 전에는 로그인 버튼과 공지사항 사이에 선이 하나 섭니다). */
+  const lines = []
+  for (const entry of shown) {
+    if (entry) lines.push(entry)
+    else if (!lines.length || lines.at(-1)) lines.push(null)
+  }
+  while (lines.length && !lines.at(-1)) lines.pop()
 
   box.replaceChildren(
     ME ? profile() : signedOut(),

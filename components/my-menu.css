@@ -105,6 +105,45 @@
   padding: var(--spacing-200) var(--spacing-400);
 }
 
+/* 로그인 전에는 12 입니다 — 담기는 것이 글 묶음과 버튼 둘뿐이라, 로그인한 쪽의
+   8 로는 버튼이 글에 붙어 한 덩어리로 읽힙니다(Figma). */
+.my-menu__profile--out { gap: var(--spacing-300); }
+
+/* 안쪽 8 은 아래 목록의 줄 글자와 왼쪽 끝을 맞추기 위한 것입니다 — 판 여백 16 에
+   이 8 을 더하면 목록의 24 와 같아집니다. */
+.my-menu__intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-50);
+  padding-inline: var(--spacing-200);
+}
+
+.my-menu__intro-title,
+.my-menu__intro-desc { margin: 0; }
+
+.my-menu__intro-title {
+  color: var(--colors-fg);
+  font-size: var(--typography-body-m-medium-font-size);
+  font-weight: var(--typography-body-m-medium-font-weight);
+  line-height: var(--typography-body-m-medium-line-height);
+  letter-spacing: var(--typography-body-m-medium-letter-spacing);
+}
+
+/* 설명은 fg-low 입니다 — 로그인한 쪽의 등급(fg-lower)보다 한 단 진합니다.
+   저쪽은 이름 옆에 붙는 꼬리표라 물러나야 하지만, 이쪽은 로그인할 이유를 말하는
+   유일한 줄이라 읽혀야 합니다(Figma). */
+.my-menu__intro-desc {
+  color: var(--colors-fg-low);
+  font-size: var(--typography-body-s-regular-font-size);
+  font-weight: var(--typography-body-s-regular-font-weight);
+  line-height: var(--typography-body-s-regular-line-height);
+  letter-spacing: var(--typography-body-s-regular-letter-spacing);
+}
+
+/* 판 폭을 꽉 채웁니다. 글자 폭에 맞춰 두면 260 짜리 판 안에서 가운데도 왼쪽도
+   아닌 자리에 서서, 무엇에 딸린 버튼인지가 흐려집니다(Figma). */
+.my-menu__login { align-self: stretch; }
+
 .my-menu__who {
   display: flex;
   align-items: center;
