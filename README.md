@@ -119,6 +119,43 @@ Figma 텍스트 스타일과 1:1 대응합니다. 실제 화면 작업에서는 
 역할이 달라 이름이 둘인 것이며, 나중에 본문 강조와 소제목의 크기를 따로 조정하게 되면
 semantic 레이어에서 한쪽만 바꿀 수 있습니다 — `border` 와 `divider` 가 같은 이유로 나뉘어 있는 것과 같습니다.
 
+### template — 템플릿 전용
+
+상세 페이지 템플릿(`templete/`)에서만 쓰는 여덟 개입니다. Figma 텍스트 스타일 폴더
+`templete` 와 1:1 대응합니다 — 폴더 이름의 철자는 Figma 쪽 오타이고, 토큰 이름은
+`template` 로 바로잡았습니다.
+
+| 토큰 | size | line-height | weight | tracking |
+| --- | --- | --- | --- | --- |
+| `template-title-l` | 52 | 130% | 600 | 0 |
+| `template-title-l-mobile` | 28 | 130% | 600 | 0 |
+| `template-title-s` | 28 | 130% | 600 | 0 |
+| `template-title-s-mobile` | 16 | 150% | 600 | 0 |
+| `template-label` | 20 | 140% | 600 | 0 |
+| `template-label-mobile` | 14 | 140% | 600 | 0 |
+| `template-text` | 24 | 140% | 400 | 0 |
+| `template-text-mobile` | 14 | 140% | 400 | 0 |
+
+**⚠️ 규칙: 템플릿 토큰은 템플릿에서만 씁니다.** 제품 화면은 `body/*` `heading/*` 을 쓰세요.
+UI 텍스트가 아니라 운영이 채워 넣는 글의 크기라, 같은 16px 이라도 자리와 굵기가 다릅니다.
+`--typography-template-*` 이 `templete/` 밖에서 보이면 잘못 쓴 것입니다.
+
+```sh
+grep -rn "typography-template" --include="*.css" --include="*.html" . | grep -v "^./templete/" | grep -v "^./build/"
+```
+
+`-mobile` 짝이 따로 있는 것은 이 글이 기기에 따라 크게 달라지기 때문입니다. 어느 쪽인지는
+토큰이 정하지 않습니다 — `templete/blocks.css` 가 `.tpl--desktop` / `.tpl--mobile` 로
+밖에서 받습니다. 데스크톱 기준 폭 750 과 PC 콘텐츠 영역 최대 852 가 둘 다 960 보다 좁아,
+폭만 보고는 가릴 수 없습니다.
+
+`template-title-l-mobile` 과 `template-title-s` 는 값이 같습니다(28 / 130%). 하나로 합치지
+않은 것은 둘이 서로 다른 결정이어서입니다 — `body-xl-semibold` 와 `heading-xs-semibold` 가
+나뉘어 있는 것과 같은 이유입니다.
+
+`template-title-s-mobile` 만 행간이 150 입니다. 좁은 화면에서 소제목이 본문 크기(16)까지
+내려오면 제목처럼 붙여 짜는 대신 읽기 좋게 벌립니다.
+
 ### letter-spacing 은 em 으로 변환됩니다
 
 토큰은 Figma와 같은 퍼센트(`-2%`)로 정의하지만, **CSS `letter-spacing` 은 퍼센트를 받지 않습니다.**

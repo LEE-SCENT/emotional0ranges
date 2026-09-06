@@ -505,6 +505,46 @@
   --typography-body-xs-regular-font-weight: var(--_font-weight-regular-400);
   --typography-body-xs-regular-line-height: var(--_line-height-140);
   --typography-body-xs-regular-letter-spacing: var(--_letter-spacing-0);
+  --typography-template-title-l-font-family: var(--_font-family-base);
+  --typography-template-title-l-font-size: var(--_font-size-1150);
+  --typography-template-title-l-font-weight: var(--_font-weight-semibold-600);
+  --typography-template-title-l-line-height: var(--_line-height-130);
+  --typography-template-title-l-letter-spacing: var(--_letter-spacing-0);
+  --typography-template-title-l-mobile-font-family: var(--_font-family-base);
+  --typography-template-title-l-mobile-font-size: var(--_font-size-750);
+  --typography-template-title-l-mobile-font-weight: var(--_font-weight-semibold-600);
+  --typography-template-title-l-mobile-line-height: var(--_line-height-130);
+  --typography-template-title-l-mobile-letter-spacing: var(--_letter-spacing-0);
+  --typography-template-title-s-font-family: var(--_font-family-base);
+  --typography-template-title-s-font-size: var(--_font-size-750);
+  --typography-template-title-s-font-weight: var(--_font-weight-semibold-600);
+  --typography-template-title-s-line-height: var(--_line-height-130);
+  --typography-template-title-s-letter-spacing: var(--_letter-spacing-0);
+  --typography-template-title-s-mobile-font-family: var(--_font-family-base);
+  --typography-template-title-s-mobile-font-size: var(--_font-size-350);
+  --typography-template-title-s-mobile-font-weight: var(--_font-weight-semibold-600);
+  --typography-template-title-s-mobile-line-height: var(--_line-height-150);
+  --typography-template-title-s-mobile-letter-spacing: var(--_letter-spacing-0);
+  --typography-template-label-font-family: var(--_font-family-base);
+  --typography-template-label-font-size: var(--_font-size-500);
+  --typography-template-label-font-weight: var(--_font-weight-semibold-600);
+  --typography-template-label-line-height: var(--_line-height-140);
+  --typography-template-label-letter-spacing: var(--_letter-spacing-0);
+  --typography-template-label-mobile-font-family: var(--_font-family-base);
+  --typography-template-label-mobile-font-size: var(--_font-size-250);
+  --typography-template-label-mobile-font-weight: var(--_font-weight-semibold-600);
+  --typography-template-label-mobile-line-height: var(--_line-height-140);
+  --typography-template-label-mobile-letter-spacing: var(--_letter-spacing-0);
+  --typography-template-text-font-family: var(--_font-family-base);
+  --typography-template-text-font-size: var(--_font-size-700);
+  --typography-template-text-font-weight: var(--_font-weight-regular-400);
+  --typography-template-text-line-height: var(--_line-height-140);
+  --typography-template-text-letter-spacing: var(--_letter-spacing-0);
+  --typography-template-text-mobile-font-family: var(--_font-family-base);
+  --typography-template-text-mobile-font-size: var(--_font-size-250);
+  --typography-template-text-mobile-font-weight: var(--_font-weight-regular-400);
+  --typography-template-text-mobile-line-height: var(--_line-height-140);
+  --typography-template-text-mobile-letter-spacing: var(--_letter-spacing-0);
 }
 
 /* ---- 유틸리티 클래스 ---- */
@@ -682,4 +722,60 @@
   font-weight: var(--typography-body-xs-regular-font-weight);
   line-height: var(--typography-body-xs-regular-line-height);
   letter-spacing: var(--typography-body-xs-regular-letter-spacing);
+}
+.typography-template-title-l {
+  font-family: var(--typography-template-title-l-font-family);
+  font-size: var(--typography-template-title-l-font-size);
+  font-weight: var(--typography-template-title-l-font-weight);
+  line-height: var(--typography-template-title-l-line-height);
+  letter-spacing: var(--typography-template-title-l-letter-spacing);
+}
+.typography-template-title-l-mobile {
+  font-family: var(--typography-template-title-l-mobile-font-family);
+  font-size: var(--typography-template-title-l-mobile-font-size);
+  font-weight: var(--typography-template-title-l-mobile-font-weight);
+  line-height: var(--typography-template-title-l-mobile-line-height);
+  letter-spacing: var(--typography-template-title-l-mobile-letter-spacing);
+}
+.typography-template-title-s {
+  font-family: var(--typography-template-title-s-font-family);
+  font-size: var(--typography-template-title-s-font-size);
+  font-weight: var(--typography-template-title-s-font-weight);
+  line-height: var(--typography-template-title-s-line-height);
+  letter-spacing: var(--typography-template-title-s-letter-spacing);
+}
+.typography-template-title-s-mobile {
+  font-family: var(--typography-template-title-s-mobile-font-family);
+  font-size: var(--typography-template-title-s-mobile-font-size);
+  font-weight: var(--typography-template-title-s-mobile-font-weight);
+  line-height: var(--typography-template-title-s-mobile-line-height);
+  letter-spacing: var(--typography-template-title-s-mobile-letter-spacing);
+}
+.typography-template-label {
+  font-family: var(--typography-template-label-font-family);
+  font-size: var(--typography-template-label-font-size);
+  font-weight: var(--typography-template-label-font-weight);
+  line-height: var(--typography-template-label-line-height);
+  letter-spacing: var(--typography-template-label-letter-spacing);
+}
+.typography-template-label-mobile {
+  font-family: var(--typography-template-label-mobile-font-family);
+  font-size: var(--typography-template-label-mobile-font-size);
+  font-weight: var(--typography-template-label-mobile-font-weight);
+  line-height: var(--typography-template-label-mobile-line-height);
+  letter-spacing: var(--typography-template-label-mobile-letter-spacing);
+}
+.typography-template-text {
+  font-family: var(--typography-template-text-font-family);
+  font-size: var(--typography-template-text-font-size);
+  font-weight: var(--typography-template-text-font-weight);
+  line-height: var(--typography-template-text-line-height);
+  letter-spacing: var(--typography-template-text-letter-spacing);
+}
+.typography-template-text-mobile {
+  font-family: var(--typography-template-text-mobile-font-family);
+  font-size: var(--typography-template-text-mobile-font-size);
+  font-weight: var(--typography-template-text-mobile-font-weight);
+  line-height: var(--typography-template-text-mobile-line-height);
+  letter-spacing: var(--typography-template-text-mobile-letter-spacing);
 }

@@ -390,6 +390,62 @@ export const typography = {
     "fontWeight": 400,
     "lineHeight": "140%",
     "letterSpacing": "0em"
+  },
+  "template-title-l": {
+    "fontFamily": "\"Pretendard Variable\", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, \"Helvetica Neue\", \"Segoe UI\", \"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", sans-serif",
+    "fontSize": "52px",
+    "fontWeight": 600,
+    "lineHeight": "130%",
+    "letterSpacing": "0em"
+  },
+  "template-title-l-mobile": {
+    "fontFamily": "\"Pretendard Variable\", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, \"Helvetica Neue\", \"Segoe UI\", \"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", sans-serif",
+    "fontSize": "28px",
+    "fontWeight": 600,
+    "lineHeight": "130%",
+    "letterSpacing": "0em"
+  },
+  "template-title-s": {
+    "fontFamily": "\"Pretendard Variable\", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, \"Helvetica Neue\", \"Segoe UI\", \"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", sans-serif",
+    "fontSize": "28px",
+    "fontWeight": 600,
+    "lineHeight": "130%",
+    "letterSpacing": "0em"
+  },
+  "template-title-s-mobile": {
+    "fontFamily": "\"Pretendard Variable\", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, \"Helvetica Neue\", \"Segoe UI\", \"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", sans-serif",
+    "fontSize": "16px",
+    "fontWeight": 600,
+    "lineHeight": "150%",
+    "letterSpacing": "0em"
+  },
+  "template-label": {
+    "fontFamily": "\"Pretendard Variable\", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, \"Helvetica Neue\", \"Segoe UI\", \"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", sans-serif",
+    "fontSize": "20px",
+    "fontWeight": 600,
+    "lineHeight": "140%",
+    "letterSpacing": "0em"
+  },
+  "template-label-mobile": {
+    "fontFamily": "\"Pretendard Variable\", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, \"Helvetica Neue\", \"Segoe UI\", \"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", sans-serif",
+    "fontSize": "14px",
+    "fontWeight": 600,
+    "lineHeight": "140%",
+    "letterSpacing": "0em"
+  },
+  "template-text": {
+    "fontFamily": "\"Pretendard Variable\", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, \"Helvetica Neue\", \"Segoe UI\", \"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", sans-serif",
+    "fontSize": "24px",
+    "fontWeight": 400,
+    "lineHeight": "140%",
+    "letterSpacing": "0em"
+  },
+  "template-text-mobile": {
+    "fontFamily": "\"Pretendard Variable\", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, \"Helvetica Neue\", \"Segoe UI\", \"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", sans-serif",
+    "fontSize": "14px",
+    "fontWeight": 400,
+    "lineHeight": "140%",
+    "letterSpacing": "0em"
   }
 } as const
 

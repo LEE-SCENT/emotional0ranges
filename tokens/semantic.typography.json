@@ -240,6 +240,89 @@
             "letterSpacing": "{primitive.letterSpacing.0}"
           }
         }
+      },
+      "template": {
+        "$description": "상세 페이지 템플릿(templete/) 전용입니다. Figma 텍스트 스타일 폴더 templete 와 1:1 대응합니다 — 폴더 이름의 철자는 Figma 쪽 오타이고, 여기서는 template 으로 바로잡았습니다.\n\n⚠️ 규칙: 템플릿 토큰은 템플릿에서만 씁니다. 제품 화면은 body/* heading/* 을 쓰세요. --typography-template-* 이 templete/ 밖에서 보이면 잘못 쓴 것입니다.\n\nUI 텍스트가 아니라 운영이 채워 넣는 글의 크기입니다. body/heading 이 화면 부품의 글자라면 이쪽은 한 판을 읽어 내려가는 글이라, 같은 16px 이라도 자리와 굵기가 다릅니다.\n\n-mobile 짝이 있는 것은 이 글이 기기에 따라 크기가 크게 달라지기 때문입니다. 어느 쪽인지는 토큰이 정하지 않습니다 — templete/blocks.css 에서 .tpl--desktop / .tpl--mobile 로 밖에서 정합니다. 데스크톱 기준 폭 750, PC 콘텐츠 영역 최대 852 가 둘 다 960 보다 좁아 폭만으로는 가릴 수 없습니다.",
+        "title-l": {
+          "$value": {
+            "fontFamily": "{primitive.fontFamily.base}",
+            "fontSize": "{primitive.fontSize.1150}",
+            "fontWeight": "{primitive.fontWeight.semibold-600}",
+            "lineHeight": "{primitive.lineHeight.130}",
+            "letterSpacing": "{primitive.letterSpacing.0}"
+          },
+          "$description": "52px. 본문 안의 가장 큰 제목."
+        },
+        "title-l-mobile": {
+          "$value": {
+            "fontFamily": "{primitive.fontFamily.base}",
+            "fontSize": "{primitive.fontSize.750}",
+            "fontWeight": "{primitive.fontWeight.semibold-600}",
+            "lineHeight": "{primitive.lineHeight.130}",
+            "letterSpacing": "{primitive.letterSpacing.0}"
+          },
+          "$description": "28px. title-s 와 값이 같습니다 — 좁은 화면의 큰 제목이 넓은 화면의 작은 제목과 같은 크기로 내려앉습니다. 값이 같다고 하나로 합치지 않은 것은 둘이 서로 다른 결정이어서입니다. 넓은 화면의 소제목이 24 로 바뀌어도 좁은 화면의 대제목은 28 에 남아야 합니다."
+        },
+        "title-s": {
+          "$value": {
+            "fontFamily": "{primitive.fontFamily.base}",
+            "fontSize": "{primitive.fontSize.750}",
+            "fontWeight": "{primitive.fontWeight.semibold-600}",
+            "lineHeight": "{primitive.lineHeight.130}",
+            "letterSpacing": "{primitive.letterSpacing.0}"
+          },
+          "$description": "28px. 본문 안의 소제목."
+        },
+        "title-s-mobile": {
+          "$value": {
+            "fontFamily": "{primitive.fontFamily.base}",
+            "fontSize": "{primitive.fontSize.350}",
+            "fontWeight": "{primitive.fontWeight.semibold-600}",
+            "lineHeight": "{primitive.lineHeight.150}",
+            "letterSpacing": "{primitive.letterSpacing.0}"
+          },
+          "$description": "16px / 150%. 이 짝만 행간이 130 이 아니라 150 입니다 — 좁은 화면에서 소제목이 본문 크기까지 내려오면 제목처럼 붙여 짜는 대신 읽기 좋게 벌립니다."
+        },
+        "label": {
+          "$value": {
+            "fontFamily": "{primitive.fontFamily.base}",
+            "fontSize": "{primitive.fontSize.500}",
+            "fontWeight": "{primitive.fontWeight.semibold-600}",
+            "lineHeight": "{primitive.lineHeight.140}",
+            "letterSpacing": "{primitive.letterSpacing.0}"
+          },
+          "$description": "20px. Title 블록의 라벨, 버튼·쿠폰 문구. 본문보다 작지만 굵습니다."
+        },
+        "label-mobile": {
+          "$value": {
+            "fontFamily": "{primitive.fontFamily.base}",
+            "fontSize": "{primitive.fontSize.250}",
+            "fontWeight": "{primitive.fontWeight.semibold-600}",
+            "lineHeight": "{primitive.lineHeight.140}",
+            "letterSpacing": "{primitive.letterSpacing.0}"
+          },
+          "$description": "14px. text-mobile 과 크기·행간이 같고 굵기만 다릅니다."
+        },
+        "text": {
+          "$value": {
+            "fontFamily": "{primitive.fontFamily.base}",
+            "fontSize": "{primitive.fontSize.700}",
+            "fontWeight": "{primitive.fontWeight.regular-400}",
+            "lineHeight": "{primitive.lineHeight.140}",
+            "letterSpacing": "{primitive.letterSpacing.0}"
+          },
+          "$description": "24px. 본문·목록 항목·아코디언 답변. UI 의 body-l(16px) 보다 한참 큽니다 — 화면 부품이 아니라 읽으라고 놓는 글입니다."
+        },
+        "text-mobile": {
+          "$value": {
+            "fontFamily": "{primitive.fontFamily.base}",
+            "fontSize": "{primitive.fontSize.250}",
+            "fontWeight": "{primitive.fontWeight.regular-400}",
+            "lineHeight": "{primitive.lineHeight.140}",
+            "letterSpacing": "{primitive.letterSpacing.0}"
+          },
+          "$description": "14px."
+        }
       }
     }
   }
