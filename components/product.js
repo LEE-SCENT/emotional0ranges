@@ -17,6 +17,7 @@
  */
 
 import { PRODUCTS, seatsText, startTime } from './products.js?v=a3d5fd4b'
+import { ME } from './my-menu.js?v=b6d6b013'
 
 export const currentProduct = () => {
   const slug = new URLSearchParams(location.search).get('product')
@@ -70,7 +71,7 @@ function groupByDay(schedule) {
   return days
 }
 
-function renderSchedule(scope, schedule) {
+function renderSchedule(scope, schedule, locked) {
   const list = scope.querySelector('.schedule__list')
   if (!list) return
   const keep = list.querySelector('.schedule__empty')
@@ -79,9 +80,15 @@ function renderSchedule(scope, schedule) {
     group.className = 'schedule__group'
     const rows = day.items
       .map((o) => {
-        const price = o.off
-          ? `<b>${won(o.price - o.off)}</b> <s>${won(o.price)}</s>`
-          : `<b>${won(o.price)}</b>`
+        /* 값을 가리는 상품이면 일정마다 값 대신 자물쇠가 섭니다. 목록에서 가려
+           놓고 눌러 들어온 자리에서 보여주면, 가린 뜻이 그 한 번으로 사라집니다.
+           고르는 것은 그대로 됩니다 — 언제 어디인지는 값과 상관없이 골라야 하고,
+           값은 로그인한 뒤에 같은 자리에 들어옵니다. */
+        const price = locked
+          ? `<svg class="option-card__lock" aria-hidden="true"><use href="#icon-lockFilled"></use></svg>${locked}`
+          : o.off
+            ? `<b>${won(o.price - o.off)}</b> <s>${won(o.price)}</s>`
+            : `<b>${won(o.price)}</b>`
         // 24 시간 안쪽에 끝나는 할인만 칩을 답니다. 나머지는 자리째 비워둡니다.
         const tag = o.deadline
           ? `<span class="option-card__deadline"${o.deadline < 86400 ? '' : ' hidden'}>
@@ -185,6 +192,6 @@ export function initProduct(scope = document) {
 
   renderGallery(scope, product.photos)
   renderViewer(scope, product.photos)
-  renderSchedule(scope, product.schedule)
+  renderSchedule(scope, product.schedule, product.locked && !ME ? product.locked : null)
   renderReviews(scope, product.reviews)
 }

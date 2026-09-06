@@ -72,6 +72,17 @@
   line-height: var(--typography-body-s-regular-line-height);
 }
 
+/* 값을 가린 자리. 값이 아니라 안내라 굵기를 벗고 한 단 물러납니다 — 목록 카드의
+   같은 자리와 같은 모습입니다(product-card.css). */
+.option-card__price:has(.option-card__lock) { color: var(--colors-fg-lower); }
+
+.option-card__lock {
+  flex: none;
+  inline-size: var(--icon-size-2xs);
+  block-size: var(--icon-size-2xs);
+  color: currentColor;
+}
+
 .option-card__price b {
   color: var(--_option-card-price-fg);
   font-weight: var(--typography-body-s-semibold-font-weight);
