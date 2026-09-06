@@ -175,7 +175,17 @@ function signedOut() {
   login.setAttribute('role', 'menuitem')
   login.append(el('span', 'btn__label', '로그인'))
 
-  box.append(intro, login)
+  /* 로그인 아래 한 줄. 아직 계정이 없는 사람에게는 위 버튼이 막다른 길이라,
+     그 자리에서 바로 다른 길을 냅니다(Figma 67:88130). 버튼 안에 두 길을 담지
+     않는 것은 눌러야 할 것이 하나로 보여야 하기 때문입니다. */
+  const signup = el('p', 'my-menu__signup')
+  signup.append(el('span', null, '아직 회원이 아니신가요?'))
+  const link = el('button', 'my-menu__signup-link', '회원가입')
+  link.type = 'button'
+  link.setAttribute('role', 'menuitem')
+  signup.append(link)
+
+  box.append(intro, login, signup)
   return box
 }
 

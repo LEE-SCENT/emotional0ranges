@@ -144,6 +144,42 @@
    아닌 자리에 서서, 무엇에 딸린 버튼인지가 흐려집니다(Figma). */
 .my-menu__login { align-self: stretch; }
 
+/* 로그인 버튼 아래 한 줄. 가운데에 서는 것은 위 버튼에 딸린 말이기 때문입니다 —
+   목록의 줄처럼 왼쪽에 붙으면 아래 항목들과 한 무리로 읽힙니다(Figma). */
+.my-menu__signup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-100);
+  margin: 0;
+  padding-inline: var(--spacing-200);
+  color: var(--colors-fg-low);
+  font-size: var(--typography-body-s-regular-font-size);
+  font-weight: var(--typography-body-s-regular-font-weight);
+  line-height: var(--typography-body-s-regular-line-height);
+  letter-spacing: var(--typography-body-s-regular-letter-spacing);
+  white-space: nowrap;
+}
+
+/* 밑줄이 브랜드색과 함께 섭니다 — 색만으로는 옆 글자와 같은 문장의 일부로 읽혀,
+   누를 수 있다는 것이 색을 구별하는 사람에게만 전해집니다. */
+.my-menu__signup-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--colors-fg-brand);
+  font: inherit;
+  text-decoration: underline;
+  text-underline-position: from-font;
+  cursor: pointer;
+}
+
+.my-menu__signup-link:focus-visible {
+  outline: 2px solid var(--colors-fg);
+  outline-offset: 2px;
+  border-radius: var(--_rounded-xs);
+}
+
 .my-menu__who {
   display: flex;
   align-items: center;
