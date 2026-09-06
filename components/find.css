@@ -451,11 +451,16 @@
   .find__list { padding-block-start: 0; }
 }
 
+/* 결과 수와 정렬은 한 덩어리입니다 — 셋을 세는 말과 그 차례를 고르는 자리라
+   나란히 섭니다. 32 는 정렬이 없을 때(결과가 없을 때)에도 이 줄이 그만큼은
+   자리를 지키라는 값입니다 — 줄이 글자 높이로 얇아지면 위아래 12 가 함께 좁아
+   보여, 같은 여백인데도 이 줄만 끼어 있는 것처럼 읽힙니다. */
 .find-sorting {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--spacing-400);
+  min-block-size: 32px;
 }
 
 /* 결과 수는 목록 위에서 한 번만 적습니다. 숫자만 굵어 어디를 읽어야 하는지가
