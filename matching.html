@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="./components/my-menu.css?v=4b8c80c1">
 <link rel="stylesheet" href="./components/tabs.css?v=a962487a">
 <link rel="stylesheet" href="./components/empty-state.css?v=c723dc10">
-<link rel="stylesheet" href="./components/matching.css?v=4bec93c8">
+<link rel="stylesheet" href="./components/matching.css?v=710fe99d">
 <link rel="stylesheet" href="./components/app-bar.css?v=7fbb6489">
 <style>
   body {
@@ -77,7 +77,8 @@
         </button>
         <button class="btn btn--ghost btn--medium btn--icon-only gnb__notify" aria-label="알림">
           <svg class="btn__icon" aria-hidden="true"><use href="#icon-notifications"></use></svg>
-          <span class="badge btn__badge"></span>
+          <!-- 읽지 않은 것이 있을 때만 점이 붙습니다(my-menu.js) — 목록의 알림 줄과
+               같은 값에서 나옵니다. -->
         </button>
         <div class="my-menu" data-my-menu>
           <button class="btn btn--blur btn--medium btn--icon-only" type="button"
@@ -134,11 +135,11 @@
   initSegmentedControls()
   const { initAutoHide } = await import('./components/auto-hide.js?v=ef9c163a')
   initAutoHide()
-  const { initMyMenus } = await import('./components/my-menu.js?v=ea25029d')
+  const { initMyMenus } = await import('./components/my-menu.js?v=d716ed92')
   initMyMenus()
   // 탭 항목이 생긴 뒤라야 밑줄이 잴 것이 있습니다 — 차례가 바뀌면 밑줄이 0 에서
   // 시작해 첫 탭으로 날아옵니다.
-  const { initMatching } = await import('./components/matching.js?v=db5b48f9')
+  const { initMatching } = await import('./components/matching.js?v=be040196')
   initMatching()
   const { initTabs } = await import('./components/tabs.js?v=e1b6027e')
   initTabs()

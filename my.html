@@ -76,7 +76,8 @@
         </button>
         <button class="btn btn--ghost btn--medium btn--icon-only gnb__notify" aria-label="알림">
           <svg class="btn__icon" aria-hidden="true"><use href="#icon-notifications"></use></svg>
-          <span class="badge btn__badge"></span>
+          <!-- 읽지 않은 것이 있을 때만 점이 붙습니다(my-menu.js) — 목록의 알림 줄과
+               같은 값에서 나옵니다. -->
         </button>
         <!-- 내 메뉴. GNB 가운데 줄의 메뉴가 서비스를 둘러보는 길이라면, 여기는
              내 프로필·결제·설정처럼 나에게만 해당하는 것들이 섭니다(my-menu.js). -->
@@ -133,8 +134,8 @@
   initSegmentedControls()
   const { initAutoHide } = await import('./components/auto-hide.js?v=ef9c163a')
   initAutoHide()
-  const { initMyMenus } = await import('./components/my-menu.js?v=ea25029d')
+  const { initMyMenus } = await import('./components/my-menu.js?v=d716ed92')
   initMyMenus()
-  const { initMyPage } = await import('./components/my-menu.js?v=ea25029d')
+  const { initMyPage } = await import('./components/my-menu.js?v=d716ed92')
   initMyPage()
 </script>

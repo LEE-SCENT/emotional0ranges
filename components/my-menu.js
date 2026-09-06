@@ -105,8 +105,10 @@ function item({ label, desc, icon, badge, href, quiet }) {
   if (desc) text.append(el('span', 'my-menu__desc', desc))
   node.append(text)
 
-  // 점에는 글자가 없어 화면을 읽어주는 쪽에는 들리지 않습니다 — 이름 뒤에 붙입니다.
-  if (badge) {
+  /* 점에는 글자가 없어 화면을 읽어주는 쪽에는 들리지 않습니다 — 이름 뒤에 붙입니다.
+     읽지 않은 것이 있을 때만 붙습니다(ME.hasNotice). 늘 붙여두면 다 읽은 뒤에도
+     빨간 점이 남아, 점이 무엇을 뜻하는지가 곧 뜻을 잃습니다. */
+  if (badge && ME?.hasNotice) {
     const dot = el('span', 'badge')
     dot.append(el('span', 'sr-only', '새 알림 있음'))
     node.append(dot)
@@ -229,6 +231,33 @@ export function renderMyMenu(box, { page = false } = {}) {
   /* GNB 의 로그인 버튼과 같은 사실을 말합니다 — 로그인한 사람에게 로그인 버튼이
      남아 있으면 둘 중 어느 것이 참인지 알 수 없습니다. */
   if (ME) document.querySelector('.gnb__login')?.remove()
+
+  syncNoticeDot()
+}
+
+/**
+ * GNB 종의 점.
+ *
+ * 목록의 알림 줄과 같은 값(ME.hasNotice)에서 나옵니다. 마크업에 박아두면 한쪽만
+ * 꺼지는 날이 오는데, 같은 화면에 있는 두 점이 서로를 반박하면 어느 쪽도 믿을 수
+ * 없게 됩니다 — 종은 어느 화면에나 있는 자리이고 줄은 마이 안의 항목이지만,
+ * 가리키는 것은 하나입니다.
+ *
+ * 판과 화면이 각자 renderMyMenu 를 부르므로 두 번 지나갈 수 있습니다. 있는지
+ * 보고 없을 때만 붙입니다.
+ */
+function syncNoticeDot() {
+  for (const bell of document.querySelectorAll('.gnb__notify')) {
+    const dot = bell.querySelector('.badge')
+    if (ME?.hasNotice && !dot) {
+      bell.insertAdjacentHTML(
+        'beforeend',
+        '<span class="badge btn__badge"><span class="sr-only">새 알림 있음</span></span>',
+      )
+    } else if (!ME?.hasNotice && dot) {
+      dot.remove()
+    }
+  }
 }
 
 export function initMyMenu(root = document.querySelector('[data-my-menu]')) {

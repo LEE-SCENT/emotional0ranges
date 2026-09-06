@@ -16,6 +16,12 @@
   padding-block-start: var(--spacing-800);
 }
 
+/* 폰에서는 16 입니다(Figma). 화면이 짧아 32 를 그대로 두면 탭이 화면 한가운데로
+   내려와, 첫 화면에 목록이 몇 줄 들어오지 못합니다. */
+@media (max-width: 960px) {
+  .matching { padding-block-start: var(--spacing-400); }
+}
+
 /* 탭과 그 아래 사이 12 (Figma). 탭의 밑줄이 곧 경계선이라 더 벌리면 선만 남고
    무엇의 선인지가 흐려집니다. */
 .matching__tabs { margin-block-end: var(--spacing-300); }
