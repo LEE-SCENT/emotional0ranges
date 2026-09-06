@@ -1,0 +1,86 @@
+/**
+ * EmptyState — 보여줄 것이 하나도 없을 때 그 자리에 서는 것.
+ *
+ *   <div class="empty-state">
+ *     <div class="empty-state__wrap">
+ *       <span class="empty-state__mark" aria-hidden="true"></span>
+ *       <div class="empty-state__text">
+ *         <p class="empty-state__title">조건에 맞는 모임이 없어요</p>
+ *         <p class="empty-state__desc">필터를 변경하거나 초기화해 보세요</p>
+ *       </div>
+ *     </div>
+ *     <button class="btn btn--outlined btn--medium">…</button>
+ *   </div>
+ *
+ * 빈 격자를 그대로 두면 아직 불러오는 중인지, 없는 것인지 알 수 없습니다. 그래서
+ * 없다는 사실과 함께, 여기서 나가는 길을 하나 둡니다 — 조건을 좁혀 비워진 사람도,
+ * 아직 아무것도 하지 않은 사람도 다음에 무엇을 누를지가 보여야 합니다.
+ *
+ * 글씨가 크지 않습니다(14 medium + 12 regular). 빈 상태는 잘못된 일이 아니라
+ * 지금이 그럴 뿐이라, 크게 적으면 오류 화면처럼 읽힙니다 — 눈에 들어와야 하는
+ * 것은 버튼입니다.
+ */
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* 글 묶음과 버튼 사이 16, 심벌과 글 사이 8, 제목과 설명 사이 4 (Figma).
+     안쪽으로 갈수록 좁아져 셋이 하나로 묶여 읽힙니다. */
+  gap: var(--spacing-400);
+  margin: 0;
+  padding-block: var(--spacing-3000);
+  text-align: center;
+}
+
+.empty-state__wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-200);
+}
+
+/* 파비콘과 같은 그림입니다. 그 파일을 그대로 쓰되 색은 마스크로 벗깁니다 —
+   <img> 로 넣으면 브랜드 오렌지가 그대로 와서, 10% 로 흐려도 옅은 주황이 됩니다.
+   여기 있어야 하는 것은 색 없는 물자국입니다(Figma: 검정 10%). */
+.empty-state__mark {
+  inline-size: 48px;
+  block-size: 48px;
+  background: var(--colors-fg);
+  opacity: 0.1;
+  mask: url('../favicon.svg') center / contain no-repeat;
+}
+
+.empty-state__text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-100);
+}
+
+.empty-state__title,
+.empty-state__desc { margin: 0; }
+
+.empty-state__title {
+  color: var(--colors-fg);
+  font-size: var(--typography-body-m-medium-font-size);
+  font-weight: var(--typography-body-m-medium-font-weight);
+  line-height: var(--typography-body-m-medium-line-height);
+  letter-spacing: var(--typography-body-m-medium-letter-spacing);
+}
+
+.empty-state__desc {
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-s-regular-font-size);
+  font-weight: var(--typography-body-s-regular-font-weight);
+  line-height: var(--typography-body-s-regular-line-height);
+  letter-spacing: var(--typography-body-s-regular-letter-spacing);
+}
+
+/* 20 입니다(Figma). Button 의 medium 기본값은 24 인데, 이 화면들의 medium 알약도
+   모두 20 을 씁니다(find-bar.css 의 추천 조건·걸린 조건) — 텍스트 버튼의 아이콘은
+   한 단 작은 것이 기본인지 확인이 필요합니다. */
+.empty-state .btn__icon {
+  inline-size: var(--icon-size-s);
+  block-size: var(--icon-size-s);
+}

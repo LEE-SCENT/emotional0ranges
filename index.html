@@ -82,7 +82,7 @@
       </div>
       <nav class="gnb__menu" aria-label="주요 메뉴">
         <a class="btn btn--ghost btn--medium" href="./meetups.html"><span class="btn__label">모임</span></a>
-        <button class="btn btn--ghost btn--medium"><span class="btn__label">매칭</span></button>
+        <a class="btn btn--ghost btn--medium" href="./matching.html"><span class="btn__label">매칭</span></a>
         <button class="btn btn--ghost btn--medium"><span class="btn__label">모임 후기</span></button>
         <button class="btn btn--ghost btn--medium"><span class="btn__label">자주 묻는 질문</span></button>
         <button class="btn btn--ghost btn--medium"><span class="btn__label">저널</span></button>
@@ -425,7 +425,7 @@
     <svg class="app-bar__icon" aria-hidden="true"><use href="#icon-explorer"></use></svg>
     <span class="app-bar__label">모임</span>
   </a>
-  <a class="app-bar__item" href="#">
+  <a class="app-bar__item" href="./matching.html">
     <svg class="app-bar__icon" aria-hidden="true"><use href="#icon-match"></use></svg>
     <span class="app-bar__label">매칭</span>
   </a>
@@ -441,7 +441,7 @@
 
 <script type="module">
   document.getElementById('sprite').innerHTML =
-    await (await fetch('./build/icons.svg?v=1670ef68')).text() + await (await fetch('./build/logo.svg?v=0adc0440')).text()
+    await (await fetch('./build/icons.svg?v=1e45ff1a')).text() + await (await fetch('./build/logo.svg?v=0adc0440')).text()
   const { initSegmentedControls } = await import('./components/segmented-control.js?v=bbd7c4b8')
   initSegmentedControls()
   const { initKvVideo } = await import('./components/kv.js?v=d2d085a7')
@@ -450,7 +450,7 @@
   initKvCarousels()
   const { initStickyGnb } = await import('./components/gnb.js?v=ca09b963')
   initStickyGnb()
-  const { initMyMenus } = await import('./components/my-menu.js?v=d62edc05')
+  const { initMyMenus } = await import('./components/my-menu.js?v=0513e10d')
   initMyMenus()
   const { initAutoHide } = await import('./components/auto-hide.js?v=ef9c163a')
   initAutoHide()

@@ -1,0 +1,30 @@
+/**
+ * 매칭 화면의 자리.
+ *
+ *   <main class="matching container" data-matching>
+ *     <nav class="tabs matching__tabs" data-matching-tabs>…</nav>
+ *     <div data-matching-body>…</div>
+ *   </main>
+ *
+ * 담기는 것은 Tabs 와 EmptyState 두 컴포넌트뿐이라, 이 파일이 정하는 것은 셋
+ * 사이의 자리뿐입니다 — 생김새는 각자의 파일에 있습니다.
+ */
+
+.matching {
+  /* GNB 아래 32 (Figma). 아래는 비우지 않습니다 — 빈 상태가 제 위아래로 120 을
+     들고 있고, 목록이 들어오면 그 목록이 제 여백을 가집니다. */
+  padding-block-start: var(--spacing-800);
+}
+
+/* 탭과 그 아래 사이 12 (Figma). 탭의 밑줄이 곧 경계선이라 더 벌리면 선만 남고
+   무엇의 선인지가 흐려집니다. */
+.matching__tabs { margin-block-end: var(--spacing-300); }
+
+/* 폰에서는 아래 앱바가 화면 끝을 차지합니다. 빈 상태의 버튼이 그 뒤로 들어가지
+   않도록 앱바 높이만큼 비웁니다 — 목록이 들어오면 마지막 카드에도 같은 일이
+   생깁니다. */
+@media (max-width: 960px) {
+  .matching {
+    padding-block-end: calc(var(--_app-bar-height) + var(--spacing-600) + env(safe-area-inset-bottom));
+  }
+}

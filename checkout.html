@@ -91,7 +91,7 @@
       </div>
       <nav class="gnb__menu" aria-label="주요 메뉴">
         <button class="btn btn--ghost btn--medium"><span class="btn__label">모임</span></button>
-        <button class="btn btn--ghost btn--medium"><span class="btn__label">매칭</span></button>
+        <a class="btn btn--ghost btn--medium" href="./matching.html"><span class="btn__label">매칭</span></a>
         <button class="btn btn--ghost btn--medium"><span class="btn__label">모임 후기</span></button>
         <button class="btn btn--ghost btn--medium"><span class="btn__label">자주 묻는 질문</span></button>
         <button class="btn btn--ghost btn--medium"><span class="btn__label">저널</span></button>
@@ -448,12 +448,12 @@
 
 <script type="module">
   document.getElementById('sprite').innerHTML =
-    await (await fetch('./build/icons.svg?v=1670ef68')).text() + await (await fetch('./build/logo.svg?v=0adc0440')).text()
+    await (await fetch('./build/icons.svg?v=1e45ff1a')).text() + await (await fetch('./build/logo.svg?v=0adc0440')).text()
   // 뒤로 돌아온 화면은 맨 위에서 시작합니다.
   await import('./components/scroll-restore.js?v=f612a7a5')
   const { initStickyGnb } = await import('./components/gnb.js?v=ca09b963')
   initStickyGnb()
-  const { initMyMenus } = await import('./components/my-menu.js?v=d62edc05')
+  const { initMyMenus } = await import('./components/my-menu.js?v=0513e10d')
   initMyMenus()
   // 일정을 읽는 스크립트들보다 먼저 돕니다. 상품이 정해져 있으면 목록을 그 상품의
   // 일정으로 갈아끼우는데, 날짜를 그린 뒤에 갈아끼우면 새로 그려진 목록의 날짜 칸이

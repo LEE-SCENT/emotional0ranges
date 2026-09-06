@@ -29,8 +29,11 @@
  * 되돌리면 됩니다:
  *
  *   const ME = { name: '정우진', black: true, hasNotice: true }
+ *
+ * 로그인 여부를 다른 화면도 봅니다(matching.js) — 화면마다 제 것을 들고 있으면
+ * 한쪽만 로그인한 모습이 되는 날이 옵니다. 그래서 여기 하나만 둡니다.
  */
-const ME = null
+export const ME = null
 
 /** 등급 이름과 이름 앞 표시는 한 값에서 함께 나옵니다. */
 const gradeOf = (me) => (me.black ? '블랙 회원' : '일반 회원')
