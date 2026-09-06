@@ -344,6 +344,26 @@ export function renderMyMenu(box, { page = false } = {}) {
   if (ME) document.querySelector('.gnb__login')?.remove()
 
   syncNoticeDot()
+  keepDemoFlag()
+}
+
+/**
+ * `?me=1` 을 이 화면 안의 링크에 함께 실어 보냅니다.
+ *
+ * 그러지 않으면 앱바로 다른 탭에 갔다 오는 순간 로그인한 모습이 풀립니다 —
+ * 볼 때마다 주소창에 다시 적어야 하는 것은 확인하는 자리가 아닙니다.
+ * 밖으로 나가는 링크와 앵커는 건드리지 않습니다.
+ */
+function keepDemoFlag() {
+  if (!ME) return
+  for (const link of document.querySelectorAll('a[href]')) {
+    const href = link.getAttribute('href')
+    if (!href.startsWith('./') && !href.startsWith('/')) continue
+    const url = new URL(href, location.href)
+    if (url.searchParams.get('me') === '1') continue
+    url.searchParams.set('me', '1')
+    link.setAttribute('href', `${url.pathname.split('/').pop()}${url.search}${url.hash}`)
+  }
 }
 
 /**
