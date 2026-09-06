@@ -984,6 +984,15 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
 
   sort?.addEventListener('change', update)
 
+  /* 마우스로 연 고르개에는 테를 두르지 않습니다.
+     `<select>` 는 눌러서 열면 초점이 그 위에 남고, 브라우저는 그 상태를 늘
+     :focus-visible 로 봅니다 — 키보드로 온 것과 구별하지 않기 때문입니다. 그래서
+     클릭 한 번에 검은 테가 둘리고, 다른 곳을 누를 때까지 남아 있었습니다.
+     눌러서 온 것인지를 여기서 적어두고, 키보드가 닿으면 지웁니다(find.css). */
+  sort?.addEventListener('pointerdown', () => { sort.dataset.pointer = '1' })
+  sort?.addEventListener('keydown', () => { delete sort.dataset.pointer })
+  sort?.addEventListener('blur', () => { delete sort.dataset.pointer })
+
   /** 조건을 하나도 걸지 않은 처음 상태로. 시트의 초기화와 빈 목록의 버튼이 함께 씁니다. */
   function clearAll() {
     for (const input of root.querySelectorAll('input[name="area"], input[name="pick"], input[name="tag"]')) {

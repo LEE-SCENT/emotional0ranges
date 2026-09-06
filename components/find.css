@@ -500,6 +500,9 @@
     var(--spacing-200) var(--spacing-300);
   border: 0;
   border-radius: var(--_rounded-full);
+  /* 브라우저가 그리는 기본 테를 끕니다. 아래에서 키보드로 온 초점에만 다시
+     두릅니다 — 여기서 끄지 않으면 우리 테를 지운 자리에 UA 의 테가 남습니다. */
+  outline: none;
   background: none;
   color: var(--_button-ghost-fg);
   font-family: var(--_font-family-base);
@@ -510,7 +513,10 @@
   cursor: pointer;
 }
 
-.find__sort select:focus-visible {
+/* 키보드로 온 초점에만 테를 두릅니다. `<select>` 는 마우스로 눌러 열어도
+   :focus-visible 이 걸려, 그것만으로는 둘을 가릴 수 없습니다 — 눌러서 온 것인지는
+   find-bar.js 가 적어둡니다. */
+.find__sort select:focus-visible:not([data-pointer]) {
   outline: 2px solid var(--colors-fg);
   outline-offset: 2px;
 }
