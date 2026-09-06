@@ -32,8 +32,14 @@
  *
  * 로그인 여부를 다른 화면도 봅니다(matching.js) — 화면마다 제 것을 들고 있으면
  * 한쪽만 로그인한 모습이 되는 날이 옵니다. 그래서 여기 하나만 둡니다.
+ *
+ * 주소에 `?me=1` 을 붙이면 로그인한 모습으로 봅니다. 아직 로그인이 붙지 않은
+ * 동안 그 화면을 확인하려면 이 파일을 고쳐 다시 배포해야 했는데, 시안을 맞춰
+ * 보는 자리에서는 링크 하나로 오갈 수 있어야 합니다 — 진짜 로그인이 붙으면
+ * 이 줄만 지우면 됩니다.
  */
-export const ME = null
+const DEMO = { name: '정우진', black: true, hasNotice: true }
+export const ME = new URLSearchParams(location.search).get('me') === '1' ? DEMO : null
 
 /** 등급 이름과 이름 앞 표시는 한 값에서 함께 나옵니다. */
 const gradeOf = (me) => (me.black ? '블랙 회원' : '일반 회원')

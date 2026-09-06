@@ -22,6 +22,7 @@
 <link rel="stylesheet" href="./components/tabs.css?v=a962487a">
 <link rel="stylesheet" href="./components/empty-state.css?v=c723dc10">
 <link rel="stylesheet" href="./components/matching.css?v=710fe99d">
+<link rel="stylesheet" href="./components/footer.css?v=090dd8fc">
 <link rel="stylesheet" href="./components/app-bar.css?v=7fbb6489">
 <style>
   body {
@@ -29,7 +30,14 @@
     background: var(--colors-bg);
     color: var(--colors-fg);
     font-family: var(--_font-family-base);
+    /* 아직 목록이 없어 본문이 짧습니다. 그대로 두면 푸터가 화면 한가운데에 서서
+       페이지가 끊긴 것처럼 보입니다 — 본문이 남는 높이를 가져가고 푸터는 아래에
+       머뭅니다(Figma 도 빈 영역이 남는 높이를 채웁니다). */
+    min-block-size: 100dvh;
+    display: flex;
+    flex-direction: column;
   }
+  .matching { flex: 1 0 auto; }
   /* 화면에는 안 보이지만 스크린리더는 읽는 텍스트 */
   .sr-only {
     position: absolute; inline-size: 1px; block-size: 1px;
@@ -101,6 +109,37 @@
   <div data-matching-body></div>
 </main>
 
+<div class="container">
+  <footer class="footer">
+    <div class="footer__info">
+      <p class="footer__links">
+        <span>Ⓒ 2026 Emotional 0ranges</span>
+        <a class="is-strong" href="#">개인정보 처리방침</a>
+        <a href="#">이용약관</a>
+        <a href="#">의견 보내기</a>
+      </p>
+      <p class="footer__meta">
+        <span>(주)감정적인오렌지들</span>
+        <span>경기도 남양주시 별내중앙로 34, 502호(별내동)</span>
+        <span>emotional0ranges@naver.com</span>
+        <span>개인정보보호책임자: 권준혁</span>
+        <span>사업자 등록번호 480-88-03308</span>
+        <span>법인 등록번호 28411-0437652</span>
+        <span>결혼정보업체신고번호 경기-남양-국내-24-0001호</span>
+        <span>통신판매신고번호 2024-별내-0651</span>
+        <span>협업 및 비즈니스 제안 partner@emotional0range.com</span>
+        <span>채용문의 recruit@emotional0range.com</span>
+        <span>고객센터 0505-1922-2274 (평일 10시-19시, 주말 및 공휴일 제외)</span>
+      </p>
+    </div>
+    <ul class="footer__sns">
+      <li><a class="is-instagram" href="https://www.instagram.com/emotional_0ranges" target="_blank" rel="noopener noreferrer" aria-label="인스타그램 (새 창)"><img src="./logo/sns/instagram.png" alt=""></a></li>
+      <li><a class="is-naver-blog" href="https://blog.naver.com/emotional0ranges" target="_blank" rel="noopener noreferrer" aria-label="네이버 블로그 (새 창)"><img src="./logo/sns/naver-blog.png" alt=""></a></li>
+      <li><a href="https://www.somoim.co.kr/4b897e56-f085-11ed-85ea-0a4f64b569631" target="_blank" rel="noopener noreferrer" aria-label="소모임 (새 창)"><img src="./logo/sns/somoim.png" alt=""></a></li>
+    </ul>
+  </footer>
+</div>
+
 <!-- 아래로 읽어 내려가는 동안에는 물러납니다(auto-hide.js) — 다른 화면과 같습니다. -->
 <nav class="app-bar app-bar--fixed" data-auto-hide="down" aria-label="주요 메뉴">
   <a class="app-bar__item" href="./index.html">
@@ -135,11 +174,11 @@
   initSegmentedControls()
   const { initAutoHide } = await import('./components/auto-hide.js?v=ef9c163a')
   initAutoHide()
-  const { initMyMenus } = await import('./components/my-menu.js?v=901608fb')
+  const { initMyMenus } = await import('./components/my-menu.js?v=1b517291')
   initMyMenus()
   // 탭 항목이 생긴 뒤라야 밑줄이 잴 것이 있습니다 — 차례가 바뀌면 밑줄이 0 에서
   // 시작해 첫 탭으로 날아옵니다.
-  const { initMatching } = await import('./components/matching.js?v=ebaaf87c')
+  const { initMatching } = await import('./components/matching.js?v=e2e8cd75')
   initMatching()
   const { initTabs } = await import('./components/tabs.js?v=e1b6027e')
   initTabs()
