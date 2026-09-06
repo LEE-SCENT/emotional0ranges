@@ -41,6 +41,22 @@
 const DEMO = { name: '정우진', black: true, hasNotice: true }
 export const ME = new URLSearchParams(location.search).get('me') === '1' ? DEMO : null
 
+/**
+ * 로그인한 모습으로 갈아입습니다(또는 벗습니다).
+ *
+ * 진짜 로그인이 붙기 전까지는 주소의 `?me=1` 이 그 자리입니다 — 눌러도 아무 일이
+ * 없는 버튼보다, 눌리면 화면이 실제로 바뀌는 편이 시안을 맞춰 보는 데 낫습니다.
+ * 주소가 상태를 들고 있으므로 새로고침해도, 링크를 복사해 가도 그대로입니다.
+ *
+ * ⚠️ 인증은 없습니다. 번호도 인증번호도 확인하지 않습니다.
+ */
+function setDemo(on) {
+  const url = new URL(location.href)
+  if (on) url.searchParams.set('me', '1')
+  else url.searchParams.delete('me')
+  location.href = `${url.pathname.split('/').pop()}${url.search}`
+}
+
 /** 등급 이름과 이름 앞 표시는 한 값에서 함께 나옵니다. */
 const gradeOf = (me) => (me.black ? '블랙 회원' : '일반 회원')
 
@@ -73,7 +89,7 @@ const ITEMS = [
   { label: '공지사항', href: '' },
   { label: '문의·의견 보내기', href: '' },
   null,
-  { label: '로그아웃', quiet: true, href: '', auth: true },
+  { label: '로그아웃', quiet: true, href: '', auth: true, action: 'logout' },
 ]
 
 const el = (tag, className, text) => {
@@ -92,7 +108,7 @@ const arrow = () =>
  * 갈 곳이 있으면 <a>, 없으면 <button> 입니다 — 링크로 두면 새 탭으로 열거나 주소를
  * 복사할 수 있어야 하는데, href 가 비어 있으면 그 약속을 지키지 못합니다.
  */
-function item({ label, desc, icon, badge, href, quiet }) {
+function item({ label, desc, icon, badge, href, quiet, action }) {
   const node = href ? el('a', 'my-menu__item') : el('button', 'my-menu__item')
   if (href) node.href = href
   else node.type = 'button'
@@ -121,6 +137,7 @@ function item({ label, desc, icon, badge, href, quiet }) {
   }
 
   node.insertAdjacentHTML('beforeend', arrow())
+  if (action === 'logout') node.addEventListener('click', () => setDemo(false))
   return node
 }
 
@@ -263,7 +280,10 @@ function loginForm(login, signup) {
   })
 
   login.disabled = true
-  form.addEventListener('submit', (e) => e.preventDefault())
+  form.addEventListener('submit', (e) => {
+    e.preventDefault()
+    setDemo(true)
+  })
   form.append(row, code, login, signup)
   return form
 }
@@ -281,7 +301,10 @@ function signedOut(page) {
      못하고, 눌러도 아무 일이 없다는 것을 미리 말해주지도 못합니다. */
   const login = el('button', 'btn btn--filled btn--medium my-menu__login')
   login.type = page ? 'submit' : 'button'
-  if (!page) login.setAttribute('role', 'menuitem')
+  if (!page) {
+    login.setAttribute('role', 'menuitem')
+    login.addEventListener('click', () => setDemo(true))
+  }
   login.append(el('span', 'btn__label', '로그인'))
 
   /* 로그인 아래 한 줄. 아직 계정이 없는 사람에게는 위 버튼이 막다른 길이라,
@@ -345,6 +368,14 @@ export function renderMyMenu(box, { page = false } = {}) {
 
   syncNoticeDot()
   keepDemoFlag()
+
+  /* GNB 의 로그인 버튼도 같은 자리로 갑니다 — 화면에 로그인이라 적힌 것이 둘인데
+     하나만 눌린다면 눌리지 않는 쪽이 고장 난 것으로 보입니다. */
+  const gnbLogin = document.querySelector('.gnb__login')
+  if (gnbLogin && !gnbLogin.dataset.demoReady) {
+    gnbLogin.dataset.demoReady = '1'
+    gnbLogin.addEventListener('click', () => setDemo(true))
+  }
 }
 
 /**

@@ -16,7 +16,7 @@
  * 같은 자리가 나와야 하고, 뒤로가기로 돌아왔을 때도 보던 탭이어야 합니다.
  */
 
-import { ME } from './my-menu.js?v=938a1744'
+import { ME } from './my-menu.js?v=1f3c24b3'
 
 /** 갈 곳이 있는 버튼들. 아직 화면이 없는 것은 href 를 비워 둡니다. */
 const BROWSE = { label: '모임 둘러보기', icon: 'explorerFilled', href: './meetups.html' }
