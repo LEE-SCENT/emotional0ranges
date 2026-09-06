@@ -592,7 +592,8 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
   let draft = null
   let pendingApply = false
 
-  const draftCount = root.querySelector('[data-find-draft-count]')
+  const applyBtn = root.querySelector('[data-find-apply]')
+  const applyLabel = root.querySelector('[data-find-apply-label]')
 
   function snapshot() {
     return {
@@ -657,8 +658,17 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
     if (draft) finishClose()
   })
 
+  /* 시트의 CTA 는 지금 고른 조건이 몇 개를 남기는지를 미리 말합니다. 하나도
+     남지 않으면 숫자 대신 그 사실을 적고 버튼을 끕니다 — "모임 0개 보기" 는
+     누를 수 있는 얼굴을 하고 있지만, 눌러도 빈 목록으로 닫힐 뿐입니다.
+     조건을 더 고치라는 말이 버튼 자리에서 나와야 합니다. */
   function setDraftCount() {
-    if (draftCount) draftCount.textContent = String(countMatches(state()))
+    const n = countMatches(state())
+    if (applyLabel) {
+      applyLabel.textContent = n ? `모임 ${n}개 보기` : '조건에 맞는 모임이 없어요'
+    }
+    // 흐림 25% 는 filled 버튼의 기본 disabled 모습입니다(button.css).
+    if (applyBtn) applyBtn.disabled = n === 0
   }
 
   root.addEventListener('click', (e) => {

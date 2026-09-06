@@ -345,8 +345,12 @@
         <button class="btn btn--filled btn--large find-sheet__apply" type="button" data-find-apply>
           <!-- 버튼 글자는 한 덩어리입니다 — 숫자만 굵으면 그 숫자가 버튼과 따로
                읽힙니다. 목록 위 "모임 25개" 는 세는 자리라 숫자를 굵히지만,
-               여기는 누르는 자리입니다. -->
-          <span class="btn__label">모임 <span data-find-draft-count>0</span>개 보기</span>
+               여기는 누르는 자리입니다.
+
+               걸린 조건에 맞는 것이 하나도 없으면 숫자 대신 그 사실을 적고 버튼을
+               끕니다(find-bar.js) — "모임 0개 보기" 는 누를 수 있는 것처럼 서 있지만
+               눌러도 빈 목록으로 닫힐 뿐입니다. -->
+          <span class="btn__label" data-find-apply-label>모임 0개 보기</span>
         </button>
       </div>
     </div>
@@ -431,7 +435,7 @@
   // 그때 듣는 쪽이 없으면 첫 목록이 그려지지 않습니다.
   const { initFind } = await import('./components/find.js?v=64f50320')
   initFind()
-  const { initFindBar } = await import('./components/find-bar.js?v=3e01e82d')
+  const { initFindBar } = await import('./components/find-bar.js?v=a8f349ed')
   initFindBar()
   // 옆으로 흐르는 줄들(모임 유형·하위 필터·담은 날짜) — 양 끝을 옅게 하고,
   // 고른 알약을 줄 가운데로 데려옵니다.
