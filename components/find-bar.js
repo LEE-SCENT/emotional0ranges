@@ -681,11 +681,17 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
       return
     }
     const opener = e.target.closest('[data-find-open]')
-    if (opener) {
-      // 좁은 화면에서는 바의 어디를 눌러도 통합 필터 시트가 올라옵니다.
-      if (sheetWidth.matches) openSheet()
-      else openPanel(opener.dataset.findOpen)
+
+    /* 좁은 화면에서는 바가 통째로 한 자리입니다 — 칸 위든, 칸 사이든, 여백이든
+       어디를 눌러도 같은 통합 필터 시트가 올라옵니다. 요약이 한 줄로 접혀 있어
+       "지역"과 "날짜"의 경계가 눈에 보이지 않는데, 그 보이지 않는 선을 손가락이
+       맞춰 짚어야 열리면 누른 사람은 화면이 죽은 줄로 압니다.
+       × 는 이 폭에서 나오지 않으므로(find-bar.css) 가로챌 것이 없습니다. */
+    if (sheetWidth.matches) {
+      if (opener || e.target.closest('.find-bar')) openSheet()
+      return
     }
+    if (opener) openPanel(opener.dataset.findOpen)
   })
 
   // 팝오버와 칸 밖을 누르면 닫습니다. 넓은 화면에는 어둠이 없어 이것이 유일한 길입니다.

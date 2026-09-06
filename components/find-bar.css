@@ -192,6 +192,11 @@
 */
 
 @media (max-width: 960px) {
+  /* 바가 통째로 한 자리입니다 — 어디를 눌러도 통합 필터 시트가 올라옵니다
+     (find-bar.js). 손가락에는 커서가 없지만, 마우스가 달린 좁은 창에서는
+     이것이 누를 수 있는 줄이라는 표시가 됩니다. */
+  .find-bar { cursor: pointer; }
+
   .find-bar__fields {
     display: flex;
     align-items: center;
@@ -859,9 +864,6 @@
    × 로 구분됩니다. */
 .find-picks__item {
   flex: none;
-  /* 아이콘과 글자 사이 4(Figma). Button 의 기본값 2 로는 셋이 356 을 넘겨
-     한 줄에 서지 못합니다. */
-  gap: var(--spacing-100);
   color: var(--colors-fg);
   cursor: pointer;
 }
@@ -1245,10 +1247,9 @@
 }
 
 /* Button 컴포넌트(outlined/small)를 그대로 씁니다 — 여백 8/12, 12px medium,
-   글자와 × 사이 4 (Figma). Button 의 기본 gap 은 2 라 그것만 되돌립니다. */
+   글자와 × 사이 4 (button.css 의 기본값). */
 .find-dates__item {
   flex: none;
-  gap: var(--spacing-100);
   /* 알약 자체는 눌러도 아무 일이 없습니다 — 담긴 값을 보여주는 자리이고,
      빼는 것은 × 하나입니다. 손가락 커서도 그 × 위에만 뜹니다. */
   cursor: default;

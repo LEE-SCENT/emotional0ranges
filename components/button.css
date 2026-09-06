@@ -18,7 +18,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--spacing-50);
+  /* 아이콘과 글자 사이 4. 2 로 두면 × 가 마지막 글자에 달라붙어 낱말의 일부처럼
+     읽힙니다 — 화면마다 4 로 되돌리던 것을 여기 한 곳으로 모았습니다. */
+  gap: var(--spacing-100);
   box-sizing: border-box;
   border: 0;
   margin: 0;

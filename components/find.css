@@ -336,9 +336,6 @@
    상위보다 한 단 낮은 강도입니다. */
 .find-types__tag {
   flex: none;
-  /* 글자와 × 사이 4. Button 의 기본값 2 로는 × 가 글자에 달라붙어 마지막
-     글자처럼 읽힙니다 — 추천 조건 알약과 같은 값입니다. */
-  gap: var(--spacing-100);
   color: var(--_button-ghost-fg);
   cursor: pointer;
 }
@@ -389,7 +386,6 @@
 .find-applied[hidden] { display: none; }
 
 .find-applied__item {
-  gap: var(--spacing-100);
   color: var(--colors-fg);
   /* 알약은 지금 걸린 조건을 보여주는 자리입니다 — 누르는 것은 × 하나이고,
      손가락 커서도 그 위에만 뜹니다(find-bar.css 의 날짜 알약과 같습니다). */
@@ -497,8 +493,10 @@
 .find__sort select {
   appearance: none;
   margin: 0;
+  /* 오른쪽만 아이콘 폭과 그 사이 간격(button.css 의 gap)만큼 더 둡니다 —
+     화살표가 글자 위로 겹치지 않게. */
   padding: var(--spacing-200)
-    calc(var(--spacing-300) + var(--icon-size-xs) + var(--spacing-50))
+    calc(var(--spacing-300) + var(--icon-size-xs) + var(--spacing-100))
     var(--spacing-200) var(--spacing-300);
   border: 0;
   border-radius: var(--_rounded-full);
@@ -607,13 +605,6 @@
   line-height: var(--typography-body-m-medium-line-height);
   letter-spacing: var(--typography-body-m-medium-letter-spacing);
 }
-
-/* 아이콘과 글자 사이 4 (Figma). Button 의 기본값은 2 라 여기서 되돌립니다 —
-   추천 조건 알약·하위 필터 알약과 같은 값입니다.
-
-   ⚠️ 이 화면에서 4 로 그려진 버튼이 이것으로 셋째입니다. Button 컴포넌트의 기본
-      gap(2)이 실제와 다른 것일 수 있어, 컴포넌트 쪽을 고쳐야 할지 확인이 필요합니다. */
-.find__empty .btn { gap: var(--spacing-100); }
 
 .find__empty-desc {
   color: var(--colors-fg-lower);

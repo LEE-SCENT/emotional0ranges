@@ -123,7 +123,11 @@
    그 절반의 가운데에 섭니다(Figma). 글자가 두 칸보다 넓어 줄을 바꾸지 않게
    묶어두고, 넘치는 쪽은 좌우로 흘러도 됩니다 — 가리키는 자리가 어긋나는 것보다
    낫습니다. */
-.gnb__tip {
+.gnb .gnb__tip {
+  /* 셀렉터가 `.gnb` 로 한 겹 깊은 것은 순서를 이기기 위해서입니다. Tooltip 은
+     제 자리를 스스로 잡는 컴포넌트라 `.tooltip { position: relative }` 를 들고
+     있고, 두 셀렉터의 무게가 같으면 나중에 실린 파일이 이깁니다 — 페이지마다
+     stylesheet 차례가 달라 어떤 화면에서는 말풍선이 제자리에서 밀려났습니다. */
   position: absolute;
   inset-block-start: calc(100% + var(--spacing-200));
   inset-inline-start: 75%;
