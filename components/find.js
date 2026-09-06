@@ -17,6 +17,7 @@
  */
 
 import { openMeetups, areaOf, cityOf, groupOf, regionOf, seatTags, tagsOf } from './products.js?v=a3d5fd4b'
+import { ME as ACCOUNT } from './my-menu.js?v=1f3c24b3'
 import { dateAfter, dateKey, dayText } from './schedule.js?v=a9e9003f'
 
 const won = (n) => `${n.toLocaleString('ko-KR')}원`
@@ -116,12 +117,17 @@ export function countMatches(cond) {
  *
  * 전용 상품이어도 태그를 붙이지 않습니다. 값을 가린 자리("로그인 후 가격 확인")가
  * 이미 그 사실을 말하고 있어, 태그까지 붙으면 한 장에서 같은 말을 두 번 합니다.
+ * 로그인하면 그 자리도 그냥 값이 됩니다.
  *
  * 가격에 `~` 를 붙이지 않는 것도 그래서입니다. 상품 카드는 여러 일정의 최저가를
  * 말하지만 이 카드는 그 회차의 값 하나를 말합니다 — `~` 를 붙이면 더 싼 것이 어딘가
  * 있다는 뜻이 됩니다. 기존가는 여전히 적지 않습니다.
  */
 function card({ slug, product, s, photo }) {
+  /* 값을 가리는 것은 상품의 성질이 아니라 보는 사람과의 관계입니다 — 로그인한
+     사람에게는 그냥 값입니다. `locked` 는 "누구에게나 보이지는 않는다"까지만
+     말하고, 지금 가릴지는 여기서 정합니다. */
+  const locked = product.locked && !ACCOUNT
   const seats = seatTags(s)
   const tags = []
   tags.push(`<span class="tag">${dayText(dateAfter(s.in))} ${s.label}</span>`)
@@ -129,13 +135,13 @@ function card({ slug, product, s, photo }) {
     tags.push(`<span class="tag ${t.closed ? 'tag--accent-sec' : 'tag--accent-pri'}">${t.text}</span>`)
   }
 
-  const price = product.locked
+  const price = locked
     ? `<svg class="product-card__lock" aria-hidden="true"><use href="#icon-lockFilled"></use></svg>${product.locked}`
     : s.off
       ? `<b>할인가</b> ${won(net(s))}`
       : won(s.price)
 
-  return `<article class="product-card${product.locked ? ' is-locked' : ''}">
+  return `<article class="product-card${locked ? ' is-locked' : ''}">
       <div class="product-card__media">
         <img src="${photo.src}" alt="" loading="lazy">
         <div class="product-card__tags">${tags.join('')}</div>
