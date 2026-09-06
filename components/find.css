@@ -108,10 +108,13 @@
   .find-head {
     position: sticky;
     inset-block-start: var(--_gnb-max-height);
-    /* GNB 아래 여백은 상태에 따라 다릅니다.
-         기본   32 — Figma Card 의 py-32 (바 위쪽이 화면 기준 72 + 32 = 104)
-         스티키 12 — 붙어 있는 동안에는 더 바짝 붙습니다 */
-    padding-block: var(--spacing-800);
+    /* 위는 GNB 와의 사이, 아래는 퀵필터와의 사이입니다.
+         위   32 — Figma Card 의 py-32 (바 위쪽이 화면 기준 72 + 32 = 104)
+         아래 48 — 필터바와 퀵필터 사이(Figma)
+       아래가 위보다 넓은 것은 그 아래부터가 목록이기 때문입니다 — 조건을 고르는
+       줄과 그 결과가 같은 간격으로 붙어 있으면 한 덩어리로 읽힙니다.
+       스티키에서는 위만 12 로 좁힙니다 — 붙어 있는 동안에는 더 바짝 붙습니다. */
+    padding-block: var(--spacing-800) var(--spacing-1200);
     transition:
       padding-block-start var(--_duration-base) var(--_easing-standard),
       /* 물러나고 돌아오는 것은 한 단 느리게 갑니다 — 스크롤에 붙어 움직이는

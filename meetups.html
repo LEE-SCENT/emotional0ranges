@@ -26,7 +26,7 @@
 <link rel="stylesheet" href="./components/product-card.css?v=69393a13">
 <link rel="stylesheet" href="./components/chip.css?v=c4217661">
 <link rel="stylesheet" href="./components/find-bar.css?v=1b09ceea">
-<link rel="stylesheet" href="./components/find.css?v=26d2915e">
+<link rel="stylesheet" href="./components/find.css?v=660b3d91">
 <link rel="stylesheet" href="./components/footer.css?v=090dd8fc">
 <link rel="stylesheet" href="./components/app-bar.css?v=7fbb6489">
 <style>
@@ -436,9 +436,9 @@
   initAutoHide()
   // 목록이 먼저 귀를 엽니다. 조건 바는 붙자마자 지금 조건을 한 번 알리는데,
   // 그때 듣는 쪽이 없으면 첫 목록이 그려지지 않습니다.
-  const { initFind } = await import('./components/find.js?v=12ac30df')
+  const { initFind } = await import('./components/find.js?v=cf400e02')
   initFind()
-  const { initFindBar } = await import('./components/find-bar.js?v=2ce4cadc')
+  const { initFindBar } = await import('./components/find-bar.js?v=6823a27b')
   initFindBar()
   // 옆으로 흐르는 줄들(모임 유형·하위 필터·담은 날짜) — 양 끝을 옅게 하고,
   // 고른 알약을 줄 가운데로 데려옵니다.

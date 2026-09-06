@@ -110,9 +110,12 @@ export function countMatches(cond) {
 /**
  * 카드 한 장.
  *
- * 태그는 policy.html 의 "Tag 노출 조건" 그대로입니다 — 전용 상품이면 상시 태그가
- * 먼저, 그 다음 날짜·시각, 그 다음 급한 차례의 잔여석입니다. 다른 것은 하나뿐입니다:
- * 여기서는 값이 대표 일정이 아니라 이 회차에서 나옵니다.
+ * 태그는 policy.html 의 "Tag 노출 조건" 그대로입니다 — 날짜·시각이 먼저, 그 다음
+ * 급한 차례의 잔여석입니다. 다른 것은 하나뿐입니다: 여기서는 값이 대표 일정이
+ * 아니라 이 회차에서 나옵니다.
+ *
+ * 전용 상품이어도 태그를 붙이지 않습니다. 값을 가린 자리("블랙 인증 후 공개")가
+ * 이미 그 사실을 말하고 있어, 태그까지 붙으면 한 장에서 같은 말을 두 번 합니다.
  *
  * 가격에 `~` 를 붙이지 않는 것도 그래서입니다. 상품 카드는 여러 일정의 최저가를
  * 말하지만 이 카드는 그 회차의 값 하나를 말합니다 — `~` 를 붙이면 더 싼 것이 어딘가
@@ -121,11 +124,6 @@ export function countMatches(cond) {
 function card({ slug, product, s, photo }) {
   const seats = seatTags(s)
   const tags = []
-  if (product.locked) {
-    tags.push(
-      '<span class="tag tag--black"><svg aria-hidden="true"><use href="#icon-memberBlack"></use></svg>블랙회원 전용</span>',
-    )
-  }
   tags.push(`<span class="tag">${dayText(dateAfter(s.in))} ${s.label}</span>`)
   for (const t of seats) {
     tags.push(`<span class="tag ${t.closed ? 'tag--accent-sec' : 'tag--accent-pri'}">${t.text}</span>`)

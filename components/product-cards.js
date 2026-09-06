@@ -82,10 +82,8 @@ function fill(card, product) {
   const tags = card.querySelector('.product-card__tags')
   if (tags) {
     // 일정과 잔여석은 다시 그립니다 — 마크업에 남아 있던 것이 지워지지 않으면 새로
-    // 그린 것 옆에 옛 숫자가 그대로 붙어 있습니다. 전용 태그(블랙회원 전용)만은
-    // 남깁니다. 그것은 일정마다 달라지는 현황이 아니라 이 상품의 조건이라 늘 붙어
-    // 있어야 하고(policy.html), 아이콘까지 달고 있어 마크업이 들고 있는 편이 낫습니다.
-    for (const old of tags.querySelectorAll('.tag:not(.tag--black)')) old.remove()
+    // 그린 것 옆에 옛 숫자가 그대로 붙어 있습니다.
+    for (const old of tags.querySelectorAll('.tag')) old.remove()
     // 신청할 수 있는 일정이 하나도 없으면 날짜 자리를 이 말이 대신합니다.
     if (!next) tags.append(el('span', 'tag', '모든 일정 마감'))
     else {
