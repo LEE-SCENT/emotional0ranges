@@ -46,11 +46,10 @@ const gradeOf = (me) => (me.black ? '블랙 회원' : '일반 회원')
  * 마지막이 서비스에 대한 것과 로그아웃입니다.
  */
 const ITEMS = [
-  /* 알림은 판에서만 나옵니다. 폰에서는 GNB 오른쪽 위에 알림 아이콘이 이미 서 있어
-     (gnb.css), 마이 화면에 한 줄을 더 두면 같은 곳으로 가는 길이 한 화면에 둘이
-     됩니다 — 넓은 화면에서는 그 아이콘이 medium 폭에서 접히므로 판이 유일한
-     길입니다. */
-  { label: '알림', icon: 'notifications', badge: true, href: '', auth: true, panelOnly: true },
+  /* 폰의 마이 화면에도 섭니다(Figma 67:87010). GNB 오른쪽 위에 알림 아이콘이
+     따로 있지만, 그것은 어느 화면에서나 있는 것이고 이 줄은 목록의 첫 칸에서
+     "읽지 않은 것이 있다"를 점으로 말합니다. */
+  { label: '알림', icon: 'notifications', badge: true, href: '', auth: true },
   null,
   { label: '기본 프로필', href: '', auth: true },
   { label: '상세 프로필', desc: '작성할수록 매칭 가능성이 높아져요', href: '', auth: true },
@@ -117,18 +116,26 @@ function item({ label, desc, icon, badge, href, quiet }) {
   return node
 }
 
-function profile() {
-  const box = el('div', 'my-menu__profile')
+function profile(page) {
+  const box = el('div', `my-menu__profile${page ? ' my-menu__profile--page' : ''}`)
 
   const who = el('p', 'my-menu__who')
-  const named = el('span', 'my-menu__badge-name')
-  // 블랙회원에게만 붙는 표시입니다. 등급 글자가 옆에서 이미 말하고 있어, 없는
-  // 사람에게 흐린 자리로 남겨두지 않고 아예 그리지 않습니다.
-  if (ME.black) {
-    named.insertAdjacentHTML('beforeend', '<svg aria-hidden="true"><use href="#icon-memberBlack"></use></svg>')
+
+  /* 폰에서는 이름이 이 화면의 제목입니다 — 28 semibold 한 줄로 서고, 등급도
+     블랙회원 표시도 붙지 않습니다(Figma 67:88608). 판에서는 GNB 아래 떠 있는
+     것이라 제목이 될 수 없어, 이름 옆에 등급을 달아 누구인지를 한 줄로 말합니다. */
+  if (page) {
+    who.append(el('b', 'my-menu__name', `${ME.name} 님`))
+  } else {
+    const named = el('span', 'my-menu__badge-name')
+    // 블랙회원에게만 붙는 표시입니다. 등급 글자가 옆에서 이미 말하고 있어, 없는
+    // 사람에게 흐린 자리로 남겨두지 않고 아예 그리지 않습니다.
+    if (ME.black) {
+      named.insertAdjacentHTML('beforeend', '<svg aria-hidden="true"><use href="#icon-memberBlack"></use></svg>')
+    }
+    named.append(el('b', 'my-menu__name', `${ME.name} 님`))
+    who.append(named, el('span', 'my-menu__grade', gradeOf(ME)))
   }
-  named.append(el('b', 'my-menu__name', `${ME.name} 님`))
-  who.append(named, el('span', 'my-menu__grade', gradeOf(ME)))
 
   /* 프로필 카드는 상대에게 보이는 내 모습이라, 목록의 한 줄이 아니라 배너입니다 —
      내가 어떻게 보이는지는 스스로 열어보기 전에는 알 수 없는 것이라 권해야 합니다. */
@@ -201,11 +208,8 @@ export function renderMyMenu(box, { page = false } = {}) {
 
   /* 로그인해야 쓸 수 있는 것은 로그인하기 전에는 아예 두지 않습니다 — 눌러서
      로그인 화면으로 튕겨 나오는 것보다, 지금 할 수 있는 것만 보이는 편이 짧습니다.
-     화면(폰)에만 없는 것도 여기서 빠집니다. 그러고 나면 구분선이 잇달아 남거나
-     맨 앞뒤에 서게 되므로 함께 걷어냅니다. */
-  const shown = ITEMS.filter(
-    (entry) => !entry || ((ME || !entry.auth) && !(page && entry.panelOnly)),
-  )
+     그러고 나면 구분선이 잇달아 남거나 맨 앞뒤에 서게 되므로 함께 걷어냅니다. */
+  const shown = ITEMS.filter((entry) => !entry || ME || !entry.auth)
 
   /* 잇달아 남은 구분선은 하나로 합치고 끝에 남은 것은 버립니다. 맨 앞의 것은
      남깁니다 — 위에 늘 프로필 블록이 서 있어, 그 선이 나눌 것이 있습니다
@@ -218,7 +222,7 @@ export function renderMyMenu(box, { page = false } = {}) {
   while (lines.length && !lines.at(-1)) lines.pop()
 
   box.replaceChildren(
-    ME ? profile() : signedOut(),
+    ME ? profile(page) : signedOut(),
     ...lines.map((entry) => (entry ? item(entry) : el('hr', 'my-menu__divider'))),
   )
 

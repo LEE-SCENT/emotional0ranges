@@ -189,6 +189,18 @@
   white-space: nowrap;
 }
 
+/* 폰에서는 이름과 배너 사이가 12 입니다 — 이름이 이 화면의 제목이라 판에서보다
+   한 단 벌어져야 배너가 제목에 딸린 것으로 읽히지 않습니다(Figma). */
+.my-menu__profile--page { gap: var(--spacing-300); }
+
+/* 그 이름은 제목이므로 28 semibold 입니다(heading-m-semibold). */
+.my-menu__profile--page .my-menu__name {
+  font-size: var(--typography-heading-m-semibold-font-size);
+  font-weight: var(--typography-heading-m-semibold-font-weight);
+  line-height: var(--typography-heading-m-semibold-line-height);
+  letter-spacing: var(--typography-heading-m-semibold-letter-spacing);
+}
+
 /* 이름과 그 앞의 표시는 한 덩어리입니다 — 등급(블랙 회원)과 8 만큼 떨어지는 것은
    이 덩어리이고, 표시와 이름 사이는 4 로 더 붙습니다. */
 .my-menu__badge-name {

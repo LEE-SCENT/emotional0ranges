@@ -223,8 +223,8 @@
   --_gnb-max-height: 72px;
   --_gnb-logo-width: 126px;
   --_gnb-logo-height: 40px;
-  --_gnb-logo-sticky-width: 96px;
-  --_gnb-logo-sticky-height: 30px;
+  --_gnb-logo-sticky-width: 113px;
+  --_gnb-logo-sticky-height: 36px;
   --_gnb-max-content-width-lg: var(--container-max-width-lg);
   --_image-viewer-max-image-width: 1000px;
   --_image-viewer-bottom-gap: var(--spacing-1000);

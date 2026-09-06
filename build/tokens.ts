@@ -507,8 +507,8 @@ export const components = {
     "logo": {
       "width": "126px",
       "height": "40px",
-      "stickyWidth": "96px",
-      "stickyHeight": "30px"
+      "stickyWidth": "113px",
+      "stickyHeight": "36px"
     },
     "maxContentWidthLg": "1280px"
   },

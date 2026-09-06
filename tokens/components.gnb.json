@@ -23,7 +23,7 @@
         "$description": "넓은 화면에서 바가 이보다 높아지지 않습니다. 여백(16×2)과 로고(40)를 더하면 저절로 72 이지만, 가운데에 무엇이 들어오든 바가 자라지 않도록 못을 박아 둡니다 — 세그먼티드 컨트롤이 56 이던 동안 실제로 자라 있었습니다."
       },
       "logo": {
-        "$description": "로고 크기. 스티키 상태에서 한 단계 작아집니다.",
+        "$description": "로고 크기. 좁은 화면(small)에서 한 단계 작아집니다. 스크롤에 따라 줄어들지는 않습니다 — 로고가 작아졌다 커지는 것은 읽는 일과 상관이 없고, 그 아래에 붙어 따라오는 것들(모임 찾기의 필터바)이 함께 흔들립니다.",
         "width": {
           "$type": "dimension",
           "$value": "126px"
@@ -34,12 +34,12 @@
         },
         "stickyWidth": {
           "$type": "dimension",
-          "$value": "96px",
-          "$description": "Figma 22:11662."
+          "$value": "113px",
+          "$description": "Figma 8:1621 (small). 이름은 스티키지만 지금은 좁은 화면의 크기입니다."
         },
         "stickyHeight": {
           "$type": "dimension",
-          "$value": "30px"
+          "$value": "36px"
         }
       },
       "maxContentWidthLg": {
