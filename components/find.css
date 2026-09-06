@@ -293,6 +293,16 @@
 
   .find-types__more { display: inline-flex; }
 
+  /* 다만 줄이 넘칠 때만입니다. 알약이 여섯이든 둘이든 한 줄에 다 들어오면 펼칠
+     것이 없는데, 그때도 서 있으면 눌러도 아무 일이 없는 버튼이 됩니다.
+     넘치는지는 scroll-row.js 가 data-fade 로 적어둡니다 — none 이면 다 보입니다.
+
+     펼쳐 둔 동안에는(aria-expanded) 남깁니다. 펼치면 알약이 여러 줄로 접혀 더는
+     넘치지 않는데, 그때 접기 버튼까지 사라지면 되돌릴 길이 없어집니다. */
+  .find-types__list[data-fade='none'] ~ .find-types__more:not([aria-expanded='true']) {
+    display: none;
+  }
+
   /* 접기 버튼도 small 입니다 — 44×32(Figma). Button 의 iconOnly/medium 여백이
      같은 무게(0,2,0)라 클래스를 하나 더 겹쳐 이깁니다. */
   .btn.find-types__more {

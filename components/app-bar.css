@@ -46,12 +46,24 @@
 
 .app-bar__item.is-active { color: var(--_app-bar-fg-active); }
 
+/* 누르는 동안 아이콘이 잠깐 움츠렸다가, 떼면 이 전환을 타고 제 크기로 돌아옵니다.
+   탭을 눌러 화면이 바뀌기까지 한 박자가 있는데, 그 사이에 아무 일도 일어나지
+   않으면 눌린 줄 모르고 한 번 더 누르게 됩니다.
+
+   ⚠️ Figma 에 이 모션이 없어 시간과 곡선을 코드에서 정했습니다 — 찜 버튼과 같은
+      값입니다(favorite.css). */
 .app-bar__icon {
   display: block;
   flex: none;
   inline-size: var(--_app-bar-icon-size);
   block-size: var(--_app-bar-icon-size);
+  transition: scale var(--_duration-fast) var(--_easing-standard);
 }
+
+/* :active 는 마우스 쪽이고, is-pressing 은 손가락 쪽입니다(app-bar.js) — 사파리가
+   터치에서 :active 를 잘 주지 않아 두 자리에 같은 값을 적습니다. */
+.app-bar__item:active .app-bar__icon,
+.app-bar__item.is-pressing .app-bar__icon { scale: 0.85; }
 
 .app-bar__label {
   font-size: var(--typography-body-xs-medium-font-size);
@@ -77,4 +89,10 @@
 
 @media (min-width: 961px) {
   .app-bar--fixed { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-bar__icon { transition: none; }
+  .app-bar__item:active .app-bar__icon,
+  .app-bar__item.is-pressing .app-bar__icon { scale: 1; }
 }

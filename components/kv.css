@@ -82,6 +82,10 @@
   inline-size: 100%;
   /* 좁은 화면은 사방 32 입니다. 961 부터는 아래에서 좌우 40 만 남깁니다. */
   padding: var(--spacing-800);
+  /* 사진 한가운데에 섭니다. `.kv` 는 아래로 몰아두는데(justify-content: flex-end)
+     그 아래 쪽수는 구석에 남아야 하므로, 줄 전체를 가운데로 옮기는 대신 이 덩어리만
+     남는 자리를 위아래로 나눠 갖습니다. */
+  margin-block: auto;
 }
 
 /* 문구는 어느 폭에서든 가운데 정렬입니다. 달라지는 것은 그 덩어리가 놓이는
@@ -132,19 +136,17 @@
 /* 숫자 인디케이터는 좁은 화면에만 둡니다. 961 부터는 좌우 화살표가 그 역할을
    하므로 아래 미디어 쿼리에서 감춥니다. 한 장뿐일 때도 감춥니다 — "1 / 1" 은
    알려주는 것이 없습니다. */
+/* 사진 위에 얹힌 표시입니다 — 흐름에서 빼두어야 문구가 사진 한가운데에 섭니다.
+   줄로 두면 그만큼 위를 차지해, 가운데가 그 높이의 절반만큼 올라갑니다. */
 .kv__pagination {
-  position: relative;
-  box-sizing: border-box;
+  position: absolute;
+  inset-block-end: var(--spacing-300);
+  inset-inline-end: var(--spacing-500);
   z-index: 1;
   display: flex;
-  justify-content: flex-end;
   align-items: center;
   gap: var(--spacing-50);
   margin: 0;
-  inline-size: 100%;
-  max-inline-size: 640px;
-  /* 위쪽은 콘텐츠의 32 가 이미 띄워줍니다. 아래 12, 좌우 20 만 둡니다. */
-  padding: 0 var(--spacing-500) var(--spacing-300);
   font-size: var(--typography-body-s-regular-font-size);
   line-height: var(--typography-body-s-regular-line-height);
 }
@@ -157,10 +159,6 @@
   .kv { min-block-size: var(--_kv-min-height-sm); }
   .kv__content { max-inline-size: 640px; }
 
-  /* 문구는 640 안에 모이지만 쪽수는 화면 오른쪽 끝으로 갑니다 — 몇 번째 장인지는
-     읽는 것이 아니라 곁눈으로 보는 것이라, 글 옆에 서면 글의 일부처럼 읽힙니다.
-     넓어질수록 글과 멀어져 제 노릇이 또렷해집니다. */
-  .kv__pagination { max-inline-size: none; }
 }
 
 /* ---- 961~ -------------------------------------------------------------- */

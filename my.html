@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="./components/segmented-control.css?v=027af639">
 <link rel="stylesheet" href="./components/tooltip.css?v=7ec024df">
 <link rel="stylesheet" href="./components/my-menu.css?v=59a441fb">
-<link rel="stylesheet" href="./components/app-bar.css?v=7fbb6489">
+<link rel="stylesheet" href="./components/app-bar.css?v=d38ced8a">
 <style>
   body {
     margin: 0;
@@ -134,6 +134,8 @@
   initSegmentedControls()
   const { initAutoHide } = await import('./components/auto-hide.js?v=ef9c163a')
   initAutoHide()
+  const { initAppBarPress } = await import('./components/app-bar.js?v=6deb1462')
+  initAppBarPress()
   const { initMyMenus } = await import('./components/my-menu.js?v=b6d6b013')
   initMyMenus()
   const { initMyPage } = await import('./components/my-menu.js?v=b6d6b013')
