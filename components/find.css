@@ -39,10 +39,16 @@
       공중에 떠 있게 됩니다.
 */
 
-/* 머리가 붙는 시점을 재는 표식. 높이가 없어 레이아웃에 끼어들지 않고, 붙지 않으므로
-   스크롤과 함께 그대로 올라갑니다(find-bar.js). */
+/* 머리가 붙는 시점을 재는 표식. 붙지 않으므로 스크롤과 함께 그대로 올라갑니다
+   (find-bar.js).
+
+   ⚠️ 높이가 0 이면 IntersectionObserver 가 이 요소를 아예 보지 않습니다 —
+      처음 한 번의 콜백조차 오지 않아, 머리가 붙어도 `is-sticky` 가 붙지 않고
+      바가 줄어들지 않았습니다. 1px 은 레이아웃에 거의 끼어들지 않으면서
+      관찰되기에는 충분한 크기입니다. 그만큼은 아래 margin 으로 되돌립니다. */
 .find-head__sentinel {
-  block-size: 0;
+  block-size: 1px;
+  margin-block-end: -1px;
 }
 
 .find-head {
@@ -519,8 +525,8 @@
   outline-offset: 2px;
 }
 
-/* medium 이라 20 입니다(--icon-size-s) — 레이블이 있는 버튼의 아이콘은 한 단
-   작습니다(empty-state.css 에 같은 이야기를 적어 두었습니다). */
+/* medium 이라 20 입니다(--icon-size-s) — Button 이 medium 에서 쓰는 것과 같은
+   값입니다(button.css). <select> 라 클래스를 얹지 못해 여기서 다시 적습니다. */
 .find__sort-lead {
   position: absolute;
   inset-inline-start: var(--spacing-400);

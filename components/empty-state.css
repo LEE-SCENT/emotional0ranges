@@ -76,11 +76,3 @@
   line-height: var(--typography-body-s-regular-line-height);
   letter-spacing: var(--typography-body-s-regular-letter-spacing);
 }
-
-/* 20 입니다(Figma). Button 의 medium 기본값은 24 인데, 이 화면들의 medium 알약도
-   모두 20 을 씁니다(find-bar.css 의 추천 조건·걸린 조건) — 텍스트 버튼의 아이콘은
-   한 단 작은 것이 기본인지 확인이 필요합니다. */
-.empty-state .btn__icon {
-  inline-size: var(--icon-size-s);
-  block-size: var(--icon-size-s);
-}

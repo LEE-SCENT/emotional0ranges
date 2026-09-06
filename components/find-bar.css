@@ -868,14 +868,6 @@
   cursor: pointer;
 }
 
-/* 20 입니다. Button 의 medium 은 24 를 쓰지만, 이 알약들은 셋이 396 짜리 판에
-   한 줄로 들어가야 해서 Figma 가 한 단 작은 아이콘을 씁니다(iconSize/s). */
-.find-picks__item .btn__icon,
-.find-applied__item .btn__icon {
-  inline-size: var(--icon-size-s);
-  block-size: var(--icon-size-s);
-}
-
 .find-picks__item .btn__icon { color: var(--colors-fg); }
 
 /* 켜진 알약 뒤에 붙는 × — 추천 조건과 하위 필터가 함께 씁니다. 색만으로 켜짐을

@@ -102,7 +102,10 @@
   line-height: var(--typography-body-m-medium-line-height);
   letter-spacing: var(--typography-body-m-medium-letter-spacing);
 }
-.btn--medium .btn__icon { inline-size: var(--_button-icon-size-m); block-size: var(--_button-icon-size-m); }
+/* medium 도 마찬가지로 한 단 작습니다 — 20px(iconSize/s). 24px(iconSize/m)은
+   iconOnly 전용입니다. small 과 large 가 이미 그랬는데 medium 만 둘이 같아,
+   화면마다 20 으로 되돌리고 있었습니다(추천 조건·걸린 조건 알약, 빈 상태 버튼). */
+.btn--medium .btn__icon { inline-size: var(--_button-icon-size-s); block-size: var(--_button-icon-size-s); }
 
 .btn--large {
   padding: var(--spacing-300) var(--spacing-600);
@@ -118,13 +121,18 @@
      small  : 8/12  -> 6/12   (44×32)
      medium : 그대로          (56×40)
      large  : 12/24 -> 10/16  (60×48)
-   아이콘도 텍스트 버튼과 달라, small 은 16 -> 20, large 는 24 -> 28 입니다. */
+   아이콘도 레이블이 있는 버튼과 한 단씩 다릅니다 — small 16 -> 20,
+   medium 20 -> 24, large 24 -> 28. */
 .btn--icon-only.btn--small { padding: var(--spacing-150) var(--spacing-300); }
 .btn--icon-only.btn--small .btn__icon {
   inline-size: var(--_button-icon-size-s);
   block-size: var(--_button-icon-size-s);
 }
 .btn--icon-only.btn--medium { padding: var(--spacing-200) var(--spacing-400); }
+.btn--icon-only.btn--medium .btn__icon {
+  inline-size: var(--_button-icon-size-m);
+  block-size: var(--_button-icon-size-m);
+}
 .btn--icon-only.btn--large { padding: var(--spacing-250) var(--spacing-400); }
 .btn--icon-only.btn--large .btn__icon {
   inline-size: var(--_button-icon-size-l);
