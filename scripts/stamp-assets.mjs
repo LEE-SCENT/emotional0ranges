@@ -21,6 +21,16 @@ const LINK = /(href|src)="\.\/((?:build|components|fonts)\/[^"?]+\.(?:css|js))(?
 const DYNAMIC_IMPORT = /import\('\.\/((?:build|components)\/[^'?]+\.js)(?:\?v=[^']*)?'\)/g
 
 /**
+ * 아이콘 스프라이트와 로고 — 링크가 아니라 코드 안의 fetch 로 옵니다.
+ *
+ * `<use href="#icon-…">` 가 스프라이트를 이름으로만 부르기 때문에, 파일이 바뀌어도
+ * URL 은 그대로입니다. 아이콘 하나를 고쳐 배포해도 이미 한 번 다녀간 사람에게는
+ * 캐시가 만료될 때까지 옛 그림이 그대로 보입니다 — 겉으로는 배포가 안 된 것처럼
+ * 보이는데 서버의 파일은 맞아서, 원인을 찾기까지가 오래 걸립니다.
+ */
+const FETCH_ASSET = /fetch\('\.\/(build\/[^'?]+\.svg)(?:\?v=[^']*)?'\)/g
+
+/**
  * 모듈이 모듈을 부르는 자리 — `import { … } from './products.js'`.
  *
  * 여기를 빼먹으면 배포 직후 화면이 빈 채로 뜹니다. HTML 이 부르는 find.js 는
@@ -88,6 +98,7 @@ for (const file of readdirSync(ROOT).filter((f) => f.endsWith('.html'))) {
   const after = before
     .replace(LINK, (_, attr, path) => `${attr}="./${path}?v=${stamp(path)}"`)
     .replace(DYNAMIC_IMPORT, (_, path) => `import('./${path}?v=${stamp(path)}')`)
+    .replace(FETCH_ASSET, (_, path) => `fetch('./${path}?v=${stamp(path)}')`)
   if (after !== before) writeFileSync(abs, after)
 }
 console.log(`에셋 링크 ${stamped}개에 내용 해시를 붙였습니다`)

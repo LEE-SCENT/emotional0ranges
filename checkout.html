@@ -448,7 +448,7 @@
 
 <script type="module">
   document.getElementById('sprite').innerHTML =
-    await (await fetch('./build/icons.svg')).text() + await (await fetch('./build/logo.svg')).text()
+    await (await fetch('./build/icons.svg?v=1670ef68')).text() + await (await fetch('./build/logo.svg?v=0adc0440')).text()
   // 뒤로 돌아온 화면은 맨 위에서 시작합니다.
   await import('./components/scroll-restore.js?v=f612a7a5')
   const { initStickyGnb } = await import('./components/gnb.js?v=ca09b963')

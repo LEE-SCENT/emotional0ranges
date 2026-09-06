@@ -476,9 +476,8 @@
    먹히고, 화면을 읽어주는 쪽은 "정렬, 날짜 빠른 순, 목록 상자"라고 읽습니다.
    여기서 하는 일은 기본 화살표를 지우고 우리 화살표를 얹는 것뿐입니다.
 
-   ⚠️ Figma 는 이 버튼의 왼쪽에 정렬 아이콘(↑↓)을 답니다. 아이콘 세트에 그것이
-      없어 지금은 오른쪽의 chevronDown 만 둡니다 — 비슷한 아이콘으로 대신하지
-      않았습니다.
+   양옆에 아이콘이 하나씩 섭니다 — 왼쪽은 무엇을 하는 자리인지(정렬), 오른쪽은
+   눌러서 고르는 자리인지(화살표)를 말합니다.
 */
 
 .find__sort {
@@ -496,11 +495,10 @@
 .find__sort select {
   appearance: none;
   margin: 0;
-  /* 오른쪽만 아이콘 폭과 그 사이 간격(button.css 의 gap)만큼 더 둡니다 —
-     화살표가 글자 위로 겹치지 않게. */
+  /* 양옆을 아이콘 폭과 그 사이 간격(button.css 의 gap)만큼 더 비웁니다 —
+     아이콘이 글자 위로 겹치지 않게. */
   padding: var(--spacing-200)
-    calc(var(--spacing-300) + var(--icon-size-xs) + var(--spacing-100))
-    var(--spacing-200) var(--spacing-300);
+    calc(var(--spacing-300) + var(--icon-size-xs) + var(--spacing-100));
   border: 0;
   border-radius: var(--_rounded-full);
   /* 브라우저가 그리는 기본 테를 끕니다. 아래에서 키보드로 온 초점에만 다시
@@ -526,14 +524,16 @@
 
 .find__sort svg {
   position: absolute;
-  inset-inline-end: var(--spacing-300);
   inline-size: var(--icon-size-xs);
   block-size: var(--icon-size-xs);
   /* 글자와 같은 색입니다 — 하나의 버튼으로 읽혀야 합니다. */
   color: var(--_button-ghost-fg);
-  /* 화살표를 눌러도 고르개가 열려야 합니다. */
+  /* 아이콘을 눌러도 고르개가 열려야 합니다. */
   pointer-events: none;
 }
+
+.find__sort-lead { inset-inline-start: var(--spacing-300); }
+.find__sort-caret { inset-inline-end: var(--spacing-300); }
 
 /* ---- 격자 -------------------------------------------------------------
    Figma 의 BreakPoint 시트를 그대로 옮겼습니다.

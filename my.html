@@ -125,7 +125,7 @@
 
 <script type="module">
   document.getElementById('sprite').innerHTML =
-    await (await fetch('./build/icons.svg')).text() + await (await fetch('./build/logo.svg')).text()
+    await (await fetch('./build/icons.svg?v=1670ef68')).text() + await (await fetch('./build/logo.svg?v=0adc0440')).text()
   await import('./components/scroll-restore.js?v=f612a7a5')
   const { initStickyGnb } = await import('./components/gnb.js?v=ca09b963')
   initStickyGnb()

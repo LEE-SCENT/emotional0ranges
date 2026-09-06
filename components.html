@@ -508,7 +508,7 @@
 </article>
 
 <script type="module">
-document.getElementById('sprite').innerHTML = await (await fetch('./build/icons.svg')).text()
+document.getElementById('sprite').innerHTML = await (await fetch('./build/icons.svg?v=1670ef68')).text()
 const ic = '<svg class="btn__icon" aria-hidden="true"><use href="#icon-chevronRight"></use></svg>'
 const btn = (cls, size) => `<button class="btn btn--${cls} btn--${size}"><span class="btn__label">Button</span>${ic}</button>`
 const iconOnly = (cls, size, badge) => `<button class="btn btn--${cls} btn--${size} btn--icon-only" aria-label="다음">${ic}${badge ? '<span class="badge btn__badge"></span>' : ''}</button>`
@@ -588,7 +588,7 @@ document.getElementById('gnb-host').innerHTML = `
 </header>`
 
 document.getElementById('logo-inline').innerHTML =
-  await (await fetch('./build/logo.svg')).text() + '<svg width="126" height="40" role="img" aria-label="emotional oranges"><use href="#logo-eo"></use></svg>'
+  await (await fetch('./build/logo.svg?v=0adc0440')).text() + '<svg width="126" height="40" role="img" aria-label="emotional oranges"><use href="#logo-eo"></use></svg>'
 document.getElementById('wt').innerHTML = [400,500,600].map(w =>
   `<div data-w="${w}" style="font-weight:${w};font-size:20px">디자인 시스템 Pretendard 123 — ${w}</div>`).join('')
 const plain = (cls, size) => `<button class="btn btn--${cls} btn--${size}"><span class="btn__label">Button</span></button>`
