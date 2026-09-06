@@ -1,0 +1,614 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="format-detection" content="telephone=no">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#FFFFFF">
+<title>상세 페이지 템플릿 — 상세 페이지</title>
+<link rel="stylesheet" href="../fonts/pretendard/pretendard.css">
+<link rel="stylesheet" href="../build/tokens.css">
+<link rel="stylesheet" href="../components/tag.css">
+<link rel="stylesheet" href="../components/product-card.css">
+<link rel="stylesheet" href="./blocks.css">
+<style>
+  /* 카탈로그 자체의 겉모습입니다. 블록 스타일이 아닙니다 — blocks.css 만 가져다
+     쓰면 이 파일 없이도 블록이 그대로 나옵니다. */
+  body { margin: 0; padding: 40px 24px 96px; background: var(--colors-bg-low);
+         color: var(--colors-fg); font-family: var(--_font-family-base); }
+  h1 { margin: 0 0 8px; font-size: var(--typography-heading-l-semibold-font-size);
+       font-weight: var(--typography-heading-l-semibold-font-weight);
+       line-height: var(--typography-heading-l-semibold-line-height); }
+  .lede { margin: 0 0 40px; max-width: 720px; color: var(--colors-fg-lower);
+          font-size: var(--typography-body-l-regular-font-size);
+          line-height: var(--typography-body-l-regular-line-height); }
+  h2 { margin: 56px 0 6px; font-size: var(--typography-heading-s-semibold-font-size);
+       font-weight: var(--typography-heading-s-semibold-font-weight);
+       line-height: var(--typography-heading-s-semibold-line-height); }
+  h2 code { font-size: .7em; color: var(--colors-fg-lowest); font-weight: 400; }
+  .note { margin: 0 0 16px; max-width: 720px; color: var(--colors-fg-lower);
+          font-size: var(--typography-body-m-regular-font-size);
+          line-height: var(--typography-body-m-regular-line-height); }
+  .pair { display: flex; gap: 24px; align-items: flex-start; flex-wrap: wrap; }
+  /* 같은 항목 안에 예시가 둘 이상이면 사이를 띄웁니다. 붙여 두면 위 예시의 아래쪽
+     이름표인지 아래 예시의 위쪽 이름표인지 알 수 없습니다. */
+  .pair + .pair { margin-block-start: 40px; }
+  .frame { position: relative; padding-top: 22px; }
+  .frame::before { content: attr(data-label); position: absolute; inset-block-start: 0;
+                   font-size: 11px; letter-spacing: .06em; text-transform: uppercase;
+                   color: var(--colors-fg-lowest); }
+  .frame > .tpl { outline: 1px solid var(--colors-border); }
+  /* 스페이서는 실제로는 빈 자리라 흰 배경에서 보이지 않습니다. 카탈로그에서만 빗금과
+     크기를 얹어 얼마나 들어갔는지 보이게 합니다 — .frame 안에서만 걸리므로 제품에
+     가져다 쓸 때는 그대로 투명합니다. */
+  .frame .tpl-spacer { position: relative;
+             background: repeating-linear-gradient(-45deg,
+                         transparent 0 5px, var(--colors-bg-low) 5px 10px);
+             outline: 1px dashed var(--colors-border); outline-offset: -1px; }
+  .frame .tpl-spacer::after { content: attr(data-size); position: absolute; inset: 0;
+             display: grid; place-items: center;
+             font-size: 11px; letter-spacing: .06em; color: var(--colors-fg-lowest); }
+  .frame--desktop { width: 750px; max-width: 100%; }
+  .frame--mobile { width: 390px; max-width: 100%; }
+  .tabs-nav { display: flex; gap: 4px; margin: 0 0 20px; }
+  .tabs-nav :is(a, b) { padding: 8px 18px; border-radius: var(--_rounded-full);
+             font-weight: var(--typography-body-l-semibold-font-weight);
+             font-size: var(--typography-body-l-semibold-font-size);
+             line-height: var(--typography-body-l-semibold-line-height);
+             text-decoration: none; }
+  .tabs-nav b { background: var(--colors-fg); color: var(--colors-bg); }
+  .tabs-nav a { color: var(--colors-fg-lower); }
+  /* 아래는 카탈로그에서 값을 바꿔 보기 위한 조작판입니다. 블록의 일부가 아닙니다 —
+     blocks.css 에는 없고, 어드민이 만들 화면을 대신 흉내 낼 뿐입니다. */
+  .control { display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+             margin: 0 0 16px; padding: 12px 16px; border-radius: var(--_rounded-m);
+             background: var(--colors-bg); border: 1px solid var(--colors-border);
+             font-size: var(--typography-body-m-regular-font-size);
+             line-height: var(--typography-body-m-regular-line-height); }
+  .control label { color: var(--colors-fg-lower); }
+  /* 브라우저 기본 색상 칸은 색을 안쪽에 작게 그리고 둘레에 여백을 남깁니다.
+     그 여백을 걷어내 색이 칸을 꽉 채우게 합니다. */
+  .control input[type="color"] { inline-size: 36px; block-size: 28px; padding: 0;
+             border: 1px solid var(--colors-border); border-radius: var(--_rounded-xs);
+             background: none; cursor: pointer; overflow: hidden;
+             -webkit-appearance: none; appearance: none; }
+  .control input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+  .control input[type="color"]::-webkit-color-swatch { border: 0; border-radius: 0; }
+  .control input[type="color"]::-moz-color-swatch { border: 0; border-radius: 0; }
+  .control input[type="text"] { inline-size: 12ch; padding: 5px 8px;
+             border: 1px solid var(--colors-border); border-radius: var(--_rounded-xs);
+             font: inherit; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .control input[type="text"].is-wide { inline-size: 34ch; }
+  .control button { padding: 6px 12px; border: 1px solid var(--colors-border);
+             border-radius: var(--_rounded-full); background: var(--colors-bg);
+             font: inherit; cursor: pointer; }
+  .control small { color: var(--colors-fg-lowest); flex: 1 1 22ch; min-inline-size: 0; }
+  .control small code { font-size: .95em; }
+</style>
+
+<div id="sprite" hidden></div>
+
+<nav class="tabs-nav">
+  <a href="./index.html">❶ 블록</a>
+  <a href="./samples.html">❷ 조립 예</a>
+  <b>❸ 상세 페이지</b>
+</nav>
+<h1>티키타카 로테이션 소개팅</h1>
+<p class="lede">
+  블록만으로 조립한 상세 페이지 한 판입니다. 타이틀 · 본문 · 목록 · 이미지 · 캐러셀 · 지도 ·
+  버튼 · 쿠폰 · 아코디언이 모두 들어 있고, 그 사이에 따로 넣은 여백은 없습니다 — 각 블록이
+  이미 자기 위아래 여백을 들고 있습니다. 데스크톱과 모바일이 같은 내용을 받아 폰트 · 여백 ·
+  배치만 달라지는 것도 나란히 보입니다.
+</p>
+
+<div class="pair">
+  <div class="frame frame--desktop" data-label="desktop 750">
+    <div class="tpl tpl--desktop">
+      <section class="tpl-block tpl-title">
+        <p class="tpl-title__label">괜찮은 사람을 가장 빨리 만나는 방법</p>
+        <h2 class="tpl-title__title">티키타카 로테이션<br>이렇게 이루어져요</h2>
+      </section>
+
+      <section class="tpl-block tpl-image-full">
+        <img src="../images/detail-photo-1.jpg" alt="조명이 놓인 테이블에서 마주 앉아 대화하는 두 사람">
+      </section>
+
+      <section class="tpl-block tpl-text">
+        <div class="tpl-text__header">
+          <p class="tpl-text__no">01</p>
+          <p class="tpl-text__title">도착과 자리 배정</p>
+        </div>
+        <div class="tpl-text__content">
+          <p>입장하면 번호가 적힌 자리를 안내받아요. 프로필 카드를 작성하는 동안 음료가 나옵니다. 누구와 마주 앉을지 고르지 않아도 되니, 문을 여는 순간의 부담이 없어요.</p>
+        </div>
+      </section>
+
+      <section class="tpl-block tpl-text">
+        <div class="tpl-text__header">
+          <p class="tpl-text__no">02</p>
+          <p class="tpl-text__title">10분씩 돌아가는 대화</p>
+        </div>
+        <div class="tpl-text__content">
+          <p>안내에 따라 10분마다 자리를 옮겨요. 테이블마다 대화 주제 카드가 놓여 있어 처음 만난 사이에도 말이 끊기지 않습니다.</p>
+        </div>
+      </section>
+
+      <section class="tpl-block tpl-text">
+        <div class="tpl-text__header">
+          <p class="tpl-text__no">03</p>
+          <p class="tpl-text__title">쉬는 시간</p>
+        </div>
+        <div class="tpl-text__content">
+          <p>중간에 한 번 쉬어요. 마음에 남은 사람을 정리하고, 음료를 채우고, 다시 앉습니다.</p>
+        </div>
+      </section>
+
+      <section class="tpl-block tpl-text">
+        <div class="tpl-text__header">
+          <p class="tpl-text__no">04</p>
+          <p class="tpl-text__title">서로에 대한 설레는 쪽지교환</p>
+        </div>
+        <div class="tpl-text__content">
+          <p>10분 대화가 종료될 때마다 상대 이성의 마음 쪽지를 받아요. 어디서도 들을 수 없던 소개팅 상대들의 속마음을 확인하고 평생 도움되는 연애 꿀팁으로 나도 몰랐던 나의 매력을 발굴하고 업그레이드 할 수 있는 기회가 됩니다.</p>
+        </div>
+      </section>
+
+      <section class="tpl-block tpl-title">
+        <p class="tpl-title__label">Orange pick</p>
+        <h2 class="tpl-title__title">감도 높은 공간에서<br>피어나는 나만의 로맨스</h2>
+      </section>
+
+      <section class="tpl-block tpl-carousel-images">
+        <div class="tpl-carousel">
+          <div><img src="../images/detail-photo-2.jpg" alt="턴테이블에 레코드를 올려둔 라운지 한켠"></div>
+          <div><img src="../images/detail-photo-3.jpg" alt="기둥 사이 자리에서 이야기를 나누는 참가자들"></div>
+          <div><img src="../images/detail-photo-4.jpg" alt="벽돌벽 앞 테이블에서 프로필 카드를 함께 보는 두 사람"></div>
+        </div>
+      </section>
+
+      <section class="tpl-block tpl-text">
+        <div class="tpl-text__content">
+          <p>설렘이 피어나는 데 가장 중요한 건 분위기가 아닐까요? 감정적인 오렌지들이 직접 관리하는 호스트의 라운지, 분위기 좋은 조명, 향기, 작은 잔 하나까지도 직접 디자인하며 큐레이션합니다.</p>
+        </div>
+      </section>
+
+      <section class="tpl-block tpl-image-solid">
+        <div class="tpl-image-solid__image">
+          <img src="./images/closer-law-office.png" alt="법률 자문 파트너 클로저 로펌 로고">
+        </div>
+        <p class="tpl-image-solid__caption">허위정보 로펌 협업 · 보증보험 5억 +</p>
+      </section>
+
+      <section class="tpl-block tpl-text">
+        <div class="tpl-text__header">
+          <p class="tpl-text__title">보증보험 5억, 로펌 협업까지, 오렌지들은 신뢰할 수 있어요</p>
+        </div>
+        <div class="tpl-text__content">
+          <p>감정적인 오렌지들은 이용자들의 안전과 신뢰를 가장 우선으로 여겨요. 정식 결혼정보회사 등록 법인 운영으로 보증보험 5억, 공중파 다수 출연 등 안전하고 투명하게 운영하기 위해 최선을 다하고 있어요.</p>
+          <p>물론, 로펌도 함께합니다. 가장 중요한 신원, 직업 및 혼인 상태 허위 기재 등 중대한 위반 행위를 방지하기 위해 공식 법률 자문 파트너 클로저와 협약을 체결하여 회원보호정책 및 대응체계를 운영하고 있어요.</p>
+        </div>
+      </section>
+
+      <section class="tpl-block tpl-text">
+        <div class="tpl-text__header">
+          <p class="tpl-text__title">삼성 디스플레이 연구원</p>
+          <p class="tpl-text__meta">33세</p>
+          <span class="tpl-text__rating" role="img" aria-label="별점 5점 만점에 5점">
+            <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+            <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+            <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+            <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+            <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          </span>
+        </div>
+        <div class="tpl-text__content">
+          <p>직장 인증이 꼼꼼하고 프로그램이 체계적이라 믿고 참여할 수 있었어요. 일반적인 소개팅과 비교하면 가격도 합리적이고, 재참여 의사도 있습니다.</p>
+        </div>
+      </section>
+
+      <section class="tpl-block tpl-location is-mapped"
+               data-lat="37.5385" data-lng="127.0027" data-label="한남오거리 라운지">
+        <img src="./images/map-sample.png" alt="한남오거리 라운지 위치 지도">
+        <p class="tpl-location__fallback">지도를 불러오지 못했습니다</p>
+      </section>
+
+      <section class="tpl-block tpl-text">
+        <div class="tpl-text__header">
+          <p class="tpl-text__title">주차 정보</p>
+          <p class="tpl-text__meta">서울 용산구 한남오거리 라운지</p>
+        </div>
+        <div class="tpl-text__content">
+          <p>건물 지하 주차장을 2시간 무료로 이용하실 수 있어요. 만차인 경우 도보 3분 거리의 공영 주차장을 안내해 드립니다.</p>
+        </div>
+      </section>
+
+      <section class="tpl-block tpl-button">
+        <a class="tpl-button__button" href="https://map.naver.com/p/search/서울 용산구 한남대로 20길 12" target="_blank" rel="noopener">
+          네이버 지도에서 보기
+          <svg class="tpl-icon" aria-hidden="true"><use href="#icon-chevronRight"></use></svg>
+        </a>
+      </section>
+
+      <section class="tpl-block tpl-list">
+        <p class="tpl-list__title">필수 유의사항</p>
+        <ul class="tpl-list__items">
+          <li>일반 소개팅은 7개 연령 그룹, 블랙 멤버 전용 소개팅은 5개 연령 그룹으로 나뉘어 모집합니다.</li>
+          <li>남녀 같은 수로만 모집하며, 한쪽이 남으면 그만큼 모집을 멈춥니다.</li>
+          <li>최소 인원에 미치지 못하면 전날 안내드리고 전액 환불해 드립니다.</li>
+          <li>당일 취소는 환불이 어려우니 일정을 확인하고 신청해 주세요.</li>
+        </ul>
+      </section>
+
+      <section class="tpl-block tpl-title">
+        <p class="tpl-title__label">ONLY 시즌</p>
+        <h2 class="tpl-title__title">당신에게 딱 맞는 설렘<br>마감 전에 확인하세요</h2>
+      </section>
+
+      <section class="tpl-block tpl-carousel-products">
+        <div class="tpl-carousel">
+          <article class="product-card">
+            <div class="product-card__media">
+              <img src="../images/meetup-couple.jpg" alt="">
+              <div class="product-card__tags"><span class="tag">8월 22일 (토) 오후 2시</span></div>
+            </div>
+            <div class="product-card__info">
+              <h3 class="product-card__title"><a href="../detail.html">돌싱 로테이션 소개팅</a></h3>
+              <p class="product-card__desc">서울 강남 외 4개 지역 · 일정 5개</p>
+              <p class="product-card__price">42,000원~</p>
+            </div>
+          </article>
+          <article class="product-card">
+            <div class="product-card__media">
+              <img src="../images/meetup-lamp.jpg" alt="">
+              <div class="product-card__tags"><span class="tag">8월 25일 (화) 저녁 7시</span></div>
+            </div>
+            <div class="product-card__info">
+              <h3 class="product-card__title"><a href="../detail.html">12:12 티키타카 로테이션 소개팅</a></h3>
+              <p class="product-card__desc">경기 성남시 외 4개 지역 · 일정 5개</p>
+              <p class="product-card__price"><b>할인가</b> 33,000원~</p>
+            </div>
+          </article>
+          <article class="product-card">
+            <div class="product-card__media">
+              <img src="../images/meetup-record.jpg" alt="">
+              <div class="product-card__tags"><span class="tag">8월 24일 (월) 오후 2시</span></div>
+            </div>
+            <div class="product-card__info">
+              <h3 class="product-card__title"><a href="../detail.html">테마 로테이션 소개팅</a></h3>
+              <p class="product-card__desc">서울 성수 외 4개 지역 · 일정 5개</p>
+              <p class="product-card__price">42,000원~</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="tpl-block tpl-coupon">
+        <div class="tpl-coupon__wrap">
+          <div class="tpl-coupon__logo">
+            <svg aria-hidden="true"><use href="#icon-eoSymbol"></use></svg>
+          </div>
+          <button class="tpl-coupon__button" type="button">
+            <span class="tpl-coupon__label">10% 할인 쿠폰 받기</span>
+            <svg class="tpl-icon" aria-hidden="true"><use href="#tpl-icon-download"></use></svg>
+          </button>
+        </div>
+      </section>
+
+      <section class="tpl-block tpl-title">
+        <h2 class="tpl-title__title">자주 묻는 질문</h2>
+      </section>
+
+      <section class="tpl-block tpl-accordion">
+        <button class="tpl-accordion__question" type="button" aria-expanded="true" aria-controls="faq-full-d-0">
+          <span class="tpl-accordion__label">참여자 평균 나이가 어떻게 되나요?</span>
+          <svg class="tpl-icon tpl-accordion__plus" aria-hidden="true"><use href="#tpl-icon-plus"></use></svg>
+          <svg class="tpl-icon tpl-accordion__minus" aria-hidden="true"><use href="#tpl-icon-minus"></use></svg>
+        </button>
+        <div class="tpl-accordion__answer" id="faq-full-d-0">
+          <p>일반 소개팅은 7개 연령 그룹, 블랙 멤버 전용 소개팅은 5개 연령 그룹, 돌싱 소개팅은 5개 연령 및 자녀 유무 그룹으로 참여 연령이 분류되어있어요. 나의 나이와 상황에 맞는 이성을 편하게 만날 수 있으니, 걱정하지 마세요.</p>
+        </div>
+      </section>
+
+      <section class="tpl-block tpl-accordion">
+        <button class="tpl-accordion__question" type="button" aria-expanded="false" aria-controls="faq-full-d-1">
+          <span class="tpl-accordion__label">주변 지인이나, 불편한 사람을 만날까봐 걱정돼요</span>
+          <svg class="tpl-icon tpl-accordion__plus" aria-hidden="true"><use href="#tpl-icon-plus"></use></svg>
+          <svg class="tpl-icon tpl-accordion__minus" aria-hidden="true"><use href="#tpl-icon-minus"></use></svg>
+        </button>
+        <div class="tpl-accordion__answer" id="faq-full-d-1" hidden>
+          <p>참여자 명단은 공개하지 않지만, 아는 사람이 걱정된다면 참여 회차를 바꿔 드려요.</p>
+        </div>
+      </section>
+
+      <section class="tpl-block tpl-accordion">
+        <button class="tpl-accordion__question" type="button" aria-expanded="false" aria-controls="faq-full-d-2">
+          <span class="tpl-accordion__label">제가 낯을 많이 가리는데 참여 가능할까요?</span>
+          <svg class="tpl-icon tpl-accordion__plus" aria-hidden="true"><use href="#tpl-icon-plus"></use></svg>
+          <svg class="tpl-icon tpl-accordion__minus" aria-hidden="true"><use href="#tpl-icon-minus"></use></svg>
+        </button>
+        <div class="tpl-accordion__answer" id="faq-full-d-2" hidden>
+          <p>대화 주제 카드가 테이블마다 놓여 있어 말문을 여는 일은 진행이 대신합니다.</p>
+        </div>
+      </section>
+
+      <section class="tpl-block tpl-accordion">
+        <button class="tpl-accordion__question" type="button" aria-expanded="false" aria-controls="faq-full-d-3">
+          <span class="tpl-accordion__label">당일 자리가 비면 어떡하나요?</span>
+          <svg class="tpl-icon tpl-accordion__plus" aria-hidden="true"><use href="#tpl-icon-plus"></use></svg>
+          <svg class="tpl-icon tpl-accordion__minus" aria-hidden="true"><use href="#tpl-icon-minus"></use></svg>
+        </button>
+        <div class="tpl-accordion__answer" id="faq-full-d-3" hidden>
+          <p>최소 인원에 미치지 못하면 전날 안내드리고 전액 환불하거나 다른 회차로 옮겨 드려요.</p>
+        </div>
+      </section>
+    </div>
+  </div>
+  <div class="frame frame--mobile" data-label="mobile 390">
+    <div class="tpl tpl--mobile">
+      <section class="tpl-block tpl-title">
+        <p class="tpl-title__label">괜찮은 사람을 가장 빨리 만나는 방법</p>
+        <h2 class="tpl-title__title">티키타카 로테이션<br>이렇게 이루어져요</h2>
+      </section>
+
+      <section class="tpl-block tpl-image-full">
+        <img src="../images/detail-photo-1.jpg" alt="조명이 놓인 테이블에서 마주 앉아 대화하는 두 사람">
+      </section>
+
+      <section class="tpl-block tpl-text">
+        <div class="tpl-text__header">
+          <p class="tpl-text__no">01</p>
+          <p class="tpl-text__title">도착과 자리 배정</p>
+        </div>
+        <div class="tpl-text__content">
+          <p>입장하면 번호가 적힌 자리를 안내받아요. 프로필 카드를 작성하는 동안 음료가 나옵니다. 누구와 마주 앉을지 고르지 않아도 되니, 문을 여는 순간의 부담이 없어요.</p>
+        </div>
+      </section>
+
+      <section class="tpl-block tpl-text">
+        <div class="tpl-text__header">
+          <p class="tpl-text__no">02</p>
+          <p class="tpl-text__title">10분씩 돌아가는 대화</p>
+        </div>
+        <div class="tpl-text__content">
+          <p>안내에 따라 10분마다 자리를 옮겨요. 테이블마다 대화 주제 카드가 놓여 있어 처음 만난 사이에도 말이 끊기지 않습니다.</p>
+        </div>
+      </section>
+
+      <section class="tpl-block tpl-text">
+        <div class="tpl-text__header">
+          <p class="tpl-text__no">03</p>
+          <p class="tpl-text__title">쉬는 시간</p>
+        </div>
+        <div class="tpl-text__content">
+          <p>중간에 한 번 쉬어요. 마음에 남은 사람을 정리하고, 음료를 채우고, 다시 앉습니다.</p>
+        </div>
+      </section>
+
+      <section class="tpl-block tpl-text">
+        <div class="tpl-text__header">
+          <p class="tpl-text__no">04</p>
+          <p class="tpl-text__title">서로에 대한 설레는 쪽지교환</p>
+        </div>
+        <div class="tpl-text__content">
+          <p>10분 대화가 종료될 때마다 상대 이성의 마음 쪽지를 받아요. 어디서도 들을 수 없던 소개팅 상대들의 속마음을 확인하고 평생 도움되는 연애 꿀팁으로 나도 몰랐던 나의 매력을 발굴하고 업그레이드 할 수 있는 기회가 됩니다.</p>
+        </div>
+      </section>
+
+      <section class="tpl-block tpl-title">
+        <p class="tpl-title__label">Orange pick</p>
+        <h2 class="tpl-title__title">감도 높은 공간에서<br>피어나는 나만의 로맨스</h2>
+      </section>
+
+      <section class="tpl-block tpl-carousel-images">
+        <div class="tpl-carousel">
+          <div><img src="../images/detail-photo-2.jpg" alt="턴테이블에 레코드를 올려둔 라운지 한켠"></div>
+          <div><img src="../images/detail-photo-3.jpg" alt="기둥 사이 자리에서 이야기를 나누는 참가자들"></div>
+          <div><img src="../images/detail-photo-4.jpg" alt="벽돌벽 앞 테이블에서 프로필 카드를 함께 보는 두 사람"></div>
+        </div>
+      </section>
+
+      <section class="tpl-block tpl-text">
+        <div class="tpl-text__content">
+          <p>설렘이 피어나는 데 가장 중요한 건 분위기가 아닐까요? 감정적인 오렌지들이 직접 관리하는 호스트의 라운지, 분위기 좋은 조명, 향기, 작은 잔 하나까지도 직접 디자인하며 큐레이션합니다.</p>
+        </div>
+      </section>
+
+      <section class="tpl-block tpl-image-solid">
+        <div class="tpl-image-solid__image">
+          <img src="./images/closer-law-office.png" alt="법률 자문 파트너 클로저 로펌 로고">
+        </div>
+        <p class="tpl-image-solid__caption">허위정보 로펌 협업 · 보증보험 5억 +</p>
+      </section>
+
+      <section class="tpl-block tpl-text">
+        <div class="tpl-text__header">
+          <p class="tpl-text__title">보증보험 5억, 로펌 협업까지, 오렌지들은 신뢰할 수 있어요</p>
+        </div>
+        <div class="tpl-text__content">
+          <p>감정적인 오렌지들은 이용자들의 안전과 신뢰를 가장 우선으로 여겨요. 정식 결혼정보회사 등록 법인 운영으로 보증보험 5억, 공중파 다수 출연 등 안전하고 투명하게 운영하기 위해 최선을 다하고 있어요.</p>
+          <p>물론, 로펌도 함께합니다. 가장 중요한 신원, 직업 및 혼인 상태 허위 기재 등 중대한 위반 행위를 방지하기 위해 공식 법률 자문 파트너 클로저와 협약을 체결하여 회원보호정책 및 대응체계를 운영하고 있어요.</p>
+        </div>
+      </section>
+
+      <section class="tpl-block tpl-text">
+        <div class="tpl-text__header">
+          <p class="tpl-text__title">삼성 디스플레이 연구원</p>
+          <p class="tpl-text__meta">33세</p>
+          <span class="tpl-text__rating" role="img" aria-label="별점 5점 만점에 5점">
+            <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+            <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+            <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+            <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+            <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          </span>
+        </div>
+        <div class="tpl-text__content">
+          <p>직장 인증이 꼼꼼하고 프로그램이 체계적이라 믿고 참여할 수 있었어요. 일반적인 소개팅과 비교하면 가격도 합리적이고, 재참여 의사도 있습니다.</p>
+        </div>
+      </section>
+
+      <section class="tpl-block tpl-location is-mapped"
+               data-lat="37.5385" data-lng="127.0027" data-label="한남오거리 라운지">
+        <img src="./images/map-sample-mobile.png" alt="한남오거리 라운지 위치 지도">
+        <p class="tpl-location__fallback">지도를 불러오지 못했습니다</p>
+      </section>
+
+      <section class="tpl-block tpl-text">
+        <div class="tpl-text__header">
+          <p class="tpl-text__title">주차 정보</p>
+          <p class="tpl-text__meta">서울 용산구 한남오거리 라운지</p>
+        </div>
+        <div class="tpl-text__content">
+          <p>건물 지하 주차장을 2시간 무료로 이용하실 수 있어요. 만차인 경우 도보 3분 거리의 공영 주차장을 안내해 드립니다.</p>
+        </div>
+      </section>
+
+      <section class="tpl-block tpl-button">
+        <a class="tpl-button__button" href="https://map.naver.com/p/search/서울 용산구 한남대로 20길 12" target="_blank" rel="noopener">
+          네이버 지도에서 보기
+          <svg class="tpl-icon" aria-hidden="true"><use href="#icon-chevronRight"></use></svg>
+        </a>
+      </section>
+
+      <section class="tpl-block tpl-list">
+        <p class="tpl-list__title">필수 유의사항</p>
+        <ul class="tpl-list__items">
+          <li>일반 소개팅은 7개 연령 그룹, 블랙 멤버 전용 소개팅은 5개 연령 그룹으로 나뉘어 모집합니다.</li>
+          <li>남녀 같은 수로만 모집하며, 한쪽이 남으면 그만큼 모집을 멈춥니다.</li>
+          <li>최소 인원에 미치지 못하면 전날 안내드리고 전액 환불해 드립니다.</li>
+          <li>당일 취소는 환불이 어려우니 일정을 확인하고 신청해 주세요.</li>
+        </ul>
+      </section>
+
+      <section class="tpl-block tpl-title">
+        <p class="tpl-title__label">ONLY 시즌</p>
+        <h2 class="tpl-title__title">당신에게 딱 맞는 설렘<br>마감 전에 확인하세요</h2>
+      </section>
+
+      <section class="tpl-block tpl-carousel-products">
+        <div class="tpl-carousel">
+          <article class="product-card">
+            <div class="product-card__media">
+              <img src="../images/meetup-couple.jpg" alt="">
+              <div class="product-card__tags"><span class="tag">8월 22일 (토) 오후 2시</span></div>
+            </div>
+            <div class="product-card__info">
+              <h3 class="product-card__title"><a href="../detail.html">돌싱 로테이션 소개팅</a></h3>
+              <p class="product-card__desc">서울 강남 외 4개 지역 · 일정 5개</p>
+              <p class="product-card__price">42,000원~</p>
+            </div>
+          </article>
+          <article class="product-card">
+            <div class="product-card__media">
+              <img src="../images/meetup-lamp.jpg" alt="">
+              <div class="product-card__tags"><span class="tag">8월 25일 (화) 저녁 7시</span></div>
+            </div>
+            <div class="product-card__info">
+              <h3 class="product-card__title"><a href="../detail.html">12:12 티키타카 로테이션 소개팅</a></h3>
+              <p class="product-card__desc">경기 성남시 외 4개 지역 · 일정 5개</p>
+              <p class="product-card__price"><b>할인가</b> 33,000원~</p>
+            </div>
+          </article>
+          <article class="product-card">
+            <div class="product-card__media">
+              <img src="../images/meetup-record.jpg" alt="">
+              <div class="product-card__tags"><span class="tag">8월 24일 (월) 오후 2시</span></div>
+            </div>
+            <div class="product-card__info">
+              <h3 class="product-card__title"><a href="../detail.html">테마 로테이션 소개팅</a></h3>
+              <p class="product-card__desc">서울 성수 외 4개 지역 · 일정 5개</p>
+              <p class="product-card__price">42,000원~</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="tpl-block tpl-coupon">
+        <div class="tpl-coupon__wrap">
+          <div class="tpl-coupon__logo">
+            <svg aria-hidden="true"><use href="#icon-eoSymbol"></use></svg>
+          </div>
+          <button class="tpl-coupon__button" type="button">
+            <span class="tpl-coupon__label">10% 할인 쿠폰 받기</span>
+            <svg class="tpl-icon" aria-hidden="true"><use href="#tpl-icon-download"></use></svg>
+          </button>
+        </div>
+      </section>
+
+      <section class="tpl-block tpl-title">
+        <h2 class="tpl-title__title">자주 묻는 질문</h2>
+      </section>
+
+      <section class="tpl-block tpl-accordion">
+        <button class="tpl-accordion__question" type="button" aria-expanded="true" aria-controls="faq-full-m-0">
+          <span class="tpl-accordion__label">참여자 평균 나이가 어떻게 되나요?</span>
+          <svg class="tpl-icon tpl-accordion__plus" aria-hidden="true"><use href="#tpl-icon-plus"></use></svg>
+          <svg class="tpl-icon tpl-accordion__minus" aria-hidden="true"><use href="#tpl-icon-minus"></use></svg>
+        </button>
+        <div class="tpl-accordion__answer" id="faq-full-m-0">
+          <p>일반 소개팅은 7개 연령 그룹, 블랙 멤버 전용 소개팅은 5개 연령 그룹, 돌싱 소개팅은 5개 연령 및 자녀 유무 그룹으로 참여 연령이 분류되어있어요. 나의 나이와 상황에 맞는 이성을 편하게 만날 수 있으니, 걱정하지 마세요.</p>
+        </div>
+      </section>
+
+      <section class="tpl-block tpl-accordion">
+        <button class="tpl-accordion__question" type="button" aria-expanded="false" aria-controls="faq-full-m-1">
+          <span class="tpl-accordion__label">주변 지인이나, 불편한 사람을 만날까봐 걱정돼요</span>
+          <svg class="tpl-icon tpl-accordion__plus" aria-hidden="true"><use href="#tpl-icon-plus"></use></svg>
+          <svg class="tpl-icon tpl-accordion__minus" aria-hidden="true"><use href="#tpl-icon-minus"></use></svg>
+        </button>
+        <div class="tpl-accordion__answer" id="faq-full-m-1" hidden>
+          <p>참여자 명단은 공개하지 않지만, 아는 사람이 걱정된다면 참여 회차를 바꿔 드려요.</p>
+        </div>
+      </section>
+
+      <section class="tpl-block tpl-accordion">
+        <button class="tpl-accordion__question" type="button" aria-expanded="false" aria-controls="faq-full-m-2">
+          <span class="tpl-accordion__label">제가 낯을 많이 가리는데 참여 가능할까요?</span>
+          <svg class="tpl-icon tpl-accordion__plus" aria-hidden="true"><use href="#tpl-icon-plus"></use></svg>
+          <svg class="tpl-icon tpl-accordion__minus" aria-hidden="true"><use href="#tpl-icon-minus"></use></svg>
+        </button>
+        <div class="tpl-accordion__answer" id="faq-full-m-2" hidden>
+          <p>대화 주제 카드가 테이블마다 놓여 있어 말문을 여는 일은 진행이 대신합니다.</p>
+        </div>
+      </section>
+
+      <section class="tpl-block tpl-accordion">
+        <button class="tpl-accordion__question" type="button" aria-expanded="false" aria-controls="faq-full-m-3">
+          <span class="tpl-accordion__label">당일 자리가 비면 어떡하나요?</span>
+          <svg class="tpl-icon tpl-accordion__plus" aria-hidden="true"><use href="#tpl-icon-plus"></use></svg>
+          <svg class="tpl-icon tpl-accordion__minus" aria-hidden="true"><use href="#tpl-icon-minus"></use></svg>
+        </button>
+        <div class="tpl-accordion__answer" id="faq-full-m-3" hidden>
+          <p>최소 인원에 미치지 못하면 전날 안내드리고 전액 환불하거나 다른 회차로 옮겨 드려요.</p>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  document.getElementById('sprite').innerHTML =
+    await (await fetch('../build/icons.svg')).text() +
+    await (await fetch('../build/logo.svg')).text() +
+    await (await fetch('./icons.svg')).text()
+
+  const { initTemplete, initLocation } = await import('./blocks.js')
+  initTemplete()
+
+  // 이 쪽에는 키 칸을 두지 않습니다 — 상세 페이지 한 판을 보는 자리이지 값을 만지는
+  // 자리가 아닙니다. 다른 쪽에서 넣어 둔 키가 있으면 그것으로 지도를 그리고, 없으면
+  // 시안 지도 그림이 그대로 남습니다.
+  try {
+    const key = localStorage.getItem('templete-naver-key')
+    if (key) initLocation(document, /^https?:\/\//.test(key) ? { src: key } : { clientId: key })
+  } catch {}
+  // 스페이서에 실제 높이를 적어 둡니다(카탈로그 표시용). 기기 프레임마다 값이 다르고
+  // 창 폭에 따라서도 달라져, 손으로 적지 않고 재서 넣습니다.
+  const labelSpacers = () => {
+    for (const el of document.querySelectorAll('.frame .tpl-spacer')) {
+      el.dataset.size = Math.round(el.getBoundingClientRect().height) + 'px'
+    }
+  }
+  labelSpacers()
+  new ResizeObserver(labelSpacers).observe(document.body)
+
+</script>

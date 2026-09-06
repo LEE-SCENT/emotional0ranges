@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+<!-- 제품 스프라이트(build/icons.svg)에 없는 아이콘만 여기 둡니다.
+     chevronRight · check · eoSymbol 은 제품 스프라이트를 그대로 씁니다.
+     원본은 templete/icons/*.svg (Figma export). 36×36 좌표계이고 색은 currentColor 로 바꿨습니다. -->
+<symbol id="tpl-icon-plus" viewBox="0 0 36 36" fill="none">
+  <path d="M16.875 19.125H8.25V16.875H16.875V8.25H19.125V16.875H27.75V19.125H19.125V27.75H16.875V19.125Z" fill="currentColor"/>
+</symbol>
+<symbol id="tpl-icon-minus" viewBox="0 0 36 36" fill="none">
+  <path d="M8.25 19.125V16.875H27.75V19.125H8.25Z" fill="currentColor"/>
+</symbol>
+<symbol id="tpl-icon-download" viewBox="0 0 36 36" fill="none">
+  <path d="M18 23.6828L11.5961 17.2789L13.1771 15.6521L16.875 19.35V6.75H19.125V19.35L22.8229 15.6521L24.4039 17.2789L18 23.6828ZM9.46163 29.25C8.70387 29.25 8.0625 28.9875 7.5375 28.4625C7.0125 27.9375 6.75 27.2961 6.75 26.5384V22.4711H9V26.5384C9 26.6539 9.04813 26.7596 9.14438 26.8556C9.24038 26.9519 9.34613 27 9.46163 27H26.5384C26.6539 27 26.7596 26.9519 26.8556 26.8556C26.9519 26.7596 27 26.6539 27 26.5384V22.4711H29.25V26.5384C29.25 27.2961 28.9875 27.9375 28.4625 28.4625C27.9375 28.9875 27.2961 29.25 26.5384 29.25H9.46163Z" fill="currentColor"/>
+</symbol>
+</svg>

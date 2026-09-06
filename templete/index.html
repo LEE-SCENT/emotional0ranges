@@ -1,0 +1,844 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="format-detection" content="telephone=no">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#FFFFFF">
+<title>상세 페이지 템플릿 — 블록</title>
+<link rel="stylesheet" href="../fonts/pretendard/pretendard.css">
+<link rel="stylesheet" href="../build/tokens.css">
+<link rel="stylesheet" href="../components/tag.css">
+<link rel="stylesheet" href="../components/product-card.css">
+<link rel="stylesheet" href="./blocks.css">
+<style>
+  /* 카탈로그 자체의 겉모습입니다. 블록 스타일이 아닙니다 — blocks.css 만 가져다
+     쓰면 이 파일 없이도 블록이 그대로 나옵니다. */
+  body { margin: 0; padding: 40px 24px 96px; background: var(--colors-bg-low);
+         color: var(--colors-fg); font-family: var(--_font-family-base); }
+  h1 { margin: 0 0 8px; font-size: var(--typography-heading-l-semibold-font-size);
+       font-weight: var(--typography-heading-l-semibold-font-weight);
+       line-height: var(--typography-heading-l-semibold-line-height); }
+  .lede { margin: 0 0 40px; max-width: 720px; color: var(--colors-fg-lower);
+          font-size: var(--typography-body-l-regular-font-size);
+          line-height: var(--typography-body-l-regular-line-height); }
+  h2 { margin: 56px 0 6px; font-size: var(--typography-heading-s-semibold-font-size);
+       font-weight: var(--typography-heading-s-semibold-font-weight);
+       line-height: var(--typography-heading-s-semibold-line-height); }
+  h2 code { font-size: .7em; color: var(--colors-fg-lowest); font-weight: 400; }
+  .note { margin: 0 0 16px; max-width: 720px; color: var(--colors-fg-lower);
+          font-size: var(--typography-body-m-regular-font-size);
+          line-height: var(--typography-body-m-regular-line-height); }
+  .pair { display: flex; gap: 24px; align-items: flex-start; flex-wrap: wrap; }
+  /* 같은 항목 안에 예시가 둘 이상이면 사이를 띄웁니다. 붙여 두면 위 예시의 아래쪽
+     이름표인지 아래 예시의 위쪽 이름표인지 알 수 없습니다. */
+  .pair + .pair { margin-block-start: 40px; }
+  .frame { position: relative; padding-top: 22px; }
+  .frame::before { content: attr(data-label); position: absolute; inset-block-start: 0;
+                   font-size: 11px; letter-spacing: .06em; text-transform: uppercase;
+                   color: var(--colors-fg-lowest); }
+  .frame > .tpl { outline: 1px solid var(--colors-border); }
+  /* 스페이서는 실제로는 빈 자리라 흰 배경에서 보이지 않습니다. 카탈로그에서만 빗금과
+     크기를 얹어 얼마나 들어갔는지 보이게 합니다 — .frame 안에서만 걸리므로 제품에
+     가져다 쓸 때는 그대로 투명합니다. */
+  .frame .tpl-spacer { position: relative;
+             background: repeating-linear-gradient(-45deg,
+                         transparent 0 5px, var(--colors-bg-low) 5px 10px);
+             outline: 1px dashed var(--colors-border); outline-offset: -1px; }
+  .frame .tpl-spacer::after { content: attr(data-size); position: absolute; inset: 0;
+             display: grid; place-items: center;
+             font-size: 11px; letter-spacing: .06em; color: var(--colors-fg-lowest); }
+  .frame--desktop { width: 750px; max-width: 100%; }
+  .frame--mobile { width: 390px; max-width: 100%; }
+  /* 예시 아래에 붙는 한 줄. 위 .note 는 항목 전체의 설명이고, 이쪽은 바로 위 예시
+     하나를 가리킵니다 — 예시 사이에 두면 앞 것의 설명처럼 읽힙니다. */
+  .caption { margin: 8px 0 0; color: var(--colors-fg-lower);
+             font-size: var(--typography-body-m-regular-font-size);
+             line-height: var(--typography-body-m-regular-line-height); }
+  .caption + .pair { margin-top: 24px; }
+  .tabs-nav { display: flex; gap: 4px; margin: 0 0 20px; }
+  .tabs-nav :is(a, b) { padding: 8px 18px; border-radius: var(--_rounded-full);
+             font-weight: var(--typography-body-l-semibold-font-weight);
+             font-size: var(--typography-body-l-semibold-font-size);
+             line-height: var(--typography-body-l-semibold-line-height);
+             text-decoration: none; }
+  .tabs-nav b { background: var(--colors-fg); color: var(--colors-bg); }
+  .tabs-nav a { color: var(--colors-fg-lower); }
+  /* 아래는 카탈로그에서 값을 바꿔 보기 위한 조작판입니다. 블록의 일부가 아닙니다 —
+     blocks.css 에는 없고, 어드민이 만들 화면을 대신 흉내 낼 뿐입니다. */
+  .control { display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+             margin: 0 0 16px; padding: 12px 16px; border-radius: var(--_rounded-m);
+             background: var(--colors-bg); border: 1px solid var(--colors-border);
+             font-size: var(--typography-body-m-regular-font-size);
+             line-height: var(--typography-body-m-regular-line-height); }
+  /* 앞 예시와 붙어 있으면 그 예시에 딸린 도구처럼 보입니다. 조작판은 아래 예시를
+     바꾸는 것이라 위쪽을 넉넉히 띄웁니다. */
+  .pair + .control { margin-block-start: 40px; }
+  .control label { color: var(--colors-fg-lower); }
+  /* 브라우저 기본 색상 칸은 색을 안쪽에 작게 그리고 둘레에 여백을 남깁니다.
+     그 여백을 걷어내 색이 칸을 꽉 채우게 합니다. */
+  .control input[type="color"] { inline-size: 36px; block-size: 28px; padding: 0;
+             border: 1px solid var(--colors-border); border-radius: var(--_rounded-xs);
+             background: none; cursor: pointer; overflow: hidden;
+             -webkit-appearance: none; appearance: none; }
+  .control input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+  .control input[type="color"]::-webkit-color-swatch { border: 0; border-radius: 0; }
+  .control input[type="color"]::-moz-color-swatch { border: 0; border-radius: 0; }
+  .control input[type="text"] { inline-size: 12ch; padding: 5px 8px;
+             border: 1px solid var(--colors-border); border-radius: var(--_rounded-xs);
+             font: inherit; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .control input[type="text"].is-wide { inline-size: 34ch; }
+  .control button { padding: 6px 12px; border: 1px solid var(--colors-border);
+             border-radius: var(--_rounded-full); background: var(--colors-bg);
+             font: inherit; cursor: pointer; }
+  .control small { color: var(--colors-fg-lowest); flex: 1 1 22ch; min-inline-size: 0; }
+  .control small code { font-size: .95em; }
+</style>
+
+<div id="sprite" hidden></div>
+
+<nav class="tabs-nav">
+  <b>❶ 블록</b>
+  <a href="./samples.html">❷ 조립 예</a>
+  <a href="./page.html">❸ 상세 페이지</a>
+</nav>
+<h1>상세 페이지 템플릿 — 블록</h1>
+<p class="lede">
+  어드민에서 골라 쌓아 상세 페이지를 조립하는 블록입니다. 제품 화면에는 아직 붙이지
+  않았습니다 — 여기는 재료만 둡니다. 기준 폭은 Figma 와 같은 Desktop 750 · Mobile 390 이고,
+  PC 상세 콘텐츠 영역은 최대 852 까지 넓어집니다. 콘텐츠는 PC·모바일 공통으로 한 번만
+  등록하고 폰트·여백·배치만 기기별로 바뀝니다.
+</p>
+
+<!-- ==================== 콘텐츠 블록 ==================== -->
+
+<h2>Block / Title <code>.tpl-title</code></h2>
+<p class="note">라벨(옵션) + 타이틀. 타이틀은 최대 2줄이고 넘으면 잘립니다.</p>
+<div class="pair">
+  <div class="frame frame--desktop" data-label="desktop 750">
+    <div class="tpl tpl--desktop">
+      <section class="tpl-block tpl-title">
+        <p class="tpl-title__label">라벨 텍스트 (옵션)</p>
+        <h2 class="tpl-title__title">타이틀을 입력하세요<br>최대 2줄</h2>
+      </section>
+    </div>
+  </div>
+  <div class="frame frame--mobile" data-label="mobile 390">
+    <div class="tpl tpl--mobile">
+      <section class="tpl-block tpl-title">
+        <p class="tpl-title__label">라벨 텍스트 (옵션)</p>
+        <h2 class="tpl-title__title">타이틀을 입력하세요<br>최대 2줄</h2>
+      </section>
+    </div>
+  </div>
+</div>
+
+<h2>Block / Text <code>.tpl-text</code></h2>
+<p class="note">
+  머리 + 본문 문단. 머리는 통째로 생략할 수 있고, 머리가 있으면 <b>타이틀은 필수</b>입니다.
+  번호 · 메타 · 별점은 각각 선택이며 데스크톱·모바일 모두 씁니다.
+</p>
+<div class="pair">
+  <div class="frame frame--desktop" data-label="desktop 750">
+    <div class="tpl tpl--desktop">
+      <section class="tpl-block tpl-text">
+        <div class="tpl-text__header">
+          <p class="tpl-text__title">타이틀 입력</p>
+        </div>
+        <div class="tpl-text__content">
+          <p>감정적인 오렌지들은 이용자들의 안전과 신뢰를 가장 우선으로 여겨요. 정식 결혼정보회사 등록 법인 운영으로 보증보험 5억, 공중파 다수 출연 등 안전하고 투명하게 운영하기 위해 최선을 다하고 있어요.</p>
+          <p>물론, 로펌도 함께합니다. 가장 중요한 신원, 직업 및 혼인 상태 허위 기재 등 중대한 위반 행위를 방지하기 위해 공식 법률 자문 파트너 클로저와 협약을 체결하여 회원보호정책 및 대응체계를 운영하고 있어요.</p>
+        </div>
+      </section>
+    </div>
+  </div>
+  <div class="frame frame--mobile" data-label="mobile 390">
+    <div class="tpl tpl--mobile">
+      <section class="tpl-block tpl-text">
+        <div class="tpl-text__header">
+          <p class="tpl-text__title">타이틀 입력</p>
+        </div>
+        <div class="tpl-text__content">
+          <p>감정적인 오렌지들은 이용자들의 안전과 신뢰를 가장 우선으로 여겨요. 정식 결혼정보회사 등록 법인 운영으로 보증보험 5억, 공중파 다수 출연 등 안전하고 투명하게 운영하기 위해 최선을 다하고 있어요.</p>
+          <p>물론, 로펌도 함께합니다. 가장 중요한 신원, 직업 및 혼인 상태 허위 기재 등 중대한 위반 행위를 방지하기 위해 공식 법률 자문 파트너 클로저와 협약을 체결하여 회원보호정책 및 대응체계를 운영하고 있어요.</p>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<h2>Block / Text — 머리 옵션</h2>
+<p class="note">머리는 통째로 생략할 수 있고, 머리가 있으면 <b>타이틀은 필수</b>입니다. 번호(index) · 메타(meta) · 별점(rating)은 각각 선택이며 데스크톱·모바일 모두 씁니다. 항목을 가르는 점은 CSS 가 놓습니다 — 무엇을 켜고 끄든 개수와 자리가 저절로 맞습니다. 번호에는 점이 붙지 않습니다.</p>
+<div class="pair">
+  <div class="frame frame--desktop" data-label="desktop 750 · 타이틀 + 메타 + 별점">
+    <div class="tpl tpl--desktop">
+      <section class="tpl-block tpl-text">
+        <div class="tpl-text__header">
+          <p class="tpl-text__title">삼성 디스플레이 연구원</p>
+          <p class="tpl-text__meta">33세</p>
+          <span class="tpl-text__rating" role="img" aria-label="별점 5점 만점에 5점">
+            <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+            <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+            <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+            <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+            <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          </span>
+        </div>
+        <div class="tpl-text__content">
+          <p>진행이 매끄러워서 처음인데도 어색하지 않았어요. 자리배치가 좋았습니다.</p>
+        </div>
+      </section>
+    </div>
+  </div>
+  <div class="frame frame--mobile" data-label="mobile 390 · 타이틀 + 메타 + 별점">
+    <div class="tpl tpl--mobile">
+      <section class="tpl-block tpl-text">
+        <div class="tpl-text__header">
+          <p class="tpl-text__title">삼성 디스플레이 연구원</p>
+          <p class="tpl-text__meta">33세</p>
+          <span class="tpl-text__rating" role="img" aria-label="별점 5점 만점에 5점">
+            <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+            <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+            <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+            <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+            <svg aria-hidden="true"><use href="#icon-star"></use></svg>
+          </span>
+        </div>
+        <div class="tpl-text__content">
+          <p>진행이 매끄러워서 처음인데도 어색하지 않았어요. 자리배치가 좋았습니다.</p>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+<div class="pair">
+  <div class="frame frame--desktop" data-label="desktop 750 · 번호 + 타이틀">
+    <div class="tpl tpl--desktop">
+      <section class="tpl-block tpl-text">
+        <div class="tpl-text__header">
+          <p class="tpl-text__no">04</p>
+          <p class="tpl-text__title">서로에 대한 설레는 쪽지교환</p>
+        </div>
+        <div class="tpl-text__content">
+          <p>10분 대화가 종료될 때마다 상대 이성의 마음 쪽지를 받아요. 어디서도 들을 수 없던 소개팅 상대들의 속마음을 확인하고 평생 도움되는 연애 꿀팁으로 나도 몰랐던 나의 매력을 발굴하고 업그레이드 할 수 있는 기회가 됩니다.</p>
+        </div>
+      </section>
+    </div>
+  </div>
+  <div class="frame frame--mobile" data-label="mobile 390 · 번호 + 타이틀">
+    <div class="tpl tpl--mobile">
+      <section class="tpl-block tpl-text">
+        <div class="tpl-text__header">
+          <p class="tpl-text__no">04</p>
+          <p class="tpl-text__title">서로에 대한 설레는 쪽지교환</p>
+        </div>
+        <div class="tpl-text__content">
+          <p>10분 대화가 종료될 때마다 상대 이성의 마음 쪽지를 받아요. 어디서도 들을 수 없던 소개팅 상대들의 속마음을 확인하고 평생 도움되는 연애 꿀팁으로 나도 몰랐던 나의 매력을 발굴하고 업그레이드 할 수 있는 기회가 됩니다.</p>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+
+<h2>Block / List <code>.tpl-list</code></h2>
+<p class="note">타이틀(옵션) + 글머리 기호 목록. 글자는 본문과 같고 들여쓰기만 다릅니다.</p>
+<div class="pair">
+  <div class="frame frame--desktop" data-label="desktop 750">
+    <div class="tpl tpl--desktop">
+      <section class="tpl-block tpl-list">
+        <p class="tpl-list__title">필수 유의사항</p>
+        <ul class="tpl-list__items">
+          <li>일반 소개팅은 7개 연령 그룹, 블랙 멤버 전용 소개팅</li>
+          <li>일반 소개팅은 7개 연령 그룹, 블랙 멤버 전용 소개팅은 5개 연령 그룹, 돌싱 소개팅은 5개 연령 및 자녀 유무</li>
+          <li>일반 소개팅은 7개 연령 그룹, 블랙 멤버 전용 소개팅은 5개 연령 그룹, 돌싱 소개팅은 5</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+  <div class="frame frame--mobile" data-label="mobile 390">
+    <div class="tpl tpl--mobile">
+      <section class="tpl-block tpl-list">
+        <p class="tpl-list__title">필수 유의사항</p>
+        <ul class="tpl-list__items">
+          <li>일반 소개팅은 7개 연령 그룹, 블랙 멤버 전용 소개팅</li>
+          <li>일반 소개팅은 7개 연령 그룹, 블랙 멤버 전용 소개팅은 5개 연령 그룹, 돌싱 소개팅은 5개 연령 및 자녀 유무</li>
+          <li>일반 소개팅은 7개 연령 그룹, 블랙 멤버 전용 소개팅은 5개 연령 그룹, 돌싱 소개팅은 5</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+</div>
+
+<h2>Block / Spacer <code>.tpl-spacer</code></h2>
+<p class="note">
+  섹션을 끊는 자리에 넣는 빈 블록입니다. 크기는 셋 중에서 고릅니다 —
+  <code>--s</code> · 기본 · <code>--l</code>(데스크톱 40 · 80 · 120, 모바일 24 · 40 · 60).
+  블록마다 여백을 여는 대신 이것을 둔 것은, 운영이 <b>"얼마나 띄울지"가 아니라 "여기서
+  끊는다"를 고르게</b> 하려는 것입니다. 앞뒤 블록이 이미 가진 여백에 더해집니다.
+</p>
+<div class="pair">
+  <div class="frame frame--desktop" data-label="desktop 750 · s · 기본 · l">
+    <div class="tpl tpl--desktop">
+      <section class="tpl-block tpl-text">
+        <div class="tpl-text__header"><p class="tpl-text__title">앞 섹션</p></div>
+        <div class="tpl-text__content"><p>여기까지가 한 섹션입니다.</p></div>
+      </section>
+      <div class="tpl-block tpl-spacer tpl-spacer--s"></div>
+      <section class="tpl-block tpl-text">
+        <div class="tpl-text__content"><p>작은 스페이서(--s) 뒤.</p></div>
+      </section>
+      <div class="tpl-block tpl-spacer"></div>
+      <section class="tpl-block tpl-text">
+        <div class="tpl-text__content"><p>기본 스페이서 뒤.</p></div>
+      </section>
+      <div class="tpl-block tpl-spacer tpl-spacer--l"></div>
+      <section class="tpl-block tpl-text">
+        <div class="tpl-text__header"><p class="tpl-text__title">뒤 섹션</p></div>
+        <div class="tpl-text__content"><p>스페이서가 둘 사이를 끊습니다.</p></div>
+      </section>
+    </div>
+  </div>
+  <div class="frame frame--mobile" data-label="mobile 390 · s · 기본 · l">
+    <div class="tpl tpl--mobile">
+      <section class="tpl-block tpl-text">
+        <div class="tpl-text__header"><p class="tpl-text__title">앞 섹션</p></div>
+        <div class="tpl-text__content"><p>여기까지가 한 섹션입니다.</p></div>
+      </section>
+      <div class="tpl-block tpl-spacer tpl-spacer--s"></div>
+      <section class="tpl-block tpl-text">
+        <div class="tpl-text__content"><p>작은 스페이서(--s) 뒤.</p></div>
+      </section>
+      <div class="tpl-block tpl-spacer"></div>
+      <section class="tpl-block tpl-text">
+        <div class="tpl-text__content"><p>기본 스페이서 뒤.</p></div>
+      </section>
+      <div class="tpl-block tpl-spacer tpl-spacer--l"></div>
+      <section class="tpl-block tpl-text">
+        <div class="tpl-text__header"><p class="tpl-text__title">뒤 섹션</p></div>
+        <div class="tpl-text__content"><p>스페이서가 둘 사이를 끊습니다.</p></div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 이미지 블록 ==================== -->
+
+<h2>Block / Image Full <code>.tpl-image-full</code></h2>
+<p class="note">
+  컨테이너 너비 100%, 높이는 원본 비율. 750×480 원본이면 PC 852×545 · 모바일 350×224.
+  고해상도 대응을 위해 업로드 이미지는 가로 1704px 이상을 권합니다.
+</p>
+<div class="pair">
+  <div class="frame frame--desktop" data-label="desktop 750">
+    <div class="tpl tpl--desktop">
+      <section class="tpl-block tpl-image-full">
+        <img src="../images/detail-photo-1.jpg" alt="조명이 놓인 테이블에서 마주 앉아 대화하는 두 사람">
+      </section>
+    </div>
+  </div>
+  <div class="frame frame--mobile" data-label="mobile 390">
+    <div class="tpl tpl--mobile">
+      <section class="tpl-block tpl-image-full">
+        <img src="../images/detail-photo-1.jpg" alt="조명이 놓인 테이블에서 마주 앉아 대화하는 두 사람">
+      </section>
+    </div>
+  </div>
+</div>
+
+<h2>Block / Image Solid <code>.tpl-image-solid</code></h2>
+<p class="note">
+  단색 배경은 코드가 만들고 그 위에 이미지·로고·일러스트만 올립니다. <b>배경색과 문구색
+  모두 Hex 로 지정</b>합니다 — 어드민 값이 <code>style="--tpl-solid-bg:#151D34; --tpl-solid-fg:#A8978D"</code>
+  로 들어옵니다. 지정하지 않으면 <code>#151D34</code> · <code>#A8978D</code> 입니다. 안쪽
+  이미지는 비율을 지킨 채 자리를 채우고(fit), 하단 문구는 선택이라 미입력이면 이미지만
+  나옵니다. 둘 다 어드민 값이라 <b>대비는 입력 단계에서 확인</b>해야 합니다.
+</p>
+<p class="control" id="solid-control">
+  <label for="solid-color">배경색</label>
+  <input type="color" id="solid-color" value="#151D34">
+  <input type="text" id="solid-hex" value="#151D34" spellcheck="false" aria-label="배경색 Hex">
+  <label for="solid-fg-color">문구색</label>
+  <input type="color" id="solid-fg-color" value="#A8978D">
+  <input type="text" id="solid-fg-hex" value="#A8978D" spellcheck="false" aria-label="문구색 Hex">
+  <small>어드민이 넣을 값입니다 — <code>style="--tpl-solid-bg: … ; --tpl-solid-fg: …"</code></small>
+</p>
+<div class="pair" id="solid-pair">
+  <div class="frame frame--desktop" data-label="desktop 750">
+    <div class="tpl tpl--desktop">
+      <section class="tpl-block tpl-image-solid">
+        <div class="tpl-image-solid__image">
+          <img src="./images/closer-law-office.png" alt="법률 자문 파트너 클로저 로펌 로고">
+        </div>
+        <p class="tpl-image-solid__caption">허위정보 로펌 협업 · 보증보험 5억 +</p>
+      </section>
+    </div>
+  </div>
+  <div class="frame frame--mobile" data-label="mobile 390">
+    <div class="tpl tpl--mobile">
+      <section class="tpl-block tpl-image-solid">
+        <div class="tpl-image-solid__image">
+          <img src="./images/closer-law-office.png" alt="법률 자문 파트너 클로저 로펌 로고">
+        </div>
+        <p class="tpl-image-solid__caption">허위정보 로펌 협업 · 보증보험 5억 +</p>
+      </section>
+    </div>
+  </div>
+</div>
+
+<h2>Block / Carousel Images <code>.tpl-carousel-images</code></h2>
+<p class="note">
+  <b>최소 3장</b>, 최대 10장 권장. PC 2개 · 모바일 1개와 다음 것 일부가 보입니다. 이미지마다
+  대체 텍스트를 함께 등록합니다. 한 장뿐이면 캐러셀을 걷어내고 Full Image 처럼 나옵니다(blocks.js).
+</p>
+<div class="pair">
+  <div class="frame frame--desktop" data-label="desktop 750">
+    <div class="tpl tpl--desktop">
+      <section class="tpl-block tpl-carousel-images">
+        <div class="tpl-carousel">
+          <div><img src="../images/detail-photo-1.jpg" alt="조명이 놓인 테이블에서 마주 앉아 대화하는 두 사람"></div>
+          <div><img src="../images/detail-photo-2.jpg" alt="턴테이블에 레코드를 올려둔 라운지 한켠"></div>
+          <div><img src="../images/detail-photo-3.jpg" alt="기둥 사이 자리에서 이야기를 나누는 참가자들"></div>
+          <div><img src="../images/detail-photo-4.jpg" alt="벽돌벽 앞 테이블에서 프로필 카드를 함께 보는 두 사람"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+  <div class="frame frame--mobile" data-label="mobile 390">
+    <div class="tpl tpl--mobile">
+      <section class="tpl-block tpl-carousel-images">
+        <div class="tpl-carousel">
+          <div><img src="../images/detail-photo-1.jpg" alt="조명이 놓인 테이블에서 마주 앉아 대화하는 두 사람"></div>
+          <div><img src="../images/detail-photo-2.jpg" alt="턴테이블에 레코드를 올려둔 라운지 한켠"></div>
+          <div><img src="../images/detail-photo-3.jpg" alt="기둥 사이 자리에서 이야기를 나누는 참가자들"></div>
+          <div><img src="../images/detail-photo-4.jpg" alt="벽돌벽 앞 테이블에서 프로필 카드를 함께 보는 두 사람"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 데이터 연동 ==================== -->
+
+<h2>Block / Carousel Products <code>.tpl-carousel-products</code></h2>
+<p class="note">
+  <b>최소 3개</b>. 어드민은 상품만 고르고, 상품명·이미지·가격·일정·잔여석은 상품 데이터가
+  채웁니다(디자인 시스템의 <code>.product-card</code> 를 그대로 씁니다). 노출 종료·판매
+  중지 상품은 자동 제외되고, 하나만 남으면 넘기는 UI 를 숨기며, 하나도 없으면 블록 전체를
+  숨깁니다.
+</p>
+<div class="pair">
+  <div class="frame frame--desktop" data-label="desktop 750">
+    <div class="tpl tpl--desktop">
+      <section class="tpl-block tpl-carousel-products">
+        <div class="tpl-carousel">
+          <article class="product-card">
+            <div class="product-card__media">
+              <img src="../images/meetup-couple.jpg" alt="">
+              <div class="product-card__tags"><span class="tag">8월 22일 (토) 오후 2시</span></div>
+            </div>
+            <div class="product-card__info">
+              <h3 class="product-card__title"><a href="../detail.html">돌싱 로테이션 소개팅</a></h3>
+              <p class="product-card__desc">서울 강남 외 4개 지역 · 일정 5개</p>
+              <p class="product-card__price">42,000원~</p>
+            </div>
+          </article>
+          <article class="product-card">
+            <div class="product-card__media">
+              <img src="../images/meetup-lamp.jpg" alt="">
+              <div class="product-card__tags"><span class="tag">8월 25일 (화) 저녁 7시</span></div>
+            </div>
+            <div class="product-card__info">
+              <h3 class="product-card__title"><a href="../detail.html">12:12 티키타카 로테이션 소개팅</a></h3>
+              <p class="product-card__desc">경기 성남시 외 4개 지역 · 일정 5개</p>
+              <p class="product-card__price"><b>할인가</b> 33,000원~</p>
+            </div>
+          </article>
+          <article class="product-card">
+            <div class="product-card__media">
+              <img src="../images/meetup-record.jpg" alt="">
+              <div class="product-card__tags"><span class="tag">8월 24일 (월) 오후 2시</span></div>
+            </div>
+            <div class="product-card__info">
+              <h3 class="product-card__title"><a href="../detail.html">테마 로테이션 소개팅</a></h3>
+              <p class="product-card__desc">서울 성수 외 4개 지역 · 일정 5개</p>
+              <p class="product-card__price">42,000원~</p>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+  </div>
+  <div class="frame frame--mobile" data-label="mobile 390">
+    <div class="tpl tpl--mobile">
+      <section class="tpl-block tpl-carousel-products">
+        <div class="tpl-carousel">
+          <article class="product-card">
+            <div class="product-card__media">
+              <img src="../images/meetup-couple.jpg" alt="">
+              <div class="product-card__tags"><span class="tag">8월 22일 (토) 오후 2시</span></div>
+            </div>
+            <div class="product-card__info">
+              <h3 class="product-card__title"><a href="../detail.html">돌싱 로테이션 소개팅</a></h3>
+              <p class="product-card__desc">서울 강남 외 4개 지역 · 일정 5개</p>
+              <p class="product-card__price">42,000원~</p>
+            </div>
+          </article>
+          <article class="product-card">
+            <div class="product-card__media">
+              <img src="../images/meetup-lamp.jpg" alt="">
+              <div class="product-card__tags"><span class="tag">8월 25일 (화) 저녁 7시</span></div>
+            </div>
+            <div class="product-card__info">
+              <h3 class="product-card__title"><a href="../detail.html">12:12 티키타카 로테이션 소개팅</a></h3>
+              <p class="product-card__desc">경기 성남시 외 4개 지역 · 일정 5개</p>
+              <p class="product-card__price"><b>할인가</b> 33,000원~</p>
+            </div>
+          </article>
+          <article class="product-card">
+            <div class="product-card__media">
+              <img src="../images/meetup-record.jpg" alt="">
+              <div class="product-card__tags"><span class="tag">8월 24일 (월) 오후 2시</span></div>
+            </div>
+            <div class="product-card__info">
+              <h3 class="product-card__title"><a href="../detail.html">테마 로테이션 소개팅</a></h3>
+              <p class="product-card__desc">서울 성수 외 4개 지역 · 일정 5개</p>
+              <p class="product-card__price">42,000원~</p>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<h2>Block / Location <code>.tpl-location</code></h2>
+<p class="note">
+  등록된 좌표에 핀 하나. 높이는 PC 360 · 모바일 240 이고 폭만 컨테이너를 따릅니다 —
+  PC 는 콘텐츠 영역 최대 852, 모바일은 화면 너비 100%. 주차 안내처럼 덧붙는 설명은 아래
+  Text 블록, CTA 는 Button 블록입니다.
+  <br><b>지도 있음</b>은 시안의 지도 그림입니다 — 실제로는 네이버 지도 API 가 그 자리를
+  채웁니다. <b>지도 없음</b>은 지도가 오지 않았을 때로, 자리는 그대로 두고 한 줄만 남습니다 —
+  장소명 · 주소는 아래 Text 블록, 바깥 지도 링크는 Button 블록이 이미 갖고 있어 여기서
+  되풀이하지 않습니다. 그래서 Location 은 그 둘과 함께 쓰는 것이 기본입니다.
+</p>
+<div class="pair">
+  <div class="frame frame--desktop" data-label="desktop 750 · 지도 있음">
+    <div class="tpl tpl--desktop">
+      <!-- is-mapped 는 스크립트가 지도를 그린 뒤 붙이는 표시입니다. 여기서는 시안의
+           지도 그림을 넣고 손으로 붙여, 지도가 떴을 때의 모습을 보여줍니다. -->
+      <section class="tpl-block tpl-location is-mapped">
+        <img src="./images/map-sample.png" alt="한남오거리 라운지 위치 지도">
+      </section>
+    </div>
+  </div>
+  <div class="frame frame--mobile" data-label="mobile 390 · 지도 있음">
+    <div class="tpl tpl--mobile">
+      <section class="tpl-block tpl-location is-mapped">
+        <img src="./images/map-sample-mobile.png" alt="한남오거리 라운지 위치 지도">
+      </section>
+    </div>
+  </div>
+</div>
+<p class="control" id="map-control">
+  <label for="naver-key">네이버 지도 키</label>
+  <input type="text" id="naver-key" class="is-wide" spellcheck="false" placeholder="키 값, 또는 스크립트 주소 전체">
+  <button type="button" id="naver-draw">지도 그리기</button>
+  <small id="map-hint">키가 없으면 <b>지도 없음</b> 안내 한 줄만 남습니다.</small>
+</p>
+<div class="pair">
+  <div class="frame frame--desktop" data-label="desktop 750 · 지도 없음">
+    <div class="tpl tpl--desktop">
+      <section class="tpl-block tpl-location"
+               data-lat="37.5385" data-lng="127.0027" data-label="한남오거리 라운지">
+        <!-- 지도가 오지 않으면 이 한 줄만 남습니다. 장소명·주소는 아래 Text 블록,
+             바깥 지도 링크는 Button 블록이 이미 갖고 있어 여기서 되풀이하지 않습니다. -->
+        <p class="tpl-location__fallback">지도를 불러오지 못했습니다</p>
+      </section>
+      <section class="tpl-block tpl-text">
+        <div class="tpl-text__header">
+          <p class="tpl-text__title">주차 정보</p>
+          <p class="tpl-text__meta">서울 용산구 한남오거리 라운지</p>
+        </div>
+        <div class="tpl-text__content">
+          <p>건물 지하 주차장을 2시간 무료로 이용하실 수 있어요. 만차인 경우 도보 3분 거리의 공영 주차장을 안내해 드립니다.</p>
+        </div>
+      </section>
+      <section class="tpl-block tpl-button">
+        <a class="tpl-button__button" href="#" target="_blank" rel="noopener">
+          네이버 지도에서 보기
+          <svg class="tpl-icon" aria-hidden="true"><use href="#icon-chevronRight"></use></svg>
+        </a>
+      </section>
+    </div>
+  </div>
+  <div class="frame frame--mobile" data-label="mobile 390 · 지도 없음">
+    <div class="tpl tpl--mobile">
+      <section class="tpl-block tpl-location"
+               data-lat="37.5385" data-lng="127.0027" data-label="한남오거리 라운지">
+        <!-- 지도가 오지 않으면 이 한 줄만 남습니다. 장소명·주소는 아래 Text 블록,
+             바깥 지도 링크는 Button 블록이 이미 갖고 있어 여기서 되풀이하지 않습니다. -->
+        <p class="tpl-location__fallback">지도를 불러오지 못했습니다</p>
+      </section>
+      <section class="tpl-block tpl-text">
+        <div class="tpl-text__header">
+          <p class="tpl-text__title">주차 정보</p>
+          <p class="tpl-text__meta">서울 용산구 한남오거리 라운지</p>
+        </div>
+        <div class="tpl-text__content">
+          <p>건물 지하 주차장을 2시간 무료로 이용하실 수 있어요. 만차인 경우 도보 3분 거리의 공영 주차장을 안내해 드립니다.</p>
+        </div>
+      </section>
+      <section class="tpl-block tpl-button">
+        <a class="tpl-button__button" href="#" target="_blank" rel="noopener">
+          네이버 지도에서 보기
+          <svg class="tpl-icon" aria-hidden="true"><use href="#icon-chevronRight"></use></svg>
+        </a>
+      </section>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 액션 블록 ==================== -->
+
+<h2>Block / Button <code>.tpl-button</code></h2>
+<p class="note">
+  어드민이 정하는 것은 문구와 연결 동작(내부 페이지 · 외부 링크 · 지도 · 새창 여부)
+  뿐입니다. 높이와 스타일은 커스텀할 수 없고 PC·모바일 모두 컨테이너 너비를 채웁니다.
+  링크가 없으면 저장·노출되지 않습니다.
+</p>
+<div class="pair">
+  <div class="frame frame--desktop" data-label="desktop 750">
+    <div class="tpl tpl--desktop">
+      <section class="tpl-block tpl-button">
+        <a class="tpl-button__button" href="#">
+          네이버 지도에서 보기
+          <svg class="tpl-icon" aria-hidden="true"><use href="#icon-chevronRight"></use></svg>
+        </a>
+      </section>
+    </div>
+  </div>
+  <div class="frame frame--mobile" data-label="mobile 390">
+    <div class="tpl tpl--mobile">
+      <section class="tpl-block tpl-button">
+        <a class="tpl-button__button" href="#">
+          네이버 지도에서 보기
+          <svg class="tpl-icon" aria-hidden="true"><use href="#icon-chevronRight"></use></svg>
+        </a>
+      </section>
+    </div>
+  </div>
+</div>
+
+<h2>Block / Coupon <code>.tpl-coupon</code></h2>
+<p class="note">
+  어드민은 쿠폰만 고릅니다. 쿠폰명 · 할인율 · 발급 기간 · 사용 조건은 쿠폰 데이터가
+  채우고, 누르면 발급됩니다. 더 이상 받을 수 없으면 <code>.tpl-coupon--closed</code> 로
+  바뀝니다 — 이미 받았거나(받기 완료), 발급 기간이 끝났거나 다 소진되었거나(발급 종료).
+  둘은 모습이 같고 오른쪽 글만 다릅니다. 로그인하지 않은 사용자는 로그인 뒤 원래 화면으로
+  돌아옵니다. 상품에 적용할 수 없는 쿠폰은 노출하지 않고, 받을 수 있는 쿠폰이 없으면 블록
+  전체를 숨깁니다.
+</p>
+<div class="pair">
+  <div class="frame frame--desktop" data-label="desktop 750">
+    <div class="tpl tpl--desktop">
+      <section class="tpl-block tpl-coupon">
+        <div class="tpl-coupon__wrap">
+          <div class="tpl-coupon__logo">
+            <svg aria-hidden="true"><use href="#icon-eoSymbol"></use></svg>
+          </div>
+          <button class="tpl-coupon__button" type="button">
+            <span class="tpl-coupon__label">10% 할인 쿠폰 받기</span>
+            <svg class="tpl-icon" aria-hidden="true"><use href="#tpl-icon-download"></use></svg>
+          </button>
+        </div>
+      </section>
+      <section class="tpl-block tpl-coupon tpl-coupon--closed">
+        <div class="tpl-coupon__wrap">
+          <div class="tpl-coupon__logo">
+            <svg aria-hidden="true"><use href="#icon-eoSymbol"></use></svg>
+          </div>
+          <button class="tpl-coupon__button" type="button" disabled>
+            <span class="tpl-coupon__label">10% 할인 쿠폰 받기</span>
+            <span class="tpl-coupon__status">
+              <svg aria-hidden="true"><use href="#icon-check"></use></svg>
+              받기 완료
+            </span>
+          </button>
+        </div>
+      </section>
+      <!-- 발급 기간이 끝났거나 다 소진된 쿠폰. 모습은 같고 오른쪽 글만 다릅니다 —
+           체크 표시는 넣지 않습니다. 받은 적이 없는데 체크가 서 있으면 받았다는 뜻이
+           됩니다. -->
+      <section class="tpl-block tpl-coupon tpl-coupon--closed">
+        <div class="tpl-coupon__wrap">
+          <div class="tpl-coupon__logo">
+            <svg aria-hidden="true"><use href="#icon-eoSymbol"></use></svg>
+          </div>
+          <button class="tpl-coupon__button" type="button" disabled>
+            <span class="tpl-coupon__label">10% 할인 쿠폰 받기</span>
+            <span class="tpl-coupon__status">발급 종료</span>
+          </button>
+        </div>
+      </section>
+    </div>
+  </div>
+  <div class="frame frame--mobile" data-label="mobile 390">
+    <div class="tpl tpl--mobile">
+      <section class="tpl-block tpl-coupon">
+        <div class="tpl-coupon__wrap">
+          <div class="tpl-coupon__logo">
+            <svg aria-hidden="true"><use href="#icon-eoSymbol"></use></svg>
+          </div>
+          <button class="tpl-coupon__button" type="button">
+            <span class="tpl-coupon__label">10% 할인 쿠폰 받기</span>
+            <svg class="tpl-icon" aria-hidden="true"><use href="#tpl-icon-download"></use></svg>
+          </button>
+        </div>
+      </section>
+      <section class="tpl-block tpl-coupon tpl-coupon--closed">
+        <div class="tpl-coupon__wrap">
+          <div class="tpl-coupon__logo">
+            <svg aria-hidden="true"><use href="#icon-eoSymbol"></use></svg>
+          </div>
+          <button class="tpl-coupon__button" type="button" disabled>
+            <span class="tpl-coupon__label">10% 할인 쿠폰 받기</span>
+            <span class="tpl-coupon__status">
+              <svg aria-hidden="true"><use href="#icon-check"></use></svg>
+              받기 완료
+            </span>
+          </button>
+        </div>
+      </section>
+      <section class="tpl-block tpl-coupon tpl-coupon--closed">
+        <div class="tpl-coupon__wrap">
+          <div class="tpl-coupon__logo">
+            <svg aria-hidden="true"><use href="#icon-eoSymbol"></use></svg>
+          </div>
+          <button class="tpl-coupon__button" type="button" disabled>
+            <span class="tpl-coupon__label">10% 할인 쿠폰 받기</span>
+            <span class="tpl-coupon__status">발급 종료</span>
+          </button>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 아코디언 ==================== -->
+
+<h2>Block / Accordion <code>.tpl-accordion</code></h2>
+<p class="note">
+  질문 하나가 블록 하나입니다. 여러 개를 이어 붙이면 목록이 됩니다. 열린 질문은
+  브랜드색이 되고 +가 −로 바뀝니다.
+</p>
+<div class="pair">
+  <div class="frame frame--desktop" data-label="desktop 750">
+    <div class="tpl tpl--desktop">
+      <section class="tpl-block tpl-accordion">
+        <button class="tpl-accordion__question" type="button" aria-expanded="true" aria-controls="faq-d1">
+          <span class="tpl-accordion__label">참여자 평균 나이가 어떻게 되나요?</span>
+          <svg class="tpl-icon tpl-accordion__plus" aria-hidden="true"><use href="#tpl-icon-plus"></use></svg>
+          <svg class="tpl-icon tpl-accordion__minus" aria-hidden="true"><use href="#tpl-icon-minus"></use></svg>
+        </button>
+        <div class="tpl-accordion__answer" id="faq-d1">
+          <p>일반 소개팅은 7개 연령 그룹, 블랙 멤버 전용 소개팅은 5개 연령 그룹, 돌싱 소개팅은 5개 연령 및 자녀 유무 그룹으로 참여 연령이 분류되어있어요. 나의 나이와 상황에 맞는 이성을 편하게 만날 수 있으니, 걱정하지 마세요.</p>
+        </div>
+      </section>
+      <section class="tpl-block tpl-accordion">
+        <button class="tpl-accordion__question" type="button" aria-expanded="false" aria-controls="faq-d2">
+          <span class="tpl-accordion__label">주변 지인이나, 불편한 사람을 만날까봐 걱정돼요</span>
+          <svg class="tpl-icon tpl-accordion__plus" aria-hidden="true"><use href="#tpl-icon-plus"></use></svg>
+          <svg class="tpl-icon tpl-accordion__minus" aria-hidden="true"><use href="#tpl-icon-minus"></use></svg>
+        </button>
+        <div class="tpl-accordion__answer" id="faq-d2" hidden>
+          <p>참여자 명단은 공개하지 않지만, 아는 사람이 걱정된다면 참여 회차를 바꿔 드려요.</p>
+        </div>
+      </section>
+    </div>
+  </div>
+  <div class="frame frame--mobile" data-label="mobile 390">
+    <div class="tpl tpl--mobile">
+      <section class="tpl-block tpl-accordion">
+        <button class="tpl-accordion__question" type="button" aria-expanded="true" aria-controls="faq-m1">
+          <span class="tpl-accordion__label">참여자 평균 나이가 어떻게 되나요?</span>
+          <svg class="tpl-icon tpl-accordion__plus" aria-hidden="true"><use href="#tpl-icon-plus"></use></svg>
+          <svg class="tpl-icon tpl-accordion__minus" aria-hidden="true"><use href="#tpl-icon-minus"></use></svg>
+        </button>
+        <div class="tpl-accordion__answer" id="faq-m1">
+          <p>일반 소개팅은 7개 연령 그룹, 블랙 멤버 전용 소개팅은 5개 연령 그룹, 돌싱 소개팅은 5개 연령 및 자녀 유무 그룹으로 참여 연령이 분류되어있어요. 나의 나이와 상황에 맞는 이성을 편하게 만날 수 있으니, 걱정하지 마세요.</p>
+        </div>
+      </section>
+      <section class="tpl-block tpl-accordion">
+        <button class="tpl-accordion__question" type="button" aria-expanded="false" aria-controls="faq-m2">
+          <span class="tpl-accordion__label">주변 지인이나, 불편한 사람을 만날까봐 걱정돼요</span>
+          <svg class="tpl-icon tpl-accordion__plus" aria-hidden="true"><use href="#tpl-icon-plus"></use></svg>
+          <svg class="tpl-icon tpl-accordion__minus" aria-hidden="true"><use href="#tpl-icon-minus"></use></svg>
+        </button>
+        <div class="tpl-accordion__answer" id="faq-m2" hidden>
+          <p>참여자 명단은 공개하지 않지만, 아는 사람이 걱정된다면 참여 회차를 바꿔 드려요.</p>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  // 아이콘은 제품 스프라이트를 그대로 쓰고, 거기 없는 셋만 templete/icons.svg 에서
+  // 더합니다 — 같은 그림을 두 벌 들고 있지 않으려는 것입니다.
+  document.getElementById('sprite').innerHTML =
+    await (await fetch('../build/icons.svg')).text() +
+    await (await fetch('../build/logo.svg')).text() +
+    await (await fetch('./icons.svg')).text()
+
+  const { initTemplete, initLocation } = await import('./blocks.js')
+  initTemplete()
+
+  // ---- 카탈로그 조작판 (블록의 일부가 아닙니다) ----
+
+  // 배경색: 색상 선택기와 Hex 칸이 서로를 따라갑니다. 어드민이 만들 화면의 대역입니다.
+  const solids = () => document.querySelectorAll('#solid-pair .tpl-image-solid')
+  // 배경색과 문구색이 같은 방식이라 한 벌로 묶습니다 — 색상 선택기와 Hex 칸이 서로를
+  // 따라가고, 값이 바뀌면 데스크톱·모바일 두 프레임에 함께 칠합니다.
+  const bindColor = (swatchId, hexId, prop) => {
+    const swatch = document.getElementById(swatchId)
+    const hex = document.getElementById(hexId)
+    const paint = (value) => { for (const el of solids()) el.style.setProperty(prop, value) }
+    swatch.addEventListener('input', () => { hex.value = swatch.value.toUpperCase(); paint(swatch.value) })
+    hex.addEventListener('input', () => {
+      // 다 치기 전의 값(#15, #151D)에 반응하면 색이 튑니다. 여섯 자리가 찼을 때만 칠합니다.
+      const v = hex.value.trim()
+      if (/^#[0-9a-fA-F]{6}$/.test(v)) { swatch.value = v; paint(v) }
+    })
+  }
+  bindColor('solid-color', 'solid-hex', '--tpl-solid-bg')
+  bindColor('solid-fg-color', 'solid-fg-hex', '--tpl-solid-fg')
+
+  // 지도: 키를 넣고 누르면 그립니다. 키는 코드에도, 저장소에도 남지 않습니다.
+  const key = document.getElementById('naver-key')
+  const hint = document.getElementById('map-hint')
+  document.getElementById('naver-draw').addEventListener('click', () => {
+    const v = key.value.trim()
+    if (!v) { key.focus(); return }
+    // 여기 들어올 수 있는 것은 둘뿐입니다: 발급받은 키, 또는 지도 API 스크립트 주소.
+    // 지도 '페이지' 주소(map.naver.com/…)를 붙여넣는 실수가 잦아 먼저 걸러 알려줍니다 —
+    // 그대로 <script src> 에 넣으면 아무 말 없이 실패합니다. 그 주소가 갈 자리는
+    // 대체 글의 '네이버 지도에서 보기' 링크입니다.
+    const isUrl = /^https?:\/\//.test(v)
+    if (isUrl && !v.includes('oapi.map.naver.com')) {
+      hint.textContent = '지도 페이지 주소가 아니라 지도 API 키, 또는 oapi.map.naver.com 의 maps.js 주소가 필요합니다.'
+      return
+    }
+    hint.textContent = ''
+    initLocation(document, isUrl ? { src: v } : { clientId: v })
+  })
+  // 스페이서에 실제 높이를 적어 둡니다(카탈로그 표시용). 기기 프레임마다 값이 다르고
+  // 창 폭에 따라서도 달라져, 손으로 적지 않고 재서 넣습니다.
+  const labelSpacers = () => {
+    for (const el of document.querySelectorAll('.frame .tpl-spacer')) {
+      el.dataset.size = Math.round(el.getBoundingClientRect().height) + 'px'
+    }
+  }
+  labelSpacers()
+  new ResizeObserver(labelSpacers).observe(document.body)
+
+</script>

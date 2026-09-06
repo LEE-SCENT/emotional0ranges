@@ -1,0 +1,770 @@
+/**
+ * 상세 페이지 템플릿 — 블록 스타일.
+ *
+ *   <div class="tpl tpl--desktop">
+ *     <section class="tpl-block tpl-title"> … </section>
+ *     <section class="tpl-block tpl-text">  … </section>
+ *   </div>
+ *
+ * 어드민에서 블록을 골라 쌓아 상세 페이지를 조립하는 것이 목적입니다. 제품 화면
+ * (../detail.html)에는 아직 붙이지 않았습니다 — 여기는 조립 재료만 둡니다.
+ *
+ * ── 기기 판정 ──────────────────────────────────────────────────────────────
+ * `.tpl--desktop` / `.tpl--mobile` 을 렌더러가 붙입니다. 미디어 쿼리로 자동
+ * 전환하지 않는 이유가 있습니다: 데스크톱 기준 폭이 750, PC 상세 콘텐츠 영역은
+ * 최대 852 입니다. 둘 다 흔한 모바일 브레이크포인트(960)보다 좁아서, 콘텐츠 영역의
+ * 폭만 보고는 어느 쪽인지 알 수 없습니다. Figma 의 device variant 와 같은 방식으로
+ * 밖에서 정해 넣습니다.
+ *
+ * 어드민 콘텐츠는 PC·모바일 공통으로 한 번만 등록합니다. 블록 순서와 내용은 그대로
+ * 두고 폰트·여백·배치만 기기별로 바뀝니다 — 그래서 기기 차이를 아래 커스텀
+ * 프로퍼티 한 벌로 모아두고, 블록 규칙은 한 번만 씁니다.
+ *
+ * ── 값의 출처 ──────────────────────────────────────────────────────────────
+ * 색·여백·아이콘 크기는 ../build/tokens.css 의 semantic 토큰입니다.
+ * 글자는 templete/* 텍스트 스타일 전용 토큰(--typography-template-*)을 씁니다.
+ * ⚠️ 이 토큰은 템플릿에서만 씁니다. 제품 화면은 body/heading 을 쓰세요.
+ */
+
+.tpl {
+  box-sizing: border-box;
+  inline-size: 100%;
+  background: var(--colors-bg);
+  color: var(--colors-fg);
+  font-family: var(--_font-family-base);
+  /* templete/* 여덟 개가 전부 letterSpacing 0 이라 여기서 한 번 정합니다. */
+  letter-spacing: var(--typography-template-text-letter-spacing);
+
+  /* 줄바꿈은 낱말 단위로 합니다.
+     기본값은 한국어를 글자 단위로 끊습니다 — "만차인 경우 도 / 보 3분" 처럼 한 낱말이
+     두 줄에 걸칩니다. keep-all 은 낱말을 통째로 다음 줄에 넘깁니다.
+
+     그러면 띄어쓰기 없는 긴 것(URL, 붙여 쓴 문장)이 칸을 뚫고 나가는데, break-word 가
+     그때만 끊어 줍니다 — anywhere 와 달리 "끊을 자리가 없을 때만" 입니다.
+
+     두 프로퍼티 모두 상속되므로 여기 한 번이면 블록 안 모든 글자에 닿습니다 —
+     아코디언 질문(span)처럼 태그가 제각각인 자리까지. */
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+.tpl *,
+.tpl *::before,
+.tpl *::after { box-sizing: border-box; }
+
+/* ---- 기기별 값 ----------------------------------------------------------
+   Figma 기준 폭: Desktop 750 / Mobile 390. 아래 숫자는 그 폭에서 잰 값입니다.
+   ⚠️ 모바일 시안이 없는 블록(Button · Coupon · Image Solid)은 데스크톱 값을
+      같은 비율로 줄였습니다 — 시안이 나오면 그 값으로 바꾸세요. 표시해 두었습니다.
+*/
+
+.tpl--desktop {
+  --tpl-pad-inline: var(--spacing-1200);          /* 48 */
+  --tpl-title-pad: var(--spacing-1200);           /* 48 */
+  --tpl-pad-top: var(--spacing-1000);             /* 40 */
+  --tpl-pad-bottom: var(--spacing-1500);          /* 60 */
+  --tpl-block-gap: var(--spacing-800);            /* 32 — 머리와 본문 사이 */
+  --tpl-head-gap: var(--spacing-200);             /*  8 — 머리 안쪽(번호·타이틀·메타) */
+  --tpl-title-gap: var(--spacing-300);            /* 12 — 라벨과 타이틀 사이 */
+  --tpl-para-gap: var(--spacing-600);             /* 24 — 문단 사이 */
+  --tpl-list-gap: var(--spacing-200);             /*  8 — 목록 항목 사이 */
+  --tpl-list-indent: 36px;                        /* 글머리 기호 자리 */
+  --tpl-icon: var(--icon-size-2xl);               /* 36 */
+  --tpl-row-gap: var(--spacing-600);              /* 24 — 아코디언 타이틀과 아이콘 사이 */
+  --tpl-pad-end: var(--spacing-800);              /* 32 — 아코디언 오른쪽 여백 */
+  --tpl-answer-inset: var(--spacing-2400);        /* 96 — 아코디언 답변 오른쪽 */
+  --tpl-solid-gap: var(--spacing-1000);           /* 40 */
+  --tpl-map-block-size: 360px;
+  --tpl-action-height: 56px;      /* 버튼·쿠폰 높이. 아래 ⚠️ 참고 */
+  --tpl-rating-size: var(--icon-size-l);          /* 28 — 별점 */
+  --tpl-spacer-s: var(--spacing-1000);            /*  40 — 스페이서 */
+  --tpl-spacer-m: var(--spacing-2000);            /*  80 */
+  --tpl-spacer-l: var(--spacing-3000);            /* 120 */
+  /* 카드 폭은 컨테이너 비율로 둡니다 — 852 까지 넓어져도 노출 개수가 그대로입니다.
+     이미지 338/750 = 45.07%, 상품 312/654(안쪽 폭) = 47.7%. 둘 다 2개 + 다음 것 일부. */
+  --tpl-carousel-card: 45.07%;
+  --tpl-product-card: 47.7%;
+
+  --tpl-font-title-size: var(--typography-template-title-l-font-size);
+  --tpl-font-title-weight: var(--typography-template-title-l-font-weight);
+  --tpl-font-title-leading: var(--typography-template-title-l-line-height);
+  --tpl-font-subtitle-size: var(--typography-template-title-s-font-size);
+  --tpl-font-subtitle-weight: var(--typography-template-title-s-font-weight);
+  --tpl-font-subtitle-leading: var(--typography-template-title-s-line-height);
+  --tpl-font-label-size: var(--typography-template-label-font-size);
+  --tpl-font-label-weight: var(--typography-template-label-font-weight);
+  --tpl-font-label-leading: var(--typography-template-label-line-height);
+  --tpl-font-text-size: var(--typography-template-text-font-size);
+  --tpl-font-text-weight: var(--typography-template-text-font-weight);
+  --tpl-font-text-leading: var(--typography-template-text-line-height);
+}
+
+.tpl--mobile {
+  --tpl-pad-inline: var(--spacing-600);           /* 24 */
+  --tpl-title-pad: var(--spacing-600);            /* 24 */
+  --tpl-pad-top: var(--spacing-500);              /* 20 */
+  --tpl-pad-bottom: var(--spacing-900);           /* 36 */
+  --tpl-block-gap: var(--spacing-400);            /* 16 */
+  --tpl-head-gap: var(--spacing-100);             /*  4 — Figma 4.693, 4 로 맞췄습니다 */
+  --tpl-title-gap: var(--spacing-300);            /* 12 */
+  --tpl-para-gap: var(--spacing-300);             /* 12 */
+  --tpl-list-gap: var(--spacing-100);             /*  4 */
+  --tpl-list-indent: 21px;
+  --tpl-icon: var(--icon-size-m);                 /* 24 */
+  --tpl-row-gap: var(--spacing-300);              /* 12 */
+  --tpl-pad-end: var(--spacing-400);              /* 16 */
+  --tpl-answer-inset: var(--spacing-1200);        /* 48 */
+  --tpl-solid-gap: var(--spacing-500);            /* 20 — ⚠️ 시안 없음 */
+  --tpl-map-block-size: 240px;
+  --tpl-action-height: 48px;
+  --tpl-rating-size: var(--icon-size-s);          /* 20 — ⚠️ 시안 없음 */
+  --tpl-spacer-s: var(--spacing-600);             /* 24 — ⚠️ 시안 없음 */
+  --tpl-spacer-m: var(--spacing-1000);            /* 40 */
+  --tpl-spacer-l: var(--spacing-1500);            /* 60 */
+  /* 이미지 338/390 = 86.67%, 상품 312/342(안쪽 폭) = 91.2%. 둘 다 1개 + 다음 것 일부. */
+  --tpl-carousel-card: 86.67%;
+  --tpl-product-card: 91.2%;
+
+  --tpl-font-title-size: var(--typography-template-title-l-mobile-font-size);
+  --tpl-font-title-weight: var(--typography-template-title-l-mobile-font-weight);
+  --tpl-font-title-leading: var(--typography-template-title-l-mobile-line-height);
+  --tpl-font-subtitle-size: var(--typography-template-title-s-mobile-font-size);
+  --tpl-font-subtitle-weight: var(--typography-template-title-s-mobile-font-weight);
+  --tpl-font-subtitle-leading: var(--typography-template-title-s-mobile-line-height);
+  --tpl-font-label-size: var(--typography-template-label-mobile-font-size);
+  --tpl-font-label-weight: var(--typography-template-label-mobile-font-weight);
+  --tpl-font-label-leading: var(--typography-template-label-mobile-line-height);
+  --tpl-font-text-size: var(--typography-template-text-mobile-font-size);
+  --tpl-font-text-weight: var(--typography-template-text-mobile-font-weight);
+  --tpl-font-text-leading: var(--typography-template-text-mobile-line-height);
+}
+
+/* ---- 블록 공통 ---------------------------------------------------------- */
+
+/* 블록은 위에서 아래로 그냥 쌓입니다. 블록 사이 여백을 따로 두지 않는 것은 각
+   블록이 이미 자기 위아래 여백을 들고 있기 때문입니다 — 어드민이 순서를 바꿔도
+   간격이 흐트러지지 않습니다. */
+.tpl-block {
+  inline-size: 100%;
+  background: var(--colors-bg);
+}
+
+/* 다만 글 블록이 연달아 서면 그 여백이 두 겹으로 쌓입니다 — 앞 블록의 아래 60 과 뒤
+   블록의 위 40 이 더해져 100 이 됩니다. 한 섹션 안에서 01·02·03 이 이어지는 자리에는
+   너무 멀어, 이어지는 블록의 위 여백을 걷어 60 으로 둡니다.
+
+   ⚠️ Figma 는 블록 하나만 놓고 여백을 정했습니다. 쌓았을 때의 간격은 시안에 없어
+      여기서 정했습니다 — 다른 값이 맞으면 이 한 줄만 고치면 됩니다. */
+:is(.tpl-text, .tpl-list) + :is(.tpl-text, .tpl-list),
+:is(.tpl-text, .tpl-list) + .tpl-spacer + :is(.tpl-text, .tpl-list) {
+  padding-block-start: 0;
+}
+
+.tpl-block :is(p, li, h1, h2, h3, h4) {
+  margin: 0;
+}
+
+.tpl-icon {
+  display: block;
+  inline-size: var(--tpl-icon);
+  block-size: var(--tpl-icon);
+  flex: none;
+}
+
+/* ---- Block / Spacer ----------------------------------------------------- */
+
+/* 섹션을 끊는 자리에 넣는 빈 블록입니다.
+
+   블록마다 여백을 열지 않고 이것을 둔 이유가 있습니다. 여백을 값으로 열면 어드민 화면에
+   "얼마나 띄울지" 판단할 근거가 없어, 한 사람은 40 을 다른 사람은 80 을 넣습니다 — 같은
+   상품의 상세 페이지가 회차마다 달라집니다. 스페이서는 "여기서 끊는다"는 뜻을 고르는
+   것이고, 얼마나 띄울지는 템플릿이 정합니다.
+
+   크기는 셋뿐입니다. 자유 입력을 두면 결국 값을 여는 것과 같아집니다.
+     기본(m)  데스크톱 80 · 모바일 40
+     --s      데스크톱 40 · 모바일 24
+     --l      데스크톱 120 · 모바일 60
+
+   앞뒤 블록이 이미 갖고 있는 여백에 더해집니다 — 글 블록이 이어지는 자리라면 60 위에
+   얹혀 100 · 140 · 180 이 됩니다.
+
+   글이 아니라 자리라서 <div> 로 둡니다. 화면을 읽어 주는 쪽에는 빈 <div> 가 아무것도
+   아니므로 따로 감출 필요가 없습니다.
+
+   ⚠️ Figma 에 없는 블록입니다. 크기 세 값도 여기서 정했습니다. */
+.tpl-spacer {
+  block-size: var(--tpl-spacer-m);
+}
+
+.tpl-spacer--s { block-size: var(--tpl-spacer-s); }
+.tpl-spacer--l { block-size: var(--tpl-spacer-l); }
+
+/* ---- Block / Title ------------------------------------------------------ */
+
+.tpl-title {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tpl-title-gap);
+  padding: var(--tpl-title-pad);
+}
+
+/* 라벨은 타이틀 위에 붙는 한 줄입니다. 옵션이라 없을 수도 있습니다.
+   ⚠️ 자르지 않습니다. 라벨에도 최대 줄 수가 있다고 가이드가 적어 두었지만 그 수가
+      시안에 없습니다. 없는 수를 짐작해 잘라 두면 운영이 넣은 글이 소리 없이 사라집니다 —
+      수가 정해지면 타이틀처럼 한 줄만 더하면 됩니다. 그때까지는 어드민의 입력 경고가
+      유일한 방어선입니다. */
+.tpl-title__label {
+  color: var(--colors-fg-brand);
+  font-size: var(--tpl-font-label-size);
+  font-weight: var(--tpl-font-label-weight);
+  line-height: var(--tpl-font-label-leading);
+}
+
+/* ── 타이틀 블록은 최대 2줄 ───────────────────────────────────────────────
+   그 수를 넘는 글은 어드민이 입력 단계에서 경고해 막는 것이 먼저이고, 아래 자르기는
+   그래도 넘어온 글이 뒤 블록을 밀어내지 않게 하는 그물입니다 — 둘 중 하나만 두면
+   안 됩니다. 자르기만 두면 운영은 글이 사라진 줄 모르고, 경고만 두면 어느 경로로든
+   새어 들어온 긴 글이 판을 무너뜨립니다.
+
+   줄 수는 밖에서 바꿀 수 있습니다: style="--tpl-title-lines: 3". */
+.tpl-title__title {
+  color: var(--colors-fg);
+  font-size: var(--tpl-font-title-size);
+  font-weight: var(--tpl-font-title-weight);
+  line-height: var(--tpl-font-title-leading);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--tpl-title-lines, 2);
+  line-clamp: var(--tpl-title-lines, 2);
+  overflow: hidden;
+}
+
+/* ---- Block / Text ------------------------------------------------------- */
+
+.tpl-text,
+.tpl-list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--tpl-block-gap);
+  padding-inline: var(--tpl-pad-inline);
+  padding-block: var(--tpl-pad-top) var(--tpl-pad-bottom);
+}
+
+/* 머리는 번호·타이틀·메타·별점이 한 줄에 섭니다. 좁아지면 다음 줄로 접힙니다. */
+.tpl-text__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--tpl-head-gap);
+  inline-size: 100%;
+  font-size: var(--tpl-font-subtitle-size);
+  font-weight: var(--tpl-font-subtitle-weight);
+  line-height: var(--tpl-font-subtitle-leading);
+}
+
+.tpl-text__no { color: var(--colors-fg-brand); }
+.tpl-text__title { color: var(--colors-fg); }
+.tpl-text__meta { color: var(--colors-fg); }
+
+/* 메타와 별점은 앞 항목과 점 하나로 갈립니다.
+   그 점은 메타의 내용이 아니라 구분자라서 마크업이 아니라 여기서 놓습니다 — 어드민은
+   메타·별점을 켜고 끌 뿐이고, 무엇이 켜졌든 점의 개수와 자리는 저절로 맞습니다.
+   손으로 넣게 두면 메타만 끈 날 점 두 개가 나란히 남습니다.
+
+   번호에는 점을 두지 않습니다. 번호는 타이틀 앞에 붙는 순번이지 나란히 선 항목이
+   아닙니다 — Figma 도 그렇습니다. */
+.tpl-text__meta,
+.tpl-text__rating {
+  display: flex;
+  align-items: center;
+  gap: var(--tpl-head-gap);
+}
+
+.tpl-text__meta::before,
+.tpl-text__rating::before {
+  content: "";
+  inline-size: 4px;
+  block-size: 4px;
+  border-radius: var(--_rounded-full);
+  /* Figma 의 Bullet 은 #A6A4A3 — 글자색을 따르지 않는 제 색입니다. 브랜드색 별점
+     앞에서도, 검은 메타 글자 앞에서도 같은 회색이어야 구분자로 읽힙니다. */
+  background: var(--colors-fg-lowest);
+  flex: none;
+}
+
+/* 별점은 렌더러가 채운 별/빈 별을 섞어 넣습니다. 여기서는 자리와 크기만 정합니다.
+   번호·메타·별점은 데스크톱 전용이 아닙니다 — 모바일에서도 같이 씁니다. 글자는 머리
+   글꼴을 그대로 따르고 별 크기만 기기별로 다릅니다. */
+.tpl-text__rating {
+  color: var(--colors-fg-brand);
+  /* 별끼리는 붙여 한 덩어리로 읽히게 두고, 앞의 구분점만 띄웁니다. */
+  gap: 0;
+}
+
+.tpl-text__rating::before { margin-inline-end: var(--tpl-head-gap); }
+
+.tpl-text__rating svg {
+  inline-size: var(--tpl-rating-size);
+  block-size: var(--tpl-rating-size);
+}
+
+.tpl-text__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tpl-para-gap);
+  inline-size: 100%;
+  color: var(--colors-fg-low);
+  font-size: var(--tpl-font-text-size);
+  font-weight: var(--tpl-font-text-weight);
+  line-height: var(--tpl-font-text-leading);
+}
+
+/* ---- Block / List ------------------------------------------------------- */
+
+.tpl-list__title {
+  inline-size: 100%;
+  color: var(--colors-fg);
+  font-size: var(--tpl-font-subtitle-size);
+  font-weight: var(--tpl-font-subtitle-weight);
+  line-height: var(--tpl-font-subtitle-leading);
+}
+
+.tpl-list__items {
+  list-style: disc;
+  margin: 0;
+  /* 글머리 기호가 놓일 자리. 데스크톱 36 / 모바일 21 은 Figma 에서 잰 값입니다. */
+  padding-inline-start: var(--tpl-list-indent);
+  display: flex;
+  flex-direction: column;
+  gap: var(--tpl-list-gap);
+  inline-size: 100%;
+  color: var(--colors-fg-low);
+  font-size: var(--tpl-font-text-size);
+  font-weight: var(--tpl-font-text-weight);
+  line-height: var(--tpl-font-text-leading);
+}
+
+/* ---- Block / Image Full ------------------------------------------------- */
+
+/* 사진이 영역 전체를 채웁니다. 폭만 맞추고 높이는 원본 비율대로 따라옵니다 —
+   가로만 늘리거나 찌그러뜨리지 않습니다. 750×480 원본이면 PC 852×545,
+   모바일 350×224 로 나옵니다. */
+.tpl-image-full img {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+}
+
+/* ---- Block / Image Solid ------------------------------------------------ */
+
+/* 단색 배경은 코드가 만들고, 그 위에 이미지·로고·일러스트만 올립니다.
+   배경색 · 문구색 · 안쪽 여백은 어드민이 정하거나, 정하지 않으면 기본값을 씁니다:
+     style="--tpl-solid-bg:#151D34; --tpl-solid-fg:#A8978D; --tpl-solid-pad:64px"
+   기본은 배경 #151D34, 문구 casualNeutral/200(#A8978D), 여백은 이 블록의 기본 여백
+   (데스크톱 48 · 모바일 24)입니다.
+
+   ⚠️ 배경색은 올리는 이미지가 정하고, 문구색은 그 배경 위에서 읽혀야 합니다. 둘 다
+      어드민 값이라 대비가 무너질 수 있는 자리입니다 — 어두운 배경에 어두운 문구를
+      넣으면 코드가 막아주지 않습니다. 입력 단계에서 대비를 확인하세요.
+
+   블록은 750:480 비율을 지킵니다(Figma). 안에 든 것보다 큰 자리라 위아래로 숨 쉴 틈이
+   남고, 그 틈이 로고를 판 가운데에 놓습니다. 다만 고정 높이가 아니라 선호 높이입니다 —
+   문구가 여러 줄로 늘어나면 그만큼 커집니다. */
+.tpl-image-solid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--tpl-solid-gap);
+  padding: var(--tpl-solid-pad, var(--tpl-pad-inline));
+  aspect-ratio: 750 / 480;
+  background: var(--tpl-solid-bg, #151d34);
+}
+
+/* 안쪽 이미지는 제 비율을 지킵니다. 자리(654/238)는 Figma 값이고, 실제 그림이
+   그보다 좁거나 넓으면 그 안에서 맞춰 들어갑니다. */
+.tpl-image-solid__image {
+  inline-size: 100%;
+  aspect-ratio: 654 / 238;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* fit — 자리 안에 전부 들어오게 맞춥니다(object-fit: contain). 비율은 지키므로 로고가
+   옆으로 늘어나는 일은 없고, 원본이 자리보다 작으면 커지고 크면 줄어듭니다. 잘라내지
+   않습니다: 로고나 일러스트는 한쪽 귀퉁이가 잘리면 다른 물건이 됩니다.
+   자리 자체의 크기가 곧 "기기별 최대 크기"입니다. */
+.tpl-image-solid__image img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: contain;
+}
+
+/* 하단 문구는 선택입니다. 미입력이면 이미지만 나옵니다.
+   ⚠️ 이 글자만 medium 굵기라 templete/* 어느 스타일과도 맞지 않습니다. 크기·행간은
+      templete/text 와 같아 그 토큰을 쓰고 굵기만 따로 지정합니다. */
+.tpl-image-solid__caption {
+  inline-size: 100%;
+  text-align: center;
+  color: var(--tpl-solid-fg, var(--_colors-casual-neutral-200));
+  font-size: var(--tpl-font-text-size);
+  font-weight: var(--_font-weight-medium-500);
+  line-height: var(--tpl-font-text-leading);
+  font-feature-settings: "lnum" 1, "tnum" 1;
+}
+
+/* ---- 캐러셀 공통 -------------------------------------------------------- */
+
+/* 손가락·트랙패드로 밀어 넘깁니다. 카드가 컨테이너보다 좁게 잡혀 있어 다음 장이
+   늘 조금 보이고, 그래서 더 있다는 것이 버튼 없이도 보입니다. */
+.tpl-carousel {
+  display: flex;
+  gap: var(--spacing-50);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  /* 스크롤바가 사진 위를 지나가지 않게 감춥니다. 넘길 수 있다는 것은 반쯤 보이는
+     다음 장이 이미 말하고 있습니다. */
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tpl-carousel::-webkit-scrollbar { display: none; }
+
+.tpl-carousel > * {
+  flex: none;
+  scroll-snap-align: start;
+}
+
+/* ---- Block / Carousel Images -------------------------------------------- */
+
+.tpl-carousel-images .tpl-carousel > * {
+  inline-size: var(--tpl-carousel-card);
+  aspect-ratio: 338 / 216;
+  background: var(--colors-bg-low);
+  overflow: clip;
+}
+
+.tpl-carousel-images img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+/* 사진이 한 장뿐이면 캐러셀이 아닙니다 — 넘길 것이 없는데 반쯤 잘린 여백만
+   남습니다. 그때는 Full Image 처럼 한 장을 꽉 채웁니다. */
+.tpl-carousel-images--single .tpl-carousel { overflow-x: visible; }
+.tpl-carousel-images--single .tpl-carousel > * {
+  inline-size: 100%;
+  aspect-ratio: auto;
+}
+.tpl-carousel-images--single img { block-size: auto; }
+
+/* ---- Block / Carousel Products ------------------------------------------ */
+
+/* 상품 카드는 디자인 시스템의 것을 그대로 씁니다(../components/product-card.css).
+   어드민은 상품을 고르기만 하고 카드 안의 글자는 상품 데이터가 채웁니다. */
+.tpl-carousel-products {
+  padding-block-end: var(--tpl-pad-inline);
+}
+
+.tpl-carousel-products .tpl-carousel > * { inline-size: var(--tpl-product-card); }
+
+/* 좌우 여백은 데스크톱 48 · 모바일 24 인데, 그 여백은 스크롤이 끝에 닿았을 때만
+   보입니다. 미는 동안에는 카드가 그 자리를 지나 블록 가장자리까지 갑니다.
+
+   여백은 블록이 아니라 스크롤 칸이 자기 안쪽에 갖습니다. 블록에 padding 을 주면 카드가
+   늘 48 안쪽에서 잘려 넘기는 내내 옆에 빈 띠가 서 있고, 반대로 스크롤 칸을 음수 margin
+   으로 넓히면 카드가 블록 밖으로 삐져나옵니다. 안쪽 padding 하나면 둘 다 피합니다 —
+   처음엔 첫 카드가 48 에서 시작하고, 끝까지 밀면 마지막 카드가 48 을 남기고 멈추며,
+   미는 동안에는 카드가 그 자리를 지나 블록 가장자리까지 갑니다.
+   scroll-padding 은 스냅도 그 자리에 맞춥니다. */
+.tpl-carousel-products .tpl-carousel {
+  padding-inline: var(--tpl-pad-inline);
+  scroll-padding-inline: var(--tpl-pad-inline);
+}
+
+/* 줄의 바깥 모서리만 둥급니다 — 첫 카드의 왼쪽 위아래, 마지막 카드의 오른쪽 위아래.
+   가운데 카드들은 각지게 두어야 여러 장이 한 덩어리로 읽힙니다.
+
+   DOM 순서에 고정되므로 스크롤해도 움직이지 않습니다 — 보이는 위치를 따라가게 하면
+   줄 한가운데에 둥근 모서리가 떠 보입니다. 디자인 시스템의 .product-card-group 이
+   같은 규칙을 이미 갖고 있습니다(components/product-card.css). */
+.tpl-carousel-products .tpl-carousel > .product-card:first-child .product-card__media {
+  border-start-start-radius: var(--_product-card-rounded);
+  border-end-start-radius: var(--_product-card-rounded);
+}
+
+.tpl-carousel-products .tpl-carousel > .product-card:last-child .product-card__media {
+  border-start-end-radius: var(--_product-card-rounded);
+  border-end-end-radius: var(--_product-card-rounded);
+}
+
+/* ---- Block / Location --------------------------------------------------- */
+
+/* 지도는 등록된 좌표에 핀 하나입니다. 높이는 PC 360 · 모바일 240 으로 고정이고 폭만
+   컨테이너를 따릅니다 — PC 는 콘텐츠 영역 최대 852, 모바일은 화면 너비 100%.
+   폭은 .tpl 을 감싸는 쪽이 정합니다.
+
+   ── 지도가 안 뜰 때 ──────────────────────────────────────────────────────
+   자리는 그대로 두고 "지도를 불러오지 못했습니다" 한 줄만 남깁니다.
+
+   장소명·주소·상세 안내를 여기에 다시 적지 않는 것은, 그것들이 이미 바로 아래 Text
+   블록의 머리와 본문에 있고 바깥 지도 링크는 Button 블록에 있기 때문입니다. 같은 주소가
+   두 번 서고 "네이버 지도에서 보기"가 두 개가 되면, 운영은 어느 쪽을 고쳐야 하는지
+   알 수 없습니다. 정책이 말하는 "지도 로딩 실패 시 장소명·주소와 외부 지도 링크는 유지"는
+   그 블록들이 제자리에 있는 것으로 이미 지켜집니다 — Location 이 죽어도 그것들은 죽지
+   않습니다.
+
+   ⚠️ 그래서 Location 은 Text·Button 과 함께 쓰는 것이 기본입니다. 지도만 단독으로
+      놓으면 실패했을 때 장소를 알 길이 없습니다.
+
+   ⚠️ 지도가 뜨든 안 뜨든 자리의 크기는 같습니다. 실패했다고 블록이 접히면 그 아래
+      글들이 위로 올라와 읽던 자리를 잃습니다. */
+.tpl-location {
+  position: relative;
+  block-size: var(--tpl-map-block-size);
+  overflow: clip;
+  background: var(--colors-bg-low);
+}
+
+.tpl-location :is(img, iframe) {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  border: 0;
+  object-fit: cover;
+}
+
+/* 지도를 그릴 칸. 스크립트가 만들어 넣습니다. */
+.tpl-location__map {
+  position: absolute;
+  inset: 0;
+}
+
+.tpl-location.is-mapped .tpl-location__fallback { display: none; }
+
+/* 마크업에 미리 적어 둡니다. 스크립트가 채우게 두면 정작 스크립트가 죽은 날 빈 회색
+   상자만 남아, 지도가 있었는지조차 알 수 없습니다. */
+.tpl-location__fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: var(--tpl-pad-inline);
+  color: var(--colors-fg-lowest);
+  font-size: var(--tpl-font-label-size);
+  font-weight: var(--_font-weight-regular-400);
+  line-height: var(--tpl-font-label-leading);
+  text-align: center;
+}
+
+/* ---- Block / Button ----------------------------------------------------- */
+
+/* 높이와 모양은 커스텀할 수 없습니다. 어드민이 정하는 것은 문구와 연결 동작뿐이고,
+   PC·모바일 모두 컨테이너 너비를 꽉 채웁니다.
+   ⚠️ 디자인 시스템의 .btn 을 쓰지 않았습니다 — .btn 은 32/40/48 세 크기뿐인데
+      이 버튼은 68 입니다. 색은 button/outlined 와 같은 자리를 가리키는 semantic
+      토큰(bg · border · fg)을 씁니다. */
+.tpl-button {
+  padding-inline: var(--tpl-pad-inline);
+  padding-block: var(--spacing-500);
+}
+
+.tpl-button__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-150);
+  inline-size: 100%;
+  padding-inline: var(--spacing-600);
+  /* 높이는 --tpl-action-height 가 정하고, 여기 여백은 문구가 두 줄로 넘어갔을 때
+     테두리에 닿지 않게 하는 바닥값입니다. */
+  min-block-size: var(--tpl-action-height);
+  padding-block: var(--spacing-200);
+  border: 1px solid var(--colors-border);
+  border-radius: var(--_button-rounded);
+  background: var(--colors-bg);
+  color: var(--colors-fg);
+  font-family: inherit;
+  font-size: var(--tpl-font-label-size);
+  font-weight: var(--tpl-font-label-weight);
+  line-height: var(--tpl-font-label-leading);
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* 뒤에 붙는 화살표. 글자(20)보다 조금 크게 두되 버튼을 밀 만큼은 아닙니다. */
+.tpl-button__button .tpl-icon { --tpl-icon: var(--icon-size-m); }  /* 24 */
+
+/* 링크가 없으면 저장도 노출도 되지 않습니다. 그래도 미리보기에서 빈 채로 보일 수
+   있어, 눌리지 않는다는 것이 보이게 둡니다. */
+.tpl-button__button[aria-disabled="true"] {
+  color: var(--colors-fg-disabled);
+  background: var(--colors-bg-disabled);
+  cursor: not-allowed;
+}
+
+/* ---- Block / Coupon ----------------------------------------------------- */
+
+.tpl-coupon {
+  padding-inline: var(--tpl-pad-inline);
+  padding-block: var(--spacing-500);
+}
+
+.tpl-coupon__wrap {
+  display: flex;
+  align-items: stretch;
+  min-block-size: var(--tpl-action-height);
+}
+
+/* 왼쪽 로고 칸과 오른쪽 버튼 칸은 사이를 두지 않고 그냥 맞붙습니다. 이음매에 보이는
+   흰 자국은 따로 그린 것이 아니라 두 사각형의 모서리 곡선이 만나 생긴 것입니다 —
+   표를 뜯는 자리처럼 보이지만 파낸 구멍은 아닙니다. 반원을 직접 그리면 위아래로
+   삐져나와 전혀 다른 물건이 됩니다.
+
+   로고 칸은 정사각입니다(Figma 68×68). 높이가 바뀌면 폭도 따라갑니다. */
+.tpl-coupon__logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  inline-size: var(--tpl-action-height);
+  border-radius: var(--_rounded-m);
+  background: var(--colors-bg-brand);
+  color: var(--colors-fg-contrast);
+}
+
+.tpl-coupon__logo svg {
+  inline-size: var(--icon-size-l);   /* 28 */
+  block-size: var(--icon-size-l);
+  display: block;
+}
+
+.tpl-coupon__button {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-150);
+  flex: 1 0 0;
+  min-inline-size: 0;
+  padding-inline: var(--spacing-600) var(--spacing-400);
+  padding-block: var(--spacing-200);
+  border: 0;
+  border-radius: var(--_rounded-m);
+  background: var(--colors-bg-brand);
+  color: var(--colors-fg-contrast);
+  font-family: inherit;
+  font-size: var(--tpl-font-label-size);
+  font-weight: var(--tpl-font-label-weight);
+  line-height: var(--tpl-font-label-leading);
+  text-align: start;
+  cursor: pointer;
+}
+
+.tpl-coupon__label {
+  flex: 1 0 0;
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 더 이상 받을 수 없는 쿠폰. 두 경우가 같은 모습입니다 — 내가 이미 받았거나(받기 완료),
+   발급 기간이 끝났거나 다 소진되었거나(발급 종료). 어느 쪽인지는 오른쪽 글이 말하므로
+   상태 클래스는 하나면 됩니다.
+
+   색만 죽이고 자리는 그대로 둡니다 — 눌러서 받았다는 것이 같은 자리에서 보여야 합니다.
+
+   ⚠️ Figma 의 CouponSoldout 프레임에는 `opacity: 0.2` 가 걸려 있습니다. 옮기지
+      않기로 확인된 결정입니다 — 그대로 두면 "받기 완료"를 읽을 수 없습니다. 시안의
+      흐림은 프레임을 죽여 둔 것이지 이 상태의 생김새가 아닙니다. 아래 색만으로도
+      이미 받았다는 것은 충분히 읽힙니다. 되돌리지 마세요. */
+.tpl-coupon--closed :is(.tpl-coupon__logo, .tpl-coupon__button) {
+  background: var(--colors-bg-disabled);
+  color: var(--colors-fg-lowest);
+}
+
+/* 로고만은 브랜드색을 지킵니다. 바탕은 함께 죽지만 심볼까지 회색이 되면 누구의
+   쿠폰이었는지가 지워집니다 — 다 쓴 쿠폰도 우리 쿠폰입니다. */
+.tpl-coupon--closed .tpl-coupon__logo { color: var(--colors-fg-brand); }
+
+.tpl-coupon--closed .tpl-coupon__button {
+  /* 오른쪽에 내려받기 아이콘이 없어 좌우 여백이 같습니다 — Figma 24 · 24. */
+  padding-inline: var(--spacing-600);
+  cursor: default;
+}
+
+.tpl-coupon__status {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-150);
+  flex: none;
+  color: var(--colors-fg-low);
+  font-weight: var(--_font-weight-medium-500);
+  white-space: nowrap;
+}
+
+.tpl-coupon__status svg {
+  inline-size: var(--icon-size-m);   /* 24 */
+  block-size: var(--icon-size-m);
+  display: block;
+}
+
+/* ---- Block / Accordion -------------------------------------------------- */
+
+/* 여러 개가 이어 붙어 목록이 됩니다. 칸을 나누는 것은 아래 선 하나입니다. */
+.tpl-accordion {
+  border-block-end: 1px solid var(--colors-border);
+  padding-inline: var(--tpl-pad-inline) var(--tpl-pad-end);
+  padding-block: var(--tpl-pad-top) var(--tpl-pad-top);
+}
+
+/* 열려 있을 때만 아래가 더 넓어집니다 — 답변 끝과 다음 질문 사이가 붙으면 어디까지가
+   답인지 흐려집니다. */
+.tpl-accordion:has(> .tpl-accordion__answer:not([hidden]))  {
+  padding-block-end: var(--tpl-pad-bottom);
+}
+
+.tpl-accordion__question {
+  display: flex;
+  align-items: center;
+  gap: var(--tpl-row-gap);
+  inline-size: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--colors-fg);
+  font-family: inherit;
+  font-size: var(--tpl-font-subtitle-size);
+  font-weight: var(--tpl-font-subtitle-weight);
+  line-height: var(--tpl-font-subtitle-leading);
+  text-align: start;
+  cursor: pointer;
+}
+
+/* 열린 질문은 브랜드색이 됩니다. 답이 길어 화면을 넘어가도 어느 질문의 답인지
+   위로 올려다보면 알 수 있습니다. */
+.tpl-accordion__question[aria-expanded="true"] { color: var(--colors-fg-brand); }
+
+.tpl-accordion__label { flex: 1 0 0; min-inline-size: 0; }
+
+/* 닫혔을 때 +, 열렸을 때 −. 아이콘 두 개를 넣고 하나만 보입니다 — 회전으로 만들면
+   +/− 획 굵기가 방향마다 달라 보입니다. */
+.tpl-accordion__question[aria-expanded="true"] .tpl-accordion__plus,
+.tpl-accordion__question[aria-expanded="false"] .tpl-accordion__minus { display: none; }
+
+.tpl-accordion__answer {
+  padding-block-start: var(--tpl-block-gap);
+  padding-inline-end: var(--tpl-answer-inset);
+  color: var(--colors-fg-low);
+  font-size: var(--tpl-font-text-size);
+  font-weight: var(--tpl-font-text-weight);
+  line-height: var(--tpl-font-text-leading);
+}
+
+/* 답변 문단이 여럿이면 사이를 띄웁니다. */
+.tpl-accordion__answer > * + * { margin-block-start: var(--tpl-para-gap); }
