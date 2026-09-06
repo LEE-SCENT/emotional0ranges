@@ -14,11 +14,11 @@
 <link rel="stylesheet" href="./build/tokens.css?v=49f18cab">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=323be71f">
-<link rel="stylesheet" href="./components/gnb.css?v=fde6d5e9">
+<link rel="stylesheet" href="./components/gnb.css?v=d585826e">
 <link rel="stylesheet" href="./components/segmented-control.css?v=027af639">
 <link rel="stylesheet" href="./components/tooltip.css?v=7ec024df">
 <link rel="stylesheet" href="./components/my-menu.css?v=59a441fb">
-<link rel="stylesheet" href="./components/app-bar.css?v=3fe386f8">
+<link rel="stylesheet" href="./components/app-bar.css?v=1129f720">
 <style>
   body {
     margin: 0;
@@ -71,7 +71,7 @@
       <div class="gnb__actions">
         <!-- 로그인하지 않았을 때만 남습니다. 로그인한 사람에게는 아래 목록이
              누구인지 말하고 있어 my-menu.js 가 이 버튼을 지웁니다. -->
-        <button class="btn btn--ghost btn--medium gnb__login" type="button">
+        <button class="btn btn--blur btn--medium gnb__login" type="button">
           <span class="btn__label">로그인</span>
         </button>
         <button class="btn btn--ghost btn--medium btn--icon-only gnb__notify" aria-label="알림">
@@ -134,10 +134,10 @@
   initSegmentedControls()
   const { initAutoHide } = await import('./components/auto-hide.js?v=ef9c163a')
   initAutoHide()
-  const { initAppBarPress } = await import('./components/app-bar.js?v=24e39885')
+  const { initAppBarPress } = await import('./components/app-bar.js?v=6deb1462')
   initAppBarPress()
-  const { initMyMenus } = await import('./components/my-menu.js?v=b6d6b013')
+  const { initMyMenus } = await import('./components/my-menu.js?v=e79d53a6')
   initMyMenus()
-  const { initMyPage } = await import('./components/my-menu.js?v=b6d6b013')
+  const { initMyPage } = await import('./components/my-menu.js?v=e79d53a6')
   initMyPage()
 </script>

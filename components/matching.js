@@ -16,7 +16,7 @@
  * 같은 자리가 나와야 하고, 뒤로가기로 돌아왔을 때도 보던 탭이어야 합니다.
  */
 
-import { ME } from './my-menu.js?v=b6d6b013'
+import { ME, signIn } from './my-menu.js?v=e79d53a6'
 
 /** 갈 곳이 있는 버튼들. 아직 화면이 없는 것은 href 를 비워 둡니다. */
 const BROWSE = { label: '모임 둘러보기', icon: 'explorerFilled', href: './meetups.html' }
@@ -105,6 +105,34 @@ function empty(tab, me) {
   return box
 }
 
+/**
+ * 로그인하기 전의 이 화면.
+ *
+ * 여기 담기는 것은 전부 내가 신청한 모임이라, 계정 없이는 보여줄 것이 하나도
+ * 없습니다. 탭도 세우지 않습니다 — 셋 다 같은 말("로그인해 주세요")을 하게 되면
+ * 탭은 고를 것이 없는 줄이 됩니다.
+ */
+function locked() {
+  const box = el('div', 'empty-state')
+  const wrap = el('div', 'empty-state__wrap')
+  const mark = el('span', 'empty-state__mark')
+  mark.setAttribute('aria-hidden', 'true')
+  const text = el('div', 'empty-state__text')
+  text.append(
+    el('p', 'empty-state__title', '로그인하고 내 모임을 확인해 보세요'),
+    el('p', 'empty-state__desc', '신청한 모임과 매칭 결과가 여기에 모입니다'),
+  )
+  wrap.append(mark, text)
+
+  const login = el('button', 'btn btn--filled btn--medium')
+  login.type = 'button'
+  login.append(el('span', 'btn__label', '로그인'))
+  login.addEventListener('click', signIn)
+
+  box.append(wrap, login)
+  return box
+}
+
 export function initMatching(root = document.querySelector('[data-matching]')) {
   if (!root || root.dataset.matchingReady) return
   root.dataset.matchingReady = '1'
@@ -112,6 +140,12 @@ export function initMatching(root = document.querySelector('[data-matching]')) {
   const tabsBox = root.querySelector('[data-matching-tabs]')
   const body = root.querySelector('[data-matching-body]')
   if (!tabsBox || !body) return
+
+  if (!ME) {
+    tabsBox.hidden = true
+    body.replaceChildren(locked())
+    return
+  }
 
   const first = new URL(location.href).searchParams.get('tab')
   let current = TABS.some((t) => t.id === first) ? first : TABS[0].id

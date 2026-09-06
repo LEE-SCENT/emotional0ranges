@@ -32,7 +32,7 @@
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
 <link rel="stylesheet" href="./components/segmented-control.css?v=027af639">
 <link rel="stylesheet" href="./components/tooltip.css?v=7ec024df">
-<link rel="stylesheet" href="./components/gnb.css?v=fde6d5e9">
+<link rel="stylesheet" href="./components/gnb.css?v=d585826e">
 <link rel="stylesheet" href="./components/my-menu.css?v=59a441fb">
 <link rel="stylesheet" href="./components/tag.css?v=fef5c195">
 <link rel="stylesheet" href="./components/product-card.css?v=85b7c185">
@@ -47,7 +47,7 @@
 <link rel="stylesheet" href="./components/favorite.css?v=8148f536">
 <link rel="stylesheet" href="./components/toast.css?v=b4c60081">
 <link rel="stylesheet" href="./components/participants.css?v=3d11ed3c">
-<link rel="stylesheet" href="./components/app-bar.css?v=3fe386f8">
+<link rel="stylesheet" href="./components/app-bar.css?v=1129f720">
 <link rel="stylesheet" href="./components/top-bar.css?v=753a02dd">
 <link rel="stylesheet" href="./components/image-viewer.css?v=f525c651">
 <link rel="stylesheet" href="./components/bottom-cta.css?v=4d73a6db">
@@ -106,7 +106,7 @@
       <div class="gnb__actions">
         <!-- 로그인은 폰에서만 나옵니다 — 넓은 화면에서는 메뉴 버튼 아래 내 메뉴가
              그 자리를 대신합니다. -->
-        <button class="btn btn--ghost btn--medium gnb__login" type="button">
+        <button class="btn btn--blur btn--medium gnb__login" type="button">
           <span class="btn__label">로그인</span>
         </button>
         <button class="btn btn--ghost btn--medium btn--icon-only gnb__notify" aria-label="알림">
@@ -743,11 +743,11 @@
   await import('./components/scroll-restore.js?v=f612a7a5')
   const { initStickyGnb } = await import('./components/gnb.js?v=ca09b963')
   initStickyGnb()
-  const { initMyMenus } = await import('./components/my-menu.js?v=b6d6b013')
+  const { initMyMenus } = await import('./components/my-menu.js?v=e79d53a6')
   initMyMenus()
   // 일정·후기를 읽는 스크립트들보다 먼저 돕니다. 그들이 세어둔 뒤에 목록을
   // 갈아끼우면 서로 다른 것을 보게 됩니다.
-  const { initProduct } = await import('./components/product.js?v=c47dbf81')
+  const { initProduct } = await import('./components/product.js?v=397c4b1c')
   initProduct()
   const { initSchedule } = await import('./components/schedule.js?v=a9e9003f')
   initSchedule()
@@ -759,7 +759,7 @@
   initRecentReview()
   const { initConfirms } = await import('./components/confirm.js?v=f516d2db')
   initConfirms()
-  const { initParticipants } = await import('./components/participants.js?v=1a31cb18')
+  const { initParticipants } = await import('./components/participants.js?v=b0687424')
   initParticipants()
   const { initSeatAlert } = await import('./components/seat-alert.js?v=65cf2cdd')
   initSeatAlert()
@@ -768,7 +768,7 @@
   const { initFavorites } = await import('./components/favorite.js?v=d087742c')
   initFavorites()
   // 비슷한 모임 카드도 목록과 같은 데이터에서 지역·일정 수를 받습니다.
-  const { initProductCards } = await import('./components/product-cards.js?v=d873f364')
+  const { initProductCards } = await import('./components/product-cards.js?v=88996a17')
   initProductCards()
   const { initDetailIntro } = await import('./components/detail-intro.js?v=c2d2bd44')
   initDetailIntro()

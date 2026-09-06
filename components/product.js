@@ -17,7 +17,7 @@
  */
 
 import { PRODUCTS, seatsText, startTime } from './products.js?v=a3d5fd4b'
-import { ME } from './my-menu.js?v=b6d6b013'
+import { ME } from './my-menu.js?v=e79d53a6'
 
 export const currentProduct = () => {
   const slug = new URLSearchParams(location.search).get('product')

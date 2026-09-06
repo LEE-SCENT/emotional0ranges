@@ -52,6 +52,8 @@ export const ME = new URLSearchParams(location.search).get('me') === '1' ? DEMO 
  *
  * ⚠️ 인증은 없습니다. 번호도 인증번호도 확인하지 않습니다.
  */
+export function signIn() { setDemo(true) }
+
 function setDemo(on) {
   const url = new URL(location.href)
   if (on) url.searchParams.set('me', '1')
@@ -412,6 +414,13 @@ function keepDemoFlag() {
  */
 function syncNoticeDot() {
   for (const bell of document.querySelectorAll('.gnb__notify')) {
+    /* 로그인하기 전에는 종 자체를 두지 않습니다 — 계정이 없으면 받을 알림도
+       없어서, 눌러도 보여줄 것이 없는 자리입니다. GNB 의 로그인 버튼을 로그인한
+       사람에게서 지우는 것과 같은 이유입니다. */
+    if (!ME) {
+      bell.remove()
+      continue
+    }
     const dot = bell.querySelector('.badge')
     if (ME?.hasNotice && !dot) {
       bell.insertAdjacentHTML(

@@ -17,7 +17,7 @@
  */
 
 import { openMeetups, areaOf, cityOf, groupOf, regionOf, seatTags, tagsOf } from './products.js?v=a3d5fd4b'
-import { ME } from './my-menu.js?v=b6d6b013'
+import { ME } from './my-menu.js?v=e79d53a6'
 import { dateAfter, dateKey, dayText } from './schedule.js?v=a9e9003f'
 
 const won = (n) => `${n.toLocaleString('ko-KR')}원`

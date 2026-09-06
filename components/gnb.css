@@ -145,10 +145,14 @@
    대신합니다 — 로그인 여부도 그 판이 첫 줄에서 말합니다. */
 .gnb__login { display: inline-flex; }
 
-/* small 의 오른쪽에는 알림만 둡니다. 이 폭에서는 화면 아래 앱바가 이동을 맡고,
-   햄버거가 열던 화면도 앱바의 "마이"가 들고 있습니다. 위쪽에는 지금 볼 것만
-   남깁니다 — 스티키로 바뀌어도 같은 버튼이라 손이 가던 자리가 달라지지 않습니다. */
-.gnb__actions .btn--blur { display: none; }
+/* small 의 오른쪽에는 로그인과 알림만 둡니다. 이 폭에서는 화면 아래 앱바가
+   이동을 맡고, 햄버거가 열던 화면도 앱바의 "마이"가 들고 있습니다. 위쪽에는 지금
+   볼 것만 남깁니다.
+
+   가리는 것은 내 메뉴 하나입니다 — 예전에는 `.btn--blur` 로 잡고 있었는데, 그
+   생김새를 쓰는 버튼이 하나 더 생기자(로그인) 함께 사라졌습니다. 무엇처럼
+   생겼는지가 아니라 무엇인지로 가립니다. */
+.gnb__actions .my-menu { display: none; }
 
 /* ---- medium (1025px~) -------------------------------------------------- */
 @media (min-width: 961px) {
@@ -167,7 +171,7 @@
   .gnb__menu { display: flex; }
 
   /* 이 폭부터는 앱바가 없으므로 메뉴 버튼이 돌아오고, 알림은 large 에서만 붙습니다. */
-  .gnb__actions .btn--blur { display: inline-flex; }
+  .gnb__actions .my-menu { display: flex; }
   .gnb__notify { display: none; }
   .gnb__login { display: none; }
 }

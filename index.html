@@ -32,7 +32,7 @@
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
 <link rel="stylesheet" href="./components/segmented-control.css?v=027af639">
 <link rel="stylesheet" href="./components/tooltip.css?v=7ec024df">
-<link rel="stylesheet" href="./components/gnb.css?v=fde6d5e9">
+<link rel="stylesheet" href="./components/gnb.css?v=d585826e">
 <link rel="stylesheet" href="./components/my-menu.css?v=59a441fb">
 <link rel="stylesheet" href="./components/kv.css?v=9316ae22">
 <link rel="stylesheet" href="./components/tag.css?v=fef5c195">
@@ -41,7 +41,7 @@
 <link rel="stylesheet" href="./components/footer.css?v=090dd8fc">
 <link rel="stylesheet" href="./components/notice.css?v=071f16b5">
 <link rel="stylesheet" href="./components/mobile-switch.css?v=1daf555e">
-<link rel="stylesheet" href="./components/app-bar.css?v=3fe386f8">
+<link rel="stylesheet" href="./components/app-bar.css?v=1129f720">
 <style>
   /* 본문 기본 서체. 컴포넌트마다 제 서체를 정하고 있지만, 그 밖의 글자
      (결과 수·안내 문구 같은 것)가 브라우저 기본 서체로 떨어지지 않도록
@@ -92,7 +92,7 @@
       <div class="gnb__actions">
         <!-- 로그인은 폰에서만 나옵니다 — 넓은 화면에서는 메뉴 버튼 아래 내 메뉴가
              그 자리를 대신합니다. -->
-        <button class="btn btn--ghost btn--medium gnb__login" type="button">
+        <button class="btn btn--blur btn--medium gnb__login" type="button">
           <span class="btn__label">로그인</span>
         </button>
         <button class="btn btn--ghost btn--medium btn--icon-only gnb__notify" aria-label="알림">
@@ -451,15 +451,15 @@
   initKvCarousels()
   const { initStickyGnb } = await import('./components/gnb.js?v=ca09b963')
   initStickyGnb()
-  const { initMyMenus } = await import('./components/my-menu.js?v=b6d6b013')
+  const { initMyMenus } = await import('./components/my-menu.js?v=e79d53a6')
   initMyMenus()
   const { initAutoHide } = await import('./components/auto-hide.js?v=ef9c163a')
   initAutoHide()
-  const { initAppBarPress } = await import('./components/app-bar.js?v=24e39885')
+  const { initAppBarPress } = await import('./components/app-bar.js?v=6deb1462')
   initAppBarPress()
   // 카드의 날짜·잔여석·가격은 상세와 같은 데이터에서 나옵니다. 적어두면 어긋납니다.
   // 뒤로 돌아온 화면은 맨 위에서 시작합니다.
   await import('./components/scroll-restore.js?v=f612a7a5')
-  const { initProductCards } = await import('./components/product-cards.js?v=d873f364')
+  const { initProductCards } = await import('./components/product-cards.js?v=88996a17')
   initProductCards()
 </script>
