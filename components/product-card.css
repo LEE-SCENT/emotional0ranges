@@ -361,17 +361,34 @@
 
 
 
-/* ---- promotion · 잠금 (블랙 인증 전) --------------------------------------
+/* ---- 잠금 (로그인 전) ------------------------------------------------------
    사진은 그대로 두고 가격 자리에만 안내를 넣습니다.
 
-     <article class="product-card product-card--promotion is-locked">
+     <article class="product-card is-locked">
        …
-       <p class="product-card__price">블랙 인증 후 공개</p>
+       <p class="product-card__price">
+         <svg class="product-card__lock">…</svg>로그인 후 가격 확인
+       </p>
 
-   ⚠️ 이 상태는 Figma 에 없어 글자색을 코드에서 정했습니다. */
+   값이 아니라 안내라 값의 무게(20 semibold)를 벗습니다 — 14 regular 에 한 단
+   물러난 색입니다(Figma). 같은 자리에 그대로 두면 옆 카드의 실제 값과 같은
+   크기로 서서, 읽는 눈이 그것도 값으로 셉니다. */
 
 .product-card.is-locked .product-card__price {
+  gap: var(--spacing-100);
   color: var(--_product-card-promotion-locked-fg);
+  font-size: var(--typography-body-m-regular-font-size);
+  font-weight: var(--typography-body-m-regular-font-weight);
+  line-height: var(--typography-body-m-regular-line-height);
+  letter-spacing: var(--typography-body-m-regular-letter-spacing);
+}
+
+/* 12(icon/2xs) 입니다 — 14 글자 옆에 서는 자물쇠라 가장 작은 단을 씁니다. */
+.product-card__lock {
+  flex: none;
+  inline-size: var(--icon-size-2xs);
+  block-size: var(--icon-size-2xs);
+  color: currentColor;
 }
 
 /* ---- category ----------------------------------------------------------

@@ -26,7 +26,7 @@
  * 문구, 가격. 이 파일은 그것을 옮긴 것이므로, 규칙이 바뀌면 그 문서가 먼저입니다.
  */
 
-import { PRODUCTS, areaOf, isOpen, seatTags } from './products.js?v=49fbe067'
+import { PRODUCTS, areaOf, isOpen, seatTags } from './products.js?v=a3d5fd4b'
 import { dateAfter, dayText } from './schedule.js?v=a9e9003f'
 
 const won = (n) => `${n.toLocaleString('ko-KR')}원`
@@ -108,8 +108,13 @@ function fill(card, product) {
   // 값이 여럿이면 가장 싼 것을 앞세우고 "~"로 그 위가 있다는 것을 알립니다.
   // 기존가는 적지 않습니다 — 목록에서 두 값을 나란히 두면 비교로 읽힙니다.
   const price = card.querySelector('.product-card__price')
-  if (price && product.locked) price.textContent = product.locked
-  else if (price) {
+  /* 잠긴 상품은 값 대신 자물쇠와 안내가 섭니다. 마크업에도 같은 것이 적혀 있지만
+     여기서 다시 그리는 것은, 값이 있는 카드에서 잠긴 카드로 같은 자리가 바뀔 수
+     있기 때문입니다. */
+  if (price && product.locked) {
+    price.innerHTML = '<svg class="product-card__lock" aria-hidden="true"><use href="#icon-lockFilled"></use></svg>'
+    price.append(product.locked)
+  } else if (price) {
     const cheapest = schedule.reduce(
       (low, s) => Math.min(low, s.price - (s.off ?? 0)),
       Infinity,

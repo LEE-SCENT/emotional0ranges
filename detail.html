@@ -35,7 +35,7 @@
 <link rel="stylesheet" href="./components/gnb.css?v=fde6d5e9">
 <link rel="stylesheet" href="./components/my-menu.css?v=862836f8">
 <link rel="stylesheet" href="./components/tag.css?v=fef5c195">
-<link rel="stylesheet" href="./components/product-card.css?v=69393a13">
+<link rel="stylesheet" href="./components/product-card.css?v=85b7c185">
 <link rel="stylesheet" href="./components/section-title.css?v=4a8451fd">
 <link rel="stylesheet" href="./components/footer.css?v=090dd8fc">
 <link rel="stylesheet" href="./components/tabs.css?v=a962487a">
@@ -746,7 +746,7 @@
   initMyMenus()
   // 일정·후기를 읽는 스크립트들보다 먼저 돕니다. 그들이 세어둔 뒤에 목록을
   // 갈아끼우면 서로 다른 것을 보게 됩니다.
-  const { initProduct } = await import('./components/product.js?v=604e8878')
+  const { initProduct } = await import('./components/product.js?v=c5a97163')
   initProduct()
   const { initSchedule } = await import('./components/schedule.js?v=a9e9003f')
   initSchedule()
@@ -758,7 +758,7 @@
   initRecentReview()
   const { initConfirms } = await import('./components/confirm.js?v=f516d2db')
   initConfirms()
-  const { initParticipants } = await import('./components/participants.js?v=29b60ec8')
+  const { initParticipants } = await import('./components/participants.js?v=8b84b594')
   initParticipants()
   const { initSeatAlert } = await import('./components/seat-alert.js?v=65cf2cdd')
   initSeatAlert()
@@ -767,7 +767,7 @@
   const { initFavorites } = await import('./components/favorite.js?v=d087742c')
   initFavorites()
   // 비슷한 모임 카드도 목록과 같은 데이터에서 지역·일정 수를 받습니다.
-  const { initProductCards } = await import('./components/product-cards.js?v=e89bbb8a')
+  const { initProductCards } = await import('./components/product-cards.js?v=0e7bc1a2')
   initProductCards()
   const { initDetailIntro } = await import('./components/detail-intro.js?v=c2d2bd44')
   initDetailIntro()

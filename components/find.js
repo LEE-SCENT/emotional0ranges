@@ -16,7 +16,7 @@
  * 목록과 같은 규칙이고, 값이 대표 일정이 아니라 그 회차에서 나오는 것만 다릅니다.
  */
 
-import { openMeetups, areaOf, cityOf, groupOf, regionOf, seatTags, tagsOf } from './products.js?v=49fbe067'
+import { openMeetups, areaOf, cityOf, groupOf, regionOf, seatTags, tagsOf } from './products.js?v=a3d5fd4b'
 import { dateAfter, dateKey, dayText } from './schedule.js?v=a9e9003f'
 
 const won = (n) => `${n.toLocaleString('ko-KR')}원`
@@ -114,7 +114,7 @@ export function countMatches(cond) {
  * 급한 차례의 잔여석입니다. 다른 것은 하나뿐입니다: 여기서는 값이 대표 일정이
  * 아니라 이 회차에서 나옵니다.
  *
- * 전용 상품이어도 태그를 붙이지 않습니다. 값을 가린 자리("블랙 인증 후 공개")가
+ * 전용 상품이어도 태그를 붙이지 않습니다. 값을 가린 자리("로그인 후 가격 확인")가
  * 이미 그 사실을 말하고 있어, 태그까지 붙으면 한 장에서 같은 말을 두 번 합니다.
  *
  * 가격에 `~` 를 붙이지 않는 것도 그래서입니다. 상품 카드는 여러 일정의 최저가를
@@ -130,7 +130,7 @@ function card({ slug, product, s, photo }) {
   }
 
   const price = product.locked
-    ? product.locked
+    ? `<svg class="product-card__lock" aria-hidden="true"><use href="#icon-lockFilled"></use></svg>${product.locked}`
     : s.off
       ? `<b>할인가</b> ${won(net(s))}`
       : won(s.price)

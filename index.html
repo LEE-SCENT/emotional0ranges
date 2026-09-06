@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="./components/my-menu.css?v=862836f8">
 <link rel="stylesheet" href="./components/kv.css?v=c97007b8">
 <link rel="stylesheet" href="./components/tag.css?v=fef5c195">
-<link rel="stylesheet" href="./components/product-card.css?v=69393a13">
+<link rel="stylesheet" href="./components/product-card.css?v=85b7c185">
 <link rel="stylesheet" href="./components/section-title.css?v=4a8451fd">
 <link rel="stylesheet" href="./components/footer.css?v=090dd8fc">
 <link rel="stylesheet" href="./components/notice.css?v=071f16b5">
@@ -363,7 +363,7 @@
       <div class="product-card__info">
         <h3 class="product-card__title"><a href="./detail.html?product=black">블랙 라운지 소개팅</a></h3>
         <p class="product-card__desc">서울 강남</p>
-        <p class="product-card__price">블랙 인증 후 공개</p>
+        <p class="product-card__price"><svg class="product-card__lock" aria-hidden="true"><use href="#icon-lockFilled"></use></svg>로그인 후 가격 확인</p>
       </div>
     </article>
   </section>
@@ -457,6 +457,6 @@
   // 카드의 날짜·잔여석·가격은 상세와 같은 데이터에서 나옵니다. 적어두면 어긋납니다.
   // 뒤로 돌아온 화면은 맨 위에서 시작합니다.
   await import('./components/scroll-restore.js?v=f612a7a5')
-  const { initProductCards } = await import('./components/product-cards.js?v=e89bbb8a')
+  const { initProductCards } = await import('./components/product-cards.js?v=0e7bc1a2')
   initProductCards()
 </script>
