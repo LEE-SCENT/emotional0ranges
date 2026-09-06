@@ -60,10 +60,53 @@
   transition: scale var(--_duration-fast) var(--_easing-standard);
 }
 
+/* ---- 아래에서 차오르는 오렌지 -------------------------------------------
+   지금 보고 있는 탭의 아이콘이 아래에서부터 채워집니다. 선 아이콘을 바닥에 깔고
+   그 위에 오렌지 면을 아이콘 모양으로 잘라 덮은 뒤(mask), 그 면을 아래에서 위로
+   걷어 올립니다 — 두 겹은 app-bar.js 가 만듭니다.
+
+   자바스크립트가 오지 않으면 이 겹이 없어, 켜진 탭은 마크업에 적힌 채운 아이콘이
+   그대로 오렌지로 섭니다. 도착한 모습은 같고 오르는 동안만 없습니다.
+
+   ⚠️ Figma 에 이 모션이 없어 시간과 곡선을 코드에서 정했습니다. 차오르는 것은
+      누름(120)보다 한 박자 길어야 눈이 따라옵니다 — base(240) 에 감속 곡선입니다. */
+.app-bar__glyph {
+  position: relative;
+  display: block;
+  flex: none;
+  inline-size: var(--_app-bar-icon-size);
+  block-size: var(--_app-bar-icon-size);
+  transition: scale var(--_duration-fast) var(--_easing-standard);
+}
+
+.app-bar__glyph .app-bar__icon {
+  position: absolute;
+  inset: 0;
+  transition: none;
+}
+
+.app-bar__fill {
+  position: absolute;
+  inset: 0;
+  background: var(--_app-bar-fg-active);
+  mask: var(--app-bar-fill) center / contain no-repeat;
+  /* 아래에 잠겨 있다가 위로 걷힙니다. */
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path var(--_duration-base) var(--_easing-decelerate);
+}
+
+.app-bar__item.is-active .app-bar__fill.is-on { clip-path: inset(0 0 0 0); }
+
+/* 채운 면이 덮으므로 그 아래 선은 회색 그대로입니다 — 오렌지 선 위에 오렌지 면을
+   얹으면 차오르는 것이 보이지 않습니다. 이름만 오렌지로 남습니다. */
+.app-bar__item.is-active .app-bar__glyph .app-bar__icon { color: var(--_app-bar-fg); }
+
 /* :active 는 마우스 쪽이고, is-pressing 은 손가락 쪽입니다(app-bar.js) — 사파리가
    터치에서 :active 를 잘 주지 않아 두 자리에 같은 값을 적습니다. */
 .app-bar__item:active .app-bar__icon,
-.app-bar__item.is-pressing .app-bar__icon { scale: 0.85; }
+.app-bar__item.is-pressing .app-bar__icon,
+.app-bar__item:active .app-bar__glyph,
+.app-bar__item.is-pressing .app-bar__glyph { scale: 0.85; }
 
 .app-bar__label {
   font-size: var(--typography-body-xs-medium-font-size);
@@ -92,7 +135,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .app-bar__icon { transition: none; }
+  .app-bar__icon,
+  .app-bar__glyph,
+  .app-bar__fill { transition: none; }
   .app-bar__item:active .app-bar__icon,
-  .app-bar__item.is-pressing .app-bar__icon { scale: 1; }
+  .app-bar__item.is-pressing .app-bar__icon,
+  .app-bar__item:active .app-bar__glyph,
+  .app-bar__item.is-pressing .app-bar__glyph { scale: 1; }
 }
