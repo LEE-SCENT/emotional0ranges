@@ -170,7 +170,7 @@ function profile(page) {
  */
 /** 계정 정보를 받는 칸 하나. 라벨은 칸 위에 섭니다 — 안에 넣으면 쓰기 시작하는
     순간 무엇을 쓰는 칸이었는지가 사라집니다. */
-function field({ id, label, type, autocomplete, inputmode }) {
+function field({ id, label, type, autocomplete, inputmode, maxLength, placeholder }) {
   const box = el('div', 'my-login__field')
   const tag = el('label', 'my-login__label', label)
   tag.htmlFor = id
@@ -182,9 +182,84 @@ function field({ id, label, type, autocomplete, inputmode }) {
   input.name = id.replace('login-', '')
   input.autocomplete = autocomplete
   if (inputmode) input.inputMode = inputmode
+  if (maxLength) input.maxLength = maxLength
+  if (placeholder) input.placeholder = placeholder
 
   box.append(tag, input)
   return box
+}
+
+/**
+ * 휴대폰 번호와 인증번호를 받는 폼.
+ *
+ * 인증번호 칸은 번호를 보내기 전에는 나오지 않습니다 — 아직 받을 수 없는 것을
+ * 받는 칸이 비어 있으면, 무엇부터 해야 하는지가 두 칸 사이에서 흐려집니다.
+ * 보내고 나서야 나오고, 그때 초점도 그리로 갑니다.
+ *
+ * ⚠️ 보낼 곳이 없습니다. `인증번호 받기` 는 칸을 열 뿐이고 `로그인` 은 아무 데도
+ *    가지 않습니다. 다시 받기까지의 시간(보통 3분)도 세지 않습니다 — 세는 시늉만
+ *    하는 숫자보다 없는 편이 낫습니다.
+ */
+function loginForm(login, signup) {
+  const form = el('form', 'my-login')
+  form.noValidate = true
+
+  const phone = field({
+    id: 'login-phone',
+    label: '휴대폰 번호',
+    type: 'tel',
+    autocomplete: 'tel',
+    inputmode: 'numeric',
+    maxLength: 13,
+    placeholder: '010-0000-0000',
+  })
+  const phoneInput = phone.querySelector('input')
+
+  /* 번호 칸과 한 줄에 섭니다. 아래에 두면 폼이 한 칸 더 길어지는데, 이 버튼은
+     번호에 딸린 것이라 그 옆이 제 자리입니다. */
+  const send = el('button', 'btn btn--outlined btn--medium my-login__send')
+  send.type = 'button'
+  send.disabled = true
+  send.append(el('span', 'btn__label', '인증번호 받기'))
+
+  const row = el('div', 'my-login__row')
+  row.append(phone, send)
+
+  const code = field({
+    id: 'login-code',
+    label: '인증번호',
+    type: 'text',
+    autocomplete: 'one-time-code',
+    inputmode: 'numeric',
+    maxLength: 6,
+  })
+  code.hidden = true
+  const codeInput = code.querySelector('input')
+
+  /* 010-1234-5678 로 끊어 적습니다 — 열한 자리가 한 덩어리로 붙어 있으면 다시
+     읽어 세어야 하고, 고칠 자리를 찾기도 어렵습니다. */
+  phoneInput.addEventListener('input', () => {
+    const n = phoneInput.value.replace(/\D/g, '').slice(0, 11)
+    phoneInput.value = n.length > 7 ? `${n.slice(0, 3)}-${n.slice(3, 7)}-${n.slice(7)}`
+      : n.length > 3 ? `${n.slice(0, 3)}-${n.slice(3)}` : n
+    send.disabled = n.length < 10
+  })
+
+  codeInput.addEventListener('input', () => {
+    codeInput.value = codeInput.value.replace(/\D/g, '')
+    login.disabled = !codeInput.value
+  })
+
+  send.addEventListener('click', () => {
+    code.hidden = false
+    send.querySelector('.btn__label').textContent = '다시 받기'
+    codeInput.focus()
+  })
+
+  login.disabled = true
+  form.addEventListener('submit', (e) => e.preventDefault())
+  form.append(row, code, login, signup)
+  return form
 }
 
 function signedOut(page) {
@@ -217,21 +292,10 @@ function signedOut(page) {
      아니라, 260 이 아닌 한 화면을 통째로 쓰고 있어 여기서 바로 받습니다.
      넓은 화면의 판은 버튼 하나로 남습니다.
 
-     진짜 <form> 인 것은 그래야 마지막 칸에서 엔터를 쳐도 눌리고, 비밀번호
-     관리자가 이 한 쌍을 아이디·비밀번호로 알아보기 때문입니다.
-
-     ⚠️ 보낼 곳이 아직 없습니다. 누르면 아무 일도 일어나지 않습니다. */
+     진짜 <form> 인 것은 그래야 인증번호 칸에서 엔터를 쳐도 눌리고, 기기가 문자로
+     온 인증번호를 그 칸에 채워주기 때문입니다(autocomplete: one-time-code). */
   if (page) {
-    const form = el('form', 'my-login')
-    form.noValidate = true
-    form.addEventListener('submit', (e) => e.preventDefault())
-    form.append(
-      field({ id: 'login-email', label: '이메일', type: 'email', autocomplete: 'username', inputmode: 'email' }),
-      field({ id: 'login-password', label: '비밀번호', type: 'password', autocomplete: 'current-password' }),
-      login,
-      signup,
-    )
-    box.append(intro, form)
+    box.append(intro, loginForm(login, signup))
     return box
   }
 

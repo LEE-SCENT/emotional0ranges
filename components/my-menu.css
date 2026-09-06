@@ -167,6 +167,38 @@
   padding-inline: var(--spacing-200);
 }
 
+/* display:flex 가 [hidden] 을 이기므로 되돌립니다 — 인증번호 칸은 번호를 보내기
+   전에는 나오지 않습니다(my-menu.js). 화면마다 container.css 를 싣는 것은
+   아니어서, 전역 규칙에 기대지 않고 여기서 못 박습니다. */
+.my-login__field[hidden] { display: none; }
+
+/* 번호 칸과 그 옆의 "인증번호 받기". 아래를 맞추는 것은 라벨이 칸 위에 서 있어
+   위를 맞추면 버튼이 라벨 높이만큼 떠 보이기 때문입니다. */
+.my-login__row {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--spacing-200);
+}
+
+.my-login__row .my-login__field {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  padding-inline-start: var(--spacing-200);
+  padding-inline-end: 0;
+}
+
+/* 칸(48)보다 낮은 버튼이라 그만큼 내려 세웁니다 — 아래를 맞추면 글자 줄도
+   함께 맞습니다. */
+.my-login__send {
+  flex: none;
+  block-size: 48px;
+  margin-inline-end: var(--spacing-200);
+}
+
+/* 번호는 자릿수를 세며 읽는 것이라 숫자 폭이 고르게 섭니다. */
+.my-login__input[type='tel'],
+#login-code { font-variant-numeric: tabular-nums; }
+
 .my-login__label {
   color: var(--colors-fg-low);
   font-size: var(--typography-body-s-regular-font-size);
