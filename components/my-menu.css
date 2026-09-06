@@ -502,3 +502,28 @@
   padding-block: var(--spacing-200);
   font-family: var(--_font-family-base);
 }
+
+/* ---- 화면의 좌우는 16 입니다 ---------------------------------------------
+   판에서는 24 입니다 — 260 짜리 판이 GNB 아래 떠 있어 그 정도는 물러나야 판의
+   가장자리에 글자가 붙지 않습니다. 화면에는 가장자리가 없고 다른 화면들이
+   모두 16 에서 시작하므로(container.css), 여기만 24 로 들어가 있으면 탭을
+   옮길 때마다 글의 왼쪽 끝이 흔들립니다.
+
+   프로필 블록은 이미 바깥 16 이라 안쪽에서 8 을 더 주던 것만 거둡니다.
+*/
+
+.my-page .my-menu__item {
+  padding-inline: var(--spacing-400)
+    calc(var(--spacing-400) + var(--icon-size-xs) + var(--spacing-200));
+}
+
+.my-page .my-menu__arrow { inset-inline-end: var(--spacing-400); }
+
+.my-page .my-menu__who,
+.my-page .my-menu__intro,
+.my-page .my-menu__signup,
+.my-page .my-login__field { padding-inline: 0; }
+
+.my-page .my-login__row .my-login__field { padding-inline: 0; }
+.my-page .my-login__send { margin-inline-end: 0; }
+.my-page .my-login .my-menu__login { margin-inline: 0; }
