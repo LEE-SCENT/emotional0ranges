@@ -720,7 +720,7 @@ export const components = {
     }
   },
   "topBar": {
-    "height": "72px",
+    "height": "56px",
     "paddingBlock": "4px",
     "paddingInline": "4px",
     "gap": "4px",

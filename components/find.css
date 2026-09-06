@@ -115,17 +115,13 @@
        줄과 그 결과가 같은 간격으로 붙어 있으면 한 덩어리로 읽힙니다.
        스티키에서는 위만 12 로 좁힙니다 — 붙어 있는 동안에는 더 바짝 붙습니다. */
     padding-block: var(--spacing-800) var(--spacing-1200);
-    transition:
-      padding-block-start var(--_duration-base) var(--_easing-standard),
-      /* 물러나고 돌아오는 것은 한 단 느리게 갑니다 — 스크롤에 붙어 움직이는
-         것이라, 빠르면 화면이 튀는 것처럼 보입니다. */
-      translate var(--_duration-slow) var(--_easing-standard);
+    transition: padding-block-start var(--_duration-base) var(--_easing-standard);
   }
 
-  /* 아래로 읽어 내려가는 동안에는 물러납니다. 제 높이만큼 올리면 바가 GNB(불투명,
-     z-index 20) 뒤로 들어가 가려집니다 — 화면 밖으로 밀어내지 않아도 사라진 것과
-     같고, 돌아올 거리도 그만큼 짧습니다. */
-  .find-head.is-hidden { translate: 0 -100%; }
+  /* 넓은 화면에서는 스크롤 방향과 상관없이 늘 서 있습니다. 여기 바는 목록을 좁히는
+     유일한 자리이고, 화면이 넓어 그 한 줄이 카드를 밀어내지도 않습니다 — 물러났다
+     돌아오면 조건을 고치려던 손이 매번 그것을 기다립니다. 줄어드는 것(패딩 32→12)만
+     남습니다. */
 
   .find-head.is-sticky {
     padding-block-start: var(--spacing-300);
@@ -476,8 +472,9 @@
    먹히고, 화면을 읽어주는 쪽은 "정렬, 날짜 빠른 순, 목록 상자"라고 읽습니다.
    여기서 하는 일은 기본 화살표를 지우고 우리 화살표를 얹는 것뿐입니다.
 
-   양옆에 아이콘이 하나씩 섭니다 — 왼쪽은 무엇을 하는 자리인지(정렬), 오른쪽은
-   눌러서 고르는 자리인지(화살표)를 말합니다.
+   왼쪽에 정렬 아이콘 하나가 섭니다(Figma). 오른쪽 화살표는 두지 않습니다 —
+   기기의 고르개가 열리는 자리라 화살표가 없어도 눌러 고르는 것이고, 결과 수
+   한 줄에 아이콘이 둘이면 그 줄이 이 버튼 하나로 채워집니다.
 */
 
 .find__sort {
@@ -490,15 +487,15 @@
    나오지 않습니다(find.js). */
 .find__sort[hidden] { display: none; }
 
-/* 생김새는 Button 의 ghost/small 입니다 — 8/12 패딩, 12px body-s-medium, 알약
+/* 생김새는 Button 의 ghost/medium 입니다 — 10/16 패딩, 14px body-m-medium, 알약
    모서리. 클래스를 얹지 못하는 것은 <select> 라서입니다. */
 .find__sort select {
   appearance: none;
   margin: 0;
-  /* 양옆을 아이콘 폭과 그 사이 간격(button.css 의 gap)만큼 더 비웁니다 —
-     아이콘이 글자 위로 겹치지 않게. */
-  padding: var(--spacing-200)
-    calc(var(--spacing-300) + var(--icon-size-xs) + var(--spacing-100));
+  /* 왼쪽만 아이콘 폭과 그 사이 간격(button.css 의 gap)만큼 더 비웁니다 —
+     아이콘이 글자 위로 겹치지 않게. 오른쪽에는 아이콘이 없습니다. */
+  padding: var(--spacing-250) var(--spacing-400) var(--spacing-250)
+    calc(var(--spacing-400) + var(--icon-size-s) + var(--spacing-100));
   border: 0;
   border-radius: var(--_rounded-full);
   /* 브라우저가 그리는 기본 테를 끕니다. 아래에서 키보드로 온 초점에만 다시
@@ -507,10 +504,10 @@
   background: none;
   color: var(--_button-ghost-fg);
   font-family: var(--_font-family-base);
-  font-size: var(--typography-body-s-medium-font-size);
-  font-weight: var(--typography-body-s-medium-font-weight);
-  line-height: var(--typography-body-s-medium-line-height);
-  letter-spacing: var(--typography-body-s-medium-letter-spacing);
+  font-size: var(--typography-body-m-medium-font-size);
+  font-weight: var(--typography-body-m-medium-font-weight);
+  line-height: var(--typography-body-m-medium-line-height);
+  letter-spacing: var(--typography-body-m-medium-letter-spacing);
   cursor: pointer;
 }
 
@@ -522,18 +519,18 @@
   outline-offset: 2px;
 }
 
-.find__sort svg {
+/* medium 이라 20 입니다(--icon-size-s) — 레이블이 있는 버튼의 아이콘은 한 단
+   작습니다(empty-state.css 에 같은 이야기를 적어 두었습니다). */
+.find__sort-lead {
   position: absolute;
-  inline-size: var(--icon-size-xs);
-  block-size: var(--icon-size-xs);
+  inset-inline-start: var(--spacing-400);
+  inline-size: var(--icon-size-s);
+  block-size: var(--icon-size-s);
   /* 글자와 같은 색입니다 — 하나의 버튼으로 읽혀야 합니다. */
   color: var(--_button-ghost-fg);
   /* 아이콘을 눌러도 고르개가 열려야 합니다. */
   pointer-events: none;
 }
-
-.find__sort-lead { inset-inline-start: var(--spacing-300); }
-.find__sort-caret { inset-inline-end: var(--spacing-300); }
 
 /* ---- 격자 -------------------------------------------------------------
    Figma 의 BreakPoint 시트를 그대로 옮겼습니다.

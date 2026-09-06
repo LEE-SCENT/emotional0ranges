@@ -373,8 +373,8 @@
   --_tooltip-rounded: var(--_rounded-m);
   --_tooltip-arrow-width: 13px;
   --_tooltip-arrow-height: 6px;
-  --_top-bar-height: 72px;
-  --_top-bar-padding-block: var(--spacing-400);
+  --_top-bar-height: 56px;
+  --_top-bar-padding-block: var(--spacing-200);
   --_top-bar-padding-inline: var(--spacing-100);
   --_top-bar-gap: var(--spacing-150);
   --_top-bar-label-fg: var(--colors-fg-low);

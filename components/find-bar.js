@@ -1092,33 +1092,20 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
      반응하면, 손을 떼는 순간의 흔들림이나 한 칸 되짚어 보는 정도에도 화면 위가
      흔들립니다. 방향이 바뀌면 쌓아둔 것은 버립니다.
 
-       넓은 화면  아래로 내려가는 동안 바는 남아 있고, 위로 되돌아 올릴 때 물러납니다 —
-                  되돌아 올린다는 것은 이미 지나온 목록을 다시 본다는 뜻이라, 그동안은
-                  목록이 한 줄이라도 더 보이는 편이 낫습니다.
+       넓은 화면  아무것도 하지 않습니다 — 바는 스크롤 방향과 상관없이 늘 서 있습니다.
        폰         아래로 내려가면 퀵필터가 접히고 필터바만 남습니다. 위로 올리면
                   퀵필터가 다시 붙습니다 — 다른 유형을 보려는 뜻일 때가 많습니다.
                   결과 수와 소팅은 따라오지 않습니다(find.css).
 
      맨 위 가까이(TOP_ZONE)에서는 무조건 다 보입니다. */
 
-  const HIDE_DISTANCE = 64
-  const SHOW_DISTANCE = 16
   /** 폰에서 방향이 바뀌었다고 볼 거리. 정책이 12~16 을 이릅니다. */
   const TYPES_DISTANCE = 14
   const TOP_ZONE = 80
   let lastY = Math.max(0, window.scrollY)
   let moved = 0
-  let hidden = false
   let collapsed = false
   let queued = false
-
-  function setHidden(next) {
-    if (next === hidden) return
-    hidden = next
-    head.classList.toggle('is-hidden', next)
-    // 물러나는 동안 열려 있던 팝오버만 허공에 떠 있지 않도록 함께 닫습니다.
-    if (next && openId) closePanel({ restore: false })
-  }
 
   function setCollapsed(next) {
     if (next === collapsed) return
@@ -1142,16 +1129,12 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
     // 맨 위 가까이에서는 무조건 다 보입니다.
     if (y <= TOP_ZONE) {
       moved = 0
-      setHidden(false)
       setCollapsed(false)
       return
     }
 
     if (dy < 0 !== moved < 0) moved = 0
     moved += dy
-
-    if (moved <= -HIDE_DISTANCE) setHidden(true)
-    else if (moved >= SHOW_DISTANCE) setHidden(false)
 
     if (moved >= TYPES_DISTANCE) {
       setCollapsed(true)
