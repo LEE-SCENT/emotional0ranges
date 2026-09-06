@@ -26,7 +26,7 @@
 <link rel="stylesheet" href="./components/product-card.css?v=69393a13">
 <link rel="stylesheet" href="./components/chip.css?v=c4217661">
 <link rel="stylesheet" href="./components/find-bar.css?v=3d484fa5">
-<link rel="stylesheet" href="./components/find.css?v=9843e63b">
+<link rel="stylesheet" href="./components/find.css?v=a5123a04">
 <link rel="stylesheet" href="./components/footer.css?v=090dd8fc">
 <link rel="stylesheet" href="./components/app-bar.css?v=7fbb6489">
 <style>
@@ -301,7 +301,7 @@
     <!-- 5) 결과 수와 정렬. 결과 수는 목록 위에서 한 번만 적습니다. -->
     <div class="find-sorting">
       <p class="find-sorting__count">모임 <b data-find-count>0</b>개</p>
-      <div class="find__sort">
+      <div class="find__sort" data-find-sort-box>
         <label class="sr-only" for="find-sort">정렬</label>
         <!-- "추천순"을 두지 않습니다. 무엇을 근거로 추천한 차례인지 이 화면에는 없고,
              이름만 있으면 어떤 순서로 서 있는지 알 수 없습니다. -->
@@ -319,13 +319,16 @@
          남습니다. -->
     <div class="find__grid" data-find-grid></div>
 
-    <p class="find__empty" data-find-empty hidden>
-      <b>고른 조건에 맞는 모임이 없어요</b>
-      날짜를 넓히거나 지역을 하나 더 골라보세요
-      <button class="btn btn--outlined btn--medium" type="button" data-find-clear-all>
-        <span class="btn__label">조건 모두 지우기</span>
+    <div class="find__empty" data-find-empty hidden>
+      <div class="find__empty-text">
+        <p class="find__empty-title">조건에 맞는 모임이 없어요</p>
+        <p class="find__empty-desc">필터를 변경하거나 초기화해 보세요</p>
+      </div>
+      <button class="btn btn--outlined btn--small" type="button" data-find-clear-all>
+        <svg class="btn__icon" aria-hidden="true"><use href="#icon-refresh"></use></svg>
+        <span class="btn__label">필터 초기화</span>
       </button>
-    </p>
+    </div>
   </div>
 
   <!-- 폰의 통합 필터 시트. 위의 네 섹션이 열릴 때 이 안으로 옮겨 옵니다.
@@ -433,9 +436,9 @@
   initAutoHide()
   // 목록이 먼저 귀를 엽니다. 조건 바는 붙자마자 지금 조건을 한 번 알리는데,
   // 그때 듣는 쪽이 없으면 첫 목록이 그려지지 않습니다.
-  const { initFind } = await import('./components/find.js?v=64f50320')
+  const { initFind } = await import('./components/find.js?v=12ac30df')
   initFind()
-  const { initFindBar } = await import('./components/find-bar.js?v=a8f349ed')
+  const { initFindBar } = await import('./components/find-bar.js?v=3e437634')
   initFindBar()
   // 옆으로 흐르는 줄들(모임 유형·하위 필터·담은 날짜) — 양 끝을 옅게 하고,
   // 고른 알약을 줄 가운데로 데려옵니다.

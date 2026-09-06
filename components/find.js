@@ -158,6 +158,7 @@ function card({ slug, product, s, photo }) {
 export function initFind(root = document.querySelector('[data-find]')) {
   const grid = document.querySelector('[data-find-grid]')
   const count = document.querySelector('[data-find-count]')
+  const sortBox = document.querySelector('[data-find-sort-box]')
   const empty = document.querySelector('[data-find-empty]')
   if (!root || !grid) return
 
@@ -169,6 +170,10 @@ export function initFind(root = document.querySelector('[data-find]')) {
     grid.innerHTML = list.map(card).join('')
     // 결과 수는 목록 위에서 한 번만 적습니다 — 모임 유형 알약에는 수를 달지 않습니다.
     if (count) count.textContent = String(list.length)
+    /* 정렬은 셀 것이 있을 때만 나옵니다. 없는 것을 무슨 순서로 세울지 고르는
+       자리는 뜻이 없고, 무엇보다 빈 결과에서 손이 가야 하는 것은 조건을 되돌리는
+       쪽입니다(policy.html: 조건에 맞는 모임이 없을 때). */
+    if (sortBox) sortBox.hidden = list.length === 0
     // 격자와 안내는 함께 뒤바뀝니다. 빈 격자를 남겨두면 안내 아래에 빈 자리가 남습니다.
     grid.hidden = list.length === 0
     if (empty) empty.hidden = list.length > 0

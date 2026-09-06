@@ -488,6 +488,10 @@
   align-items: center;
 }
 
+/* display:flex 가 [hidden] 을 이기므로 되돌립니다 — 결과가 없으면 정렬은
+   나오지 않습니다(find.js). */
+.find__sort[hidden] { display: none; }
+
 /* 생김새는 Button 의 ghost/small 입니다 — 8/12 패딩, 12px body-s-medium, 알약
    모서리. 클래스를 얹지 못하는 것은 <select> 라서입니다. */
 .find__sort select {
@@ -567,27 +571,56 @@
 
    되돌릴 버튼을 함께 두는 것은, 조건을 좁힌 사람이 어느 조건 때문에 비었는지를
    알 수 없기 때문입니다 — 하나씩 되짚어 풀게 하는 대신 처음으로 돌아갈 길을 둡니다.
+
+   글씨가 크지 않습니다(14 medium + 12 regular). 빈 결과는 잘못된 일이 아니라
+   조건을 좁힌 결과라, 크게 적으면 오류 화면처럼 읽힙니다 — 눈에 들어와야 하는
+   것은 되돌릴 버튼입니다.
 */
 
 .find__empty {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--spacing-600);
+  /* 글 묶음과 버튼 사이 16, 제목과 설명 사이 4 입니다(Figma). */
+  gap: var(--spacing-400);
   margin: 0;
   padding-block: var(--spacing-3000);
-  color: var(--colors-fg-lower);
-  font-size: var(--typography-body-m-regular-font-size);
-  font-weight: var(--typography-body-m-regular-font-weight);
-  line-height: var(--typography-body-m-regular-line-height);
   text-align: center;
 }
 
-.find__empty b {
+.find__empty[hidden] { display: none; }
+
+.find__empty-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-100);
+}
+
+.find__empty-title,
+.find__empty-desc { margin: 0; }
+
+.find__empty-title {
   color: var(--colors-fg);
-  font-size: var(--typography-body-l-semibold-font-size);
-  font-weight: var(--typography-body-l-semibold-font-weight);
-  line-height: var(--typography-body-l-semibold-line-height);
+  font-size: var(--typography-body-m-medium-font-size);
+  font-weight: var(--typography-body-m-medium-font-weight);
+  line-height: var(--typography-body-m-medium-line-height);
+  letter-spacing: var(--typography-body-m-medium-letter-spacing);
+}
+
+/* 아이콘과 글자 사이 4 (Figma). Button 의 기본값은 2 라 여기서 되돌립니다 —
+   추천 조건 알약·하위 필터 알약과 같은 값입니다.
+
+   ⚠️ 이 화면에서 4 로 그려진 버튼이 이것으로 셋째입니다. Button 컴포넌트의 기본
+      gap(2)이 실제와 다른 것일 수 있어, 컴포넌트 쪽을 고쳐야 할지 확인이 필요합니다. */
+.find__empty .btn { gap: var(--spacing-100); }
+
+.find__empty-desc {
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-s-regular-font-size);
+  font-weight: var(--typography-body-s-regular-font-weight);
+  line-height: var(--typography-body-s-regular-line-height);
+  letter-spacing: var(--typography-body-s-regular-letter-spacing);
 }
 
 /* 스크립트가 오지 않으면 목록이 아예 그려지지 않습니다. 빈 화면을 그대로 두는
