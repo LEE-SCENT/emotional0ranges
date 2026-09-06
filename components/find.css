@@ -630,6 +630,26 @@
 
 .find__empty[hidden] { display: none; }
 
+/* 심벌과 글 묶음은 한 덩어리로 8 만큼만 떨어집니다 — 그림이 글의 제목 노릇을
+   하는 자리라, 버튼과의 16 보다 좁아야 셋이 둘로 읽힙니다(Figma). */
+.find__empty-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-200);
+}
+
+/* 파비콘과 같은 그림입니다. 그 파일을 그대로 쓰되 색은 마스크로 벗깁니다 —
+   <img> 로 넣으면 브랜드 오렌지가 그대로 와서, 10% 로 흐려도 옅은 주황이 됩니다.
+   여기 있어야 하는 것은 색 없는 물자국입니다(Figma: 검정 10%). */
+.find__empty-mark {
+  inline-size: 48px;
+  block-size: 48px;
+  background: var(--colors-fg);
+  opacity: 0.1;
+  mask: url('../favicon.svg') center / contain no-repeat;
+}
+
 .find__empty-text {
   display: flex;
   flex-direction: column;
@@ -646,6 +666,14 @@
   font-weight: var(--typography-body-m-medium-font-weight);
   line-height: var(--typography-body-m-medium-line-height);
   letter-spacing: var(--typography-body-m-medium-letter-spacing);
+}
+
+/* 20 입니다(Figma). Button 의 medium 기본값은 24 인데, 이 화면의 medium 알약들도
+   모두 20 을 씁니다(find-bar.css 의 추천 조건·걸린 조건) — 텍스트 버튼의 아이콘은
+   한 단 작은 것이 기본인지 확인이 필요합니다. */
+.find__empty .btn__icon {
+  inline-size: var(--icon-size-s);
+  block-size: var(--icon-size-s);
 }
 
 .find__empty-desc {
