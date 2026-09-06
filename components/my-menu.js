@@ -38,7 +38,9 @@
  * 보는 자리에서는 링크 하나로 오갈 수 있어야 합니다 — 진짜 로그인이 붙으면
  * 이 줄만 지우면 됩니다.
  */
-const DEMO = { name: '정우진', black: true, hasNotice: true }
+/* 나이는 모임 목록의 "내 나이로 신청 가능" 이 봅니다(find.js) — 계정이 들고 있는
+   것이라 여기 함께 둡니다. */
+const DEMO = { name: '정우진', black: true, hasNotice: true, age: 33 }
 export const ME = new URLSearchParams(location.search).get('me') === '1' ? DEMO : null
 
 /**

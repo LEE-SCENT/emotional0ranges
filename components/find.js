@@ -17,19 +17,10 @@
  */
 
 import { openMeetups, areaOf, cityOf, groupOf, regionOf, seatTags, tagsOf } from './products.js?v=a3d5fd4b'
-import { ME as ACCOUNT } from './my-menu.js?v=1f3c24b3'
+import { ME } from './my-menu.js?v=b6d6b013'
 import { dateAfter, dateKey, dayText } from './schedule.js?v=a9e9003f'
 
 const won = (n) => `${n.toLocaleString('ko-KR')}원`
-
-/**
- * 지금 보고 있는 사람의 나이.
- *
- * ⚠️ 로그인한 회원 정보가 들어올 자리입니다. 지금은 값을 하나 박아두었습니다.
- *    계정이 없으면 걸 조건이 없으므로 "내 나이" 알약은 화면에서 지웁니다 — 눌러도
- *    아무것도 걸러지지 않는 알약을 남겨두면 조건이 걸린 줄 알고 목록을 믿게 됩니다.
- */
-export const ME = { age: 33 }
 
 /** `27-38세` 안에 그 나이가 드는지. */
 function fitsAge(range, age) {
@@ -59,7 +50,7 @@ const PICKS = {
   promo: (o) => (o.off ?? 0) > 0,
   closing: (o) => isClosing(o),
   // 생년월일이 없으면 걸 수 있는 조건이 아닙니다 — 그 자리에서 알약을 지웁니다.
-  myage: (o) => (ME ? fitsAge(o.age, ME.age) : true),
+  myage: (o) => (ME?.age ? fitsAge(o.age, ME.age) : true),
 }
 
 const SORTS = {
@@ -127,7 +118,7 @@ function card({ slug, product, s, photo }) {
   /* 값을 가리는 것은 상품의 성질이 아니라 보는 사람과의 관계입니다 — 로그인한
      사람에게는 그냥 값입니다. `locked` 는 "누구에게나 보이지는 않는다"까지만
      말하고, 지금 가릴지는 여기서 정합니다. */
-  const locked = product.locked && !ACCOUNT
+  const locked = product.locked && !ME
   const seats = seatTags(s)
   const tags = []
   tags.push(`<span class="tag">${dayText(dateAfter(s.in))} ${s.label}</span>`)

@@ -27,7 +27,7 @@
  */
 
 import { PRODUCTS, areaOf, isOpen, seatTags } from './products.js?v=a3d5fd4b'
-import { ME as ACCOUNT } from './my-menu.js?v=1f3c24b3'
+import { ME } from './my-menu.js?v=b6d6b013'
 import { dateAfter, dayText } from './schedule.js?v=a9e9003f'
 
 const won = (n) => `${n.toLocaleString('ko-KR')}원`
@@ -112,7 +112,7 @@ function fill(card, product) {
   /* 잠긴 상품은 값 대신 자물쇠와 안내가 섭니다. 마크업에도 같은 것이 적혀 있지만
      여기서 다시 그리는 것은, 값이 있는 카드에서 잠긴 카드로 같은 자리가 바뀔 수
      있기 때문입니다. */
-  const locked = product.locked && !ACCOUNT
+  const locked = product.locked && !ME
   card.classList.toggle('is-locked', Boolean(locked))
   if (price && locked) {
     price.innerHTML = '<svg class="product-card__lock" aria-hidden="true"><use href="#icon-lockFilled"></use></svg>'
