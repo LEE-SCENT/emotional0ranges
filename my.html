@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="./build/tokens.css?v=d8a8a82f">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=323be71f">
-<link rel="stylesheet" href="./components/gnb.css?v=fde6d5e9">
+<link rel="stylesheet" href="./components/gnb.css?v=601d1a14">
 <link rel="stylesheet" href="./components/segmented-control.css?v=027af639">
 <link rel="stylesheet" href="./components/tooltip.css?v=7ec024df">
 <link rel="stylesheet" href="./components/my-menu.css?v=59a441fb">
@@ -70,10 +70,11 @@
     <div class="gnb__side gnb__side--end">
       <div class="gnb__actions">
         <!-- 로그인하지 않았을 때만 남습니다. 로그인한 사람에게는 아래 목록이
-             누구인지 말하고 있어 my-menu.js 가 이 버튼을 지웁니다. -->
-        <button class="btn btn--ghost btn--medium gnb__login" type="button">
+             누구인지 말하고 있어 my-menu.js 가 이 버튼을 숨깁니다.
+             이 화면에는 갈 곳이 없어, 눌러도 옮기지 않고 번호 칸으로 데려다 놓습니다. -->
+        <a class="btn btn--ghost btn--medium gnb__login" href="./my.html">
           <span class="btn__label">로그인</span>
-        </button>
+        </a>
         <button class="btn btn--ghost btn--medium btn--icon-only gnb__notify" aria-label="알림">
           <svg class="btn__icon" aria-hidden="true"><use href="#icon-notifications"></use></svg>
           <!-- 읽지 않은 것이 있을 때만 점이 붙습니다(my-menu.js) — 목록의 알림 줄과
@@ -134,8 +135,8 @@
   initSegmentedControls()
   const { initAutoHide } = await import('./components/auto-hide.js?v=ef9c163a')
   initAutoHide()
-  const { initMyMenus } = await import('./components/my-menu.js?v=938a1744')
+  const { initMyMenus } = await import('./components/my-menu.js?v=8eecefce')
   initMyMenus()
-  const { initMyPage } = await import('./components/my-menu.js?v=938a1744')
+  const { initMyPage } = await import('./components/my-menu.js?v=8eecefce')
   initMyPage()
 </script>

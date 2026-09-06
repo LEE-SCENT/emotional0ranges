@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="./components/container.css?v=2407269a">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=323be71f">
-<link rel="stylesheet" href="./components/gnb.css?v=fde6d5e9">
+<link rel="stylesheet" href="./components/gnb.css?v=601d1a14">
 <link rel="stylesheet" href="./components/segmented-control.css?v=027af639">
 <link rel="stylesheet" href="./components/tooltip.css?v=7ec024df">
 <link rel="stylesheet" href="./components/my-menu.css?v=59a441fb">
@@ -80,9 +80,12 @@
     </div>
     <div class="gnb__side gnb__side--end">
       <div class="gnb__actions">
-        <button class="btn btn--ghost btn--medium gnb__login" type="button">
+        <!-- 로그인은 폰에서만 나옵니다 — 넓은 화면에서는 메뉴 버튼 아래 내 메뉴가
+             그 자리를 대신합니다. 폰의 로그인 자리는 마이 화면이라 그리로 갑니다.
+             로그인하고 나면 my-menu.js 가 이 버튼을 숨깁니다. -->
+        <a class="btn btn--ghost btn--medium gnb__login" href="./my.html">
           <span class="btn__label">로그인</span>
-        </button>
+        </a>
         <button class="btn btn--ghost btn--medium btn--icon-only gnb__notify" aria-label="알림">
           <svg class="btn__icon" aria-hidden="true"><use href="#icon-notifications"></use></svg>
           <!-- 읽지 않은 것이 있을 때만 점이 붙습니다(my-menu.js) — 목록의 알림 줄과
@@ -174,11 +177,11 @@
   initSegmentedControls()
   const { initAutoHide } = await import('./components/auto-hide.js?v=ef9c163a')
   initAutoHide()
-  const { initMyMenus } = await import('./components/my-menu.js?v=938a1744')
+  const { initMyMenus } = await import('./components/my-menu.js?v=8eecefce')
   initMyMenus()
   // 탭 항목이 생긴 뒤라야 밑줄이 잴 것이 있습니다 — 차례가 바뀌면 밑줄이 0 에서
   // 시작해 첫 탭으로 날아옵니다.
-  const { initMatching } = await import('./components/matching.js?v=14b4fbd4')
+  const { initMatching } = await import('./components/matching.js?v=028495c3')
   initMatching()
   const { initTabs } = await import('./components/tabs.js?v=e1b6027e')
   initTabs()

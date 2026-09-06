@@ -37,9 +37,13 @@
  * 동안 그 화면을 확인하려면 이 파일을 고쳐 다시 배포해야 했는데, 시안을 맞춰
  * 보는 자리에서는 링크 하나로 오갈 수 있어야 합니다 — 진짜 로그인이 붙으면
  * 이 줄만 지우면 됩니다.
+ *
+ * 주소를 손으로 고치지 않아도 됩니다. `로그인` 을 누르면 로그인한 모습으로,
+ * `로그아웃` 을 누르면 다시 로그인 전으로 바뀝니다(setSignedIn) — 두 모습을
+ * 나란히 두고 보는 자리라 오가는 길이 버튼이어야 합니다.
  */
 const DEMO = { name: '정우진', black: true, hasNotice: true }
-export const ME = new URLSearchParams(location.search).get('me') === '1' ? DEMO : null
+export let ME = new URLSearchParams(location.search).get('me') === '1' ? DEMO : null
 
 /** 등급 이름과 이름 앞 표시는 한 값에서 함께 나옵니다. */
 const gradeOf = (me) => (me.black ? '블랙 회원' : '일반 회원')
@@ -73,7 +77,9 @@ const ITEMS = [
   { label: '공지사항', href: '' },
   { label: '문의·의견 보내기', href: '' },
   null,
-  { label: '로그아웃', quiet: true, href: '', auth: true },
+  /* 누르면 로그인 전의 모습으로 돌아갑니다. 로그인만 눌러볼 수 있고 나오는 길이
+     없으면, 두 모습을 견주어 보려고 주소를 지웠다 붙였다 하게 됩니다. */
+  { label: '로그아웃', quiet: true, href: '', auth: true, action: () => setSignedIn(false) },
 ]
 
 const el = (tag, className, text) => {
@@ -92,12 +98,14 @@ const arrow = () =>
  * 갈 곳이 있으면 <a>, 없으면 <button> 입니다 — 링크로 두면 새 탭으로 열거나 주소를
  * 복사할 수 있어야 하는데, href 가 비어 있으면 그 약속을 지키지 못합니다.
  */
-function item({ label, desc, icon, badge, href, quiet }) {
+function item({ label, desc, icon, badge, href, quiet, action }) {
   const node = href ? el('a', 'my-menu__item') : el('button', 'my-menu__item')
   if (href) node.href = href
   else node.type = 'button'
   if (quiet) node.classList.add('my-menu__item--quiet')
   node.setAttribute('role', 'menuitem')
+  // 갈 곳 대신 할 일이 있는 항목(로그아웃)입니다.
+  if (action) node.addEventListener('click', action)
 
   if (icon) {
     node.insertAdjacentHTML(
@@ -202,9 +210,10 @@ function field({ id, label, type, autocomplete, inputmode, maxLength, placeholde
  * 받는 칸이 비어 있으면, 무엇부터 해야 하는지가 두 칸 사이에서 흐려집니다.
  * 보내고 나서야 나오고, 그때 초점도 그리로 갑니다.
  *
- * ⚠️ 보낼 곳이 없습니다. `인증번호 받기` 는 칸을 열 뿐이고 `로그인` 은 아무 데도
- *    가지 않습니다. 다시 받기까지의 시간(보통 3분)도 세지 않습니다 — 세는 시늉만
- *    하는 숫자보다 없는 편이 낫습니다.
+ * ⚠️ 보낼 곳이 없습니다. `인증번호 받기` 는 칸을 열 뿐이고, 어떤 번호를 넣어도
+ *    `로그인` 은 로그인한 모습으로 바꿔줍니다(setSignedIn) — 확인할 서버가 없어
+ *    번호가 맞는지 틀린지를 말할 수 없기 때문입니다. 다시 받기까지의 시간(보통
+ *    3분)도 세지 않습니다 — 세는 시늉만 하는 숫자보다 없는 편이 낫습니다.
  */
 function loginForm(login, signup) {
   const form = el('form', 'my-login')
@@ -263,7 +272,12 @@ function loginForm(login, signup) {
   })
 
   login.disabled = true
-  form.addEventListener('submit', (e) => e.preventDefault())
+  /* 보낼 곳이 없어 기본 동작을 막고, 대신 이 화면에서 로그인한 것으로 칩니다.
+     엔터로도 같은 자리에 닿아야 해서 버튼이 아니라 폼에 답니다. */
+  form.addEventListener('submit', (e) => {
+    e.preventDefault()
+    setSignedIn(true)
+  })
   form.append(row, code, login, signup)
   return form
 }
@@ -277,11 +291,18 @@ function signedOut(page) {
     el('p', 'my-menu__intro-desc', '취향이 맞는 새로운 인연을 만나보세요'),
   )
 
-  /* 아직 로그인 화면이 없어 <button> 입니다 — 주소가 없는 <a> 는 키보드가 지나가지
-     못하고, 눌러도 아무 일이 없다는 것을 미리 말해주지도 못합니다. */
+  /* 넓은 화면에는 따로 로그인 화면이 없습니다 — 이 판이 곧 그 자리라, 누르면
+     여기서 바로 로그인한 모습으로 바뀝니다(setSignedIn). 폰에서는 아래 폼이
+     받으므로 이 버튼은 그 폼의 제출 버튼이 됩니다.
+
+     <a> 가 아니라 <button> 인 것은 갈 주소가 없기 때문입니다 — 주소가 없는 <a> 는
+     키보드가 지나가지 못합니다. */
   const login = el('button', 'btn btn--filled btn--medium my-menu__login')
   login.type = page ? 'submit' : 'button'
-  if (!page) login.setAttribute('role', 'menuitem')
+  if (!page) {
+    login.setAttribute('role', 'menuitem')
+    login.addEventListener('click', () => setSignedIn(true))
+  }
   login.append(el('span', 'btn__label', '로그인'))
 
   /* 로그인 아래 한 줄. 아직 계정이 없는 사람에게는 위 버튼이 막다른 길이라,
@@ -339,12 +360,71 @@ export function renderMyMenu(box, { page = false } = {}) {
     ...lines.map((entry) => (entry ? item(entry) : el('hr', 'my-menu__divider'))),
   )
 
-  /* GNB 의 로그인 버튼과 같은 사실을 말합니다 — 로그인한 사람에게 로그인 버튼이
-     남아 있으면 둘 중 어느 것이 참인지 알 수 없습니다. */
-  if (ME) document.querySelector('.gnb__login')?.remove()
-
+  syncLoginButton()
   syncNoticeDot()
-  keepDemoFlag()
+  syncDemoFlag()
+}
+
+/**
+ * 로그인한 것으로 치거나, 그것을 되돌립니다.
+ *
+ * 화면을 새로 불러오지 않고 그 자리에서 다시 그립니다 — 누른 자리에서 무엇이
+ * 달라졌는지 보여야 하고, 새로 불러오면 보던 자리와 스크롤을 잃습니다.
+ *
+ * 주소도 함께 고칩니다(replaceState). 로그인한 모습은 `?me=1` 이 들고 있는
+ * 것이라, 주소가 그대로면 새로고침 한 번에 풀리고 링크를 복사해 건네줄 수도
+ * 없습니다. 기록에 한 칸을 더 쌓지 않는 것은, 뒤로가기가 로그인을 되돌리는
+ * 버튼이 되면 보던 화면으로 돌아가는 길이 그만큼 멀어지기 때문입니다.
+ *
+ * ⚠️ 진짜 로그인이 붙으면 이 함수가 그 자리입니다 — 부르는 쪽(로그인 버튼·폼·
+ *    로그아웃)은 그대로 두고 여기 안만 갈아 끼우면 됩니다.
+ */
+function setSignedIn(on) {
+  if (Boolean(ME) === on) return
+  ME = on ? DEMO : null
+
+  const url = new URL(location.href)
+  if (on) url.searchParams.set('me', '1')
+  else url.searchParams.delete('me')
+  history.replaceState(history.state, '', `${url.pathname}${url.search}${url.hash}`)
+
+  /* 초점이 어디 있었는지 먼저 봅니다. 방금 누른 버튼은 다시 그리는 순간 사라져,
+     그대로 두면 초점이 문서 맨 위로 튕깁니다 — 키보드로 온 사람은 목록을 처음부터
+     다시 지나가야 합니다. */
+  const held = document.activeElement?.closest('.my-menu__panel, [data-my-page]')
+
+  for (const box of document.querySelectorAll('.my-menu__panel')) renderMyMenu(box)
+  for (const box of document.querySelectorAll('[data-my-page]')) renderMyMenu(box, { page: true })
+
+  /* 판은 저를 받을 수 있고(tabindex="-1") 화면은 그렇지 않아, 화면에서는 다시 그린
+     것의 첫 칸으로 보냅니다. */
+  if (held?.isConnected) (held.matches('[tabindex]') ? held : held.querySelector('a, button'))?.focus()
+}
+
+/**
+ * GNB 의 로그인 버튼.
+ *
+ * 판(또는 마이 화면)이 이미 누구인지 말하고 있어, 로그인한 사람에게 이 버튼이
+ * 남아 있으면 둘 중 어느 것이 참인지 알 수 없습니다. 지우지 않고 숨기는 것은
+ * 로그아웃하면 그 자리에 다시 서야 하기 때문입니다 — 지워버리면 돌아올 자리가
+ * 없어 화면을 새로 불러와야 합니다.
+ */
+function syncLoginButton() {
+  for (const btn of document.querySelectorAll('.gnb__login')) {
+    btn.hidden = Boolean(ME)
+
+    /* 이 버튼은 폰에서만 나옵니다(gnb.css). 폰의 로그인 자리는 마이 화면이라 그리로
+       보내는데, 이미 그 화면에 있으면 갈 곳이 없어 번호 칸으로 데려다 놓습니다 —
+       같은 주소를 다시 여는 것은 눌러도 아무 일이 없는 것처럼 보입니다. */
+    if (btn.dataset.loginReady) continue
+    btn.dataset.loginReady = '1'
+    btn.addEventListener('click', (e) => {
+      const phone = document.querySelector('[data-my-page] #login-phone')
+      if (!phone) return
+      e.preventDefault()
+      phone.focus()
+    })
+  }
 }
 
 /**
@@ -352,17 +432,25 @@ export function renderMyMenu(box, { page = false } = {}) {
  *
  * 그러지 않으면 앱바로 다른 탭에 갔다 오는 순간 로그인한 모습이 풀립니다 —
  * 볼 때마다 주소창에 다시 적어야 하는 것은 확인하는 자리가 아닙니다.
+ * 로그아웃하면 같은 이유로 도로 떼어냅니다 — 떼지 않으면 다음 화면에서 로그인한
+ * 모습으로 돌아와, 방금 누른 로그아웃이 없던 일이 됩니다.
  * 밖으로 나가는 링크와 앵커는 건드리지 않습니다.
  */
-function keepDemoFlag() {
-  if (!ME) return
+function syncDemoFlag() {
   for (const link of document.querySelectorAll('a[href]')) {
     const href = link.getAttribute('href')
-    if (!href.startsWith('./') && !href.startsWith('/')) continue
+    // 밖으로 나가는 링크(http:·mailto:·//)와 같은 화면 안의 앵커(#)는 놔둡니다.
+    if (!href || href.startsWith('#') || href.startsWith('//') || /^[a-z][a-z\d+.-]*:/i.test(href)) continue
+
     const url = new URL(href, location.href)
-    if (url.searchParams.get('me') === '1') continue
-    url.searchParams.set('me', '1')
-    link.setAttribute('href', `${url.pathname.split('/').pop()}${url.search}${url.hash}`)
+    if ((url.searchParams.get('me') === '1') === Boolean(ME)) continue
+    if (ME) url.searchParams.set('me', '1')
+    else url.searchParams.delete('me')
+
+    /* 주소는 적혀 있던 대로 두고 물음표 뒤만 갈아 끼웁니다. `./my.html` 을
+       `my.html` 로 고쳐 쓰면 링크는 그대로 열리지만, 화면마다 다른 모양으로
+       적히기 시작해 다음에 지날 때 같은 링크를 알아보기 어려워집니다. */
+    link.setAttribute('href', `${href.split(/[?#]/)[0]}${url.search}${url.hash}`)
   }
 }
 
