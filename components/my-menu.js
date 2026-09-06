@@ -168,7 +168,26 @@ function profile(page) {
  * 버튼입니다. 여기서 할 수 있는 일이 하나뿐이라, 고를 것이 아니라 눌러야 할
  * 것으로 서야 합니다.
  */
-function signedOut() {
+/** 계정 정보를 받는 칸 하나. 라벨은 칸 위에 섭니다 — 안에 넣으면 쓰기 시작하는
+    순간 무엇을 쓰는 칸이었는지가 사라집니다. */
+function field({ id, label, type, autocomplete, inputmode }) {
+  const box = el('div', 'my-login__field')
+  const tag = el('label', 'my-login__label', label)
+  tag.htmlFor = id
+
+  const input = document.createElement('input')
+  input.className = 'my-login__input'
+  input.id = id
+  input.type = type
+  input.name = id.replace('login-', '')
+  input.autocomplete = autocomplete
+  if (inputmode) input.inputMode = inputmode
+
+  box.append(tag, input)
+  return box
+}
+
+function signedOut(page) {
   const box = el('div', 'my-menu__profile my-menu__profile--out')
 
   const intro = el('div', 'my-menu__intro')
@@ -180,8 +199,8 @@ function signedOut() {
   /* 아직 로그인 화면이 없어 <button> 입니다 — 주소가 없는 <a> 는 키보드가 지나가지
      못하고, 눌러도 아무 일이 없다는 것을 미리 말해주지도 못합니다. */
   const login = el('button', 'btn btn--filled btn--medium my-menu__login')
-  login.type = 'button'
-  login.setAttribute('role', 'menuitem')
+  login.type = page ? 'submit' : 'button'
+  if (!page) login.setAttribute('role', 'menuitem')
   login.append(el('span', 'btn__label', '로그인'))
 
   /* 로그인 아래 한 줄. 아직 계정이 없는 사람에게는 위 버튼이 막다른 길이라,
@@ -193,6 +212,28 @@ function signedOut() {
   link.type = 'button'
   link.setAttribute('role', 'menuitem')
   signup.append(link)
+
+  /* 폰에서는 이 화면이 곧 로그인 화면입니다 — 판처럼 다른 화면으로 넘길 자리가
+     아니라, 260 이 아닌 한 화면을 통째로 쓰고 있어 여기서 바로 받습니다.
+     넓은 화면의 판은 버튼 하나로 남습니다.
+
+     진짜 <form> 인 것은 그래야 마지막 칸에서 엔터를 쳐도 눌리고, 비밀번호
+     관리자가 이 한 쌍을 아이디·비밀번호로 알아보기 때문입니다.
+
+     ⚠️ 보낼 곳이 아직 없습니다. 누르면 아무 일도 일어나지 않습니다. */
+  if (page) {
+    const form = el('form', 'my-login')
+    form.noValidate = true
+    form.addEventListener('submit', (e) => e.preventDefault())
+    form.append(
+      field({ id: 'login-email', label: '이메일', type: 'email', autocomplete: 'username', inputmode: 'email' }),
+      field({ id: 'login-password', label: '비밀번호', type: 'password', autocomplete: 'current-password' }),
+      login,
+      signup,
+    )
+    box.append(intro, form)
+    return box
+  }
 
   box.append(intro, login, signup)
   return box
@@ -224,7 +265,7 @@ export function renderMyMenu(box, { page = false } = {}) {
   while (lines.length && !lines.at(-1)) lines.pop()
 
   box.replaceChildren(
-    ME ? profile(page) : signedOut(),
+    ME ? profile(page) : signedOut(page),
     ...lines.map((entry) => (entry ? item(entry) : el('hr', 'my-menu__divider'))),
   )
 

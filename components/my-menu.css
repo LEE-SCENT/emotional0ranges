@@ -144,6 +144,62 @@
    아닌 자리에 서서, 무엇에 딸린 버튼인지가 흐려집니다(Figma). */
 .my-menu__login { align-self: stretch; }
 
+/* ---- 폰의 로그인 폼 ------------------------------------------------------
+   좁은 화면의 마이는 그 자체가 로그인 화면입니다 — 260 짜리 판과 달리 한 화면을
+   통째로 쓰고 있어, 다른 화면으로 넘기지 않고 여기서 바로 받습니다.
+
+   ⚠️ 이 디자인 시스템에는 아직 텍스트 필드 컴포넌트가 없습니다(체크박스뿐).
+      그래서 아래 생김새는 시안이 아니라 옆의 것들에서 끌어온 값입니다 —
+      Button 의 outlined 테두리, 알약이 아닌 8 모서리, 큰 버튼과 같은 48 높이.
+      정식 Field 가 나오면 이 블록을 지우고 그것을 쓰면 됩니다.
+*/
+
+.my-login {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-300);
+}
+
+.my-login__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-100);
+  padding-inline: var(--spacing-200);
+}
+
+.my-login__label {
+  color: var(--colors-fg-low);
+  font-size: var(--typography-body-s-regular-font-size);
+  font-weight: var(--typography-body-s-regular-font-weight);
+  line-height: var(--typography-body-s-regular-line-height);
+  letter-spacing: var(--typography-body-s-regular-letter-spacing);
+}
+
+.my-login__input {
+  box-sizing: border-box;
+  block-size: 48px;
+  margin: 0;
+  padding-inline: var(--spacing-400);
+  border: 1px solid var(--colors-border);
+  border-radius: var(--_rounded-m);
+  background: var(--colors-bg);
+  color: var(--colors-fg);
+  font-family: var(--_font-family-base);
+  font-size: var(--typography-body-m-regular-font-size);
+  line-height: var(--typography-body-m-regular-line-height);
+}
+
+/* 쓰는 동안에는 테가 진해집니다 — 어느 칸에 글자가 들어가는지가 커서만으로는
+   잘 보이지 않습니다. 키보드로 왔을 때만 두르는 테와 달리, 이것은 눌러서 왔든
+   Tab 으로 왔든 같습니다. */
+.my-login__input:focus {
+  outline: none;
+  border-color: var(--colors-fg);
+}
+
+/* 폼 안에서는 버튼이 칸 폭을 그대로 따릅니다. */
+.my-login .my-menu__login { margin-inline: var(--spacing-200); }
+
 /* 로그인 버튼 아래 한 줄. 가운데에 서는 것은 위 버튼에 딸린 말이기 때문입니다 —
    목록의 줄처럼 왼쪽에 붙으면 아래 항목들과 한 무리로 읽힙니다(Figma). */
 .my-menu__signup {
