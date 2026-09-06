@@ -137,7 +137,8 @@
 @media (prefers-reduced-motion: reduce) {
   .find-head,
   .find-types,
-  .find-types__sub { transition: none; }
+  .find-types__sub,
+  .find-types__sub-list { transition: none; }
 }
 
 /* ---- 모임 유형 퀵필터 ---------------------------------------------------
@@ -195,34 +196,49 @@
    않아도 되고(알약이 두 줄이 되는 폭도 있습니다), 자바스크립트가 픽셀을
    들고 있지 않아도 됩니다. 잘라내는 것은 안쪽 한 겹이 맡습니다.
 
+   알약은 옅어지며 나타나지 않고, 위에서 밀려 나옵니다 — 잘라내는 겹 안에서
+   제 높이만큼 올라가 있다가 제자리로 내려옵니다. 열리는 동안 보이는 것은
+   위 줄 뒤에서 나오는 알약이고, 자리를 만드는 높이와 알약이 같은 방향으로
+   같이 움직입니다.
+
+   페이드였을 때는 알약이 제자리에 선 채로 옅게 켜지고 높이만 따로 열려, 자리는
+   밀려 내려가는데 그 자리를 채우는 것은 나타나기만 해서 둘이 다른 일로
+   읽혔습니다. 상위 유형을 눌러 그 아래가 열린다는 것은 위에서 아래로 이어지는
+   일이라, 움직이는 방향도 하나여야 합니다.
+
    [hidden] 은 그대로 display:none 입니다 — allow-discrete 가 전환이 끝난 뒤에
    적용해 주어, 닫히는 동안에는 화면에 남아 있고 다 닫히면 Tab 순서에서도
    빠집니다(팝오버와 같은 방식입니다). */
 .find-types__sub {
   display: grid;
   grid-template-rows: 1fr;
-  opacity: 1;
   transition:
     grid-template-rows 200ms var(--_easing-standard),
-    opacity 200ms var(--_easing-standard),
     display 200ms allow-discrete;
 }
 
-.find-types__sub[hidden] {
-  grid-template-rows: 0fr;
-  opacity: 0;
-}
+.find-types__sub[hidden] { grid-template-rows: 0fr; }
 
 @starting-style {
-  .find-types__sub:not([hidden]) {
-    grid-template-rows: 0fr;
-    opacity: 0;
-  }
+  .find-types__sub:not([hidden]) { grid-template-rows: 0fr; }
 }
 
 .find-types__sub-inner {
   min-block-size: 0;
   overflow: hidden;
+}
+
+/* 미는 것은 잘라내는 겹 안쪽입니다 — 겹 자체를 옮기면 잘라내는 창까지 따라
+   움직여, 밀려 나오는 것이 아니라 줄 전체가 위로 어긋납니다. */
+.find-types__sub-list {
+  translate: 0 0;
+  transition: translate 200ms var(--_easing-standard);
+}
+
+.find-types__sub[hidden] .find-types__sub-list { translate: 0 -100%; }
+
+@starting-style {
+  .find-types__sub:not([hidden]) .find-types__sub-list { translate: 0 -100%; }
 }
 
 /* 펼침 버튼 — 폰에서만 나옵니다. 목록을 덮는 창이 아니라 그 자리에서 줄이 늘어나고,

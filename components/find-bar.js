@@ -273,6 +273,18 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
     const themes = kind
       ? [...new Set(meetups.filter((m) => m.slug === kind).flatMap((m) => tagsOf(m.s)))]
       : []
+    /* 닫히는 동안에는 알약을 그대로 둡니다. 먼저 비우면 접힐 높이가 그 자리에서
+       사라져, 줄이 밀려 올라가는 것이 아니라 툭 없어지고 아래 카드가 한 칸
+       뛰어오릅니다 — 비우는 것은 다 닫힌 뒤입니다(아래 transitionend).
+
+       걸린 것만은 그 자리에서 풉니다. 사라지는 중인 알약이 켜진 채로 남아 있으면
+       닫히는 200ms 동안 목록이 이전 유형의 조건으로 걸러진 채 서 있습니다 —
+       화면에서 물러나는 것은 모양이지 조건이 아닙니다. */
+    if (themes.length === 0) {
+      for (const input of tagList.querySelectorAll('input[name="tag"]')) input.checked = false
+      if (tagBox) tagBox.hidden = true
+      return
+    }
     tagList.replaceChildren(
       ...themes.map((theme) => chip({
         name: 'tag', value: theme, label: theme, mark: true,
@@ -280,7 +292,21 @@ export function initFindBar(root = document.querySelector('[data-find]')) {
       })),
     )
     // 여닫는 것은 바깥 상자입니다 — 그것이 높이를 펴고 접습니다(find.css).
-    if (tagBox) tagBox.hidden = themes.length === 0
+    if (tagBox) tagBox.hidden = false
+  }
+
+  /* 다 닫힌 뒤에야 비웁니다. 닫히는 도중에 다른 유형을 골라 다시 열렸으면 그때
+     그린 알약이 서 있으므로 건드리지 않습니다 — 지금 닫혀 있을 때만 비웁니다.
+
+     end 만이 아니라 cancel 도 듣습니다. 다 닫히는 순간 display:none 이 적용되면서
+     (allow-discrete) 브라우저가 남은 전환을 end 가 아니라 cancel 로 끝냅니다 —
+     end 만 들으면 알약이 영영 남습니다. 열린 채로 잘려 취소되는 경우는 위의
+     hidden 검사에 걸립니다. */
+  for (const type of ['transitionend', 'transitioncancel']) {
+    tagBox?.addEventListener(type, (e) => {
+      if (e.target !== tagBox || e.propertyName !== 'grid-template-rows') return
+      if (tagBox.hidden) tagList?.replaceChildren()
+    })
   }
 
   /* 폰에서는 한 줄만 보이고 펼침 버튼으로 나머지를 폅니다. 목록을 덮는 창이
