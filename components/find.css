@@ -563,6 +563,39 @@
    처음·마지막만 둥근 것이라 반지름이 없습니다(product-card.css). */
 .find__grid .product-card__media { border-radius: var(--_product-card-rounded); }
 
+/* ---- 좁은 화면의 카드 안 치수 ------------------------------------------
+   카드가 작아지면 그 안의 것들도 함께 줄어야 합니다. 크기는 카드에 비례해서
+   읽히기 때문입니다 — 같은 20 이라도 304 짜리 카드에서는 값 하나지만 200 짜리
+   카드에서는 줄의 절반입니다.
+
+   두 규칙 모두 한 번 정해졌다가 화면을 새 정책 구조로 갈아엎을 때 함께 사라진
+   것입니다(ad91a69 · c9bc971 → 6bec905). 같은 자리에 다시 둡니다.
+*/
+
+/* 가격은 한 단 작아집니다(20 → 16). 430 에서 카드가 200 으로 좁아지면 20 은 두
+   자리 수만 되어도 줄의 절반을 차지해, 가격이 카드에서 가장 크게 읽힙니다 — 이
+   화면에서 먼저 읽혀야 하는 것은 사진과 제목입니다. 제목과 같은 크기가 되지만
+   굵기가 한 단 위라(semibold · medium) 여전히 값으로 도드라집니다. "할인가"
+   라벨은 그대로 12 입니다. 961 부터는 20 그대로입니다 — 그 폭의 카드는 296 을
+   넘어 가격이 줄을 차지하지 않습니다. */
+@media (max-width: 960px) {
+  .find__grid .product-card__price {
+    font-size: var(--typography-body-l-semibold-font-size);
+    font-weight: var(--typography-body-l-semibold-font-weight);
+    line-height: var(--typography-body-l-semibold-line-height);
+  }
+}
+
+/* 썸네일 위의 태그도 사진의 모서리에 한 단 더 붙습니다(12 → 8). 카드가 200
+   남짓으로 작아지면 12 가 사진 안쪽으로 깊이 들어와, 사진 위에 얹힌 작은 판처럼
+   보입니다 — 모서리와 같은 이유로 크기에 비례해 줄입니다. */
+@media (max-width: 960px) {
+  .find__grid .product-card__tags {
+    inset-block-start: var(--spacing-200);
+    inset-inline: var(--spacing-200);
+  }
+}
+
 /* ---- 빈 결과 ----------------------------------------------------------
    조건에 맞는 것이 없을 때. 빈 격자를 그대로 두면 아직 불러오는 중인지, 없는
    것인지 알 수 없습니다(schedule.css 의 __empty 와 같은 이유입니다).
