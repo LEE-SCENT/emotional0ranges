@@ -483,12 +483,15 @@
   initConfirms()
   // segmented 보다 먼저 돕니다. 저장된 쪽(검색·카테고리)을 고른 칸으로 세워둬야
   // 그쪽이 그 칸의 자리를 잽니다.
-  const { initProfile } = await import('./components/profile.js?v=48a8b144')
+  const { initProfile } = await import('./components/profile.js?v=f328a630')
   initProfile()
   const { initSegmentedControls } = await import('./components/segmented-control.js?v=bbd7c4b8')
   initSegmentedControls()
   const { initVerify } = await import('./components/verify.js?v=a625d654')
   initVerify()
+  // 고르는 칸(셀렉트·달·날짜)은 고르고 나면 초점을 내려놓습니다.
+  const { initFields } = await import('./components/field.js?v=a50b312c')
+  initFields()
   // 고친 것이 남아 있으면 profile-form.js 가 먼저 받아 한 번 묻습니다.
   const { initBack } = await import('./components/back.js?v=c6d259cc')
   initBack()

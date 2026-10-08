@@ -119,6 +119,16 @@ export function initProfile() {
     box.addEventListener('click', () => { try { input.showPicker() } catch { input.focus() } })
     return { box, input, text, hint: text.textContent }
   })
+  /* 끝이 시작보다 앞설 수 없습니다. 한쪽을 고르면 다른 쪽이 고를 수 있는 범위가 그에
+     맞춰 좁아집니다. */
+  const thisMonth = new Date().toISOString().slice(0, 7)
+  const periods = [...form.querySelectorAll('.text-field--period')].map((period) => {
+    const [from, to] = period.querySelectorAll('input')
+    return () => {
+      from.max = to.value || thisMonth
+      to.min = from.value
+    }
+  })
 
   /* 칸끼리 얽힌 것들. 폼이 바뀔 때마다 통째로 다시 맞춥니다 — 무엇이 바뀌었는지
      가려 가며 고치면, 저장된 값을 처음 써넣을 때처럼 사건 없이 바뀐 자리를 놓칩니다. */
@@ -136,6 +146,8 @@ export function initProfile() {
     form.querySelector('[data-period="cohabited"]').hidden = !draft.cohabited
     form.querySelector('[data-periods]').hidden = draft.married !== 'yes' && !draft.cohabited
     form.querySelector('[data-kids-detail]').hidden = draft.kids !== 'yes'
+
+    for (const bound of periods) bound()
 
     // 기간 칸의 글자. 값("2022-01")을 "2022년 1월"로 적습니다.
     for (const part of months) {
