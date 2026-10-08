@@ -293,6 +293,14 @@
   z-index: 6;
   background: var(--colors-bg);
 }
+/* 상세 프로필에서는 옆 단의 카드가 탭과 같은 높이에 붙습니다. 내려 읽기 전에는 탭과 카드의
+   윗변이 한 줄에 있는데(Figma), 붙는 자리가 다르면 — 탭은 GNB 바로 아래, 카드는 거기서
+   24 더 아래 — 내려 읽는 순간 카드만 한 칸 내려앉습니다. */
+.profile--detail .profile__aside {
+  inset-block-start: var(--profile-sticky-top);
+  max-block-size: calc(100dvh - var(--profile-sticky-top) - var(--spacing-600));
+}
+
 /* GNB 의 말풍선("온라인 매칭 지금 보러 가기")은 GNB 아래로 내려와 떠 있어, 붙어 있는 탭의
    글자를 가립니다. 이 화면에서는 내려 읽는 동안 감춥니다 — 맨 위로 돌아오면 다시 보입니다. */
 body:has(.profile__tabs) .gnb.is-sticky .gnb__tip { display: none; }
