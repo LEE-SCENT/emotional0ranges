@@ -134,6 +134,21 @@
   inset-block-start: calc(var(--profile-sticky-top) + var(--spacing-600));
 }
 .profile__aside .profile-promo { inline-size: 380px; max-inline-size: 100%; }
+/* 화면이 낮으면 카드가 아래에서 잘립니다 — 따라오느라 붙어 있어서, 페이지를 내려도 카드의
+   아래쪽은 끝내 올라오지 않습니다. 오른쪽 단의 키를 화면에 맞추고 그 안에서 굴립니다.
+   위는 붙는 자리, 아래는 같은 만큼(24) 띄웁니다.
+
+   카드가 아니라 단을 굴립니다. 카드만 굴리면 그 아래의 권하는 카드가 설 자리가 없어
+   밀려 나갑니다. */
+.profile__aside {
+  box-sizing: border-box;
+  max-block-size: calc(100dvh - var(--profile-sticky-top) - var(--spacing-600) * 2);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+.profile__aside::-webkit-scrollbar { display: none; }
+.profile__aside > * { flex: none; }
 
 /* 좁은 화면에서만 서는 것들(폼 끝의 권하는 카드와 그 위의 선). */
 .profile__only-narrow { display: none; }
