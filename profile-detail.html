@@ -30,7 +30,7 @@
 <link rel="stylesheet" href="./components/profile-card.css?v=19c13dbf">
 <link rel="stylesheet" href="./components/profile.css?v=6e25ceb6">
 <link rel="stylesheet" href="./components/verify.css?v=43d9233f">
-<link rel="stylesheet" href="./components/confirm.css?v=598089ab">
+<link rel="stylesheet" href="./components/confirm.css?v=fd1a21ba">
 <link rel="stylesheet" href="./components/toast.css?v=447855c2">
 <link rel="stylesheet" href="./components/bottom-cta.css?v=4d73a6db">
 <link rel="stylesheet" href="./components/top-bar.css?v=753a02dd">
@@ -237,6 +237,11 @@
       <button class="btn btn--outlined btn--large" type="button" data-confirm-close><span class="btn__label">계속 작성</span></button>
       <button class="btn btn--filled btn--large" type="button" data-confirm-accept><span class="btn__label">저장하고 나가기</span></button>
     </div>
+    <!-- 버리고 가는 길. 위의 두 버튼보다 물러나 섭니다 — 고친 것이 사라지는 쪽이라, 큰
+         버튼을 아무 생각 없이 눌렀을 때 일어나는 일이 되면 안 됩니다. -->
+    <div class="confirm__more">
+      <button class="btn btn--ghost btn--medium" type="button" data-profile-discard><span class="btn__label">저장하지 않고 나가기</span></button>
+    </div>
   </div>
 </dialog>
 
@@ -263,7 +268,7 @@
   initMyMenus()
   const { initConfirms } = await import('./components/confirm.js?v=f516d2db')
   initConfirms()
-  const { initProfileDetail } = await import('./components/profile-detail.js?v=6feb1c6f')
+  const { initProfileDetail } = await import('./components/profile-detail.js?v=610deaf6')
   initProfileDetail()
   const { initTabs } = await import('./components/tabs.js?v=aec7319a')
   initTabs()

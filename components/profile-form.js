@@ -333,8 +333,8 @@ export function initProfileForm({ form, part, saved, render, afterSave, validate
   }
 
   /* ---- 나가는 길 --------------------------------------------------------
-     고친 것이 남아 있으면 한 번 묻습니다. 버리고 나가는 길은 없습니다 — 물음이
-     "저장하고 나갈까요?" 하나라, 답은 계속 쓰거나 저장하고 나가거나입니다.
+     고친 것이 남아 있으면 한 번 묻습니다. 답은 셋입니다 — 계속 쓰거나, 저장하고
+     나가거나, 저장하지 않고 나가거나.
 
      뒤로 가기만이 아닙니다. GNB 의 메뉴, 로고, 내 메뉴의 항목처럼 이 화면을 떠나는
      링크는 전부 같은 물음을 지납니다 — 저장이 켜져 있는데 어떤 길로는 묻고 어떤 길로는
@@ -377,11 +377,23 @@ export function initProfileForm({ form, part, saved, render, afterSave, validate
     leaving()
   })
 
+  /* 저장하지 않고 나가기. 고친 것과 이 탭에 적어둔 쓰던 것을 버리고 가던 길로 갑니다.
+     버리기로 한 것이라 브라우저도 다시 묻지 않습니다. */
+  let discarding = false
+  document.addEventListener('click', (e) => {
+    const button = e.target.closest('[data-profile-discard]')
+    if (!button || !leaving) return
+    button.closest('dialog')?.close()
+    discarding = true
+    try { sessionStorage.removeItem(draftKey) } catch { /* 남길 곳이 없던 환경입니다. */ }
+    leaving()
+  })
+
   /* 링크가 아닌 길 — 브라우저의 뒤로 가기, 탭 닫기, 주소를 고쳐 떠나기 — 은 우리 창을
      띄울 수 없습니다. 브라우저가 제 물음("사이트를 나가시겠습니까?")을 띄우게 합니다.
      저장했거나 고친 것이 없으면 묻지 않습니다. */
   addEventListener('beforeunload', (e) => {
-    if (!dirty()) return
+    if (discarding || !dirty()) return
     e.preventDefault()
     e.returnValue = ''
   })
