@@ -343,7 +343,18 @@ export function initProfileDetail() {
 
      "지금 보고 있는 구획"은 붙어 있는 탭 아래의 선을 지난 마지막 구획입니다.
      끝까지 내려갔을 때는 마지막 구획입니다 — 한마디는 짧아서 그 선까지 올라오지 못합니다. */
+  /* 방금 고친 구획. 한 화면에 두 구획이 함께 보일 때, 선을 지난 것은 위 구획인데 손이 간
+     것은 아래 구획일 수 있습니다. 그때는 고친 쪽이 지금 구획입니다 — 카드가 위 구획의
+     것으로 남아 있으면 방금 고친 것이 어떻게 보이는지 확인할 수 없습니다.
+     그 구획이 화면에서 완전히 벗어나면 놓아주고, 다시 읽는 자리를 따라갑니다. */
+  let touched = null
+  const visible = (name) => {
+    const box = panels[name].getBoundingClientRect()
+    return box.bottom > tabs.getBoundingClientRect().bottom && box.top < window.innerHeight
+  }
   const current = () => {
+    if (touched && visible(touched)) return touched
+    touched = null
     const end = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2
     if (end && window.scrollY > 0) return TABS.at(-1)
     let found = TABS[0]
@@ -386,8 +397,21 @@ export function initProfileDetail() {
   }
   tabs.addEventListener('click', (e) => {
     const item = e.target.closest('[data-tab]')
-    if (item) go(item.dataset.tab)
+    if (!item) return
+    // 탭을 눌러 가는 것은 읽는 자리를 스스로 옮기는 것이라, 고친 구획을 붙들지 않습니다.
+    touched = null
+    go(item.dataset.tab)
   })
+  // 고치면 그 구획이 지금 구획이 됩니다. 폼이 값을 읽어 카드를 다시 그리기 전에(capture)
+  // 구획부터 옮겨, 카드가 한 번에 맞는 구획의 새 값으로 그려집니다.
+  const touch = (e) => {
+    const name = e.target.closest?.('[data-panel]')?.dataset.panel
+    if (!name) return
+    touched = name
+    activate(name)
+  }
+  form.addEventListener('input', touch, true)
+  form.addEventListener('change', touch, true)
 
   // 주소에 구획이 적혀 있으면 그리로 갑니다. 물음을 다 그린 뒤라야 자리가 맞습니다.
   const asked = location.hash.slice(1)
