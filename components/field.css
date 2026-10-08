@@ -125,7 +125,8 @@
 .text-field--readonly { color: var(--colors-fg-low); }
 .text-field--readonly:focus-within { background: var(--colors-bg-low); box-shadow: none; }
 
-/* 지금은 쓸 수 없는 칸(고정 근무지 없음을 켠 근무지). 바탕까지 물러납니다. */
+/* 지금은 쓸 수 없는 칸(고정 근무지 없음을 켠 근무지). bg-disabled 는 지금 bg-low 와 같은
+   값이라, 쓸 수 없다는 것은 글자색이 말합니다. */
 .text-field:has(:disabled) {
   background: var(--colors-bg-disabled);
   color: var(--colors-fg-lowest);

@@ -189,7 +189,7 @@ CSS에서 `line-height: 150%` 는 **계산된 px 값이 자식에게 상속**됩
 | --- | --- | --- |
 | `bg` | white | `--colors-bg` |
 | `bg-low` | seriousGray 100 | `--colors-bg-low` |
-| `bg-disabled` | seriousGray 50 | `--colors-bg-disabled` |
+| `bg-disabled` | seriousGray 100 | `--colors-bg-disabled` |
 | `bg-transparent` | seriousGray alpha 900/8 | `--colors-bg-transparent` |
 | `bg-brand` | twistOrange 500 | `--colors-bg-brand` |
 | `bg-contrast` | black | `--colors-bg-contrast` |
@@ -864,7 +864,7 @@ Figma 는 이미지를 398×275 로 고정하지만 카드가 그리드 안에�
 | --- | --- | --- |
 | 글자 칸 | `.text-field` | 높이 40(여백 10 + 한 줄 20). 초점이 오면 흰 바탕 + `border-active` 1px |
 | 고칠 수 없는 칸 | `.text-field--readonly` | 본인인증·회사 인증으로 들어온 값. 바탕은 기본(`bg-low`), 글자만 `fg-low` |
-| 쓸 수 없는 칸 | `:disabled` | 바탕 `bg-disabled`, 글자 `fg-lowest` |
+| 쓸 수 없는 칸 | `:disabled` | 바탕 `bg-disabled`(지금은 `bg-low` 와 같은 값), 글자 `fg-lowest` |
 | 고르기 | `.text-field--select` | 진짜 `<select>`. 화살표만 `chevronDown` 으로 바꿉니다 |
 | 긴 글 | `.text-field--area` + `.field__count` | 한마디(100자) |
 | 선택지 | `.choice` | radio·checkbox 공용. 고르면 테두리 1 → 2, `border-active` |

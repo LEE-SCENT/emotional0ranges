@@ -6,7 +6,10 @@
 
       "bg":             { "$value": "{primitive.colors.white}" },
       "bg-low":         { "$value": "{primitive.colors.seriousGray.100}" },
-      "bg-disabled":    { "$value": "{primitive.colors.seriousGray.50}" },
+      "bg-disabled":    {
+        "$value": "{primitive.colors.seriousGray.100}",
+        "$description": "지금 쓸 수 없는 것의 바탕. Figma 변수 semantic/bg-disabled(#F8F6F5)이며 현재 bg-low 와 값이 같습니다 — 쓸 수 없다는 것은 바탕이 아니라 글자색(fg-disabled · fg-lowest)이 말합니다. 역할이 달라 토큰은 따로 둡니다."
+      },
       "bg-transparent": { "$value": "{primitive.colors.seriousGray.alpha900.8}" },
       "bg-brand":       { "$value": "{primitive.colors.twistOrange.500}" },
       "bg-contrast":    { "$value": "{primitive.colors.black}" },

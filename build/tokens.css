@@ -90,7 +90,7 @@
   /* ---- semantic ---- */
   --colors-bg: var(--_colors-white);
   --colors-bg-low: var(--_colors-serious-gray-100);
-  --colors-bg-disabled: var(--_colors-serious-gray-50);
+  --colors-bg-disabled: var(--_colors-serious-gray-100);
   --colors-bg-transparent: var(--_colors-serious-gray-alpha900-8);
   --colors-bg-brand: var(--_colors-twist-orange-500);
   --colors-bg-contrast: var(--_colors-black);

@@ -145,7 +145,7 @@ export const semantic = {
   "colors": {
     "bg": "#FFFFFF",
     "bg-low": "#F8F6F5",
-    "bg-disabled": "#FDFBFA",
+    "bg-disabled": "#F8F6F5",
     "bg-transparent": "#27262514",
     "bg-brand": "#F75D15",
     "bg-contrast": "#000000",
