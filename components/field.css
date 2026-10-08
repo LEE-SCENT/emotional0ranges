@@ -288,7 +288,8 @@
   box-sizing: border-box;
   max-block-size: calc(var(--spacing-1000) * 6);
   margin: 0;
-  padding: var(--spacing-200) 0;
+  /* 좌우를 6 띄웁니다. 올려둔 줄의 바탕이 판 끝까지 차지 않고 안쪽에 둥글게 섭니다. */
+  padding: var(--spacing-200) var(--spacing-150);
   overflow-y: auto;
   overscroll-behavior: contain;
   border-radius: var(--_rounded-l);
@@ -301,7 +302,9 @@
   align-items: baseline;
   justify-content: space-between;
   gap: var(--spacing-300);
-  padding: var(--spacing-250) var(--spacing-300);
+  /* 판의 6 과 더해 글자는 칸 안의 글자와 같은 12 에서 시작합니다. */
+  padding: var(--spacing-250) var(--spacing-150);
+  border-radius: var(--_rounded-m);
   color: var(--colors-fg);
   cursor: pointer;
 }
