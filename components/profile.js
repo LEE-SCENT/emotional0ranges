@@ -158,8 +158,9 @@ export function initProfile() {
      치는 대로 맞는 직업을 아래에 띄웁니다. 고르지 않고 친 대로 두어도 됩니다 —
      목록에 없는 직업도 있습니다.
 
-     ↑↓ 로 옮기고 Enter 로 고르고 Esc 로 닫습니다. 초점은 내내 칸에 남습니다
-     (aria-activedescendant) — 목록으로 초점이 넘어가면 이어서 칠 수 없습니다. */
+     ↑↓ 로 옮기고 Enter 로 고르고 Esc 로 닫습니다. 고르는 동안 초점은 칸에 남습니다
+     (aria-activedescendant) — 목록으로 초점이 넘어가면 이어서 칠 수 없습니다.
+     고르고 나면 초점을 내려놓습니다. */
   const jobInput = $('job-search')
   const jobList = form.querySelector('#job-suggest')
   const jobClear = form.querySelector('[data-job-clear]')
@@ -181,9 +182,11 @@ export function initProfile() {
   }
   const pickJob = (name) => {
     jobInput.value = name
-    closeJobs()
     jobInput.dispatchEvent(new Event('input', { bubbles: true }))
     closeJobs()
+    // 골랐으면 이 칸의 일은 끝났습니다. 초점을 내려놓아 칸이 채워진 모습으로 돌아가고,
+    // 폰에서는 자판이 내려가 고른 것이 카드에 반영된 것이 보입니다.
+    jobInput.blur()
   }
   const suggest = () => {
     const query = jobInput.value.trim()
