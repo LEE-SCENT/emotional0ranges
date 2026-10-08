@@ -9,7 +9,7 @@
  * 몇 명인지 묻습니다. 나가고 저장하는 일은 profile-form.js 가 합니다.
  */
 import { openConfirm } from './confirm.js?v=f516d2db'
-import { cardGrid, cardHeader, cardRow, initProfileForm, load, store } from './profile-form.js?v=02c964e6'
+import { cardGrid, cardHeader, cardRow, initProfileForm, load, store } from './profile-form.js?v=e716fb3b'
 
 /**
  * ⚠️ 예시입니다. 행정구역 전체가 아니라 화면을 맞춰 보는 데 필요한 만큼만 있습니다.
@@ -68,9 +68,9 @@ function facts(profile, draft) {
     cardRow('성별', profile.me.gender),
     cardRow('키', `${draft.height}cm`),
     cardRow('거주지', join(draft['home-sido'], draft['home-gugun']), { wide: true }),
-    cardRow('직업', draft['job-mode'] === 'search'
-      ? draft['job-search'].trim()
-      : draft['job-minor'] || draft['job-major']),
+    // 검색으로 고른 것이거나 분류로 고른 것. 어느 탭을 보고 있는지와는 상관없습니다 —
+    // 탭을 옮긴 것만으로 직업이 사라지지 않습니다.
+    cardRow('직업', draft['job-search'].trim() || draft['job-minor'] || draft['job-major']),
     cardRow('근무지', draft['work-none']
       ? '고정 근무지 없음'
       : join(draft['work-sido'], draft['work-gugun'])),
@@ -96,17 +96,15 @@ function missing(form, draft) {
   const found = []
   const need = (ok, selector, message) => { if (!ok) found.push({ field: at(selector), message }) }
 
-  if (draft['job-mode'] === 'search') {
-    need(draft['job-search'].trim(), '[data-field="job"]', '직업을 선택해 주세요')
+  // 직업은 검색으로 고른 것이 있거나, 분류를 중분류까지 골랐으면 됩니다.
+  if (draft['job-major'] && !draft['job-minor']) {
+    found.push({
+      field: at('[data-field="job"]'),
+      box: form.elements['job-minor'].closest('.text-field'),
+      message: '중분류를 선택해 주세요',
+    })
   } else {
-    need(draft['job-major'], '[data-field="job"]', '직업을 선택해 주세요')
-    if (draft['job-major'] && !draft['job-minor']) {
-      found.push({
-        field: at('[data-field="job"]'),
-        box: form.elements['job-minor'].closest('.text-field'),
-        message: '중분류를 선택해 주세요',
-      })
-    }
+    need(draft['job-search'].trim() || draft['job-minor'], '[data-field="job"]', '직업을 선택해 주세요')
   }
 
   need(draft.married, '[data-field="married"]', '혼인 경험을 선택해 주세요')
@@ -195,7 +193,7 @@ export function initProfile() {
     heightText.textContent = `${draft.height}cm`
     jobClear.hidden = !draft['job-search']
 
-    const search = draft['job-mode'] === 'search'
+    const search = mode === 'search'
     form.querySelector('[data-job-search]').hidden = !search
     form.querySelector('[data-job-category]').hidden = search
 
@@ -264,6 +262,9 @@ export function initProfile() {
   const pickJob = (name) => {
     confirmed = name
     jobInput.value = name
+    // 직업은 하나입니다. 검색으로 골랐으면 분류로 골라둔 것은 내려놓습니다.
+    $('job-major').value = ''
+    syncJob()
     jobInput.dispatchEvent(new Event('input', { bubbles: true }))
     closeJobs()
     // 골랐으면 이 칸의 일은 끝났습니다. 초점을 내려놓아 칸이 채워진 모습으로 돌아가고,
@@ -330,19 +331,36 @@ export function initProfile() {
     jobInput.focus()
   })
 
-  /* 검색 ↔ 카테고리. segmented-control.js 가 고른 칸을 옮기고, 여기서는 어느 쪽이
-     골라졌는지만 폼에 적습니다. */
+  /* ---- 검색 ↔ 카테고리 --------------------------------------------------
+     탭은 직업을 고르는 두 길일 뿐, 답이 아닙니다. 탭을 옮기는 것만으로는 아무것도
+     바뀌지 않습니다 — 고른 직업도, 카드도, 저장할 것이 생겼는지도 그대로입니다.
+     다른 길로 새 직업을 끝까지 골랐을 때에야 앞의 것이 내려갑니다.
+
+     그래서 어느 탭인지는 저장하지 않습니다. 열 때는 값이 든 쪽의 탭이 열립니다. */
+  let mode = !stored['job-search'] && stored['job-major'] ? 'category' : 'search'
   const modes = form.querySelector('[data-job-modes]')
   modes.addEventListener('click', (e) => {
     const item = e.target.closest('[data-job-mode]')
-    if (!item) return
-    $('job-mode').value = item.dataset.jobMode
-    $('job-mode').dispatchEvent(new Event('change', { bubbles: true }))
+    if (!item || item.dataset.jobMode === mode) return
+    mode = item.dataset.jobMode
+    // 대분류만 고르다 만 채로 떠나면 그것은 버립니다. 보이지 않는 탭에 반쯤 고른 것이
+    // 남아 있으면, 저장할 때 보이지도 않는 칸이 빠졌다고 하게 됩니다.
+    if (mode === 'search' && $('job-major').value && !$('job-minor').value) {
+      $('job-major').value = ''
+      syncJob()
+    }
+    form.dispatchEvent(new Event('change'))
+  })
+  // 분류로 중분류까지 골랐으면 검색으로 골라둔 것은 내려놓습니다.
+  $('job-minor').addEventListener('change', () => {
+    if (!$('job-minor').value) return
+    confirmed = ''
+    jobInput.value = ''
   })
 
-  // 저장된 쪽이 고른 칸으로 서 있어야 합니다(segmented-control.js 가 그 칸을 잽니다).
+  // 열릴 탭이 고른 칸으로 서 있어야 합니다(segmented-control.js 가 그 칸을 잽니다).
   for (const item of modes.querySelectorAll('[data-job-mode]')) {
-    const on = item.dataset.jobMode === stored['job-mode']
+    const on = item.dataset.jobMode === mode
     item.classList.toggle('is-selected', on)
     item.setAttribute('aria-selected', String(on))
   }

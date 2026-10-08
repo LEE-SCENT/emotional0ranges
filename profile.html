@@ -213,7 +213,6 @@
         <div class="field" role="group" aria-labelledby="profile-job-label" data-field="job">
           <span class="field__label" id="profile-job-label">직업<span class="field__required" aria-hidden="true"></span><span class="sr-only">필수</span></span>
           <div class="profile__occupation">
-            <input type="hidden" name="job-mode" value="search">
             <div class="segmented segmented--default" role="tablist" aria-label="직업을 찾는 방법" data-job-modes>
               <span class="segmented__thumb" aria-hidden="true"></span>
               <button class="segmented__item is-selected" type="button" role="tab" aria-selected="true" data-job-mode="search">검색</button>
@@ -488,7 +487,7 @@
   initConfirms()
   // segmented 보다 먼저 돕니다. 저장된 쪽(검색·카테고리)을 고른 칸으로 세워둬야
   // 그쪽이 그 칸의 자리를 잽니다.
-  const { initProfile } = await import('./components/profile.js?v=f2180c82')
+  const { initProfile } = await import('./components/profile.js?v=b1df9ea2')
   initProfile()
   const { initSegmentedControls } = await import('./components/segmented-control.js?v=bbd7c4b8')
   initSegmentedControls()
