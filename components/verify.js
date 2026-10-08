@@ -1,5 +1,8 @@
 /**
- * 인증을 요청하는 창 넷 — 본인 / 회사·직업 / 혼인·가족 / 학교.
+ * 서류로 인증을 요청하는 창 셋 — 회사·직업 / 혼인·가족 / 학교.
+ *
+ * 본인 인증은 여기 없습니다. 그쪽은 우리 창이 아니라 본인확인 기관의 창이 뜹니다
+ * (identity-check.js).
  *
  *   <button data-verify-open="company">재인증</button>
  *
@@ -75,23 +78,7 @@ const SITUATIONS = [
   },
 ]
 
-/** 간편인증 수단. 회사·직업의 건강보험 자동 인증과 본인 인증이 같은 목록을 씁니다. */
-const MEANS = ['카카오톡', '네이버', '삼성패스', 'KB모바일', '신한']
-
 const KINDS = {
-  /* 본인 인증. 서류가 아니라 간편인증으로 합니다.
-     ⚠️ 이 창은 Figma 에 없습니다. 회사·직업 인증의 "건강보험 자동 인증" 탭(안내 한 줄 +
-        인증 수단 + 인증하기)을 그대로 빌렸고, 안내 문구는 임시입니다. 실제 본인 인증이
-        어떤 길(간편인증 · 휴대폰 문자)로 붙는지에 따라 달라질 자리입니다. */
-  identity: {
-    title: '본인 인증',
-    means: {
-      lead: '다시 인증하면 이름, 출생연도, 성별이 새로 확인한 정보로 바뀌어요.',
-      label: '인증 수단',
-      options: MEANS,
-      submit: '인증하기',
-    },
-  },
   company: {
     title: '회사·직업 인증',
     /* 길이 둘입니다. 건강보험으로 되면 서류가 필요 없고, 안 되는 사람(사업자·
@@ -100,7 +87,7 @@ const KINDS = {
       tab: '건강보험 자동 인증',
       lead: '회사를 인증하면 같은 회사 사람이 참여한 모임인지 확인할 수 있어요.',
       label: '인증 수단',
-      options: MEANS,
+      options: ['카카오톡', '네이버', '삼성패스', 'KB모바일', '신한'],
       submit: '인증하기',
     },
     tab: '직접 인증',
@@ -251,7 +238,7 @@ function documents(body, { fields, notes: list }) {
   body.replaceChildren(...fields.map(field), ...notes(list))
 }
 
-/** 인증 수단을 고르는 가운데(안내 한 줄 + 수단 하나 고르기). 서류를 내지 않는 인증이 씁니다. */
+/** 인증 수단을 고르는 가운데(안내 한 줄 + 수단 하나 고르기). 건강보험 자동 인증이 씁니다. */
 function meansBody({ lead, label: title, options }) {
   const body = el('div', 'verify__body')
   const means = el('div', 'field')
@@ -354,15 +341,6 @@ function build(kind) {
     initTabs(dialog)
     documents(docs, spec.situations[0])
     show(true)
-  } else if (spec.means) {
-    /* ---- 본인 인증: 수단 하나를 고르면 끝 ---- */
-    submit.querySelector('.btn__label').textContent = spec.means.submit
-    form.append(meansBody(spec.means), submit)
-    form.addEventListener('input', check)
-    form.addEventListener('change', check)
-    dialog.append(form)
-    document.body.append(dialog)
-    check()
   } else {
     documents(body, spec)
     form.append(body, submit)

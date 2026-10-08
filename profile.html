@@ -168,7 +168,8 @@
               <span>본인인증으로 확인된 정보는 직접 수정할 수 없어요</span>
             </p>
           </div>
-          <button class="btn btn--blur btn--medium" type="button" data-verify-open="identity"><span class="btn__label">재인증</span></button>
+          <!-- 본인 인증은 우리 창이 아니라 본인확인 기관의 창이 따로 뜹니다(identity-check.js). -->
+          <button class="btn btn--blur btn--medium" type="button" data-identity-check><span class="btn__label">재인증</span></button>
         </div>
 
         <!-- 여기서부터가 스스로 채우는 칸입니다. 전부 채워야 저장되어 이름표마다 점이 붙습니다.
@@ -522,8 +523,10 @@
   initProfile()
   const { initSegmentedControls } = await import('./components/segmented-control.js?v=bbd7c4b8')
   initSegmentedControls()
-  const { initVerify } = await import('./components/verify.js?v=596c15fb')
+  const { initVerify } = await import('./components/verify.js?v=c73fcebc')
   initVerify()
+  const { initIdentityCheck } = await import('./components/identity-check.js?v=21a9cf52')
+  initIdentityCheck()
   // 고르는 칸(셀렉트·달·날짜)은 고르고 나면 초점을 내려놓습니다.
   const { initFields } = await import('./components/field.js?v=de1ad19d')
   initFields()

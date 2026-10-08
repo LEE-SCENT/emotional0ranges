@@ -1,0 +1,77 @@
+<!doctype html>
+<!-- 본인확인 창이 뜰 자리입니다(임시).
+     실제로는 본인확인 기관(NICE 평가정보)의 창이 이 자리에 뜹니다 — 통신사를 고르고, 이름과
+     생년월일을 넣고, 문자로 받은 번호를 넣는 화면은 전부 그쪽 것입니다. 그 화면을 흉내 내어
+     그리지 않고, 무엇이 뜰 자리인지만 적어둡니다(identity-check.js). -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<title>휴대폰 본인확인 (임시) — 감정적인 오렌지들</title>
+<link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
+<link rel="stylesheet" href="./build/tokens.css?v=7f8d8c25">
+<link rel="stylesheet" href="./components/button.css?v=323be71f">
+<style>
+  body {
+    margin: 0;
+    min-block-size: 100dvh;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-600);
+    padding: var(--spacing-800) var(--spacing-600) var(--spacing-600);
+    background: var(--colors-bg);
+    color: var(--colors-fg);
+    font-family: var(--_font-family-base);
+  }
+  .kicker {
+    align-self: flex-start;
+    margin: 0;
+    padding: var(--spacing-100) var(--spacing-200);
+    border-radius: var(--_rounded-s);
+    background: var(--colors-bg-low);
+    color: var(--colors-fg-low);
+    font-size: var(--typography-body-s-medium-font-size);
+    font-weight: var(--typography-body-s-medium-font-weight);
+    line-height: var(--typography-body-s-medium-line-height);
+  }
+  h1 {
+    margin: 0;
+    font-size: var(--typography-heading-s-semibold-font-size);
+    font-weight: var(--typography-heading-s-semibold-font-weight);
+    line-height: var(--typography-heading-s-semibold-line-height);
+  }
+  p, ol {
+    margin: 0;
+    color: var(--colors-fg-low);
+    font-size: var(--typography-body-m-regular-font-size);
+    line-height: var(--typography-body-m-regular-line-height);
+  }
+  ol { padding-inline-start: var(--spacing-500); display: flex; flex-direction: column; gap: var(--spacing-100); }
+  .actions { margin-block-start: auto; display: flex; flex-direction: column; gap: var(--spacing-200); }
+  .actions .btn { inline-size: 100%; }
+</style>
+
+<p class="kicker">임시 화면</p>
+<h1>이 자리에 휴대폰 본인확인 창이 떠요</h1>
+<p>본인확인 기관(NICE 평가정보)의 창이에요. 아래 순서는 전부 그 창 안에서 진행돼요.</p>
+<ol>
+  <li>이용 중인 통신사 선택</li>
+  <li>이름, 생년월일, 휴대폰 번호 입력</li>
+  <li>문자로 받은 인증번호 입력</li>
+</ol>
+<p>인증이 끝나면 이 창이 닫히고, 프로필의 이름·출생연도·성별이 새로 확인한 정보로 바뀌어요.</p>
+
+<div class="actions">
+  <button class="btn btn--filled btn--large" type="button" data-done><span class="btn__label">인증을 마친 것으로 보고 닫기</span></button>
+  <button class="btn btn--ghost btn--medium" type="button" data-close><span class="btn__label">닫기</span></button>
+</div>
+
+<script type="module">
+  // 끝났다는 소식은 이 창을 연 화면에만 보냅니다(같은 주소).
+  document.querySelector('[data-done]').addEventListener('click', () => {
+    window.opener?.postMessage({ type: 'identity-check:done' }, location.origin)
+    window.close()
+  })
+  document.querySelector('[data-close]').addEventListener('click', () => window.close())
+</script>
