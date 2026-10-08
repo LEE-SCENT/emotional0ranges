@@ -119,15 +119,17 @@
 /* 무엇이든 적히면 아이콘도 글자와 같은 색으로 올라옵니다. */
 .text-field:has(input:not(:placeholder-shown)) .text-field__icon { color: var(--colors-fg); }
 
-/* 고칠 수 없는 칸. 본인인증으로 들어온 값처럼 보여주기만 합니다 — 감추지 않고
-   흐리게 두는 것은, 무엇이 내 프로필에 올라가 있는지는 알아야 하기 때문입니다. */
-.text-field--readonly,
+/* 고칠 수 없는 칸. 본인인증으로 들어온 값처럼 보여주기만 합니다. 바탕은 다른 칸과
+   같고 글자만 한 단계 옅습니다 — 못 쓰는 칸이 아니라 이미 정해진 값이라, 무엇이 내
+   프로필에 올라가 있는지는 또렷이 보여야 합니다. 초점이 와도 테두리가 서지 않습니다. */
+.text-field--readonly { color: var(--colors-fg-low); }
+.text-field--readonly:focus-within { background: var(--colors-bg-low); box-shadow: none; }
+
+/* 지금은 쓸 수 없는 칸(고정 근무지 없음을 켠 근무지). 바탕까지 물러납니다. */
 .text-field:has(:disabled) {
   background: var(--colors-bg-disabled);
-  color: var(--colors-fg-low);
+  color: var(--colors-fg-lowest);
 }
-.text-field:has(:disabled) { color: var(--colors-fg-lowest); }
-.text-field--readonly:focus-within { background: var(--colors-bg-disabled); box-shadow: none; }
 
 /* ---- 고르기 ------------------------------------------------------------
    진짜 <select> 를 그대로 둡니다. 폰에서는 기기의 고르는 판이 뜨고, 키보드로도
