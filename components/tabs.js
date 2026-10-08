@@ -27,6 +27,14 @@ function move(root, animate = true) {
   }
 }
 
+/**
+ * 항목 하나를 켜고 밑줄을 옮깁니다. 누른 것이 아니라 읽어 내려가다 구획이 바뀌었을 때처럼,
+ * 밖에서 어느 항목인지를 정해줄 때 씁니다(profile-detail.js).
+ */
+export function selectTab(root, item) {
+  if (item && !item.classList.contains(ACTIVE)) select(root, item)
+}
+
 function select(root, item) {
   for (const el of root.querySelectorAll('.tabs__item')) {
     const on = el === item

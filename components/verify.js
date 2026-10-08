@@ -19,7 +19,7 @@
 import { showToast } from './toast.js?v=ccb77a07'
 import { lockScroll, unlockScroll } from './scroll-lock.js?v=40a2cd35'
 import { initDialogFocus } from './dialog-focus.js?v=a4704637'
-import { initTabs } from './tabs.js?v=e1b6027e'
+import { initTabs } from './tabs.js?v=aec7319a'
 
 const RECENT = '최근 3개월 이내 발급된 서류만 인정돼요'
 const HIDE_ID = '주민등록번호 뒷자리는 가리고 제출해 주세요.'

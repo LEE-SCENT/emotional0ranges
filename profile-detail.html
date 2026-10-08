@@ -28,7 +28,7 @@
 <link rel="stylesheet" href="./components/tabs.css?v=a962487a">
 <link rel="stylesheet" href="./components/verified-banner.css?v=6f3f1c77">
 <link rel="stylesheet" href="./components/profile-card.css?v=19c13dbf">
-<link rel="stylesheet" href="./components/profile.css?v=b4dd7e48">
+<link rel="stylesheet" href="./components/profile.css?v=6e25ceb6">
 <link rel="stylesheet" href="./components/verify.css?v=43d9233f">
 <link rel="stylesheet" href="./components/confirm.css?v=598089ab">
 <link rel="stylesheet" href="./components/toast.css?v=447855c2">
@@ -130,18 +130,20 @@
 
   <div class="profile__body">
     <form class="profile__form" data-profile-form novalidate>
-      <!-- 한 폼을 넷으로 나눠 봅니다. 어느 탭에서 저장하든 넷이 함께 저장됩니다. -->
-      <div class="tabs profile__tabs" role="tablist" aria-label="상세 프로필" data-profile-tabs>
+      <!-- 네 구획이 한 페이지에 이어집니다. 탭은 화면을 가르는 것이 아니라 구획으로 가는
+           길입니다 — 누르면 그 구획으로 내려가고, 읽어 내려가면 지금 보고 있는 구획의
+           탭이 켜집니다(profile-detail.js). 저장은 하나이고 넷을 함께 저장합니다. -->
+      <nav class="tabs profile__tabs" aria-label="상세 프로필 구획" data-profile-tabs>
         <span class="tabs__thumb" aria-hidden="true"></span>
-        <button class="tabs__item is-active" type="button" role="tab" aria-selected="true" aria-controls="panel-info" data-tab="info">상세 정보</button>
-        <button class="tabs__item" type="button" role="tab" aria-selected="false" aria-controls="panel-life" data-tab="life">라이프</button>
-        <button class="tabs__item" type="button" role="tab" aria-selected="false" aria-controls="panel-values" data-tab="values">가치관</button>
-        <button class="tabs__item" type="button" role="tab" aria-selected="false" aria-controls="panel-words" data-tab="words">한마디</button>
-      </div>
+        <button class="tabs__item is-active" type="button" aria-current="true" data-tab="info">상세 정보</button>
+        <button class="tabs__item" type="button" data-tab="life">라이프</button>
+        <button class="tabs__item" type="button" data-tab="values">가치관</button>
+        <button class="tabs__item" type="button" data-tab="words">한마디</button>
+      </nav>
 
       <!-- 선택지는 profile-detail.js 가 그립니다(QUESTIONS). 여기에는 고르는 것이
            아닌 칸 — 학력과 학교 — 만 적혀 있습니다. -->
-      <div class="profile__panel" id="panel-info" role="tabpanel" data-panel="info">
+      <section class="profile__panel" id="info" aria-label="상세 정보" data-panel="info">
         <div data-q="mbti"></div>
 
         <div class="profile__section">
@@ -184,21 +186,25 @@
         </div>
 
         <div data-q="charms"></div>
-      </div>
+      </section>
 
-      <div class="profile__panel" id="panel-life" role="tabpanel" data-panel="life" hidden></div>
-      <div class="profile__panel" id="panel-values" role="tabpanel" data-panel="values" hidden></div>
+      <hr class="profile__divider">
+      <section class="profile__panel" id="life" aria-label="라이프" data-panel="life"></section>
+      <hr class="profile__divider">
+      <section class="profile__panel" id="values" aria-label="가치관" data-panel="values"></section>
+      <hr class="profile__divider">
 
-      <div class="profile__panel" id="panel-words" role="tabpanel" data-panel="words" hidden>
+      <section class="profile__panel" id="words" aria-label="한마디" data-panel="words">
         <div class="field">
+          <!-- 구획이 이어져 있어, 이 칸에도 다른 물음처럼 이름표가 섭니다. -->
+          <label class="field__label" for="profile-words">한마디</label>
           <div class="text-field text-field--area">
-            <!-- 이 칸에는 이름표가 없어(탭 이름이 대신합니다) 안내 문구가 무엇을 쓸지까지 말합니다. -->
-            <textarea name="words" maxlength="100" aria-label="한마디" aria-describedby="profile-words-count"
+            <textarea id="profile-words" name="words" maxlength="100" aria-describedby="profile-words-count"
                       placeholder="어떤 사람인지, 어떤 만남을 기대하는지 적어 보세요"></textarea>
           </div>
           <p class="field__count" id="profile-words-count"><b data-words-count>0</b>/100</p>
         </div>
-      </div>
+      </section>
 
       <!-- 넓은 화면의 저장. 읽어 내려가는 동안 화면 아래에 붙어 따라오다가, 폼의 끝에 닿으면
            제자리에 섭니다(profile.css). 좁은 화면에서는 아래의 bottom-cta 가 대신합니다. -->
@@ -257,13 +263,13 @@
   initMyMenus()
   const { initConfirms } = await import('./components/confirm.js?v=f516d2db')
   initConfirms()
-  const { initProfileDetail } = await import('./components/profile-detail.js?v=d97ea83d')
+  const { initProfileDetail } = await import('./components/profile-detail.js?v=17f2d096')
   initProfileDetail()
-  const { initTabs } = await import('./components/tabs.js?v=e1b6027e')
+  const { initTabs } = await import('./components/tabs.js?v=aec7319a')
   initTabs()
   const { initSegmentedControls } = await import('./components/segmented-control.js?v=bbd7c4b8')
   initSegmentedControls()
-  const { initVerify } = await import('./components/verify.js?v=a625d654')
+  const { initVerify } = await import('./components/verify.js?v=9290816a')
   initVerify()
   // 고르는 칸(셀렉트·달·날짜)은 고르고 나면 초점을 내려놓습니다.
   const { initFields } = await import('./components/field.js?v=de1ad19d')

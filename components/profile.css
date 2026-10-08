@@ -308,7 +308,11 @@ body:has(.profile__tabs) .gnb.is-sticky .gnb__tip { display: none; }
   flex-direction: column;
   gap: var(--spacing-800);
 }
-.profile__panel[hidden] { display: none; }
+/* 탭을 눌러 내려왔을 때 구획의 첫 줄이 붙어 있는 탭 뒤로 들어가지 않게, 붙는 자리와
+   탭의 키(48)만큼, 그리고 숨 쉴 틈(20)만큼 위를 비웁니다. */
+.profile__panel {
+  scroll-margin-block-start: calc(var(--profile-sticky-top) + var(--spacing-1200) + var(--spacing-500));
+}
 
 /* ---- 알림 --------------------------------------------------------------
    이 화면에서는 알림이 위에서 뜹니다. 아래에는 저장이 붙어 있어(넓은 화면은 폼의 단,

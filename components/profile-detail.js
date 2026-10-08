@@ -8,10 +8,11 @@
  * 마크업에 적어두면 선택지 하나를 고칠 때 폼과 카드 두 군데를 찾아 고치게 됩니다.
  * 여기서 폼을 그리고, 같은 목록으로 카드도 그립니다.
  *
- * 탭은 넷이고 저장은 하나입니다 — 탭은 한 폼을 나눠 보는 것일 뿐이라, 어느 탭에서
- * 저장하든 네 탭의 것이 함께 저장됩니다.
+ * 구획은 넷(상세 정보 · 라이프 · 가치관 · 한마디)이고 한 페이지에 이어집니다. 탭은
+ * 구획으로 가는 길이고, 저장은 하나라 넷이 함께 저장됩니다.
  */
 import { cardGrid, cardHeader, cardRow, el, initProfileForm } from './profile-form.js?v=a86f3f27'
+import { selectTab } from './tabs.js?v=aec7319a'
 
 /**
  * 물음 하나.
@@ -293,7 +294,7 @@ export function initProfileDetail() {
     prepare: (values) => drawStatuses(values['edu-level'] ?? ''),
     render(profile, draft) {
       sync(draft)
-      // 옆 단의 카드는 지금 보고 있는 탭의 것, 미리보기 창에는 넷이 나란히 섭니다.
+      // 옆 단의 카드는 지금 보고 있는 구획의 것, 미리보기 창에는 넷이 나란히 섭니다.
       aside.replaceChildren(...card(profile, draft, tab))
       for (const node of previews) node.replaceChildren(...card(profile, draft, node.dataset.profileCard))
     },
@@ -324,40 +325,62 @@ export function initProfileDetail() {
     radio.dispatchEvent(new Event('change', { bubbles: true }))
   })
 
-  const showTab = (name) => {
-    tab = name
-    for (const [key, panel] of Object.entries(panels)) panel.hidden = key !== tab
-    for (const button of tabs.querySelectorAll('[data-tab]')) {
-      button.setAttribute('aria-selected', String(button.dataset.tab === tab))
+  /* ---- 탭 = 구획으로 가는 길 ---------------------------------------------
+     네 구획이 한 페이지에 이어져 있습니다. 탭을 누르면 그 구획으로 내려가고, 읽어
+     내려가면 지금 보고 있는 구획의 탭이 켜집니다. 옆 단의 카드도 그 구획의 것으로
+     바뀝니다.
+
+     "지금 보고 있는 구획"은 붙어 있는 탭 아래의 선을 지난 마지막 구획입니다.
+     끝까지 내려갔을 때는 마지막 구획입니다 — 한마디는 짧아서 그 선까지 올라오지 못합니다. */
+  const current = () => {
+    const end = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2
+    if (end && window.scrollY > 0) return TABS.at(-1)
+    let found = TABS[0]
+    for (const name of TABS) {
+      // 선은 구획이 위에 비워두는 자리(scroll-margin)의 끝입니다. 탭을 눌러 내려오면 구획이
+      // 정확히 그 자리에 서므로, 눌러서 온 구획이 곧 지금 구획이 됩니다.
+      const margin = parseFloat(getComputedStyle(panels[name]).scrollMarginTop) || 0
+      if (panels[name].getBoundingClientRect().top <= margin + 1) found = name
     }
+    return found
+  }
+  const activate = (name) => {
+    if (name === tab) return
+    tab = name
+    selectTab(tabs, tabs.querySelector(`[data-tab="${name}"]`))
+    // 어느 구획인지를 주소에 적어둡니다(#values). 새로고침해도 보던 구획으로 돌아오고, 그
+    // 구획을 가리키는 링크도 됩니다. 뒤로 가기에 한 칸씩 쌓이지 않도록 갈아 끼웁니다.
+    history.replaceState(null, '', `#${tab}`)
     refresh()
+  }
+
+  /* 눌러서 내려가는 동안에는 지나가는 구획의 탭이 차례로 켜지지 않게 잠급니다. 누른 탭이
+     이미 켜져 있는데, 가는 길에 다른 탭이 깜빡이면 어디로 가는지가 흐려집니다. */
+  let travelling = false
+  const arrive = () => { travelling = false; activate(current()) }
+  let ticking = false
+  addEventListener('scroll', () => {
+    if (travelling || ticking) return
+    ticking = true
+    requestAnimationFrame(() => { ticking = false; if (!travelling) activate(current()) })
+  }, { passive: true })
+  addEventListener('scrollend', arrive)
+
+  const go = (name, behavior = 'smooth') => {
+    travelling = behavior === 'smooth'
+    activate(name)
+    panels[name].scrollIntoView({ behavior, block: 'start' })
+    // scrollend 가 없는 브라우저, 이미 그 자리라 굴러가지 않는 때를 위해.
+    if (travelling) setTimeout(arrive, 800)
   }
   tabs.addEventListener('click', (e) => {
     const item = e.target.closest('[data-tab]')
-    if (!item) return
-    /* 탭이 위에 붙어 있는 동안(아래까지 내려와 있는 동안) 탭을 옮기면 새 판의 처음으로
-       올려줍니다. 그대로 두면 앞 판을 읽던 깊이에서 새 판의 가운데가 열립니다. */
-    const pinned = parseFloat(getComputedStyle(tabs).top) || 0
-    const stuck = tabs.getBoundingClientRect().top <= pinned + 1
-    showTab(item.dataset.tab)
-    if (stuck) window.scrollTo({ top: form.getBoundingClientRect().top + window.scrollY - pinned })
-    // 어느 탭인지를 주소에 적어둡니다(#values). 새로고침해도 보던 탭으로 돌아오고, 그 탭을
-    // 가리키는 링크도 됩니다. 뒤로 가기에 탭마다 한 칸씩 쌓이지 않도록 갈아 끼웁니다.
-    history.replaceState(null, '', `#${tab}`)
+    if (item) go(item.dataset.tab)
   })
 
-  /* 주소에 탭이 적혀 있으면 그 탭에서 시작합니다. 밑줄은 tabs.js 가 is-active 인 항목을
-     재서 그리므로(이 뒤에 돕니다), 눌린 것처럼 그 표시까지 옮겨둡니다. */
+  // 주소에 구획이 적혀 있으면 그리로 갑니다. 물음을 다 그린 뒤라야 자리가 맞습니다.
   const asked = location.hash.slice(1)
-  if (asked !== tab && TABS.includes(asked)) {
-    for (const button of tabs.querySelectorAll('[data-tab]')) {
-      const on = button.dataset.tab === asked
-      button.classList.toggle('is-active', on)
-      if (on) button.setAttribute('aria-current', 'true')
-      else button.removeAttribute('aria-current')
-    }
-    showTab(asked)
-  }
+  if (asked !== tab && TABS.includes(asked)) requestAnimationFrame(() => go(asked, 'instant'))
 
   // 미리보기 창은 지금 보고 있는 탭의 카드부터 보여줍니다.
   document.getElementById('profile-preview')?.addEventListener('profile-preview:open', (e) => {
