@@ -176,10 +176,8 @@ export function cardGrid(rows) {
  * @param {(profile: object) => void} [options.afterSave]
  * @param {(draft: object) => Array<{ field: Element, message: string }>} [options.validate]
  *   저장하기 전에 빠진 것을 찾습니다. 돌려준 것마다 그 칸 아래에 말이 섭니다.
- * @param {(field: Element) => void} [options.reveal]
- *   빠진 첫 칸으로 가기 전에 돕니다. 그 칸이 감춰져 있으면(다른 탭) 드러내는 자리입니다.
  */
-export function initProfileForm({ form, part, saved, render, afterSave, validate, reveal }) {
+export function initProfileForm({ form, part, saved, render, afterSave, validate }) {
   const profile = load()
   write(form, profile[part] ?? {})
 
@@ -230,7 +228,6 @@ export function initProfileForm({ form, part, saved, render, afterSave, validate
     warned = missing.length > 0
     if (jump && warned) {
       const first = missing[0].field
-      reveal?.(first)
       // 미끄러지지 않고 바로 갑니다. 방금 누른 저장에 대한 대답이라, 가는 동안을 보여줄
       // 것이 아니라 어디가 빠졌는지가 곧장 보여야 합니다.
       // 칸에서 눈에 보이는 첫 것으로 초점이 갑니다(감춰진 탭의 것은 건너뜁니다).
