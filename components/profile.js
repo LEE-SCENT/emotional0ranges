@@ -50,7 +50,13 @@ function fill(select, values, placeholder) {
 function chain(parent, child, table, placeholders = []) {
   fill(parent, Object.keys(table), placeholders[0])
   const sync = () => fill(child, table[parent.value] ?? [], placeholders[1])
-  parent.addEventListener('change', sync)
+  /* 앞 칸을 바꾸면 뒤 칸은 비웁니다. 새 목록의 첫 것으로 조용히 바꿔두면 고르지도 않은
+     구가 골라진 채 저장되고, 이름이 같은 것(서울 중구 · 인천 중구)이 그대로 남아 있으면
+     바뀐 줄도 모릅니다. */
+  parent.addEventListener('change', () => {
+    sync()
+    if (placeholders[1]) child.value = ''
+  })
   sync()
   return sync
 }
@@ -85,7 +91,8 @@ function facts(profile, draft) {
  * 빠진 것을 찾습니다. 기본 프로필은 전부 채워야 합니다 — 매칭과 추천이 이 값들로
  * 돌아가서, 하나가 비면 그 사람은 조건에 걸리지도 빠지지도 않는 채로 남습니다.
  *
- * 키·거주지·회사는 늘 값이 있고, 근무지는 "고정 근무지 없음"도 답이라 묻지 않습니다.
+ * 키·회사는 늘 값이 있습니다. 거주지와 근무지는 구까지 골라야 하고, 근무지는
+ * "고정 근무지 없음"도 답입니다.
  * 고르면 딸린 것이 생기는 칸(혼인신고 경험 → 기간, 자녀 있음 → 수·양육)은 그 딸린
  * 것까지가 답입니다.
  *
@@ -95,6 +102,12 @@ function missing(form, draft) {
   const at = (selector) => form.querySelector(selector)
   const found = []
   const need = (ok, selector, message) => { if (!ok) found.push({ field: at(selector), message }) }
+
+  // 시/도를 바꾸면 구가 비워집니다. 다시 골라야 답입니다.
+  need(draft['home-gugun'], '[data-field="home-gugun"]', '시/군/구를 선택해 주세요')
+  if (!draft['work-none']) {
+    need(draft['work-gugun'], '[data-field="work-gugun"]', '시/군/구를 선택해 주세요')
+  }
 
   // 직업은 검색으로 고른 것이 있거나, 분류를 중분류까지 골랐으면 됩니다.
   if (draft['job-major'] && !draft['job-minor']) {
@@ -124,8 +137,8 @@ export function initProfile() {
   if (!form) return
   const $ = (name) => form.elements[name]
 
-  const syncHome = chain($('home-sido'), $('home-gugun'), REGIONS)
-  const syncWork = chain($('work-sido'), $('work-gugun'), REGIONS)
+  const syncHome = chain($('home-sido'), $('home-gugun'), REGIONS, [null, '시/군/구'])
+  const syncWork = chain($('work-sido'), $('work-gugun'), REGIONS, [null, '시/군/구'])
   const syncJob = chain($('job-major'), $('job-minor'), JOBS, ['대분류', '중분류'])
 
   /* 저장된 값의 시/도·대분류를 먼저 넣고 뒤 칸의 목록을 그에 맞춥니다. 뒤 칸의 값은

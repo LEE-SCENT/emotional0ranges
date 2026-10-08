@@ -150,7 +150,9 @@
 }
 .profile__workplace > .field-row { grid-area: selects; }
 .profile__workplace > .field__help { grid-area: help; }
-.profile__workplace > .profile__check { grid-area: check; }
+/* 위에 맞춥니다. 구 아래에 빠졌다는 말이 서면 줄이 길어지는데, 그때 체크박스가 가운데로
+   내려오지 않습니다. */
+.profile__workplace > .profile__check { grid-area: check; align-self: start; }
 
 /* ---- 키 ---------------------------------------------------------------
    숫자를 치게 하지 않습니다. 한두 칸은 ± 로, 멀리는 막대로 옮깁니다 — 키는 대개

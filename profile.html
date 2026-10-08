@@ -27,7 +27,7 @@
 <link rel="stylesheet" href="./components/choice.css?v=526620f2">
 <link rel="stylesheet" href="./components/verified-banner.css?v=6f3f1c77">
 <link rel="stylesheet" href="./components/profile-card.css?v=19c13dbf">
-<link rel="stylesheet" href="./components/profile.css?v=cab03d0b">
+<link rel="stylesheet" href="./components/profile.css?v=5b319bc1">
 <link rel="stylesheet" href="./components/tabs.css?v=a962487a">
 <link rel="stylesheet" href="./components/verify.css?v=43d9233f">
 <link rel="stylesheet" href="./components/confirm.css?v=598089ab">
@@ -195,13 +195,17 @@
         <div class="field" role="group" aria-labelledby="profile-home-label">
           <span class="field__label" id="profile-home-label">거주지<span class="field__required" aria-hidden="true"></span><span class="sr-only">필수</span></span>
           <div class="field-row">
-            <div class="text-field text-field--select">
-              <select name="home-sido" aria-label="거주지 시·도"></select>
-              <svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg>
+            <div class="field">
+              <div class="text-field text-field--select">
+                <select name="home-sido" aria-label="거주지 시·도"></select>
+                <svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg>
+              </div>
             </div>
-            <div class="text-field text-field--select">
-              <select name="home-gugun" aria-label="거주지 시·군·구"></select>
-              <svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg>
+            <div class="field" data-field="home-gugun">
+              <div class="text-field text-field--select">
+                <select name="home-gugun" aria-label="거주지 시·군·구"></select>
+                <svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg>
+              </div>
             </div>
           </div>
         </div>
@@ -254,13 +258,17 @@
           <span class="field__label" id="profile-work-label">근무지<span class="field__required" aria-hidden="true"></span><span class="sr-only">필수</span></span>
           <div class="profile__workplace">
             <div class="field-row">
-              <div class="text-field text-field--select">
-                <select name="work-sido" aria-label="근무지 시·도"></select>
-                <svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg>
+              <div class="field">
+                <div class="text-field text-field--select">
+                  <select name="work-sido" aria-label="근무지 시·도"></select>
+                  <svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg>
+                </div>
               </div>
-              <div class="text-field text-field--select">
-                <select name="work-gugun" aria-label="근무지 시·군·구"></select>
-                <svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg>
+              <div class="field" data-field="work-gugun">
+                <div class="text-field text-field--select">
+                  <select name="work-gugun" aria-label="근무지 시·군·구"></select>
+                  <svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg>
+                </div>
               </div>
             </div>
             <p class="field__help">회사원은 직장 위치, 사업자는 사업장 위치, 프리랜서는 주 활동 지역 ㅡ 구 단위까지</p>
@@ -495,7 +503,7 @@
   initConfirms()
   // segmented 보다 먼저 돕니다. 저장된 쪽(검색·카테고리)을 고른 칸으로 세워둬야
   // 그쪽이 그 칸의 자리를 잽니다.
-  const { initProfile } = await import('./components/profile.js?v=ac0a1bf6')
+  const { initProfile } = await import('./components/profile.js?v=106c218e')
   initProfile()
   const { initSegmentedControls } = await import('./components/segmented-control.js?v=bbd7c4b8')
   initSegmentedControls()
