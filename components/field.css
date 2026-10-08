@@ -285,6 +285,7 @@
 
 /* ---- 치는 대로 뜨는 목록 --------------------------------------------------
    칸 바로 아래에 붙어 뜹니다. 칸과 폭이 같아 어느 칸의 목록인지가 자리로 드러납니다.
+   직업 검색의 자동완성과, 마우스가 있는 기기의 셀렉트(field.js)가 함께 씁니다.
    ⚠️ Figma 에 이 목록이 없습니다(직업 검색은 빈 칸과 채운 칸만 그려져 있습니다).
       판의 생김새는 내 메뉴(my-menu.css)에서, 줄은 본문 14 에서 가져왔습니다. 그림자도
       그쪽과 같은 원시값입니다. */
@@ -324,6 +325,16 @@
 }
 .text-field__suggest li:hover,
 .text-field__suggest li[aria-selected='true'] { background: var(--colors-bg-low); }
+/* 셀렉트의 판에서 지금 골라져 있는 줄. 오른쪽에 체크가 붙습니다. */
+.text-field__suggest li svg {
+  flex: none;
+  align-self: center;
+  inline-size: var(--icon-size-s);
+  block-size: var(--icon-size-s);
+}
+/* 판이 열려 있는 동안 화살표가 뒤집힙니다. */
+.text-field--select:has(select[aria-expanded='true']) > svg { rotate: 180deg; }
+
 /* 맞는 것이 없을 때의 한 줄. 고를 수 있는 것이 아니라 올려도 바탕이 서지 않습니다. */
 .text-field__suggest li.is-empty,
 .text-field__suggest li.is-empty:hover {
