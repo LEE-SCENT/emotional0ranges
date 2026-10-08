@@ -32,9 +32,11 @@ const SAMPLE = {
     height: '175',
     'home-sido': '서울',
     'home-gugun': '강남구',
-    'job-mode': 'category',
+    // 직업은 검색이 먼저입니다. 제 직업의 이름은 대개 알고 있고, 분류는 그 이름이
+    // 목록에 없을 때 가는 길입니다.
+    'job-mode': 'search',
     'job-search': '',
-    'job-major': 'IT/개발/기획',
+    'job-major': '',
     'job-minor': '',
     'work-sido': '서울',
     'work-gugun': '강남구',
