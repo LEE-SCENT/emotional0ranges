@@ -192,7 +192,9 @@
       <div class="profile__panel" id="panel-words" role="tabpanel" data-panel="words" hidden>
         <div class="field">
           <div class="text-field text-field--area">
-            <textarea name="words" maxlength="100" aria-label="한마디" aria-describedby="profile-words-count"></textarea>
+            <!-- 이 칸에는 이름표가 없어(탭 이름이 대신합니다) 안내 문구가 무엇을 쓸지까지 말합니다. -->
+            <textarea name="words" maxlength="100" aria-label="한마디" aria-describedby="profile-words-count"
+                      placeholder="어떤 사람인지, 어떤 만남을 기대하는지 적어 보세요"></textarea>
           </div>
           <p class="field__count" id="profile-words-count"><b data-words-count>0</b>/100</p>
         </div>
