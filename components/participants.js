@@ -17,7 +17,7 @@
  */
 
 import { PRODUCTS, peopleOf, peopleSummary } from './products.js?v=a3d5fd4b'
-import { currentProduct } from './product.js?v=397c4b1c'
+import { currentProduct } from './product.js?v=e8c97a14'
 import { openConfirm } from './confirm.js?v=f516d2db'
 import { dateAfter, dayText } from './schedule.js?v=a9e9003f'
 

@@ -23,6 +23,10 @@
       "fg-critical":    { "$value": "{primitive.colors.accentRed.500}" },
 
       "border":         { "$value": "{primitive.colors.seriousGray.300}" },
+      "border-active":  {
+        "$value": "{primitive.colors.seriousGray.900}",
+        "$description": "고른 것의 테두리. 프로필 폼의 선택지처럼 여럿 가운데 지금 켜진 것을 테두리 굵기와 이 색으로 말합니다. Figma 변수 semantic/border-active(#272625) 입니다."
+      },
       "divider":        {
         "$value": "{primitive.colors.seriousGray.300}",
         "$description": "구획을 나누는 선. 현재 border 와 값이 같지만 역할이 달라 별도 토큰입니다 — 테두리와 구분선의 농도를 따로 조정할 때 여기만 바꾸면 됩니다."

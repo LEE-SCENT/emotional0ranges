@@ -137,6 +137,33 @@
   .confirm:not([open]) .confirm__panel { scale: 1; }
 }
 
+/* ---- 아래에 붙는 창 ------------------------------------------------------
+   폼을 쓰다가 뜨는 물음(저장하고 나갈까요?)은 좁은 화면에서 아래에 붙습니다.
+   방금 누른 저장·뒤로가 화면 아래쪽에 있었고, 답도 그 손가락이 닿는 자리에서
+   고르게 됩니다. 넓은 화면에서는 다른 묻는 창과 같이 가운데에 뜹니다.
+*/
+
+@media (max-width: 960px) {
+  .confirm--sheet {
+    align-items: flex-end;
+    padding: 0;
+  }
+  .confirm--sheet .confirm__panel {
+    max-inline-size: none;
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+    /* 홈 표시줄이 있는 기기에서는 그만큼 더 띄웁니다. */
+    padding-block-end: calc(var(--_confirm-padding) + env(safe-area-inset-bottom));
+  }
+  .confirm--sheet:not([open]) .confirm__panel { scale: 1; translate: 0 16px; }
+  .confirm--sheet .confirm__panel {
+    transition: translate var(--_duration-base) var(--_easing-standard);
+  }
+  @starting-style {
+    .confirm--sheet[open] .confirm__panel { scale: 1; translate: 0 16px; }
+  }
+}
+
 /* ---- 읽고 닫는 창 --------------------------------------------------------
    묻지 않고 알려주기만 하는 창입니다(환불 정책 같은 것). 고를 것이 없으므로 아래
    버튼 줄 대신 오른쪽 위에 닫기 하나만 둡니다.

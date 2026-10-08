@@ -1,0 +1,86 @@
+/**
+ * VerifiedBanner — 서류로 확인하는 정보의 지금 상태.
+ *
+ *   <!-- 인증 전: 권하는 띠 -->
+ *   <div class="verified-banner">
+ *     <svg class="verified-banner__icon" aria-hidden="true"><use href="#icon-infoCircle"></use></svg>
+ *     <p class="verified-banner__text"><b>학교 인증</b><span>학교 정보를 인증할 수 있어요</span></p>
+ *     <button class="btn btn--outlined btn--medium" type="button"><span class="btn__label">인증하기</span></button>
+ *   </div>
+ *
+ *   <!-- 인증 후: 확인된 사실 -->
+ *   <div class="verified-banner verified-banner--done">
+ *     <div class="verified-banner__box">
+ *       <svg class="verified-banner__icon" aria-hidden="true"><use href="#icon-verifiedUserFilled"></use></svg>
+ *       <p class="verified-banner__text"><b>회사 인증 완료</b></p>
+ *     </div>
+ *     <button class="btn btn--blur btn--medium" type="button"><span class="btn__label">재인증</span></button>
+ *   </div>
+ *
+ * 둘은 무게가 다릅니다. 인증 전에는 따뜻한 바탕에 버튼이 안에 들어 있어 띠 전체가
+ * 권유로 읽히고, 인증 후에는 흰 상자에 테두리만 남아 사실 하나로 물러납니다 —
+ * 다시 하는 길(재인증)은 상자 밖으로 나와 옅어집니다.
+ */
+
+.verified-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-200);
+  box-sizing: border-box;
+  padding: var(--spacing-250) var(--spacing-300);
+  border-radius: var(--_rounded-l);
+  background: var(--_colors-casual-neutral-50);
+  font-family: var(--_font-family-base);
+}
+
+.verified-banner__icon {
+  flex: none;
+  inline-size: var(--icon-size-s);
+  block-size: var(--icon-size-s);
+  color: var(--colors-fg-low);
+}
+
+.verified-banner__text {
+  flex: 1 1 0;
+  min-inline-size: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-50);
+  margin: 0;
+}
+.verified-banner__text b {
+  color: var(--colors-fg);
+  font-size: var(--typography-body-m-regular-font-size);
+  font-weight: var(--typography-body-m-regular-font-weight);
+  line-height: var(--typography-body-m-regular-line-height);
+}
+.verified-banner__text span {
+  color: var(--colors-fg-low);
+  font-size: var(--typography-body-s-regular-font-size);
+  font-weight: var(--typography-body-s-regular-font-weight);
+  line-height: var(--typography-body-s-regular-line-height);
+}
+.verified-banner .btn { flex: none; }
+
+/* ---- 인증 후 ------------------------------------------------------------ */
+
+.verified-banner--done {
+  gap: var(--spacing-150);
+  padding: 0;
+  border-radius: 0;
+  background: none;
+}
+.verified-banner__box {
+  flex: 1 1 0;
+  min-inline-size: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-200);
+  box-sizing: border-box;
+  padding: var(--spacing-250) var(--spacing-300);
+  border-radius: var(--_rounded-l);
+  background: var(--colors-bg);
+  box-shadow: inset 0 0 0 1px var(--colors-border);
+}
+.verified-banner--done .verified-banner__icon { color: var(--colors-fg-brand); }
+.verified-banner--done .verified-banner__text span { color: var(--colors-fg-lower); }

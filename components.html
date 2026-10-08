@@ -22,7 +22,7 @@
       href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@600&display=swap">
 <noscript><link rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@600&display=swap"></noscript>
-<link rel="stylesheet" href="./build/tokens.css?v=49f18cab">
+<link rel="stylesheet" href="./build/tokens.css?v=d0966026">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=323be71f">
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
@@ -34,7 +34,7 @@
 <link rel="stylesheet" href="./components/tag.css?v=fef5c195">
 <link rel="stylesheet" href="./components/product-card.css?v=85b7c185">
 <link rel="stylesheet" href="./components/app-bar.css?v=1129f720">
-<link rel="stylesheet" href="./components/toast.css?v=b4c60081">
+<link rel="stylesheet" href="./components/toast.css?v=447855c2">
 <link rel="stylesheet" href="./components/participants.css?v=3d11ed3c">
 <style>
   body { margin:0; padding:24px; background:var(--colors-bg); color:var(--colors-fg);
@@ -508,7 +508,7 @@
 </article>
 
 <script type="module">
-document.getElementById('sprite').innerHTML = await (await fetch('./build/icons.svg?v=1e45ff1a')).text()
+document.getElementById('sprite').innerHTML = await (await fetch('./build/icons.svg?v=4a0d8096')).text()
 const ic = '<svg class="btn__icon" aria-hidden="true"><use href="#icon-chevronRight"></use></svg>'
 const btn = (cls, size) => `<button class="btn btn--${cls} btn--${size}"><span class="btn__label">Button</span>${ic}</button>`
 const iconOnly = (cls, size, badge) => `<button class="btn btn--${cls} btn--${size} btn--icon-only" aria-label="다음">${ic}${badge ? '<span class="badge btn__badge"></span>' : ''}</button>`

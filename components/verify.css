@@ -1,0 +1,173 @@
+/**
+ * Verify — 서류로 인증을 요청하는 창.
+ *
+ *   <button data-verify-open="school">인증하기</button>
+ *
+ *   import { initVerify } from './components/verify.js'
+ *   initVerify()
+ *
+ * 창은 verify.js 가 그립니다(회사·직업 / 혼인·가족 / 학교). 셋은 받는 서류가 다를
+ * 뿐 생김새가 같습니다 — 제목, 받는 칸들, 선, 유의사항, 요청 버튼.
+ *
+ * 넓은 화면에서는 가운데에 뜨고, 좁은 화면에서는 아래에서 올라옵니다(Figma 의
+ * components/bottomSheet). 칸이 많은 창이라 좁은 화면에서는 가운데만 굴러가고,
+ * 제목과 요청 버튼은 제자리에 남습니다.
+ *
+ * 시트(sheet.css)를 그대로 쓰지 않은 것은 그쪽이 일정 목록에 맞춰져 있어서입니다.
+ * 크기와 색은 같은 토큰(--_sheet-*)을 씁니다.
+ */
+
+.verify {
+  box-sizing: border-box;
+  inline-size: 100%;
+  max-inline-size: 100%;
+  block-size: 100dvh;
+  max-block-size: 100dvh;
+  margin: 0;
+  padding: var(--spacing-500);
+  border: 0;
+  background: none;
+  overflow: clip;
+  align-items: center;
+  justify-content: center;
+}
+.verify[open] { display: flex; }
+.verify::backdrop { background: var(--_sheet-backdrop); }
+
+.verify__panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--_sheet-gap);
+  box-sizing: border-box;
+  inline-size: 100%;
+  max-inline-size: var(--_sheet-modal-width);
+  max-block-size: 100%;
+  padding: var(--_sheet-padding-block) var(--_sheet-modal-padding-inline)
+    var(--_sheet-padding-block-end);
+  border-radius: var(--_sheet-rounded);
+  background: var(--_sheet-bg);
+  box-shadow: var(--_confirm-shadow);
+  font-family: var(--_font-family-base);
+}
+.verify__panel:focus { outline: none; }
+
+.verify__title {
+  margin: 0;
+  /* 오른쪽 위 닫기(56) 자리만큼 물러납니다. */
+  padding-inline-end: var(--spacing-1000);
+  color: var(--colors-fg);
+  font-size: var(--typography-heading-xs-semibold-font-size);
+  font-weight: var(--typography-heading-xs-semibold-font-weight);
+  line-height: var(--typography-heading-xs-semibold-line-height);
+}
+.verify__close {
+  position: absolute;
+  inset-block-start: var(--spacing-400);
+  inset-inline-end: var(--spacing-200);
+}
+.verify__close.btn--ghost { color: var(--colors-fg); }
+
+/* 굴러가는 가운데. 칸이 창 높이를 넘을 때만 굴러갑니다. */
+.verify__body {
+  flex: 1 1 auto;
+  min-block-size: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-400);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.verify__body[hidden] { display: none; }
+/* 내 상황에 따라 갈아 끼우는 칸들. */
+.verify__fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-400);
+}
+
+/* 탭 둘이 폭을 반씩 나눠 씁니다. 제목과의 사이는 창의 간격(24)보다 좁은 8 입니다 —
+   탭은 제목에 딸린 것이라 붙어 섭니다. */
+.verify .tabs { gap: 0; margin-block: calc(var(--spacing-400) * -1) calc(var(--spacing-200) * -1); }
+.verify .tabs__item {
+  flex: 1 1 0;
+  border: 0;
+  background: none;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.verify__lead {
+  margin: 0;
+  color: var(--colors-fg-low);
+  font-size: var(--typography-body-m-regular-font-size);
+  line-height: var(--typography-body-m-regular-line-height);
+}
+
+/* 서류 하나(이름 → 발급일 → 파일). 딸린 칸들은 이름표와 같은 8 로 붙습니다. */
+.verify__doc { gap: var(--spacing-200); }
+
+.verify__divider {
+  flex: none;
+  margin: 0;
+  border: 0;
+  block-size: 1px;
+  background: var(--colors-divider);
+}
+
+.verify__notes {
+  margin: 0;
+  /* 점 목록의 들여쓰기 18 (Figma). spacing 에 18 이 없어 16 + 2 로 냅니다. */
+  padding-inline-start: calc(var(--spacing-400) + var(--spacing-50));
+  color: var(--colors-fg-low);
+  font-size: var(--typography-body-s-regular-font-size);
+  line-height: var(--typography-body-s-regular-line-height);
+}
+
+.verify__submit { flex: none; inline-size: 100%; }
+
+/* ---- 여닫기 ------------------------------------------------------------ */
+
+.verify,
+.verify::backdrop {
+  transition:
+    opacity var(--_duration-base) var(--_easing-standard),
+    display var(--_duration-base) allow-discrete,
+    overlay var(--_duration-base) allow-discrete;
+}
+.verify__panel { transition: translate var(--_duration-base) var(--_easing-standard); }
+.verify,
+.verify::backdrop { opacity: 0; }
+.verify[open],
+.verify[open]::backdrop { opacity: 1; }
+.verify:not([open]) .verify__panel { translate: 0 16px; }
+@starting-style {
+  .verify[open],
+  .verify[open]::backdrop { opacity: 0; }
+  .verify[open] .verify__panel { translate: 0 16px; }
+}
+
+/* ---- 좁은 화면 ---------------------------------------------------------- */
+
+@media (max-width: 960px) {
+  .verify {
+    align-items: flex-end;
+    padding: 0;
+  }
+  .verify__panel {
+    max-inline-size: none;
+    /* 위로 뒤 화면이 조금 남아야 무엇 위에 뜬 것인지 보입니다. */
+    max-block-size: 92dvh;
+    padding-inline: var(--_sheet-padding-inline);
+    padding-block-end: calc(var(--_sheet-padding-block-end) + env(safe-area-inset-bottom));
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .verify,
+  .verify::backdrop,
+  .verify__panel { transition: none; }
+  .verify:not([open]) .verify__panel { translate: none; }
+}

@@ -37,10 +37,10 @@ const cssMs = (name) =>
 
 /**
  * @param {string} text  한 줄 또는 두 줄까지의 문구.
- * @param {{ icon?: string, tone?: 'accent' | 'critical' }} [options]
+ * @param {{ icon?: string, tone?: 'accent' | 'success' | 'critical' }} [options]
  *   icon — 스프라이트의 아이콘 id(`#icon-favoriteFilled`). 없으면 글자만 뜹니다.
- *   tone — 아이콘 색. accent 는 브랜드색(잘 된 일), critical 은 붉은색(뜻대로 되지
- *          않은 일). 없으면 글자와 같은 흰색입니다.
+ *   tone — 아이콘 색. accent 는 브랜드색(찜), success 는 초록(저장처럼 잘 된 일),
+ *          critical 은 붉은색(뜻대로 되지 않은 일). 없으면 글자와 같은 흰색입니다.
  */
 export function showToast(text, { icon, tone } = {}) {
   const host = ensureRegion()

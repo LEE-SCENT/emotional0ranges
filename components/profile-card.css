@@ -1,0 +1,283 @@
+/**
+ * ProfileCard — 상대에게 보이는 내 모습 한 장.
+ *
+ *   <article class="profile-card">
+ *     <header class="profile-card__header">
+ *       <h2 class="profile-card__name">김땡땡</h2>
+ *       <p class="profile-card__birth">1991년생 · 36세</p>
+ *       <div class="profile-card__tags"><span class="tag tag--accent-pri">…</span></div>
+ *       <img class="profile-card__symbol" src="./images/profile-card-symbol.svg" alt="">
+ *     </header>
+ *     <dl class="profile-card__grid"> <div><dt>성별</dt><dd>남성</dd></div> … </dl>
+ *   </article>
+ *
+ * 프로필을 고치는 화면에서 오른쪽에 붙어 따라옵니다. 폼에서 무엇을 고르면 저장
+ * 전이라도 그 자리에서 바뀝니다 — 내가 고른 것이 상대에게 어떻게 보일지는 저장한
+ * 뒤가 아니라 고르는 동안 알아야 합니다.
+ *
+ * 좁은 화면에는 옆자리가 없어, 위의 "프로필 미리보기"가 같은 카드를 창으로 띄웁니다
+ * (.profile-preview).
+ */
+
+.profile-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-800);
+  box-sizing: border-box;
+  /* ⚠️ 380 × 520 은 Figma 의 고정 크기입니다. 변수로 없어 프레임에서 읽었습니다.
+     내용이 넘치면 카드가 아래로 자랍니다(min). */
+  inline-size: 380px;
+  max-inline-size: 100%;
+  min-block-size: 520px;
+  padding: var(--spacing-600) var(--spacing-500);
+  border-radius: var(--_rounded-2xl);
+  background: var(--colors-bg);
+  box-shadow: inset 0 0 0 1px var(--colors-border);
+  color: var(--colors-fg);
+  font-family: var(--_font-family-base);
+}
+/* 상세 프로필의 카드는 머리와 내용 사이에 선이 서서, 간격이 한 단계 좁습니다. */
+.profile-card--detail { gap: var(--spacing-600); }
+
+.profile-card__header {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-300);
+}
+.profile-card__who {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-50);
+  /* 오른쪽 위 심볼(52) 자리만큼 이름이 물러납니다. */
+  padding-inline-end: calc(52px + var(--spacing-300));
+}
+.profile-card__name {
+  margin: 0;
+  font-size: var(--typography-display-s-semibold-font-size);
+  font-weight: var(--typography-display-s-semibold-font-weight);
+  line-height: var(--typography-display-s-semibold-line-height);
+  letter-spacing: var(--typography-display-s-semibold-letter-spacing);
+}
+.profile-card__birth {
+  margin: 0;
+  color: var(--colors-fg-low);
+  font-size: var(--typography-body-m-regular-font-size);
+  font-weight: var(--typography-body-m-regular-font-weight);
+  line-height: var(--typography-body-m-regular-line-height);
+}
+.profile-card__symbol {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+}
+.profile-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-100);
+}
+/* 인증한 것이 하나도 없으면 줄째 빠집니다. 빈 줄이 남으면 머리 아래가 12 더 뜹니다. */
+.profile-card__tags:empty { display: none; }
+
+.profile-card__divider {
+  margin: 0;
+  border: 0;
+  block-size: 1px;
+  background: var(--colors-divider-low);
+}
+
+/* ---- 내용 --------------------------------------------------------------
+   이름표(12) 아래 값(14). 둘씩 나란히 서고, 긴 것(거주지·혼인 경험·자녀)은 한 줄을
+   다 씁니다. */
+.profile-card__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--spacing-400) var(--spacing-500);
+  margin: 0;
+}
+.profile-card__grid > div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-100);
+  min-inline-size: 0;
+}
+.profile-card__grid > .is-wide { grid-column: 1 / -1; }
+.profile-card dt {
+  font-size: var(--typography-body-s-regular-font-size);
+  font-weight: var(--typography-body-s-regular-font-weight);
+  line-height: var(--typography-body-s-regular-line-height);
+}
+.profile-card dd {
+  margin: 0;
+  font-size: var(--typography-body-m-regular-font-size);
+  font-weight: var(--typography-body-m-regular-font-weight);
+  line-height: var(--typography-body-m-regular-line-height);
+  overflow-wrap: anywhere;
+}
+
+/* ---- 상세 프로필 -------------------------------------------------------- */
+
+.profile-card__detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-400);
+}
+.profile-card__kicker {
+  margin: 0;
+  color: var(--colors-fg-brand);
+  font-size: var(--typography-body-s-regular-font-size);
+  font-weight: var(--typography-body-s-regular-font-weight);
+  line-height: var(--typography-body-s-regular-line-height);
+}
+.profile-card__detail .profile-card__grid { gap: var(--spacing-400) var(--spacing-500); }
+
+/* 고른 것들. 사진 위에 얹히는 tag 와 같은 것이지만 흰 카드 위라 바탕이 불투명한
+   옅은 회색입니다 — 흐릴 뒤가 없습니다. */
+.profile-card__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-100);
+}
+.profile-card__chips .tag {
+  background: var(--colors-bg-low);
+  backdrop-filter: none;
+  /* 문장으로 된 선택지는 카드 폭을 넘습니다. */
+  white-space: normal;
+}
+
+.profile-card__mbti {
+  display: block;
+  font-size: var(--typography-heading-m-semibold-font-size);
+  font-weight: var(--typography-heading-m-semibold-font-weight);
+  line-height: var(--typography-heading-m-semibold-line-height);
+}
+.profile-card__mbti-desc {
+  display: block;
+  color: var(--colors-fg-low);
+  font-size: var(--typography-body-s-regular-font-size);
+  font-weight: var(--typography-body-s-regular-font-weight);
+  line-height: var(--typography-body-s-regular-line-height);
+}
+
+/* 한마디. 고른 것이 아니라 스스로 쓴 글이라, 이 카드에서 여기만 서체가 다릅니다.
+   ⚠️ Figma 는 Nanum Myeongjo Bold 20/130% 인데 이 서체가 저장소에 없고 변수로도
+      묶여 있지 않습니다. 서체를 들여오기 전까지는 기기의 명조 계열로 떨어집니다. */
+.profile-card__words {
+  margin: 0;
+  font-family: 'Nanum Myeongjo', 'NanumMyeongjo', 'AppleMyungjo', 'Batang', serif;
+  font-weight: 700;
+  font-size: var(--typography-body-xl-medium-font-size);
+  line-height: 1.3;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* ---- 상세 프로필을 권하는 카드 -------------------------------------------
+   기본 프로필만 쓴 사람에게 다음 걸음을 보여줍니다. 상세 프로필을 한 번이라도
+   저장하면 사라집니다. */
+.profile-promo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-300);
+  box-sizing: border-box;
+  padding: var(--spacing-400) var(--spacing-500);
+  border-radius: var(--_rounded-2xl);
+  background: var(--colors-bg-low);
+  font-family: var(--_font-family-base);
+}
+.profile-promo__text {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-50);
+}
+.profile-promo__text b {
+  color: var(--colors-fg);
+  font-size: var(--typography-body-m-medium-font-size);
+  font-weight: var(--typography-body-m-medium-font-weight);
+  line-height: var(--typography-body-m-medium-line-height);
+}
+.profile-promo__text span {
+  color: var(--colors-fg-low);
+  font-size: var(--typography-body-s-regular-font-size);
+  line-height: var(--typography-body-s-regular-line-height);
+}
+
+/* ---- 미리보기 창 --------------------------------------------------------
+   좁은 화면에서 카드를 띄우는 창입니다. 카드가 화면 가운데에 서고, 닫기는 카드
+   아래에 동그랗게 섭니다 — 카드 안에 닫기를 두면 그것까지 상대에게 보이는 모습처럼
+   읽힙니다.
+
+   상세 프로필은 탭마다 카드가 한 장이라 옆으로 넘깁니다. 옆 장의 끝이 살짝 보여
+   더 있다는 것을 알립니다. */
+.profile-preview {
+  box-sizing: border-box;
+  inline-size: 100%;
+  max-inline-size: 100%;
+  block-size: 100dvh;
+  max-block-size: 100dvh;
+  margin: 0;
+  padding: var(--spacing-500) 0;
+  border: 0;
+  background: none;
+  overflow: clip;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-300);
+}
+.profile-preview[open] { display: flex; }
+.profile-preview::backdrop { background: var(--_confirm-backdrop); }
+
+.profile-preview__track {
+  display: flex;
+  align-items: stretch;
+  gap: var(--spacing-300);
+  box-sizing: border-box;
+  inline-size: 100%;
+  min-block-size: 0;
+  /* 카드 한 장이 가운데 서도록 양옆을 비웁니다. 카드는 화면보다 40 좁습니다. */
+  padding-inline: var(--spacing-500);
+  overflow-x: auto;
+  overscroll-behavior: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.profile-preview__track::-webkit-scrollbar { display: none; }
+.profile-preview__track .profile-card {
+  flex: none;
+  inline-size: min(380px, 100%);
+  /* 화면이 낮으면 카드 안에서 굴립니다. 닫기(48)와 위아래 여백을 뺀 만큼입니다. */
+  min-block-size: 0;
+  block-size: min(520px, 100dvh - 140px);
+  overflow-y: auto;
+  scroll-snap-align: center;
+  box-shadow: none;
+}
+/* 한 장뿐이면 가운데에 세웁니다. */
+.profile-preview__track:has(.profile-card:only-child) { justify-content: center; }
+
+.profile-preview:focus { outline: none; }
+
+.profile-preview,
+.profile-preview::backdrop {
+  transition:
+    opacity var(--_duration-base) var(--_easing-standard),
+    display var(--_duration-base) allow-discrete,
+    overlay var(--_duration-base) allow-discrete;
+}
+.profile-preview,
+.profile-preview::backdrop { opacity: 0; }
+.profile-preview[open],
+.profile-preview[open]::backdrop { opacity: 1; }
+@starting-style {
+  .profile-preview[open],
+  .profile-preview[open]::backdrop { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .profile-preview,
+  .profile-preview::backdrop { transition: none; }
+}

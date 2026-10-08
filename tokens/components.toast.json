@@ -18,6 +18,11 @@
         "$value": "{primitive.colors.accentRed.500}",
         "$description": "실패·마감처럼 뜻대로 되지 않은 일의 아이콘. Figma 변수 components/toast/fg-critical(#FF383C) 입니다. 글자는 흰색 그대로 두고 아이콘만 붉습니다 — 문장까지 붉히면 띠 전체가 경고가 되어, 읽기 전에 무엇이 잘못됐는지부터 겁먹게 됩니다."
       },
+      "fgSuccess": {
+        "$type": "color",
+        "$value": "{semantic.colors.fg-success}",
+        "$description": "저장처럼 뜻대로 된 일의 체크. 찜의 브랜드색 하트와 달리 무엇을 좋아한다는 뜻이 없는, 그냥 됐다는 표시입니다."
+      },
       "rounded": {
         "$type": "dimension",
         "$value": "{primitive.rounded.m}",

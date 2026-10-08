@@ -1,0 +1,263 @@
+<!doctype html>
+<!-- 상세 프로필 — 마이 > 상세 프로필.
+     탭 넷(상세 정보 · 라이프 · 가치관 · 한마디)으로 나눠 고르고, 오른쪽 카드는 지금
+     보고 있는 탭의 것을 보여줍니다(profile-detail.js). -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- Safari 는 숫자 나열을 전화번호로 보고 스스로 링크를 겁니다. -->
+<meta name="format-detection" content="telephone=no">
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<link rel="mask-icon" href="./favicon.svg" color="#F75D15">
+<meta name="theme-color" content="#FFFFFF">
+<title>상세 프로필 — 감정적인 오렌지들</title>
+<link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
+<link rel="stylesheet" href="./build/tokens.css?v=d0966026">
+<link rel="stylesheet" href="./components/container.css?v=2407269a">
+<link rel="stylesheet" href="./components/badge.css?v=daa79c09">
+<link rel="stylesheet" href="./components/button.css?v=323be71f">
+<link rel="stylesheet" href="./components/gnb.css?v=d585826e">
+<link rel="stylesheet" href="./components/segmented-control.css?v=027af639">
+<link rel="stylesheet" href="./components/tooltip.css?v=7ec024df">
+<link rel="stylesheet" href="./components/my-menu.css?v=59a441fb">
+<link rel="stylesheet" href="./components/tag.css?v=fef5c195">
+<link rel="stylesheet" href="./components/checkbox.css?v=67340959">
+<link rel="stylesheet" href="./components/field.css?v=b9086553">
+<link rel="stylesheet" href="./components/choice.css?v=526620f2">
+<link rel="stylesheet" href="./components/tabs.css?v=a962487a">
+<link rel="stylesheet" href="./components/verified-banner.css?v=6f3f1c77">
+<link rel="stylesheet" href="./components/profile-card.css?v=39f3027f">
+<link rel="stylesheet" href="./components/profile.css?v=10a480d7">
+<link rel="stylesheet" href="./components/verify.css?v=43d9233f">
+<link rel="stylesheet" href="./components/confirm.css?v=598089ab">
+<link rel="stylesheet" href="./components/toast.css?v=447855c2">
+<link rel="stylesheet" href="./components/bottom-cta.css?v=4d73a6db">
+<link rel="stylesheet" href="./components/top-bar.css?v=753a02dd">
+<style>
+  body {
+    margin: 0;
+    background: var(--colors-bg);
+    color: var(--colors-fg);
+    font-family: var(--_font-family-base);
+  }
+  /* 화면에는 안 보이지만 스크린리더는 읽는 텍스트 */
+  .sr-only {
+    position: absolute; inline-size: 1px; block-size: 1px;
+    margin: -1px; padding: 0; overflow: hidden; white-space: nowrap;
+    clip-path: inset(50%);
+  }
+</style>
+
+<div id="sprite" hidden></div>
+
+<!-- 다른 화면과 같은 GNB 입니다. 좁은 화면에서는 아래 topBar 가 대신합니다(top-bar.css). -->
+<header class="gnb">
+  <div class="gnb__inner">
+    <div class="gnb__side gnb__side--start">
+      <a class="gnb__logo" href="./index.html" aria-label="감정적인 오렌지들 홈">
+        <svg width="126" height="40" role="img" aria-label="emotional oranges"><use href="#logo-eo"></use></svg>
+      </a>
+    </div>
+    <div class="gnb__center">
+      <div class="gnb__segmented">
+        <!-- 지금 열려 있는 것은 오프라인뿐입니다. 온라인은 자리만 잡아두고, 아래
+             말풍선이 그리로 가는 길을 알립니다 — 눌러도 아무 데도 가지 않는 칸을
+             다른 칸과 같은 무게로 두면 이미 열린 것으로 읽힙니다. -->
+        <div class="segmented" role="tablist" aria-label="모임 형태">
+          <span class="segmented__thumb" aria-hidden="true"></span>
+          <button class="segmented__item is-selected" role="tab" aria-selected="true">오프라인</button>
+          <button class="segmented__item" role="tab" aria-selected="false" aria-disabled="true">온라인</button>
+        </div>
+        <div class="tooltip tooltip--bottom gnb__tip">
+          <span class="tooltip__label">온라인 매칭 지금 보러 가기</span>
+        </div>
+      </div>
+      <nav class="gnb__menu" aria-label="주요 메뉴">
+        <a class="btn btn--ghost btn--medium" href="./meetups.html"><span class="btn__label">모임</span></a>
+        <a class="btn btn--ghost btn--medium" href="./matching.html"><span class="btn__label">매칭</span></a>
+        <button class="btn btn--ghost btn--medium"><span class="btn__label">모임 후기</span></button>
+        <button class="btn btn--ghost btn--medium"><span class="btn__label">자주 묻는 질문</span></button>
+        <button class="btn btn--ghost btn--medium"><span class="btn__label">저널</span></button>
+      </nav>
+    </div>
+    <div class="gnb__side gnb__side--end">
+      <div class="gnb__actions">
+        <!-- 로그인하지 않았을 때만 남습니다. 로그인한 사람에게는 아래 목록이
+             누구인지 말하고 있어 my-menu.js 가 이 버튼을 지웁니다. -->
+        <button class="btn btn--blur btn--medium gnb__login" type="button">
+          <span class="btn__label">로그인</span>
+        </button>
+        <button class="btn btn--ghost btn--medium btn--icon-only gnb__notify" aria-label="알림">
+          <svg class="btn__icon" aria-hidden="true"><use href="#icon-notifications"></use></svg>
+          <!-- 읽지 않은 것이 있을 때만 점이 붙습니다(my-menu.js) — 목록의 알림 줄과
+               같은 값에서 나옵니다. -->
+        </button>
+        <!-- 내 메뉴. GNB 가운데 줄의 메뉴가 서비스를 둘러보는 길이라면, 여기는
+             내 프로필·결제·설정처럼 나에게만 해당하는 것들이 섭니다(my-menu.js). -->
+        <div class="my-menu" data-my-menu>
+          <button class="btn btn--blur btn--medium btn--icon-only" type="button"
+                  data-my-menu-open aria-label="내 메뉴 열기"
+                  aria-expanded="false" aria-controls="my-menu-panel" aria-haspopup="true">
+            <svg class="btn__icon" aria-hidden="true"><use href="#icon-menu"></use></svg>
+          </button>
+          <div class="my-menu__panel" id="my-menu-panel" role="menu" aria-label="내 메뉴" tabindex="-1" hidden></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- 좁은 화면에서 GNB 를 대신합니다(profile.html 과 같습니다). -->
+<header class="top-bar top-bar--page">
+  <a class="btn btn--ghost btn--medium btn--icon-only" data-back data-profile-leave="back" href="./my.html" aria-label="뒤로">
+    <svg class="btn__icon" aria-hidden="true"><use href="#icon-arrowBack"></use></svg>
+  </a>
+  <button class="btn btn--outlined btn--medium" type="button" data-profile-preview-open>
+    <span class="btn__label">프로필 미리보기</span>
+  </button>
+</header>
+
+<main class="container profile profile--detail has-bottom-cta">
+  <header class="profile__header">
+    <a class="btn btn--blur btn--medium btn--icon-only" data-back data-profile-leave="back" href="./my.html" aria-label="뒤로">
+      <svg class="btn__icon" aria-hidden="true"><use href="#icon-arrowBack"></use></svg>
+    </a>
+    <div class="profile__title">
+      <h1>상세 프로필</h1>
+    </div>
+  </header>
+
+  <div class="profile__body">
+    <form class="profile__form" data-profile-form novalidate>
+      <!-- 한 폼을 넷으로 나눠 봅니다. 어느 탭에서 저장하든 넷이 함께 저장됩니다. -->
+      <div class="tabs profile__tabs" role="tablist" aria-label="상세 프로필" data-profile-tabs>
+        <span class="tabs__thumb" aria-hidden="true"></span>
+        <button class="tabs__item is-active" type="button" role="tab" aria-selected="true" aria-controls="panel-info" data-tab="info">상세 정보</button>
+        <button class="tabs__item" type="button" role="tab" aria-selected="false" aria-controls="panel-life" data-tab="life">라이프</button>
+        <button class="tabs__item" type="button" role="tab" aria-selected="false" aria-controls="panel-values" data-tab="values">가치관</button>
+        <button class="tabs__item" type="button" role="tab" aria-selected="false" aria-controls="panel-words" data-tab="words">한마디</button>
+      </div>
+
+      <!-- 선택지는 profile-detail.js 가 그립니다(QUESTIONS). 여기에는 고르는 것이
+           아닌 칸 — 학력과 학교 — 만 적혀 있습니다. -->
+      <div class="profile__panel" id="panel-info" role="tabpanel" data-panel="info">
+        <div data-q="mbti"></div>
+
+        <div class="profile__section">
+          <div class="field" role="group" aria-labelledby="profile-edu-label">
+            <span class="field__label" id="profile-edu-label">학력 · 학적 상태</span>
+            <div class="choice-group" role="radiogroup" aria-label="학력">
+              <label class="choice"><input type="radio" name="edu-level" value="고등학교"><span>고등학교</span></label>
+              <label class="choice"><input type="radio" name="edu-level" value="전문대"><span>전문대</span></label>
+              <label class="choice"><input type="radio" name="edu-level" value="대학교"><span>대학교</span></label>
+              <label class="choice"><input type="radio" name="edu-level" value="석사"><span>석사</span></label>
+              <label class="choice"><input type="radio" name="edu-level" value="박사"><span>박사</span></label>
+            </div>
+            <div class="choice-group" role="radiogroup" aria-label="학적 상태" data-edu-status hidden></div>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="profile-school">학교</label>
+            <div class="profile__with-check">
+              <div class="text-field">
+                <input id="profile-school" type="text" name="school" placeholder="학교명 입력" autocomplete="off">
+              </div>
+              <label class="profile__check">
+                <span class="checkbox">
+                  <input type="checkbox" name="school-public">
+                  <span class="checkbox__box" aria-hidden="true"><svg><use href="#icon-check"></use></svg></span>
+                </span>
+                프로필에 정보 공개
+              </label>
+            </div>
+          </div>
+
+          <div class="verified-banner">
+            <svg class="verified-banner__icon" aria-hidden="true"><use href="#icon-infoCircle"></use></svg>
+            <p class="verified-banner__text">
+              <b>학교 인증</b>
+              <span>학교 정보를 인증할 수 있어요</span>
+            </p>
+            <button class="btn btn--outlined btn--medium" type="button" data-verify-open="school"><span class="btn__label">인증하기</span></button>
+          </div>
+        </div>
+
+        <div data-q="charms"></div>
+      </div>
+
+      <div class="profile__panel" id="panel-life" role="tabpanel" data-panel="life" hidden></div>
+      <div class="profile__panel" id="panel-values" role="tabpanel" data-panel="values" hidden></div>
+
+      <div class="profile__panel" id="panel-words" role="tabpanel" data-panel="words" hidden>
+        <div class="field">
+          <div class="text-field text-field--area">
+            <textarea name="words" maxlength="100" aria-label="한마디" aria-describedby="profile-words-count"></textarea>
+          </div>
+          <p class="field__count" id="profile-words-count"><b data-words-count>0</b>/100</p>
+        </div>
+      </div>
+
+      <button class="btn btn--filled btn--large profile__save" type="submit" data-profile-save disabled>
+        <span class="btn__label">저장</span>
+      </button>
+    </form>
+
+    <aside class="profile__aside" aria-label="프로필 카드 미리보기">
+      <article class="profile-card profile-card--detail" data-profile-card></article>
+    </aside>
+  </div>
+</main>
+
+<div class="bottom-cta">
+  <button class="btn btn--filled btn--large" type="button" data-profile-save disabled>
+    <span class="btn__label">저장</span>
+  </button>
+</div>
+
+<!-- 고친 것이 남은 채 뒤로 나가려 할 때 -->
+<dialog class="confirm confirm--sheet" id="profile-leave" aria-labelledby="profile-leave-title">
+  <div class="confirm__panel">
+    <div class="confirm__text">
+      <h2 id="profile-leave-title">저장하지 않은 변경사항이 있어요<br>저장하고 나갈까요?</h2>
+    </div>
+    <div class="confirm__actions">
+      <button class="btn btn--outlined btn--large" type="button" data-confirm-close><span class="btn__label">계속 작성</span></button>
+      <button class="btn btn--filled btn--large" type="button" data-confirm-accept><span class="btn__label">저장하고 나가기</span></button>
+    </div>
+  </div>
+</dialog>
+
+<!-- 좁은 화면의 프로필 미리보기. 카드는 옆 단의 것과 같은 것을 그립니다. -->
+<dialog class="profile-preview" id="profile-preview" aria-label="프로필 미리보기">
+  <div class="profile-preview__track">
+    <article class="profile-card profile-card--detail" data-profile-card="info"></article>
+    <article class="profile-card profile-card--detail" data-profile-card="life"></article>
+    <article class="profile-card profile-card--detail" data-profile-card="values"></article>
+    <article class="profile-card profile-card--detail" data-profile-card="words"></article>
+  </div>
+  <button class="btn btn--blur btn--medium btn--icon-only is-on" type="button" data-profile-preview-close aria-label="닫기">
+    <svg class="btn__icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+  </button>
+</dialog>
+
+<script type="module">
+  document.getElementById('sprite').innerHTML =
+    await (await fetch('./build/icons.svg?v=4a0d8096')).text() + await (await fetch('./build/logo.svg?v=0adc0440')).text()
+  await import('./components/scroll-restore.js?v=f612a7a5')
+  const { initStickyGnb } = await import('./components/gnb.js?v=ca09b963')
+  initStickyGnb()
+  const { initMyMenus } = await import('./components/my-menu.js?v=e1871d34')
+  initMyMenus()
+  const { initConfirms } = await import('./components/confirm.js?v=f516d2db')
+  initConfirms()
+  const { initProfileDetail } = await import('./components/profile-detail.js?v=c82c4166')
+  initProfileDetail()
+  const { initTabs } = await import('./components/tabs.js?v=e1b6027e')
+  initTabs()
+  const { initSegmentedControls } = await import('./components/segmented-control.js?v=bbd7c4b8')
+  initSegmentedControls()
+  const { initVerify } = await import('./components/verify.js?v=a625d654')
+  initVerify()
+  // 고친 것이 남아 있으면 profile-form.js 가 먼저 받아 한 번 묻습니다.
+  const { initBack } = await import('./components/back.js?v=c6d259cc')
+  initBack()
+</script>

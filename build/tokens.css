@@ -105,6 +105,7 @@
   --colors-fg-success: var(--_colors-accent-green-400);
   --colors-fg-critical: var(--_colors-accent-red-500);
   --colors-border: var(--_colors-serious-gray-300);
+  --colors-border-active: var(--_colors-serious-gray-900);
   --colors-divider: var(--_colors-serious-gray-300);
   --colors-divider-low: var(--_colors-serious-gray-200);
   --icon-size-2xs: calc(var(--_dimension) * 3);
@@ -362,6 +363,7 @@
   --_toast-fg: var(--_colors-white);
   --_toast-fg-accent: var(--_colors-twist-orange-500);
   --_toast-fg-critical: var(--_colors-accent-red-500);
+  --_toast-fg-success: var(--colors-fg-success);
   --_toast-rounded: var(--_rounded-m);
   --_toast-icon-size: calc(var(--_dimension) * 5);
   --_toast-width: 390px;

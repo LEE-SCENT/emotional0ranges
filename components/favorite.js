@@ -28,7 +28,7 @@
  * 것을 손을 떼고 나서야 확인하게 됩니다.
  */
 
-import { showToast } from './toast.js?v=e8593860'
+import { showToast } from './toast.js?v=ccb77a07'
 import { openConfirm } from './confirm.js?v=f516d2db'
 
 const ICON = { on: '#icon-favoriteFilled', off: '#icon-favorite' }

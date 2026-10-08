@@ -843,6 +843,93 @@ Figma 는 이미지를 398×275 로 고정하지만 카드가 그리드 안에�
 
 3열 그리드에서 헤더가 1열, 항목 셋이 나머지 2열을 나눠 씁니다. 960px 이하에서는 세로로 쌓입니다.
 
+### Field · Choice — 프로필 폼의 칸과 선택지
+
+기본 프로필([profile.html](profile.html))과 상세 프로필([profile-detail.html](profile-detail.html))이
+함께 씁니다. Figma `기본, 상세 프로필` 섹션(node `102:35611`)에서 왔습니다.
+
+```html
+<div class="field">
+  <label class="field__label" for="school">학교</label>
+  <div class="text-field"><input id="school" type="text" placeholder="학교명 입력"></div>
+  <p class="field__help">…</p>
+</div>
+
+<div class="choice-group choice-group--cols-4" data-max="3">
+  <label class="choice"><input type="checkbox" name="hobbies" value="봉사활동"><span>봉사활동</span></label>
+</div>
+```
+
+| | 클래스 | 메모 |
+| --- | --- | --- |
+| 글자 칸 | `.text-field` | 높이 40(여백 10 + 한 줄 20). 초점이 오면 흰 바탕 + `border-active` 1px |
+| 고칠 수 없는 칸 | `.text-field--readonly` | 본인인증·회사 인증으로 들어온 값 |
+| 고르기 | `.text-field--select` | 진짜 `<select>`. 화살표만 `chevronDown` 으로 바꿉니다 |
+| 긴 글 | `.text-field--area` + `.field__count` | 한마디(100자) |
+| 선택지 | `.choice` | radio·checkbox 공용. 고르면 테두리 1 → 2, `border-active` |
+| 칸 수 | `.choice-group--cols-2/3/4` | 960 이하에서 4·3 → 2, 2 → 1. `--pair`(MBTI)만 2 유지 |
+| 한도 | `data-max` | 채우면 고르지 않은 나머지가 잠깁니다(`profile-form.js`) |
+
+`semantic/border-active`(seriousGray 900)가 이 폼과 함께 들어왔습니다.
+
+### ProfileCard · VerifiedBanner
+
+```html
+<article class="profile-card" data-profile-card></article>          <!-- 기본 -->
+<article class="profile-card profile-card--detail" …></article>     <!-- 상세: 머리 아래 선 -->
+```
+
+카드 안은 `profile.js` / `profile-detail.js` 가 폼의 **저장 전 값**으로 그립니다. 넓은 화면에서는
+폼 오른쪽에 붙어 따라오고, 960 이하에서는 topBar 의 `프로필 미리보기`가 같은 카드를
+`.profile-preview` 창으로 띄웁니다(상세 프로필은 탭마다 한 장씩 옆으로 넘깁니다).
+
+`.verified-banner` 는 인증 전(따뜻한 바탕 + 안쪽 `인증하기`), `--done` 은 인증 후(흰 상자 +
+바깥 `재인증`)입니다.
+
+**저장과 나가기**(Figma `프로필 저장 및 이동 정책`)는 `profile-form.js` 한 곳에 있습니다.
+
+| | 동작 |
+| --- | --- |
+| 저장 | 토스트(`toast--success`). 고친 것이 없으면 저장 버튼이 잠겨 있습니다 |
+| 상세 프로필 권유 | 저장 토스트가 사라진 뒤, 상세 프로필 미작성 + 노출 이력 없음일 때 한 번 |
+| 고친 채 뒤로 | `저장하고 나가기` / `계속 작성` |
+| 고친 채 상세 프로필로 | `저장하고 이동` / `계속 작성` |
+
+묻는 창은 `.confirm--sheet` 로 960 이하에서 화면 아래에 붙습니다.
+
+### Verify — 서류 인증 창
+
+```html
+<button data-verify-open="company">재인증</button>   <!-- company · family · school -->
+```
+
+```js
+import { initVerify } from './components/verify.js'
+initVerify()
+```
+
+창 셋(회사·직업 / 혼인·가족 / 학교)은 `verify.js` 의 `KINDS` 에서 그려집니다. 회사·직업은 탭이
+둘(건강보험 자동 인증 · 직접 인증)이고, 직접 인증은 `내 상황`에 따라 받는 서류와 유의사항이
+바뀝니다. 보이는 필수 칸이 다 차야 `인증 요청`이 켜집니다.
+
+넓은 화면에서는 600 폭으로 가운데에, 960 이하에서는 아래에서 올라옵니다. 크기·색은 시트의
+토큰(`--_sheet-*`)을 씁니다. 필수 표시(`.field__required`)와 파일 칸(`.file-field`)은
+`field.css` 에 있습니다.
+
+⚠️ `인증 요청`은 창을 닫고 알림을 띄울 뿐입니다 — 파일은 어디에도 올라가지 않고 인증 상태도
+바뀌지 않습니다. 요청 뒤의 화면과 알림 문구(`인증을 요청했어요`)는 Figma 에 없어 임시입니다.
+발급일은 브라우저의 날짜 칸이라 Figma 의 `2026년 9월 18일` 이 아닌 기기 표기로 보입니다.
+본인인증의 `재인증`은 서류 인증이 아니라 연결하지 않았습니다.
+
+⚠️ 아직 없는 것 · 임시인 것
+
+- **저장할 서버가 없습니다.** `localStorage` 의 `eo:profile` 에 적습니다. 이름·출생연도·성별과
+  인증 여부는 Figma 의 예시 값입니다.
+- 지역·직업 분류 목록, 키의 범위(140–210)는 예시입니다.
+- 한마디의 서체(Figma: Nanum Myeongjo Bold)가 저장소에 없어 기기의 명조 계열로 떨어집니다.
+- Figma 고정값: 카드 380 × 520, 인증 전 띠 679, 키 조절 480, 한마디 칸 320.
+- Figma 프레임 이름은 `744~1600` 이지만 2단 ↔ 1단 전환은 다른 화면과 같은 961 에 두었습니다.
+
 ### Tooltip
 
 ```html

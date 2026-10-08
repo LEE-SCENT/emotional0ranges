@@ -13,7 +13,7 @@
 <meta name="theme-color" content="#FFFFFF">
 <title>모임 찾기 — 감정적인 오렌지들</title>
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
-<link rel="stylesheet" href="./build/tokens.css?v=49f18cab">
+<link rel="stylesheet" href="./build/tokens.css?v=d0966026">
 <link rel="stylesheet" href="./components/container.css?v=2407269a">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=323be71f">
@@ -432,12 +432,12 @@
 
 <script type="module">
   document.getElementById('sprite').innerHTML =
-    await (await fetch('./build/icons.svg?v=1e45ff1a')).text() + await (await fetch('./build/logo.svg?v=0adc0440')).text()
+    await (await fetch('./build/icons.svg?v=4a0d8096')).text() + await (await fetch('./build/logo.svg?v=0adc0440')).text()
   // 뒤로 돌아온 화면은 맨 위에서 시작합니다.
   await import('./components/scroll-restore.js?v=f612a7a5')
   const { initStickyGnb } = await import('./components/gnb.js?v=ca09b963')
   initStickyGnb()
-  const { initMyMenus } = await import('./components/my-menu.js?v=e79d53a6')
+  const { initMyMenus } = await import('./components/my-menu.js?v=e1871d34')
   initMyMenus()
   const { initSegmentedControls } = await import('./components/segmented-control.js?v=bbd7c4b8')
   initSegmentedControls()
@@ -447,9 +447,9 @@
   initAppBarPress()
   // 목록이 먼저 귀를 엽니다. 조건 바는 붙자마자 지금 조건을 한 번 알리는데,
   // 그때 듣는 쪽이 없으면 첫 목록이 그려지지 않습니다.
-  const { initFind } = await import('./components/find.js?v=74215560')
+  const { initFind } = await import('./components/find.js?v=c8721f78')
   initFind()
-  const { initFindBar } = await import('./components/find-bar.js?v=d2000c21')
+  const { initFindBar } = await import('./components/find-bar.js?v=499404e4')
   initFindBar()
   // 옆으로 흐르는 줄들(모임 유형·하위 필터·담은 날짜) — 양 끝을 옅게 하고,
   // 고른 알약을 줄 가운데로 데려옵니다.

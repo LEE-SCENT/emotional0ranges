@@ -25,7 +25,7 @@
       href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@600&display=swap">
 <noscript><link rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@600&display=swap"></noscript>
-<link rel="stylesheet" href="./build/tokens.css?v=49f18cab">
+<link rel="stylesheet" href="./build/tokens.css?v=d0966026">
 <link rel="stylesheet" href="./components/container.css?v=2407269a">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=323be71f">
@@ -442,7 +442,7 @@
 
 <script type="module">
   document.getElementById('sprite').innerHTML =
-    await (await fetch('./build/icons.svg?v=1e45ff1a')).text() + await (await fetch('./build/logo.svg?v=0adc0440')).text()
+    await (await fetch('./build/icons.svg?v=4a0d8096')).text() + await (await fetch('./build/logo.svg?v=0adc0440')).text()
   const { initSegmentedControls } = await import('./components/segmented-control.js?v=bbd7c4b8')
   initSegmentedControls()
   const { initKvVideo } = await import('./components/kv.js?v=d2d085a7')
@@ -451,7 +451,7 @@
   initKvCarousels()
   const { initStickyGnb } = await import('./components/gnb.js?v=ca09b963')
   initStickyGnb()
-  const { initMyMenus } = await import('./components/my-menu.js?v=e79d53a6')
+  const { initMyMenus } = await import('./components/my-menu.js?v=e1871d34')
   initMyMenus()
   const { initAutoHide } = await import('./components/auto-hide.js?v=ef9c163a')
   initAutoHide()
@@ -460,6 +460,6 @@
   // 카드의 날짜·잔여석·가격은 상세와 같은 데이터에서 나옵니다. 적어두면 어긋납니다.
   // 뒤로 돌아온 화면은 맨 위에서 시작합니다.
   await import('./components/scroll-restore.js?v=f612a7a5')
-  const { initProductCards } = await import('./components/product-cards.js?v=88996a17')
+  const { initProductCards } = await import('./components/product-cards.js?v=3bc2a574')
   initProductCards()
 </script>

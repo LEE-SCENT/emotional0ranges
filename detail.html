@@ -25,7 +25,7 @@
       href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@600&display=swap">
 <noscript><link rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@600&display=swap"></noscript>
-<link rel="stylesheet" href="./build/tokens.css?v=49f18cab">
+<link rel="stylesheet" href="./build/tokens.css?v=d0966026">
 <link rel="stylesheet" href="./components/container.css?v=2407269a">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=323be71f">
@@ -41,11 +41,11 @@
 <link rel="stylesheet" href="./components/tabs.css?v=a962487a">
 <link rel="stylesheet" href="./components/option-card.css?v=0b9df8d8">
 <link rel="stylesheet" href="./components/schedule.css?v=a93de2d8">
-<link rel="stylesheet" href="./components/confirm.css?v=07295dc2">
+<link rel="stylesheet" href="./components/confirm.css?v=598089ab">
 <link rel="stylesheet" href="./components/review.css?v=1516c2bf">
 <link rel="stylesheet" href="./components/detail.css?v=7cae8d5d">
 <link rel="stylesheet" href="./components/favorite.css?v=8148f536">
-<link rel="stylesheet" href="./components/toast.css?v=b4c60081">
+<link rel="stylesheet" href="./components/toast.css?v=447855c2">
 <link rel="stylesheet" href="./components/participants.css?v=3d11ed3c">
 <link rel="stylesheet" href="./components/app-bar.css?v=1129f720">
 <link rel="stylesheet" href="./components/top-bar.css?v=753a02dd">
@@ -738,16 +738,16 @@
 
 <script type="module">
   document.getElementById('sprite').innerHTML =
-    await (await fetch('./build/icons.svg?v=1e45ff1a')).text() + await (await fetch('./build/logo.svg?v=0adc0440')).text()
+    await (await fetch('./build/icons.svg?v=4a0d8096')).text() + await (await fetch('./build/logo.svg?v=0adc0440')).text()
   // 뒤로 돌아온 화면은 맨 위에서 시작합니다.
   await import('./components/scroll-restore.js?v=f612a7a5')
   const { initStickyGnb } = await import('./components/gnb.js?v=ca09b963')
   initStickyGnb()
-  const { initMyMenus } = await import('./components/my-menu.js?v=e79d53a6')
+  const { initMyMenus } = await import('./components/my-menu.js?v=e1871d34')
   initMyMenus()
   // 일정·후기를 읽는 스크립트들보다 먼저 돕니다. 그들이 세어둔 뒤에 목록을
   // 갈아끼우면 서로 다른 것을 보게 됩니다.
-  const { initProduct } = await import('./components/product.js?v=397c4b1c')
+  const { initProduct } = await import('./components/product.js?v=e8c97a14')
   initProduct()
   const { initSchedule } = await import('./components/schedule.js?v=a9e9003f')
   initSchedule()
@@ -759,16 +759,16 @@
   initRecentReview()
   const { initConfirms } = await import('./components/confirm.js?v=f516d2db')
   initConfirms()
-  const { initParticipants } = await import('./components/participants.js?v=b0687424')
+  const { initParticipants } = await import('./components/participants.js?v=096c0fef')
   initParticipants()
-  const { initSeatAlert } = await import('./components/seat-alert.js?v=65cf2cdd')
+  const { initSeatAlert } = await import('./components/seat-alert.js?v=1bc45aee')
   initSeatAlert()
   const { initDiscounts } = await import('./components/discount.js?v=33cdc5c0')
   initDiscounts()
-  const { initFavorites } = await import('./components/favorite.js?v=d087742c')
+  const { initFavorites } = await import('./components/favorite.js?v=8480b907')
   initFavorites()
   // 비슷한 모임 카드도 목록과 같은 데이터에서 지역·일정 수를 받습니다.
-  const { initProductCards } = await import('./components/product-cards.js?v=88996a17')
+  const { initProductCards } = await import('./components/product-cards.js?v=3bc2a574')
   initProductCards()
   const { initDetailIntro } = await import('./components/detail-intro.js?v=c2d2bd44')
   initDetailIntro()

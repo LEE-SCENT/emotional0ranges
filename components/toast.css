@@ -77,6 +77,9 @@
    붙고, 해제에는 아이콘이 없습니다 — 없어졌다는 말을 그림으로도 합니다. */
 .toast--accent .toast__icon { color: var(--_toast-fg-accent); }
 
+/* 저장처럼 그냥 잘 된 일. 브랜드색은 무엇을 좋아한다는 뜻(찜)에만 씁니다. */
+.toast--success .toast__icon { color: var(--_toast-fg-success); }
+
 /* 뜻대로 되지 않은 일. 아이콘만 붉히고 글자는 흰색 그대로입니다 — 문장까지 붉히면
    띠 전체가 경고가 되어, 무슨 일인지 읽기 전에 겁부터 먹습니다. */
 .toast--critical .toast__icon { color: var(--_toast-fg-critical); }

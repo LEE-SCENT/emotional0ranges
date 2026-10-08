@@ -160,6 +160,7 @@ export const semantic = {
     "fg-success": "#34C759",
     "fg-critical": "#FF383C",
     "border": "#E7E5E4",
+    "border-active": "#272625",
     "divider": "#E7E5E4",
     "divider-low": "#F3F1F0"
   },
@@ -759,6 +760,7 @@ export const components = {
     "fg": "#FFFFFF",
     "fgAccent": "#F75D15",
     "fgCritical": "#FF383C",
+    "fgSuccess": "#34C759",
     "rounded": "8px",
     "iconSize": "20px",
     "width": "390px",

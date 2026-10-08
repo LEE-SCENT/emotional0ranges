@@ -1,0 +1,339 @@
+/**
+ * Profile — 기본 프로필 · 상세 프로필을 고치는 화면.
+ *
+ *   <main class="container profile has-bottom-cta">
+ *     <header class="profile__header"> ← 기본 프로필 </header>
+ *     <div class="profile__body">
+ *       <form class="profile__form">   구획 → 구획 → 저장 </form>
+ *       <aside class="profile__aside"> 프로필 카드 </aside>
+ *     </div>
+ *   </main>
+ *
+ * 왼쪽은 고치는 자리, 오른쪽은 고친 것이 상대에게 어떻게 보이는지입니다. 결제 화면
+ * (checkout.css)과 같은 뼈대입니다 — 한쪽은 밟는 순서, 다른 쪽은 밟는 내내 보이는
+ * 사실.
+ *
+ * 좁은 화면에는 옆자리가 없어 카드가 "프로필 미리보기" 창으로 들어가고, 저장만
+ * 화면 아래에 남습니다.
+ */
+
+.profile {
+  /* ⚠️ 72 는 GNB 높이입니다. Figma 에 변수로 없어 프레임에서 읽었습니다
+     (checkout.css · detail.css 와 같은 값). */
+  --profile-sticky-top: 72px;
+  padding-block-start: var(--spacing-800);
+  font-family: var(--_font-family-base);
+}
+@media (min-width: 961px) {
+  .profile { padding-block-end: var(--spacing-2000); }
+}
+
+.profile__header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-600);
+  margin-block-end: var(--spacing-600);
+}
+.profile__title {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-300);
+  min-inline-size: 0;
+}
+.profile__title h1 {
+  margin: 0;
+  color: var(--colors-fg);
+  font-size: var(--typography-heading-l-semibold-font-size);
+  font-weight: var(--typography-heading-l-semibold-font-weight);
+  line-height: var(--typography-heading-l-semibold-line-height);
+}
+/* 제목 한 줄(36 × 110%)이 뒤로 가기 버튼(40)과 가운데가 맞도록 줄 높이만큼 세웁니다.
+   설명이 붙어도 버튼은 제목 옆에 남습니다. */
+.profile__title h1 { min-block-size: var(--spacing-1000); display: flex; align-items: center; }
+.profile__title p {
+  margin: 0;
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-m-regular-font-size);
+  line-height: var(--typography-body-m-regular-line-height);
+}
+
+.profile__body {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-1200);
+}
+@media (min-width: 961px) {
+  /* 뒤로 가기 버튼(56) + 간격(24) 만큼. 제목이 시작하는 자리와 같습니다. */
+  .profile__body { padding-inline-start: calc(56px + var(--spacing-600)); }
+}
+
+.profile__form {
+  flex: 1 1 0;
+  min-inline-size: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-800);
+}
+
+/* 구획. 사이에는 선이 서고, 안의 칸들은 16 씩 떨어집니다. */
+.profile__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-400);
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+/* 상세 프로필은 물음 하나가 구획 하나라 선 없이 32 로만 띄웁니다. */
+.profile__divider {
+  margin: 0;
+  border: 0;
+  block-size: 1px;
+  background: var(--colors-divider);
+}
+
+.profile__save { inline-size: 100%; }
+
+/* 오른쪽 단. 읽어 내려가는 동안 따라옵니다. */
+.profile__aside {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-400);
+  position: sticky;
+  inset-block-start: calc(var(--profile-sticky-top) + var(--spacing-600));
+}
+.profile__aside .profile-promo { inline-size: 380px; max-inline-size: 100%; }
+
+/* 좁은 화면에서만 서는 것들(폼 끝의 권하는 카드와 그 위의 선). */
+.profile__only-narrow { display: none; }
+
+/* ---- 칸 옆에 딸린 것 -----------------------------------------------------
+   칸 하나에 체크박스 하나가 붙는 줄(회사 + 프로필에 정보 공개, 학교 + …). */
+.profile__with-check {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-300);
+}
+.profile__with-check > :first-child { flex: 1 1 0; min-inline-size: 0; }
+
+/* 글자가 붙은 체크박스. 상자는 checkbox.css 의 것 그대로이고, 글자까지 눌리도록
+   <label> 하나로 감쌉니다. */
+.profile__check {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-200);
+  padding-block: var(--spacing-200);
+  color: var(--colors-fg-low);
+  font-size: var(--typography-body-m-medium-font-size);
+  font-weight: var(--typography-body-m-medium-font-weight);
+  line-height: var(--typography-body-m-medium-line-height);
+  cursor: pointer;
+  user-select: none;
+}
+/* 선택지 줄 끝에 서는 체크박스(혼인신고 경험 옆의 사실혼)는 왼쪽을 6 더 띄웁니다. */
+.choice-group > .profile__check { padding-inline-start: var(--spacing-150); }
+
+/* 근무지: 넓은 화면에서는 [시/도][구][고정 근무지 없음] 한 줄, 그 아래 안내.
+   좁은 화면에서는 체크박스가 안내 아래로 내려갑니다(Figma m_기본프로필). */
+.profile__workplace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: 'selects check' 'help .';
+  gap: var(--spacing-150) var(--spacing-300);
+}
+.profile__workplace > .field-row { grid-area: selects; }
+.profile__workplace > .field__help { grid-area: help; }
+.profile__workplace > .profile__check { grid-area: check; }
+
+/* 인증 전의 띠는 칸보다 좁습니다.
+   ⚠️ 679 는 Figma 의 고정 폭입니다(폼 772 가운데). 변수로 없어 프레임에서 읽었습니다. */
+.profile__form .verified-banner:not(.verified-banner--done) { max-inline-size: 679px; }
+
+/* 이름 옆 ⓘ. 올리거나 초점이 가면 말풍선이 아래에 뜹니다. */
+.profile__hint {
+  position: relative;
+  display: inline-flex;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--colors-fg-lower);
+  cursor: help;
+}
+.profile__hint svg { inline-size: var(--icon-size-xs); block-size: var(--icon-size-xs); }
+.profile__hint .tooltip {
+  position: absolute;
+  inset-block-start: calc(100% + var(--spacing-200));
+  inset-inline-start: 50%;
+  translate: -50% 0;
+  z-index: 5;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--_duration-fast) var(--_easing-standard),
+    visibility var(--_duration-fast);
+}
+.profile__hint:hover .tooltip,
+.profile__hint:focus-visible .tooltip { opacity: 1; visibility: visible; }
+.profile__hint:focus-visible { outline: 2px solid var(--colors-fg); outline-offset: 2px; border-radius: var(--_rounded-full); }
+
+/* ---- 키 ---------------------------------------------------------------
+   숫자를 치게 하지 않습니다. 한두 칸은 ± 로, 멀리는 막대로 옮깁니다 — 키는 대개
+   알고 있는 값에서 조금 고치는 것이라 누르는 쪽이 치는 쪽보다 빠릅니다. */
+.profile__height {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-400);
+  box-sizing: border-box;
+  inline-size: 100%;
+  /* ⚠️ 480 은 Figma 의 max-width 입니다. 변수로 없습니다. */
+  max-inline-size: 480px;
+}
+.profile__stepper {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-150);
+}
+.profile__stepper output {
+  flex: 1 1 0;
+  color: var(--colors-fg);
+  font-size: var(--typography-body-xl-medium-font-size);
+  font-weight: var(--typography-body-xl-medium-font-weight);
+  line-height: var(--typography-body-xl-medium-line-height);
+  text-align: center;
+  font-feature-settings: 'tnum' 1;
+}
+.profile__slider {
+  --_thumb: var(--spacing-500);
+  appearance: none;
+  display: block;
+  inline-size: 100%;
+  block-size: var(--_thumb);
+  margin: 0;
+  background: none;
+  cursor: pointer;
+}
+.profile__slider::-webkit-slider-runnable-track {
+  block-size: var(--spacing-100);
+  border-radius: var(--_rounded-full);
+  background: var(--colors-bg-low);
+}
+.profile__slider::-moz-range-track {
+  block-size: var(--spacing-100);
+  border-radius: var(--_rounded-full);
+  background: var(--colors-bg-low);
+}
+.profile__slider::-webkit-slider-thumb {
+  appearance: none;
+  inline-size: var(--_thumb);
+  block-size: var(--_thumb);
+  /* 손잡이(20)가 막대(4) 가운데에 걸리도록 위로 올립니다. */
+  margin-block-start: calc((var(--spacing-100) - var(--_thumb)) / 2);
+  border: 0;
+  border-radius: var(--_rounded-full);
+  background: var(--colors-fg);
+}
+.profile__slider::-moz-range-thumb {
+  inline-size: var(--_thumb);
+  block-size: var(--_thumb);
+  border: 0;
+  border-radius: var(--_rounded-full);
+  background: var(--colors-fg);
+}
+.profile__slider:focus-visible { outline: 2px solid var(--colors-fg); outline-offset: 4px; border-radius: var(--_rounded-full); }
+
+/* ---- 직업 ---------------------------------------------------------------
+   찾는 길이 둘입니다. 이름을 아는 사람은 검색으로, 모르는 사람은 분류로. */
+.profile__occupation {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-150);
+}
+.profile__occupation > .segmented { flex: none; }
+.profile__occupation > .text-field,
+.profile__occupation > .field-row { flex: 1 1 0; min-inline-size: 0; }
+
+/* ---- 탭(상세 프로필) ---------------------------------------------------- */
+
+.profile__tabs { margin-block-end: calc(var(--spacing-500) - var(--spacing-800)); }
+.profile .tabs__item {
+  padding-inline: 0;
+  border: 0;
+  background: none;
+  font-family: inherit;
+  cursor: pointer;
+}
+.profile__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-800);
+}
+.profile__panel[hidden] { display: none; }
+
+/* ---- 좁은 화면 ---------------------------------------------------------- */
+
+@media (max-width: 960px) {
+  .profile { padding-block-start: 0; }
+
+  /* 나가는 길은 위쪽 topBar 가 맡습니다. */
+  .profile__header > .btn { display: none; }
+  .profile__title { gap: var(--spacing-200); }
+  .profile__title h1 {
+    min-block-size: 0;
+    font-size: var(--typography-heading-m-semibold-font-size);
+    font-weight: var(--typography-heading-m-semibold-font-weight);
+    line-height: var(--typography-heading-m-semibold-line-height);
+  }
+  /* 상세 프로필은 제목과 탭 사이가 20 입니다. */
+  .profile--detail .profile__header { margin-block-end: var(--spacing-500); }
+
+  .profile__aside,
+  .profile__save { display: none; }
+  .profile__only-narrow { display: revert; }
+  .profile__form .profile-promo.profile__only-narrow { display: flex; }
+
+  .profile__form .verified-banner:not(.verified-banner--done) { max-inline-size: none; }
+
+  .profile__height { max-inline-size: none; }
+
+  .profile__workplace {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'selects' 'help' 'check';
+  }
+  .profile__workplace > .profile__check { justify-self: start; }
+
+  /* 자녀 수는 열 개라 두 줄로 접히는 대신 옆으로 넘깁니다. 화면 끝까지 닿도록
+     컨테이너 여백만큼 밖으로 내고, 같은 만큼 안을 채워 첫 단추의 자리를 지킵니다. */
+  .choice-group--scroll {
+    flex-wrap: nowrap;
+    margin-inline: calc(var(--container-gutter-base) * -1);
+    padding-inline: var(--container-gutter-base);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .choice-group--scroll::-webkit-scrollbar { display: none; }
+  .choice-group--scroll .choice { flex: none; }
+
+  /* 탭 넷이 폭을 나눠 씁니다. 위 여백은 제목과의 간격이 대신합니다. */
+  .profile .tabs { gap: 0; }
+  .profile .tabs__item { flex: 1 1 0; padding-block-start: 0; }
+
+  /* 저장했다는 알림은 위에서 뜹니다. 아래에는 저장 버튼이 붙어 있어, 방금 누른
+     손가락이 알림을 가립니다. */
+  /* :has(.bottom-cta) 까지 적는 것은 toast.css 가 같은 무게의 선택자로 아래 자리를
+     정해두었기 때문입니다 — 그보다 무거워야 불러오는 순서와 상관없이 이깁니다. */
+  body:has(.profile):has(.bottom-cta) .toast-region {
+    inset-block: calc(var(--spacing-200) + env(safe-area-inset-top)) auto;
+  }
+  body:has(.profile) .toast { inline-size: 100%; }
+}
+
+/* topBar 오른쪽의 미리보기는 좁은 화면의 것입니다(넓은 화면에서는 카드가 늘 옆에
+   있습니다). topBar 자체가 961 부터 사라지므로 따로 감출 것은 없습니다. */
+
+@media (prefers-reduced-motion: reduce) {
+  .profile__hint .tooltip { transition: none; }
+}

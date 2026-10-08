@@ -77,8 +77,8 @@ const ITEMS = [
      "읽지 않은 것이 있다"를 점으로 말합니다. */
   { label: '알림', icon: 'notifications', badge: true, href: '', auth: true },
   null,
-  { label: '기본 프로필', href: '', auth: true },
-  { label: '상세 프로필', desc: '작성할수록 매칭 가능성이 높아져요', href: '', auth: true },
+  { label: '기본 프로필', href: './profile.html', auth: true },
+  { label: '상세 프로필', desc: '작성할수록 매칭 가능성이 높아져요', href: './profile-detail.html', auth: true },
   { label: '블랙회원 인증', href: '', auth: true },
   null,
   { label: '찜한 모임', href: '', auth: true },
