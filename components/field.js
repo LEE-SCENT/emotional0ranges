@@ -1,5 +1,5 @@
 /**
- * 칸들의 몸짓 — 고르는 칸이 초점을 내려놓는 것과, 셀렉트의 고르는 판.
+ * 칸들의 몸짓 — 고르는 칸이 초점을 내려놓는 것, 셀렉트의 고르는 판, 글자 칸의 지우기.
  *
  *   import { initFields } from './components/field.js'
  *   initFields()
@@ -29,6 +29,8 @@
  * 알 필요가 없습니다.
  *
  * ⚠️ 이 판의 디자인이 Figma 에 없습니다. 직업 검색의 목록을 그대로 씁니다.
+ *
+ * ── 글자 칸의 지우기 (아래 initClearButtons)
  */
 const PICKERS = 'select, input[type="month"], input[type="date"]'
 
@@ -48,6 +50,45 @@ export function initFields() {
   })
 
   initSelectMenus()
+  initClearButtons()
+}
+
+/* ---- 글자 칸의 지우기 ----------------------------------------------------
+   무엇이든 적혀 있는 글자 칸에는 오른쪽 끝에 지우기가 섭니다. 긴 학교 이름을 한 글자씩
+   지우게 하지 않습니다.
+
+   마크업에 미리 적어두지 않고 여기서 붙입니다. 글자 칸이 생길 때마다 버튼 마크업을
+   함께 적어야 하면, 하나쯤은 빠집니다 — 실제로 학교 칸이 그랬습니다.
+
+   고칠 수 없는 칸(readonly)과 제 지우기를 따로 가진 칸(직업 검색)은 건너뜁니다. */
+const CLEARABLE = '.text-field > input[type="text"]:not([readonly]):not([role="combobox"])'
+
+function syncClear(input) {
+  const box = input.parentElement
+  let button = box.querySelector(':scope > .text-field__clear')
+  if (!button) {
+    if (!input.value) return
+    button = document.createElement('button')
+    button.type = 'button'
+    button.className = 'text-field__clear'
+    button.setAttribute('aria-label', '지우기')
+    button.innerHTML = '<svg aria-hidden="true"><use href="#icon-cancelCircleFilled"></use></svg>'
+    button.addEventListener('click', () => {
+      input.value = ''
+      input.dispatchEvent(new Event('input', { bubbles: true }))
+      input.focus()
+    })
+    input.after(button)
+  }
+  button.hidden = !input.value
+}
+
+function initClearButtons() {
+  // 이미 값이 들어 있는 칸(저장된 것, 쓰던 것)부터.
+  for (const input of document.querySelectorAll(CLEARABLE)) syncClear(input)
+  document.addEventListener('input', (e) => {
+    if (e.target.matches?.(CLEARABLE)) syncClear(e.target)
+  })
 }
 
 /* ---- 셀렉트의 고르는 판 -------------------------------------------------- */
