@@ -186,8 +186,12 @@ export function swap(card, nodes, { fade = false } = {}) {
   if (!from || matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
   const root = getComputedStyle(document.documentElement)
+  /* 빠름(120)과 보통(240)의 가운데, 180 입니다. 보통은 폼을 고치는 손보다 한 박자 늦어
+     카드가 뒤따라오는 것처럼 보였고, 빠름은 미끄러지는 것이 보이기 전에 끝납니다.
+     ⚠️ 그 사이의 duration 토큰이 없어 두 토큰의 가운데로 냅니다. */
+  const ms = (name) => parseFloat(root.getPropertyValue(name))
   const timing = {
-    duration: parseFloat(root.getPropertyValue('--_duration-base')) || 240,
+    duration: (ms('--_duration-fast') + ms('--_duration-base')) / 2 || 180,
     easing: root.getPropertyValue('--_easing-standard').trim() || 'ease',
   }
   const to = card.getBoundingClientRect().height
