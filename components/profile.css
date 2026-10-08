@@ -93,6 +93,35 @@
   background: var(--colors-divider);
 }
 
+/* ---- 저장 --------------------------------------------------------------
+   폼의 끝에 서 있되, 거기까지 내려가기 전에는 화면 아래에 붙어 따라옵니다. 상세
+   프로필의 라이프처럼 긴 판에서 첫 물음을 고친 사람이 끝까지 내려가야 저장할 수 있으면,
+   저장이 켜졌다는 것(고친 것이 있다는 것)도 보이지 않습니다.
+
+   화면 전체에 깔리는 띠로 만들지 않은 것은 폼이 왼쪽 단에만 있기 때문입니다 — 띠가
+   오른쪽 카드 아래까지 가로지르면 무엇을 저장하는 버튼인지가 폼에서 떨어집니다.
+
+   뒤에 흰 바탕을 깝니다. 떠 있는 동안 아래로 지나가는 선택지가 버튼 양옆으로 비치지
+   않습니다. 위아래 16 은 그 바탕의 여백이고, 같은 만큼 밖으로 당겨(margin) 폼 안에서의
+   자리는 그대로입니다. */
+.profile__actions {
+  position: sticky;
+  inset-block-end: 0;
+  z-index: 5;
+  margin-block: calc(var(--spacing-400) * -1);
+  padding-block: var(--spacing-400);
+  background: var(--colors-bg);
+}
+/* 바탕 위로 살짝 번지게 합니다. 지나가는 것이 바탕의 윗변에서 칼로 자른 듯 끊기지 않습니다. */
+.profile__actions::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 100%;
+  block-size: var(--spacing-400);
+  background: linear-gradient(to top, var(--colors-bg), transparent);
+  pointer-events: none;
+}
 .profile__save { inline-size: 100%; }
 
 /* 오른쪽 단. 읽어 내려가는 동안 따라옵니다. */
@@ -272,7 +301,7 @@
   .profile--detail .profile__header { margin-block-end: var(--spacing-500); }
 
   .profile__aside,
-  .profile__save { display: none; }
+  .profile__actions { display: none; }
   .profile__only-narrow { display: revert; }
   .profile__form .profile-promo.profile__only-narrow { display: flex; }
 
