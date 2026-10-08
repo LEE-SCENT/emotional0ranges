@@ -895,6 +895,7 @@ initFields()   // 문서에 한 번. 나중에 그려지는 창 안의 칸도 �
 | 파일 | `.file-field` | 고르기 전은 버튼 하나, 고른 뒤는 파일 이름 + 바꾸기 |
 | 긴 글 | `.text-field--area` + `.field__count` | 한마디(100자) |
 | 옵션 목록 | `.text-field__suggest` | 직업 검색의 자동완성과 셀렉트의 판이 함께 씁니다. ⚠️ Figma 에 없음 |
+| 글자 붙은 체크박스 | `.checkbox-label` | `checkbox.css`. 상자 + 글자를 `<label>` 하나로. 칸 옆(프로필에 정보 공개)과 선택지 줄 끝에 섭니다 |
 | 필수 | `.field__required` | 이름표 오른쪽 위의 주황 점(badge 4px) |
 | 빠진 칸 | `.field--error` + `.field__error` | 붉은 테두리 + 칸 아래의 말. ⚠️ Figma 에 없음 |
 | 선택지 | `.choice` | radio·checkbox 공용. 고르면 테두리 1 → 2, `border-active` |

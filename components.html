@@ -38,7 +38,7 @@
 <link rel="stylesheet" href="./components/app-bar.css?v=1129f720">
 <link rel="stylesheet" href="./components/toast.css?v=447855c2">
 <link rel="stylesheet" href="./components/participants.css?v=3d11ed3c">
-<link rel="stylesheet" href="./components/checkbox.css?v=67340959">
+<link rel="stylesheet" href="./components/checkbox.css?v=44baaa09">
 <link rel="stylesheet" href="./components/tabs.css?v=a962487a">
 <link rel="stylesheet" href="./components/field.css?v=d42ed3d6">
 <link rel="stylesheet" href="./components/choice.css?v=fd460b98">
@@ -606,7 +606,7 @@
 <div class="col">
   <div class="choice-group">
     <label class="choice"><input type="radio" name="demo-c1" value="없음" checked><span>없음</span></label><label class="choice"><input type="radio" name="demo-c1" value="혼인신고 경험 있음"><span>혼인신고 경험 있음</span></label>
-    <label style="display:inline-flex;align-items:center;gap:8px;padding:8px 0 8px 6px;font-size:14px;font-weight:500;color:var(--colors-fg-low)"><span class="checkbox"><input type="checkbox"><span class="checkbox__box" aria-hidden="true"><svg><use href="#icon-check"></use></svg></span></span>사실혼 경험 있음</label>
+    <label class="checkbox-label"><span class="checkbox"><input type="checkbox"><span class="checkbox__box" aria-hidden="true"><svg><use href="#icon-check"></use></svg></span></span>사실혼 경험 있음</label>
   </div>
   <div class="choice-group choice-group--cols-4">
     <label class="choice"><input type="checkbox" name="demo-c2" value="아웃도어 · 여행" checked><span>아웃도어 · 여행</span></label><label class="choice"><input type="checkbox" name="demo-c2" value="운동 · 스포츠" checked><span>운동 · 스포츠</span></label><label class="choice"><input type="checkbox" name="demo-c2" value="인문학 · 책 · 글" checked><span>인문학 · 책 · 글</span></label><label class="choice"><input type="checkbox" name="demo-c2" value="외국 · 언어" disabled><span>외국 · 언어</span></label>
@@ -835,7 +835,7 @@ for (const [id, dir] of [['r7','vertical'],['r8','horizontal']]) {
   /** 클래스의 앞머리 → 그 스타일이 든 파일. 이름이 같지 않은 것만 적습니다. */
   const CSS_ALIAS = { btn: 'button', 'btn-group': 'button-group', segmented: 'segmented-control',
     participant: 'participants', 'text-field': 'field', 'file-field': 'field',
-    'choice-group': 'choice', 'profile-promo': 'profile-card' }
+    'choice-group': 'choice', 'profile-promo': 'profile-card', 'checkbox-label': 'checkbox' }
   const CSS_FILES = new Set(['alert-banner', 'app-bar', 'badge', 'button', 'button-group', 'checkbox',
     'choice', 'field', 'footer', 'gnb', 'participants', 'product-card', 'profile-card',
     'segmented-control', 'tag', 'toast', 'tooltip', 'verified-banner'])

@@ -162,24 +162,6 @@
 }
 .profile__with-check > :first-child { flex: 1 1 0; min-inline-size: 0; }
 
-/* 글자가 붙은 체크박스. 상자는 checkbox.css 의 것 그대로이고, 글자까지 눌리도록
-   <label> 하나로 감쌉니다. */
-.profile__check {
-  flex: none;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-200);
-  padding-block: var(--spacing-200);
-  color: var(--colors-fg-low);
-  font-size: var(--typography-body-m-medium-font-size);
-  font-weight: var(--typography-body-m-medium-font-weight);
-  line-height: var(--typography-body-m-medium-line-height);
-  cursor: pointer;
-  user-select: none;
-}
-/* 선택지 줄 끝에 서는 체크박스(혼인신고 경험 옆의 사실혼)는 왼쪽을 6 더 띄웁니다. */
-.choice-group > .profile__check { padding-inline-start: var(--spacing-150); }
-
 /* 기간 칸은 하나만 있어도 반 폭입니다(Figma) — 둘이 되었을 때 나란히 설 자리를 처음부터
    잡아두어, 사실혼을 켜는 순간 법률혼 칸이 줄어들지 않습니다. */
 .profile__periods > .field { flex: 0 1 calc(50% - var(--spacing-150) / 2); }
@@ -200,7 +182,7 @@
 .profile__workplace > .field__help { grid-area: help; }
 /* 위에 맞춥니다. 구 아래에 빠졌다는 말이 서면 줄이 길어지는데, 그때 체크박스가 가운데로
    내려오지 않습니다. */
-.profile__workplace > .profile__check { grid-area: check; align-self: start; }
+.profile__workplace > .checkbox-label { grid-area: check; align-self: start; }
 
 /* ---- 키 ---------------------------------------------------------------
    숫자를 치게 하지 않습니다. 한두 칸은 ± 로, 멀리는 막대로 옮깁니다 — 키는 대개
@@ -374,7 +356,7 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
     grid-template-columns: minmax(0, 1fr);
     grid-template-areas: 'selects' 'help' 'check';
   }
-  .profile__workplace > .profile__check { justify-self: start; }
+  .profile__workplace > .checkbox-label { justify-self: start; }
 
   /* 자녀 수는 열 개라 두 줄로 접히는 대신 옆으로 넘깁니다. 화면 끝까지 닿도록
      컨테이너 여백만큼 밖으로 내고, 같은 만큼 안을 채워 첫 단추의 자리를 지킵니다. */

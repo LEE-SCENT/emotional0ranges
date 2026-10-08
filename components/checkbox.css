@@ -83,6 +83,31 @@
   background: var(--colors-bg-disabled);
 }
 
+/* ---- 글자가 붙은 체크박스 -------------------------------------------------
+     <label class="checkbox-label">
+       <span class="checkbox"> … </span>
+       프로필에 정보 공개
+     </label>
+
+   상자는 위의 것 그대로이고, 글자까지 눌리도록 <label> 하나로 감쌉니다. 위아래 8 은
+   옆에 서는 칸·단추(높이 40)와 키를 맞추는 것입니다 — 상자 24 + 8 + 8. */
+.checkbox-label {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-200);
+  padding-block: var(--spacing-200);
+  color: var(--colors-fg-low);
+  font-family: var(--_font-family-base);
+  font-size: var(--typography-body-m-medium-font-size);
+  font-weight: var(--typography-body-m-medium-font-weight);
+  line-height: var(--typography-body-m-medium-line-height);
+  cursor: pointer;
+  user-select: none;
+}
+/* 선택지 줄 끝에 서는 체크박스(혼인신고 경험 옆의 사실혼)는 왼쪽을 6 더 띄웁니다. */
+.choice-group > .checkbox-label { padding-inline-start: var(--spacing-150); }
+
 @media (prefers-reduced-motion: reduce) {
   .checkbox__box,
   .checkbox__box svg { transition: none; }
