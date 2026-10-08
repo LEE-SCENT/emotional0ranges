@@ -334,7 +334,11 @@ export function initProfileForm({ form, part, saved, render, afterSave, validate
 
   /* ---- 나가는 길 --------------------------------------------------------
      고친 것이 남아 있으면 한 번 묻습니다. 버리고 나가는 길은 없습니다 — 물음이
-     "저장하고 나갈까요?" 하나라, 답은 계속 쓰거나 저장하고 나가거나입니다. */
+     "저장하고 나갈까요?" 하나라, 답은 계속 쓰거나 저장하고 나가거나입니다.
+
+     뒤로 가기만이 아닙니다. GNB 의 메뉴, 로고, 내 메뉴의 항목처럼 이 화면을 떠나는
+     링크는 전부 같은 물음을 지납니다 — 저장이 켜져 있는데 어떤 길로는 묻고 어떤 길로는
+     말없이 떠나면, 물음을 본 적 있는 사람은 묻지 않는 길을 "저장된 것"으로 읽습니다. */
   let leaving = null
   const go = {
     back() {
@@ -344,14 +348,25 @@ export function initProfileForm({ form, part, saved, render, afterSave, validate
     detail() { location.href = './profile-detail.html' },
   }
 
+  /** 이 화면을 떠나는 링크인지. 새 탭으로 여는 것, 같은 화면 안의 자리(#)는 떠나는 것이 아닙니다. */
+  const leaves = (link, e) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return false
+    if (link.target === '_blank' || link.hasAttribute('download')) return false
+    const to = new URL(link.href, location.href)
+    return to.origin !== location.origin || to.pathname !== location.pathname || to.search !== location.search
+  }
+
   // back.js 보다 먼저 받아야 합니다(capture) — 그쪽이 먼저 받으면 묻기 전에 이미 떠납니다.
   document.addEventListener('click', (e) => {
-    const trigger = e.target.closest('[data-profile-leave]')
-    if (!trigger || !dirty()) return
+    if (!dirty()) return
+    const marked = e.target.closest('[data-profile-leave]')
+    const link = e.target.closest('a[href]')
+    if (!marked && !(link && leaves(link, e))) return
     e.preventDefault()
     e.stopImmediatePropagation()
-    leaving = trigger.dataset.profileLeave
-    openConfirm(leaving === 'detail' ? 'profile-move' : 'profile-leave')
+    const kind = marked?.dataset.profileLeave
+    leaving = go[kind] ?? (() => { location.href = link.href })
+    openConfirm(kind === 'detail' ? 'profile-move' : 'profile-leave')
   }, true)
 
   document.addEventListener('confirm:accept', (e) => {
@@ -359,7 +374,16 @@ export function initProfileForm({ form, part, saved, render, afterSave, validate
     if (!leaving) return
     // 빠진 것이 있으면 나가지 않습니다. 창은 이미 닫혔고, 빠진 칸으로 데려갑니다.
     if (!trySave()) return
-    go[leaving]()
+    leaving()
+  })
+
+  /* 링크가 아닌 길 — 브라우저의 뒤로 가기, 탭 닫기, 주소를 고쳐 떠나기 — 은 우리 창을
+     띄울 수 없습니다. 브라우저가 제 물음("사이트를 나가시겠습니까?")을 띄우게 합니다.
+     저장했거나 고친 것이 없으면 묻지 않습니다. */
+  addEventListener('beforeunload', (e) => {
+    if (!dirty()) return
+    e.preventDefault()
+    e.returnValue = ''
   })
 
   initPreview(() => render(profile, read(form)))
