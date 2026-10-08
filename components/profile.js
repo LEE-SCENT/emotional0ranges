@@ -155,8 +155,8 @@ export function initProfile() {
   })
 
   /* ---- 직업 검색 --------------------------------------------------------
-     치는 대로 맞는 직업을 아래에 띄웁니다. 고르지 않고 친 대로 두어도 됩니다 —
-     목록에 없는 직업도 있습니다.
+     치는 대로 맞는 직업을 아래에 띄웁니다. 목록에 없는 직업도 받습니다 — 맨 위의
+     "'○○' 직접 입력"이 그 길이고, 고르지 않고 친 대로 두어도 같습니다.
 
      ↑↓ 로 옮기고 Enter 로 고르고 Esc 로 닫습니다. 고르는 동안 초점은 칸에 남습니다
      (aria-activedescendant) — 목록으로 초점이 넘어가면 이어서 칠 수 없습니다.
@@ -182,6 +182,8 @@ export function initProfile() {
   }
   const pickJob = (name) => {
     jobInput.value = name
+    // 값이 바뀐 것을 폼에 알리면 목록이 다시 뜨려 합니다(직접 입력한 말은 목록에 없으니
+    // 맞는 것을 또 찾습니다). 알린 뒤에 닫습니다.
     jobInput.dispatchEvent(new Event('input', { bubbles: true }))
     closeJobs()
     // 골랐으면 이 칸의 일은 끝났습니다. 초점을 내려놓아 칸이 채워진 모습으로 돌아가고,
@@ -192,21 +194,29 @@ export function initProfile() {
     const query = jobInput.value.trim()
     jobClear.hidden = !jobInput.value
     // 이미 목록의 것과 똑같이 적혀 있으면 더 띄울 것이 없습니다(방금 고른 직후가 그렇습니다).
-    const found = query && !jobs.some((job) => job.name === query)
-      ? jobs.filter((job) => job.name.includes(query) || job.group.includes(query))
-      : []
-    if (!found.length) return closeJobs()
-    jobList.replaceChildren(...found.map((job, i) => {
+    if (!query || jobs.some((job) => job.name === query)) return closeJobs()
+    const found = jobs.filter((job) => job.name.includes(query) || job.group.includes(query))
+
+    const option = (i, value, label, group) => {
       const item = document.createElement('li')
       item.id = `job-suggest-${i}`
       item.setAttribute('role', 'option')
       item.setAttribute('aria-selected', 'false')
-      item.dataset.value = job.name
-      const group = document.createElement('span')
-      group.textContent = job.group
-      item.append(job.name, group)
+      item.dataset.value = value
+      item.append(label)
+      if (group) {
+        const tag = document.createElement('span')
+        tag.textContent = group
+        item.append(tag)
+      }
       return item
-    }))
+    }
+    /* 맨 위는 늘 "친 그대로 쓰기"입니다. 목록에 없는 직업도 받는데, 그 길이 보이지
+       않으면 맞는 것이 없을 때 목록이 그냥 사라져 받아들여진 것인지 알 수 없습니다. */
+    jobList.replaceChildren(
+      option(0, query, `'${query}' 직접 입력`),
+      ...found.map((job, i) => option(i + 1, job.name, job.name, job.group)),
+    )
     active = -1
     jobList.hidden = false
     jobInput.setAttribute('aria-expanded', 'true')
