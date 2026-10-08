@@ -118,6 +118,13 @@
 }
 /* 무엇이든 적히면 아이콘도 글자와 같은 색으로 올라옵니다. */
 .text-field:has(input:not(:placeholder-shown)) .text-field__icon { color: var(--colors-fg); }
+/* 찾는 칸(치는 대로 목록이 뜨는 칸)은 값이 정해지고 초점이 떠나면 돋보기를 내려놓습니다.
+   돋보기는 "여기서 찾으세요"라는 말인데, 찾기가 끝난 뒤에도 남아 있으면 적힌 것이 여전히
+   검색어로 읽힙니다. 다시 누르면 돌아옵니다.
+   ⚠️ Figma 의 채운 칸에는 돋보기가 진한 색으로 남아 있습니다. 그와 다릅니다. */
+.text-field:has(input[role='combobox']:not(:placeholder-shown)):not(:focus-within) .text-field__icon {
+  display: none;
+}
 
 /* 고칠 수 없는 칸. 본인인증으로 들어온 값처럼 보여주기만 합니다. 바탕은 다른 칸과
    같고 글자만 한 단계 옅습니다 — 못 쓰는 칸이 아니라 이미 정해진 값이라, 무엇이 내
