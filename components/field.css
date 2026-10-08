@@ -258,7 +258,8 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.file-field__clear {
+.file-field__clear,
+.text-field__clear {
   flex: none;
   display: flex;
   padding: 0;
@@ -268,9 +269,51 @@
   color: var(--colors-fg-low);
   cursor: pointer;
 }
-.file-field__clear svg { inline-size: var(--icon-size-s); block-size: var(--icon-size-s); }
-.file-field__clear:focus-visible { outline: 2px solid var(--colors-fg); outline-offset: 2px; }
+
+.file-field__clear svg,
+.text-field__clear svg { inline-size: var(--icon-size-s); block-size: var(--icon-size-s); }
+.file-field__clear:focus-visible,
+.text-field__clear:focus-visible { outline: 2px solid var(--colors-fg); outline-offset: 2px; }
 .file-field .btn { flex: none; }
+
+/* ---- 치는 대로 뜨는 목록 --------------------------------------------------
+   칸 바로 아래에 붙어 뜹니다. 칸과 폭이 같아 어느 칸의 목록인지가 자리로 드러납니다.
+   ⚠️ Figma 에 이 목록이 없습니다(직업 검색은 빈 칸과 채운 칸만 그려져 있습니다).
+      판의 생김새는 내 메뉴(my-menu.css)에서, 줄은 본문 14 에서 가져왔습니다. 그림자도
+      그쪽과 같은 원시값입니다. */
+.text-field__suggest {
+  position: absolute;
+  inset: calc(100% + var(--spacing-150)) 0 auto;
+  z-index: 10;
+  box-sizing: border-box;
+  max-block-size: calc(var(--spacing-1000) * 6);
+  margin: 0;
+  padding: var(--spacing-200) 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-radius: var(--_rounded-l);
+  background: var(--colors-bg);
+  box-shadow: 0 4px 20px 5px rgb(0 0 0 / 0.1);
+  list-style: none;
+}
+.text-field__suggest li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--spacing-300);
+  padding: var(--spacing-250) var(--spacing-300);
+  color: var(--colors-fg);
+  cursor: pointer;
+}
+/* 어느 분류의 직업인지. 같은 이름이 두 분류에 있을 때 가려 줍니다. */
+.text-field__suggest li span {
+  flex: none;
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-s-regular-font-size);
+  line-height: var(--typography-body-s-regular-line-height);
+}
+.text-field__suggest li:hover,
+.text-field__suggest li[aria-selected='true'] { background: var(--colors-bg-low); }
 
 /* 날짜 칸. 달력 아이콘은 우리 것을 쓰고 브라우저의 것은 감춥니다 — 칸 어디를 눌러도
    달력이 열리도록 verify.js 가 showPicker 를 부릅니다. */

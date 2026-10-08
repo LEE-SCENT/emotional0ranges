@@ -124,6 +124,7 @@ export function initProfile() {
      가려 가며 고치면, 저장된 값을 처음 써넣을 때처럼 사건 없이 바뀐 자리를 놓칩니다. */
   function sync(draft) {
     heightText.textContent = `${draft.height}cm`
+    jobClear.hidden = !draft['job-search']
 
     const search = draft['job-mode'] === 'search'
     form.querySelector('[data-job-search]').hidden = !search
@@ -151,6 +152,84 @@ export function initProfile() {
     const next = Number(height.value) + Number(step.dataset.heightStep)
     height.value = Math.min(HEIGHT.max, Math.max(HEIGHT.min, next))
     height.dispatchEvent(new Event('input', { bubbles: true }))
+  })
+
+  /* ---- 직업 검색 --------------------------------------------------------
+     치는 대로 맞는 직업을 아래에 띄웁니다. 고르지 않고 친 대로 두어도 됩니다 —
+     목록에 없는 직업도 있습니다.
+
+     ↑↓ 로 옮기고 Enter 로 고르고 Esc 로 닫습니다. 초점은 내내 칸에 남습니다
+     (aria-activedescendant) — 목록으로 초점이 넘어가면 이어서 칠 수 없습니다. */
+  const jobInput = $('job-search')
+  const jobList = form.querySelector('#job-suggest')
+  const jobClear = form.querySelector('[data-job-clear]')
+  const jobs = Object.entries(JOBS).flatMap(([group, names]) => names.map((name) => ({ name, group })))
+  let active = -1
+
+  const closeJobs = () => {
+    jobList.hidden = true
+    jobInput.setAttribute('aria-expanded', 'false')
+    jobInput.removeAttribute('aria-activedescendant')
+    active = -1
+  }
+  const mark = (index) => {
+    const items = [...jobList.children]
+    active = (index + items.length) % items.length
+    for (const [i, item] of items.entries()) item.setAttribute('aria-selected', String(i === active))
+    jobInput.setAttribute('aria-activedescendant', items[active].id)
+    items[active].scrollIntoView({ block: 'nearest' })
+  }
+  const pickJob = (name) => {
+    jobInput.value = name
+    closeJobs()
+    jobInput.dispatchEvent(new Event('input', { bubbles: true }))
+    closeJobs()
+  }
+  const suggest = () => {
+    const query = jobInput.value.trim()
+    jobClear.hidden = !jobInput.value
+    // 이미 목록의 것과 똑같이 적혀 있으면 더 띄울 것이 없습니다(방금 고른 직후가 그렇습니다).
+    const found = query && !jobs.some((job) => job.name === query)
+      ? jobs.filter((job) => job.name.includes(query) || job.group.includes(query))
+      : []
+    if (!found.length) return closeJobs()
+    jobList.replaceChildren(...found.map((job, i) => {
+      const item = document.createElement('li')
+      item.id = `job-suggest-${i}`
+      item.setAttribute('role', 'option')
+      item.setAttribute('aria-selected', 'false')
+      item.dataset.value = job.name
+      const group = document.createElement('span')
+      group.textContent = job.group
+      item.append(job.name, group)
+      return item
+    }))
+    active = -1
+    jobList.hidden = false
+    jobInput.setAttribute('aria-expanded', 'true')
+  }
+  jobInput.addEventListener('input', suggest)
+  jobInput.addEventListener('focus', suggest)
+  jobInput.addEventListener('blur', closeJobs)
+  jobInput.addEventListener('keydown', (e) => {
+    // 한글을 조합하는 중의 Enter·화살표는 글자를 확정하는 것이라 건드리지 않습니다.
+    if (e.isComposing || jobList.hidden) return
+    if (e.key === 'ArrowDown') { e.preventDefault(); mark(active + 1) }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); mark(active - 1) }
+    else if (e.key === 'Enter' && active >= 0) { e.preventDefault(); pickJob(jobList.children[active].dataset.value) }
+    else if (e.key === 'Escape') closeJobs()
+  })
+  // click 이 아니라 mousedown 입니다. click 을 기다리면 그 전에 칸이 초점을 잃어 목록이
+  // 먼저 닫힙니다.
+  jobList.addEventListener('mousedown', (e) => {
+    e.preventDefault()
+    const item = e.target.closest('li')
+    if (item) pickJob(item.dataset.value)
+  })
+  jobClear.addEventListener('click', () => {
+    jobInput.value = ''
+    jobInput.dispatchEvent(new Event('input', { bubbles: true }))
+    jobInput.focus()
   })
 
   /* 검색 ↔ 카테고리. segmented-control.js 가 고른 칸을 옮기고, 여기서는 어느 쪽이
