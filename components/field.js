@@ -40,8 +40,13 @@ export function initFields() {
 
   // 마지막으로 칸을 건드린 것이 손가락·마우스였는지.
   let byPointer = false
-  document.addEventListener('pointerdown', () => { byPointer = true }, true)
-  document.addEventListener('keydown', () => { byPointer = false }, true)
+  // CSS 도 이것을 봅니다(<html data-input>) — 기간 칸의 초점 테는 키보드로 왔을 때만 둘립니다.
+  const by = (pointer) => {
+    byPointer = pointer
+    document.documentElement.dataset.input = pointer ? 'pointer' : 'keyboard'
+  }
+  document.addEventListener('pointerdown', () => by(true), true)
+  document.addEventListener('keydown', () => by(false), true)
 
   document.addEventListener('change', (e) => {
     if (byPointer && e.target.matches?.(PICKERS)) e.target.blur()

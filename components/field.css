@@ -209,7 +209,11 @@
 }
 /* 아직 고르지 않은 쪽은 안내 문구의 색입니다. */
 .text-field__month.is-empty { color: var(--colors-fg-lower); }
-.text-field__month:has(input:focus-visible) {
+/* 초점 테는 키보드로 왔을 때만 둘립니다. 달 고르는 칸은 글자 칸으로 쳐져서 마우스로
+   눌러도 :focus-visible 이 걸리는데, 그러면 달력이 열려 있는 동안 고른 달에 테가 둘려
+   있습니다 — 눌러서 온 사람에게는 열린 달력이 이미 어디에 있는지를 말하고 있습니다.
+   무엇으로 왔는지는 field.js 가 <html data-input> 에 적어둡니다. */
+:root[data-input='keyboard'] .text-field__month:has(input:focus-visible) {
   outline: 2px solid var(--colors-fg);
   outline-offset: 2px;
   border-radius: var(--_rounded-xs);
