@@ -978,7 +978,7 @@ profile-detail.html   profile-detail.js   물음 목록(QUESTIONS) · 구획과 
 ### Verify — 서류 인증 창
 
 ```html
-<button data-verify-open="company">재인증</button>   <!-- company · family · school -->
+<button data-verify-open="company">재인증</button>   <!-- identity · company · family · school -->
 ```
 
 ```js
@@ -986,7 +986,8 @@ import { initVerify } from './components/verify.js'
 initVerify()
 ```
 
-창 셋(회사·직업 / 혼인·가족 / 학교)은 `verify.js` 의 `KINDS` 에서 그려집니다. 회사·직업은 탭이
+창 넷(본인 / 회사·직업 / 혼인·가족 / 학교)은 `verify.js` 의 `KINDS` 에서 그려집니다. 본인 인증은
+서류 없이 인증 수단 하나를 고릅니다(⚠️ Figma 에 없는 창 — 건강보험 자동 인증 탭을 빌렸습니다). 회사·직업은 탭이
 둘(건강보험 자동 인증 · 직접 인증)이고, 직접 인증은 `내 상황`에 따라 받는 서류와 유의사항이
 바뀝니다. 보이는 필수 칸이 다 차야 `인증 요청`이 켜집니다.
 
@@ -996,7 +997,6 @@ initVerify()
 ⚠️ `인증 요청`은 창을 닫고 알림을 띄울 뿐입니다 — 파일은 어디에도 올라가지 않고 인증 상태도
 바뀌지 않습니다. 요청 뒤의 화면과 알림 문구(`인증을 요청했어요`)는 Figma 에 없어 임시입니다.
 발급일은 브라우저의 날짜 칸이라 Figma 의 `2026년 9월 18일` 이 아닌 기기 표기로 보입니다.
-본인인증의 `재인증`은 서류 인증이 아니라 연결하지 않았습니다.
 
 ### 프로필 화면 — Figma 와 다른 것 · 임시인 것
 

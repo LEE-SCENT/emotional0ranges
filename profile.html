@@ -168,8 +168,7 @@
               <span>본인인증으로 확인된 정보는 직접 수정할 수 없어요</span>
             </p>
           </div>
-          <!-- ⚠️ 본인인증(휴대폰)은 서류 인증과 다른 길이라 창이 없습니다. 눌러도 아무 데도 가지 않습니다. -->
-          <button class="btn btn--blur btn--medium" type="button"><span class="btn__label">재인증</span></button>
+          <button class="btn btn--blur btn--medium" type="button" data-verify-open="identity"><span class="btn__label">재인증</span></button>
         </div>
 
         <!-- 여기서부터가 스스로 채우는 칸입니다. 전부 채워야 저장되어 이름표마다 점이 붙습니다.
@@ -523,7 +522,7 @@
   initProfile()
   const { initSegmentedControls } = await import('./components/segmented-control.js?v=bbd7c4b8')
   initSegmentedControls()
-  const { initVerify } = await import('./components/verify.js?v=9290816a')
+  const { initVerify } = await import('./components/verify.js?v=596c15fb')
   initVerify()
   // 고르는 칸(셀렉트·달·날짜)은 고르고 나면 초점을 내려놓습니다.
   const { initFields } = await import('./components/field.js?v=de1ad19d')
