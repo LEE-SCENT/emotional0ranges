@@ -155,8 +155,7 @@ export function initProfile() {
   })
 
   /* ---- 직업 검색 --------------------------------------------------------
-     치는 대로 맞는 직업을 아래에 띄웁니다. 목록에 없는 직업도 받습니다 — 맨 위의
-     "'○○' 직접 입력"이 그 길이고, 고르지 않고 친 대로 두어도 같습니다.
+     치는 대로 맞는 직업을 아래에 띄웁니다. 맞는 것이 없으면 없다고 말합니다.
 
      ↑↓ 로 옮기고 Enter 로 고르고 Esc 로 닫습니다. 고르는 동안 초점은 칸에 남습니다
      (aria-activedescendant) — 목록으로 초점이 넘어가면 이어서 칠 수 없습니다.
@@ -174,16 +173,26 @@ export function initProfile() {
     active = -1
   }
   const mark = (index) => {
-    const items = [...jobList.children]
+    const items = [...jobList.querySelectorAll('[role="option"]')]
+    if (!items.length) return
     active = (index + items.length) % items.length
     for (const [i, item] of items.entries()) item.setAttribute('aria-selected', String(i === active))
     jobInput.setAttribute('aria-activedescendant', items[active].id)
     items[active].scrollIntoView({ block: 'nearest' })
   }
+  /* 목록에 있는 직업만 받습니다. 고르지 않고 칸을 떠나면 친 것은 버리고, 마지막으로
+     고른 것(없으면 빈 칸)으로 돌아갑니다 — 반쯤 친 말이 직업으로 저장되지 않습니다. */
+  let confirmed = ''
+  const settle = () => {
+    closeJobs()
+    if (jobInput.value === confirmed) return
+    jobInput.value = confirmed
+    jobInput.dispatchEvent(new Event('input', { bubbles: true }))
+    closeJobs()
+  }
   const pickJob = (name) => {
+    confirmed = name
     jobInput.value = name
-    // 값이 바뀐 것을 폼에 알리면 목록이 다시 뜨려 합니다(직접 입력한 말은 목록에 없으니
-    // 맞는 것을 또 찾습니다). 알린 뒤에 닫습니다.
     jobInput.dispatchEvent(new Event('input', { bubbles: true }))
     closeJobs()
     // 골랐으면 이 칸의 일은 끝났습니다. 초점을 내려놓아 칸이 채워진 모습으로 돌아가고,
@@ -203,43 +212,48 @@ export function initProfile() {
       item.setAttribute('role', 'option')
       item.setAttribute('aria-selected', 'false')
       item.dataset.value = value
-      item.append(label)
-      if (group) {
-        const tag = document.createElement('span')
-        tag.textContent = group
-        item.append(tag)
-      }
+      const tag = document.createElement('span')
+      tag.textContent = group
+      item.append(label, tag)
       return item
     }
-    /* 맨 위는 늘 "친 그대로 쓰기"입니다. 목록에 없는 직업도 받는데, 그 길이 보이지
-       않으면 맞는 것이 없을 때 목록이 그냥 사라져 받아들여진 것인지 알 수 없습니다. */
-    jobList.replaceChildren(
-      option(0, query, `'${query}' 직접 입력`),
-      ...found.map((job, i) => option(i + 1, job.name, job.name, job.group)),
-    )
+    if (found.length) {
+      jobList.replaceChildren(...found.map((job, i) => option(i, job.name, job.name, job.group)))
+    } else {
+      /* 맞는 것이 없다는 것도 말합니다. 목록이 그냥 사라지면 아직 찾는 중인지, 없는
+         것인지 알 수 없습니다. 고를 수 있는 줄이 아니라 option 이 아닙니다. */
+      const none = document.createElement('li')
+      none.className = 'is-empty'
+      none.setAttribute('role', 'presentation')
+      none.textContent = '검색 결과가 없어요'
+      jobList.replaceChildren(none)
+    }
     active = -1
     jobList.hidden = false
     jobInput.setAttribute('aria-expanded', 'true')
   }
   jobInput.addEventListener('input', suggest)
   jobInput.addEventListener('focus', suggest)
-  jobInput.addEventListener('blur', closeJobs)
+  jobInput.addEventListener('blur', settle)
   jobInput.addEventListener('keydown', (e) => {
     // 한글을 조합하는 중의 Enter·화살표는 글자를 확정하는 것이라 건드리지 않습니다.
     if (e.isComposing || jobList.hidden) return
     if (e.key === 'ArrowDown') { e.preventDefault(); mark(active + 1) }
     else if (e.key === 'ArrowUp') { e.preventDefault(); mark(active - 1) }
     else if (e.key === 'Enter' && active >= 0) { e.preventDefault(); pickJob(jobList.children[active].dataset.value) }
+    // 고른 줄 없이 Enter 를 치면 폼이 저장되려 합니다. 찾는 중에는 막습니다.
+    else if (e.key === 'Enter') e.preventDefault()
     else if (e.key === 'Escape') closeJobs()
   })
   // click 이 아니라 mousedown 입니다. click 을 기다리면 그 전에 칸이 초점을 잃어 목록이
   // 먼저 닫힙니다.
   jobList.addEventListener('mousedown', (e) => {
     e.preventDefault()
-    const item = e.target.closest('li')
+    const item = e.target.closest('[role="option"]')
     if (item) pickJob(item.dataset.value)
   })
   jobClear.addEventListener('click', () => {
+    confirmed = ''
     jobInput.value = ''
     jobInput.dispatchEvent(new Event('input', { bubbles: true }))
     jobInput.focus()
@@ -290,4 +304,6 @@ export function initProfile() {
     },
   })
 
+  // 저장돼 있던 직업은 이미 받아들여진 것입니다. 여기서부터가 돌아갈 자리입니다.
+  confirmed = jobInput.value
 }

@@ -324,6 +324,13 @@
 }
 .text-field__suggest li:hover,
 .text-field__suggest li[aria-selected='true'] { background: var(--colors-bg-low); }
+/* 맞는 것이 없을 때의 한 줄. 고를 수 있는 것이 아니라 올려도 바탕이 서지 않습니다. */
+.text-field__suggest li.is-empty,
+.text-field__suggest li.is-empty:hover {
+  background: none;
+  color: var(--colors-fg-lower);
+  cursor: default;
+}
 
 /* 날짜 칸. 달력 아이콘은 우리 것을 쓰고 브라우저의 것은 감춥니다 — 칸 어디를 눌러도
    달력이 열리도록 verify.js 가 showPicker 를 부릅니다. */
