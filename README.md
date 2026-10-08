@@ -466,6 +466,22 @@ Variable 폰트 하나가 45–920 전 구간을 담당하므로 `regular-400` `
 라이선스는 SIL OFL 1.1 이며 [fonts/pretendard/LICENSE.txt](fonts/pretendard/LICENSE.txt) 에 함께
 배포합니다 — 폰트 파일을 재배포할 때 라이선스 동봉이 요구됩니다.
 
+### Nanum Myeongjo — 한마디 전용
+
+프로필 카드의 **한마디**에만 쓰는 명조입니다(`fonts/nanum-myeongjo/`, Bold 700 한 굵기).
+스스로 쓴 글이라는 것을 서체로 구분합니다 — 그 밖의 자리에서는 쓰지 않습니다.
+
+```html
+<link rel="stylesheet" href="./fonts/nanum-myeongjo/nanum-myeongjo.css">   <!-- 카드가 서는 화면에만 -->
+```
+
+Google Fonts 가 나눠 둔 92 개 조각을 그대로 받아 자체 호스팅합니다(1.6MB). Pretendard 와 같이
+쓰인 글자의 조각만 내려받습니다. 라이선스는 SIL OFL 1.1 이고
+[fonts/nanum-myeongjo/LICENSE.txt](fonts/nanum-myeongjo/LICENSE.txt) 에 함께 둡니다.
+
+⚠️ Figma 에서는 이 서체가 `fontFamily` 변수가 아니라 글자에 직접 걸려 있습니다. 토큰으로는
+들이지 않았고 `profile-card.css` 에 이름으로 적혀 있습니다.
+
 ---
 
 ## Logo
@@ -927,7 +943,6 @@ initVerify()
 - **저장할 서버가 없습니다.** `localStorage` 의 `eo:profile` 에 적습니다. 이름·출생연도·성별과
   인증 여부는 Figma 의 예시 값입니다.
 - 지역·직업 분류 목록, 키의 범위(140–210)는 예시입니다.
-- 한마디의 서체(Figma: Nanum Myeongjo Bold)가 저장소에 없어 기기의 명조 계열로 떨어집니다.
 - Figma 고정값: 카드 380 × 520, 키 조절 480, 한마디 칸 320. 인증 전 띠는 Figma 의 679 대신 폼 폭을 채웁니다.
 - Figma 프레임 이름은 `744~1600` 이지만 2단 ↔ 1단 전환은 다른 화면과 같은 961 에 두었습니다.
 

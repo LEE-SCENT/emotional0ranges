@@ -161,12 +161,13 @@
   line-height: var(--typography-body-s-regular-line-height);
 }
 
-/* 한마디. 고른 것이 아니라 스스로 쓴 글이라, 이 카드에서 여기만 서체가 다릅니다.
-   ⚠️ Figma 는 Nanum Myeongjo Bold 20/130% 인데 이 서체가 저장소에 없고 변수로도
-      묶여 있지 않습니다. 서체를 들여오기 전까지는 기기의 명조 계열로 떨어집니다. */
+/* 한마디. 고른 것이 아니라 스스로 쓴 글이라, 이 카드에서 여기만 서체가 다릅니다 —
+   Nanum Myeongjo Bold 20 / 130% (fonts/nanum-myeongjo/). 서체가 오기 전과 못 받은
+   기기에서는 그 기기의 명조로 보입니다.
+   ⚠️ Figma 에서 이 서체는 변수(fontFamily)로 묶여 있지 않고 글자에 직접 걸려 있습니다. */
 .profile-card__words {
   margin: 0;
-  font-family: 'Nanum Myeongjo', 'NanumMyeongjo', 'AppleMyungjo', 'Batang', serif;
+  font-family: 'Nanum Myeongjo', 'AppleMyungjo', 'Batang', serif;
   font-weight: 700;
   font-size: var(--typography-body-xl-medium-font-size);
   line-height: 1.3;
