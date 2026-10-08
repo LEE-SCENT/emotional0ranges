@@ -283,7 +283,19 @@
 
 /* ---- 탭(상세 프로필) ---------------------------------------------------- */
 
-.profile__tabs { margin-block-end: calc(var(--spacing-500) - var(--spacing-800)); }
+.profile__tabs {
+  margin-block-end: calc(var(--spacing-500) - var(--spacing-800));
+  /* 읽어 내려가는 동안 위에 붙어 남습니다(GNB · topBar 바로 아래). 라이프처럼 긴 판의
+     아래쪽에서 다른 탭으로 가려면 맨 위까지 올라가야 했습니다. 뒤가 비치지 않게 바탕을
+     깝니다. */
+  position: sticky;
+  inset-block-start: var(--profile-sticky-top);
+  z-index: 6;
+  background: var(--colors-bg);
+}
+/* GNB 의 말풍선("온라인 매칭 지금 보러 가기")은 GNB 아래로 내려와 떠 있어, 붙어 있는 탭의
+   글자를 가립니다. 이 화면에서는 내려 읽는 동안 감춥니다 — 맨 위로 돌아오면 다시 보입니다. */
+body:has(.profile__tabs) .gnb.is-sticky .gnb__tip { display: none; }
 .profile .tabs__item {
   padding-inline: 0;
   border: 0;
@@ -301,7 +313,12 @@
 /* ---- 좁은 화면 ---------------------------------------------------------- */
 
 @media (max-width: 960px) {
-  .profile { padding-block-start: 0; }
+  .profile {
+    padding-block-start: 0;
+    /* 좁은 화면에서 위에 붙어 있는 것은 GNB(72)가 아니라 topBar(56)입니다. 탭이 그 바로
+       아래에 붙어야, 사이로 지나가는 내용이 비치지 않습니다. */
+    --profile-sticky-top: var(--_top-bar-height);
+  }
 
   /* 나가는 길은 위쪽 topBar 가 맡습니다. */
   .profile__header > .btn { display: none; }
@@ -345,9 +362,10 @@
   .choice-group--scroll::-webkit-scrollbar { display: none; }
   .choice-group--scroll .choice { flex: none; }
 
-  /* 탭 넷이 폭을 나눠 씁니다. 위 여백은 제목과의 간격이 대신합니다. */
-  .profile .tabs { gap: 0; }
-  .profile .tabs__item { flex: 1 1 0; padding-block-start: 0; }
+  /* 탭 넷이 폭을 나눠 씁니다. 위 여백(8)은 붙어 있을 때 topBar 와 글자 사이를 띄우는
+     것이고, 같은 만큼 위로 당겨(margin) 제목과의 간격은 Figma 의 20 그대로입니다. */
+  .profile .tabs { gap: 0; margin-block-start: calc(var(--spacing-200) * -1); }
+  .profile .tabs__item { flex: 1 1 0; padding-block-start: var(--spacing-200); }
 
   /* 저장했다는 알림은 위에서 뜹니다. 아래에는 저장 버튼이 붙어 있어, 방금 누른
      손가락이 알림을 가립니다. */

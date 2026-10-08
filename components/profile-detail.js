@@ -335,7 +335,12 @@ export function initProfileDetail() {
   tabs.addEventListener('click', (e) => {
     const item = e.target.closest('[data-tab]')
     if (!item) return
+    /* 탭이 위에 붙어 있는 동안(아래까지 내려와 있는 동안) 탭을 옮기면 새 판의 처음으로
+       올려줍니다. 그대로 두면 앞 판을 읽던 깊이에서 새 판의 가운데가 열립니다. */
+    const pinned = parseFloat(getComputedStyle(tabs).top) || 0
+    const stuck = tabs.getBoundingClientRect().top <= pinned + 1
     showTab(item.dataset.tab)
+    if (stuck) window.scrollTo({ top: form.getBoundingClientRect().top + window.scrollY - pinned })
     // 어느 탭인지를 주소에 적어둡니다(#values). 새로고침해도 보던 탭으로 돌아오고, 그 탭을
     // 가리키는 링크도 됩니다. 뒤로 가기에 탭마다 한 칸씩 쌓이지 않도록 갈아 끼웁니다.
     history.replaceState(null, '', `#${tab}`)
