@@ -174,7 +174,8 @@
 
         <!-- 여기서부터가 스스로 채우는 칸입니다. 전부 채워야 저장되어 이름표마다 점이 붙습니다.
              위의 이름·출생연도·성별과 아래의 회사는 인증으로 들어온 값이라 채울 것이 없어
-             점이 없습니다. -->
+             점이 없습니다. 답에 딸려 나오는 칸(기간, 자녀 수·양육)에도 없습니다 — 위의
+             물음이 이미 필수라 그 답의 일부로 읽힙니다. 채워야 하는 것은 같습니다. -->
         <div class="field">
           <label class="field__label" for="profile-height">키<span class="field__required" aria-hidden="true"></span><span class="sr-only">필수</span></label>
           <div class="profile__height">
@@ -321,7 +322,7 @@
           </div>
           <div class="field-row profile__periods" data-periods hidden>
             <div class="field" data-period="married" hidden>
-              <span class="field__label field__label--sub" id="profile-married-period">법률혼 기간<span class="field__required" aria-hidden="true"></span><span class="sr-only">필수</span></span>
+              <span class="field__label field__label--sub" id="profile-married-period">법률혼 기간</span>
               <div class="text-field text-field--period" role="group" aria-labelledby="profile-married-period">
                 <svg class="text-field__icon" aria-hidden="true"><use href="#icon-calendar"></use></svg>
                 <label class="text-field__month">
@@ -336,7 +337,7 @@
               </div>
             </div>
             <div class="field" data-period="cohabited" hidden>
-              <span class="field__label field__label--sub" id="profile-cohabited-period">사실혼 기간<span class="field__required" aria-hidden="true"></span><span class="sr-only">필수</span></span>
+              <span class="field__label field__label--sub" id="profile-cohabited-period">사실혼 기간</span>
               <div class="text-field text-field--period" role="group" aria-labelledby="profile-cohabited-period">
                 <svg class="text-field__icon" aria-hidden="true"><use href="#icon-calendar"></use></svg>
                 <label class="text-field__month">
@@ -362,7 +363,7 @@
         </div>
 
         <div class="field" role="group" aria-labelledby="profile-kids-detail-label" data-kids-detail hidden>
-          <span class="field__label" id="profile-kids-detail-label">자녀 수 · 양육<span class="field__required" aria-hidden="true"></span><span class="sr-only">필수</span></span>
+          <span class="field__label" id="profile-kids-detail-label">자녀 수 · 양육</span>
           <div class="choice-group choice-group--scroll" role="radiogroup" aria-label="자녀 수">
             <label class="choice"><input type="radio" name="kids-count" value="1명"><span>1명</span></label>
             <label class="choice"><input type="radio" name="kids-count" value="2명"><span>2명</span></label>
