@@ -11,7 +11,7 @@
  * 구획은 넷(상세 정보 · 라이프 · 가치관 · 한마디)이고 한 페이지에 이어집니다. 탭은
  * 구획으로 가는 길이고, 저장은 하나라 넷이 함께 저장됩니다.
  */
-import { cardGrid, cardHeader, cardRow, el, initProfileForm, swap } from './profile-form.js?v=57ea0cb7'
+import { cardGrid, cardHeader, cardRow, el, initProfileForm, swap } from './profile-form.js?v=07d93a56'
 import { selectTab } from './tabs.js?v=aec7319a'
 
 /**
