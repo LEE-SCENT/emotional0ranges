@@ -9,7 +9,7 @@
  * 몇 명인지 묻습니다. 나가고 저장하는 일은 profile-form.js 가 합니다.
  */
 import { openConfirm } from './confirm.js?v=f516d2db'
-import { cardGrid, cardHeader, cardRow, initProfileForm, load, store } from './profile-form.js?v=e716fb3b'
+import { cardGrid, cardHeader, cardRow, initProfileForm, load, store } from './profile-form.js?v=bea15182'
 
 /**
  * ⚠️ 예시입니다. 행정구역 전체가 아니라 화면을 맞춰 보는 데 필요한 만큼만 있습니다.
@@ -98,11 +98,8 @@ function missing(form, draft) {
 
   // 직업은 검색으로 고른 것이 있거나, 분류를 중분류까지 골랐으면 됩니다.
   if (draft['job-major'] && !draft['job-minor']) {
-    found.push({
-      field: at('[data-field="job"]'),
-      box: form.elements['job-minor'].closest('.text-field'),
-      message: '중분류를 선택해 주세요',
-    })
+    // 대분류는 골랐으니 말은 중분류 상자 아래에 섭니다.
+    found.push({ field: at('[data-field="job-minor"]'), message: '중분류를 선택해 주세요' })
   } else {
     need(draft['job-search'].trim() || draft['job-minor'], '[data-field="job"]', '직업을 선택해 주세요')
   }

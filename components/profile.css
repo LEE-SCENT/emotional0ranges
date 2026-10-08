@@ -222,7 +222,9 @@
    찾는 길이 둘입니다. 이름을 아는 사람은 검색으로, 모르는 사람은 분류로. */
 .profile__occupation {
   display: flex;
-  align-items: center;
+  /* 위에 맞춥니다. 상자 아래에 빠졌다는 말이 서면 줄이 길어지는데, 가운데에 맞추면
+     그때 탭과 옆 상자가 아래로 밀립니다. */
+  align-items: flex-start;
   gap: var(--spacing-150);
 }
 .profile__occupation > .segmented { flex: none; }

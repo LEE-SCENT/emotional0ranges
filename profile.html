@@ -23,11 +23,11 @@
 <link rel="stylesheet" href="./components/my-menu.css?v=59a441fb">
 <link rel="stylesheet" href="./components/tag.css?v=fef5c195">
 <link rel="stylesheet" href="./components/checkbox.css?v=67340959">
-<link rel="stylesheet" href="./components/field.css?v=2843bbe4">
+<link rel="stylesheet" href="./components/field.css?v=d42ed3d6">
 <link rel="stylesheet" href="./components/choice.css?v=526620f2">
 <link rel="stylesheet" href="./components/verified-banner.css?v=6f3f1c77">
 <link rel="stylesheet" href="./components/profile-card.css?v=19c13dbf">
-<link rel="stylesheet" href="./components/profile.css?v=e13ee7d6">
+<link rel="stylesheet" href="./components/profile.css?v=cab03d0b">
 <link rel="stylesheet" href="./components/tabs.css?v=a962487a">
 <link rel="stylesheet" href="./components/verify.css?v=43d9233f">
 <link rel="stylesheet" href="./components/confirm.css?v=598089ab">
@@ -230,13 +230,20 @@
               <ul class="text-field__suggest" id="job-suggest" role="listbox" aria-label="직업" hidden></ul>
             </div>
             <div class="field-row" data-job-category hidden>
-              <div class="text-field text-field--select">
-                <select name="job-major" aria-label="직업 대분류"></select>
-                <svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg>
+              <!-- 상자마다 제 칸(.field)에 들어 있습니다. 빠졌다는 말이 그 상자 바로 아래에
+                   서야 해서입니다 — 중분류가 빠졌는데 말이 줄 전체의 왼쪽 끝에 서면 어느
+                   상자를 두고 하는 말인지 찾아야 합니다. -->
+              <div class="field">
+                <div class="text-field text-field--select">
+                  <select name="job-major" aria-label="직업 대분류"></select>
+                  <svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg>
+                </div>
               </div>
-              <div class="text-field text-field--select">
-                <select name="job-minor" aria-label="직업 중분류"></select>
-                <svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg>
+              <div class="field" data-field="job-minor">
+                <div class="text-field text-field--select">
+                  <select name="job-minor" aria-label="직업 중분류"></select>
+                  <svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg>
+                </div>
               </div>
             </div>
           </div>
@@ -487,7 +494,7 @@
   initConfirms()
   // segmented 보다 먼저 돕니다. 저장된 쪽(검색·카테고리)을 고른 칸으로 세워둬야
   // 그쪽이 그 칸의 자리를 잽니다.
-  const { initProfile } = await import('./components/profile.js?v=b1df9ea2')
+  const { initProfile } = await import('./components/profile.js?v=ac0a1bf6')
   initProfile()
   const { initSegmentedControls } = await import('./components/segmented-control.js?v=bbd7c4b8')
   initSegmentedControls()

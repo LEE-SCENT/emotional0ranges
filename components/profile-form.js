@@ -174,7 +174,7 @@ export function cardGrid(rows) {
  * @param {(profile: object, draft: object) => void} options.render
  *   카드를 다시 그립니다. draft 는 아직 저장하지 않은 지금의 폼 값입니다.
  * @param {(profile: object) => void} [options.afterSave]
- * @param {(draft: object) => Array<{ field: Element, message: string, box?: Element }>} [options.validate]
+ * @param {(draft: object) => Array<{ field: Element, message: string }>} [options.validate]
  *   저장하기 전에 빠진 것을 찾습니다. 돌려준 것마다 그 칸 아래에 말이 섭니다.
  */
 export function initProfileForm({ form, part, saved, render, afterSave, validate }) {
@@ -216,15 +216,10 @@ export function initProfileForm({ form, part, saved, render, afterSave, validate
   let warned = false
   function check({ jump = false } = {}) {
     for (const node of form.querySelectorAll('.field__error')) node.remove()
-    for (const node of form.querySelectorAll('.field--error, .text-field--error')) {
-      node.classList.remove('field--error', 'text-field--error')
-    }
+    for (const node of form.querySelectorAll('.field--error')) node.classList.remove('field--error')
     const missing = validate?.(read(form)) ?? []
-    for (const { field, message, box } of missing) {
-      // 칸 안의 상자 가운데 하나만 빠졌으면(대분류는 골랐고 중분류만 남은 때) 그 상자에만
-      // 테두리를 세웁니다. 다 고른 상자까지 붉으면 무엇을 더 해야 하는지가 흐려집니다.
-      if (box) box.classList.add('text-field--error')
-      else field.classList.add('field--error')
+    for (const { field, message } of missing) {
+      field.classList.add('field--error')
       const note = el('p', 'field__error', message)
       // 읽어주는 쪽에도 들립니다. 눈으로만 붉어지면 무엇이 빠졌는지 알 수 없습니다.
       note.setAttribute('role', 'alert')
@@ -235,10 +230,8 @@ export function initProfileForm({ form, part, saved, render, afterSave, validate
       const first = missing[0].field
       // 미끄러지지 않고 바로 갑니다. 방금 누른 저장에 대한 대답이라, 가는 동안을 보여줄
       // 것이 아니라 어디가 빠졌는지가 곧장 보여야 합니다.
-      // 빠진 상자가 따로 있으면 그 상자로, 아니면 칸에서 눈에 보이는 첫 것으로 초점이 갑니다
-      // (감춰진 탭의 것은 건너뜁니다).
-      const within = missing[0].box ?? first
-      const target = [...within.querySelectorAll('input:not([type="hidden"]), select, textarea')]
+      // 칸에서 눈에 보이는 첫 것으로 초점이 갑니다(감춰진 탭의 것은 건너뜁니다).
+      const target = [...first.querySelectorAll('input:not([type="hidden"]), select, textarea')]
         .find((control) => control.offsetParent !== null)
       target?.focus({ preventScroll: true })
       first.scrollIntoView({ block: 'center' })
