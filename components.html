@@ -54,6 +54,17 @@
   .onbg { background:var(--colors-bg-contrast); padding:16px; border-radius:var(--_rounded-m); }
   .blurbg { background:linear-gradient(120deg,#c2410c,#f59e0b); padding:16px; border-radius:var(--_rounded-m); }
   small { font-size:11px; color:var(--colors-fg-lowest); }
+  /* ---- 코드 복사 ---------------------------------------------------------
+     구획마다 그 아래에 접힌 코드가 붙습니다(아래 스크립트가 붙입니다). 화면에 그려진
+     것을 그대로 읽어 내므로, 코드와 그림이 따로 놀 수 없습니다. */
+  h2 { display:flex; align-items:center; gap:8px; }
+  h2 .snippet__copy { margin-inline-start:auto; text-transform:none; letter-spacing:0; }
+  .snippet { margin:6px 0 14px; border-radius:var(--_rounded-m); background:var(--colors-bg-low); }
+  .snippet summary { padding:8px 12px; font-size:12px; color:var(--colors-fg-low); cursor:pointer; user-select:none; }
+  .snippet__needs { margin:0; padding:0 12px 8px; font-size:11px; line-height:1.6; color:var(--colors-fg-lower); }
+  .snippet__needs code { color:var(--colors-fg-low); }
+  .snippet pre { margin:0; padding:12px; max-height:360px; overflow:auto; border-top:1px solid var(--colors-divider);
+                 font:12px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; color:var(--colors-fg); tab-size:2; }
   .col { display:flex; flex-direction:column; gap:16px; max-width:772px; margin-bottom:10px; }
   .sr-only { position:absolute; inline-size:1px; block-size:1px; margin:-1px; padding:0;
              overflow:hidden; white-space:nowrap; clip-path:inset(50%); }
@@ -808,6 +819,105 @@ for (const [id, dir] of [['r7','vertical'],['r8','horizontal']]) {
       <button class="btn btn--filled btn--medium"><span class="btn__label">Button</span></button>
       <button class="btn btn--ghost btn--medium"><span class="btn__label">Button</span></button>
     </div>`
+}
+
+/* ---- 코드 복사 ---------------------------------------------------------
+   구획(<h2> 하나와 그 아래의 본보기)마다 "코드 복사"와 접힌 코드를 붙입니다.
+
+   코드는 손으로 적어두지 않고 화면에 그려진 것을 읽어 냅니다. 따로 적어두면 본보기를
+   고칠 때 코드를 함께 고치는 것을 잊고, 그러면 복사해 간 코드가 화면과 다르게 나옵니다.
+
+   컴포넌트의 스크립트가 돌기 전에 읽습니다(아래의 init 들보다 앞). 스크립트가 붙이는 것 —
+   자리를 잰 값, is-ready, 지우기 버튼 — 은 가져갈 마크업이 아닙니다. */
+{
+  /** 본보기를 감싼 틀. 화면에 늘어놓으려고 둔 것이라 코드에는 그 안만 냅니다. */
+  const FRAME = '.row, .col, .onbg, .blurbg, #footer-host, #gnb-host, #wt'
+  /** 클래스의 앞머리 → 그 스타일이 든 파일. 이름이 같지 않은 것만 적습니다. */
+  const CSS_ALIAS = { btn: 'button', 'btn-group': 'button-group', segmented: 'segmented-control',
+    participant: 'participants', 'text-field': 'field', 'file-field': 'field',
+    'choice-group': 'choice', 'profile-promo': 'profile-card' }
+  const CSS_FILES = new Set(['alert-banner', 'app-bar', 'badge', 'button', 'button-group', 'checkbox',
+    'choice', 'field', 'footer', 'gnb', 'participants', 'product-card', 'profile-card',
+    'segmented-control', 'tag', 'toast', 'tooltip', 'verified-banner'])
+  /** 이것이 보이면 스크립트도 필요합니다. */
+  const SCRIPTS = [
+    ['.segmented', "import { initSegmentedControls } from './components/segmented-control.js'"],
+    ['[data-verify-open]', "import { initVerify } from './components/verify.js'  // + verify.css · tabs.css · choice.css · field.css · toast.css"],
+    ['.text-field, .file-field', "import { initFields } from './components/field.js'"],
+    ['.toast', "import { showToast } from './components/toast.js'"],
+  ]
+  const INLINE = new Set(['svg', 'span', 'b', 'a', 'button', 'label', 'p', 'small', 'dt', 'dd', 'li', 'option', 'h1', 'h2', 'h3'])
+
+  /** 들여쓰기해서 적습니다. 안에 요소가 없거나 짧은 것은 한 줄로 둡니다. */
+  function print(node, depth = 0) {
+    const pad = '  '.repeat(depth)
+    if (node.nodeType === Node.TEXT_NODE) {
+      const text = node.textContent.trim()
+      return text ? pad + text : ''
+    }
+    if (node.nodeType !== Node.ELEMENT_NODE) return ''
+    const tag = node.localName
+    const oneLine = !node.children.length || tag === 'svg' ||
+      (INLINE.has(tag) && node.outerHTML.length < 110)
+    if (oneLine) return pad + node.outerHTML.replace(/\s*\n\s*/g, ' ')
+    const open = node.cloneNode(false).outerHTML.replace(new RegExp(`</${tag}>$`), '')
+    const inner = [...node.childNodes].map((child) => print(child, depth + 1)).filter(Boolean)
+    return [pad + open, ...inner, `${pad}</${tag}>`].join('\n')
+  }
+
+  // 구획의 제목만입니다. 본보기 안의 <h2>(프로필 카드의 이름)는 구획이 아닙니다.
+  for (const title of document.querySelectorAll('body > h2')) {
+    // 이 제목 아래, 다음 제목 전까지가 한 구획입니다.
+    const blocks = []
+    for (let el = title.nextElementSibling; el && el.localName !== 'h2' && el.localName !== 'script'; el = el.nextElementSibling) {
+      if (el.localName !== 'small') blocks.push(el)
+    }
+    const parts = blocks.flatMap((el) => (el.matches(FRAME) ? [...el.children] : [el]))
+    // 컴포넌트가 아닌 구획(폭 안내, 글꼴 견본)은 가져갈 코드가 없습니다.
+    if (!parts.some((el) => el.matches('[class]') || el.querySelector('[class]'))) continue
+    const code = parts.map((el) => print(el)).join('\n')
+    if (!code.trim()) continue
+
+    const scope = document.createElement('div')
+    scope.append(...parts.map((el) => el.cloneNode(true)))
+    const heads = new Set([...scope.querySelectorAll('[class]')].flatMap((el) => [...el.classList])
+      .map((name) => name.split('__')[0].split('--')[0]).map((name) => CSS_ALIAS[name] ?? name))
+    const css = [...heads].filter((name) => CSS_FILES.has(name))
+    const scripts = SCRIPTS.filter(([selector]) => scope.querySelector(selector)).map(([, line]) => line)
+
+    const copy = document.createElement('button')
+    copy.type = 'button'
+    copy.className = 'btn btn--outlined btn--small snippet__copy'
+    copy.innerHTML = '<span class="btn__label">코드 복사</span>'
+    copy.addEventListener('click', async () => {
+      const label = copy.firstElementChild
+      try {
+        await navigator.clipboard.writeText(code)
+        label.textContent = '복사했어요'
+      } catch {
+        // 클립보드를 못 쓰는 환경(권한 · http)에서는 코드를 펼쳐 손으로 고를 수 있게 합니다.
+        details.open = true
+        label.textContent = '아래에서 직접 복사해 주세요'
+      }
+      setTimeout(() => { label.textContent = '코드 복사' }, 1500)
+    })
+    title.append(copy)
+
+    const details = document.createElement('details')
+    details.className = 'snippet'
+    const summary = document.createElement('summary')
+    summary.textContent = '코드 보기'
+    const needs = document.createElement('p')
+    needs.className = 'snippet__needs'
+    needs.innerHTML = [
+      'CSS — <code>build/tokens.css</code>' + css.map((name) => ` · <code>components/${name}.css</code>`).join(''),
+      ...scripts.map((line) => `JS — <code>${line.replace(/</g, '&lt;')}</code>`),
+    ].join('<br>')
+    const pre = document.createElement('pre')
+    pre.textContent = code
+    details.append(summary, needs, pre)
+    ;(blocks.at(-1) ?? title).after(details)
+  }
 }
 
 const { initSegmentedControls } = await import('./components/segmented-control.js?v=bbd7c4b8')
