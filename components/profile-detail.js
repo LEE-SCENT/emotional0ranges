@@ -11,7 +11,7 @@
  * 탭은 넷이고 저장은 하나입니다 — 탭은 한 폼을 나눠 보는 것일 뿐이라, 어느 탭에서
  * 저장하든 네 탭의 것이 함께 저장됩니다.
  */
-import { cardGrid, cardHeader, cardRow, el, initProfileForm, load } from './profile-form.js?v=bea15182'
+import { cardGrid, cardHeader, cardRow, el, initProfileForm, load } from './profile-form.js?v=33a14141'
 
 /**
  * 물음 하나.

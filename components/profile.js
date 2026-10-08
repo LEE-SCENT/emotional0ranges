@@ -9,7 +9,7 @@
  * 몇 명인지 묻습니다. 나가고 저장하는 일은 profile-form.js 가 합니다.
  */
 import { openConfirm } from './confirm.js?v=f516d2db'
-import { cardGrid, cardHeader, cardRow, initProfileForm, load, store } from './profile-form.js?v=bea15182'
+import { cardGrid, cardHeader, cardRow, initProfileForm, load, store } from './profile-form.js?v=33a14141'
 
 /**
  * ⚠️ 예시입니다. 행정구역 전체가 아니라 화면을 맞춰 보는 데 필요한 만큼만 있습니다.
@@ -96,7 +96,8 @@ function missing(form, draft) {
   const found = []
   const need = (ok, selector, message) => { if (!ok) found.push({ field: at(selector), message }) }
 
-  // 직업은 검색으로 고른 것이 있거나, 분류를 중분류까지 골랐으면 됩니다.
+  // 직업은 검색으로 고른 것이 있거나, 분류를 중분류까지 골랐으면 됩니다. 대분류만 고른
+  // 것은 아직 답이 아닙니다(검색으로 고른 것이 남아 있으면 저장 전에 치워집니다 — tidy).
   if (draft['job-major'] && !draft['job-minor']) {
     // 대분류는 골랐으니 말은 중분류 상자 아래에 섭니다.
     found.push({ field: at('[data-field="job-minor"]'), message: '중분류를 선택해 주세요' })
@@ -370,6 +371,15 @@ export function initProfile() {
     part: 'basic',
     saved: '기본 프로필을 저장했어요',
     validate: (draft) => missing(form, draft),
+    /* 검색으로 고른 직업이 있는데 분류에서 대분류만 고르다 만 채 저장하면, 바꾸려다 그만둔
+       것으로 봅니다. 고르다 만 대분류를 치우고 원래 직업 그대로 저장합니다 — 이미 답이
+       있는 사람을 반쯤 고른 것 때문에 막아 세우지 않습니다. */
+    tidy() {
+      if (jobInput.value && $('job-major').value && !$('job-minor').value) {
+        $('job-major').value = ''
+        syncJob()
+      }
+    },
     render(profile, draft) {
       sync(draft)
       for (const card of cards) card.replaceChildren(cardHeader(profile), cardGrid(facts(profile, draft)))
