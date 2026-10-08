@@ -104,8 +104,10 @@ function show(select) {
   select.setAttribute('aria-expanded', 'true')
   select.setAttribute('aria-controls', list.id)
   open = { select, list, active: -1 }
-  // 열리면 지금 골라져 있는 줄에서 시작합니다.
-  mark(Math.max(0, options.findIndex((option) => option.selected)))
+  // 열리면 지금 골라져 있는 줄에서 시작합니다. 아직 고른 것이 없으면 어느 줄도 켜지
+  // 않습니다 — 첫 줄이 켜져 있으면 그것이 이미 골라져 있는 것처럼 보입니다.
+  const current = options.findIndex((option) => option.selected)
+  if (current >= 0) mark(current)
 
   // click 이 아니라 mousedown 입니다. click 을 기다리면 그 전에 select 가 초점을 잃어
   // 판이 먼저 닫힙니다.
@@ -152,8 +154,12 @@ function initSelectMenus() {
       return
     }
     if (e.key === 'ArrowDown') { e.preventDefault(); mark(open.active + 1) }
-    else if (e.key === 'ArrowUp') { e.preventDefault(); mark(open.active - 1) }
-    else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(open.list.children[open.active].dataset.value) }
+    // 켜진 줄이 없을 때 ↑ 는 맨 아래에서 시작합니다(↓ 는 맨 위).
+    else if (e.key === 'ArrowUp') { e.preventDefault(); mark(open.active < 0 ? -1 : open.active - 1) }
+    else if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      if (open.active >= 0) pick(open.list.children[open.active].dataset.value)
+    }
     else if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); close() }
     else if (e.key === 'Tab') close()
     // 글자를 쳐서 건너뛰는 것은 select 가 스스로 값을 바꿉니다. 판은 낡은 것이 되므로 닫습니다.
