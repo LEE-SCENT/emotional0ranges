@@ -11,7 +11,7 @@
  * 구획은 넷(상세 정보 · 라이프 · 가치관 · 한마디)이고 한 페이지에 이어집니다. 탭은
  * 구획으로 가는 길이고, 저장은 하나라 넷이 함께 저장됩니다.
  */
-import { cardGrid, cardHeader, cardRow, el, initProfileForm } from './profile-form.js?v=a86f3f27'
+import { cardGrid, cardHeader, cardRow, el, initProfileForm, swap } from './profile-form.js?v=01aa7be4'
 import { selectTab } from './tabs.js?v=aec7319a'
 
 /**
@@ -269,6 +269,8 @@ export function initProfileDetail() {
   const statuses = form.querySelector('[data-edu-status]')
   const count = form.querySelector('[data-words-count]')
   let tab = 'info'
+  /** 옆 단의 카드에 지금 그려져 있는 구획. */
+  let shown = tab
 
   /* 학력이 바뀌면 고를 수 있는 학적 상태도 바뀝니다. 새 목록에 없는 것은 풀립니다. */
   function drawStatuses(level, keep) {
@@ -302,7 +304,9 @@ export function initProfileDetail() {
     render(profile, draft) {
       sync(draft)
       // 옆 단의 카드는 지금 보고 있는 구획의 것, 미리보기 창에는 넷이 나란히 섭니다.
-      aside.replaceChildren(...card(profile, draft, tab))
+      // 구획이 바뀌어 내용이 통째로 갈릴 때만 새 내용이 떠오르듯 나타납니다.
+      swap(aside, card(profile, draft, tab), { fade: shown !== tab })
+      shown = tab
       for (const node of previews) node.replaceChildren(...card(profile, draft, node.dataset.profileCard))
     },
   })

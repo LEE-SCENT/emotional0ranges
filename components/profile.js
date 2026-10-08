@@ -9,7 +9,7 @@
  * 몇 명인지 묻습니다. 나가고 저장하는 일은 profile-form.js 가 합니다.
  */
 import { openConfirm } from './confirm.js?v=f516d2db'
-import { cardGrid, cardHeader, cardRow, initProfileForm, load, store } from './profile-form.js?v=a86f3f27'
+import { cardGrid, cardHeader, cardRow, initProfileForm, load, store, swap } from './profile-form.js?v=01aa7be4'
 
 /**
  * ⚠️ 예시입니다. 행정구역 전체가 아니라 화면을 맞춰 보는 데 필요한 만큼만 있습니다.
@@ -390,7 +390,7 @@ export function initProfile() {
     prepare,
     render(profile, draft) {
       sync(draft)
-      for (const card of cards) card.replaceChildren(cardHeader(profile), cardGrid(facts(profile, draft)))
+      for (const card of cards) swap(card, [cardHeader(profile), cardGrid(facts(profile, draft))])
       // 상세 프로필을 한 번이라도 저장했으면 더 권하지 않습니다.
       for (const promo of promos) promo.hidden = Boolean(profile.detail)
     },

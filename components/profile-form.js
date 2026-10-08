@@ -164,6 +164,46 @@ export function cardGrid(rows) {
   return grid
 }
 
+/**
+ * 카드의 내용을 갈아 끼웁니다. 키가 달라지면 그 사이를 미끄러져 갑니다.
+ *
+ * 카드는 내용만큼 자라는데, 고른 것이 한 줄 늘거나 구획이 바뀌면 키가 그 자리에서
+ * 뚝 바뀝니다. 옆에서 폼을 고치는 동안 시야 끝에서 무엇이 튀면 눈이 그리로 끌려갑니다.
+ *
+ * 갈아 끼우기 전과 후의 키를 재서 그 사이만 움직입니다(height 를 auto 로는 전환할 수
+ * 없어 CSS 만으로는 되지 않습니다). 움직이는 동안 넘치는 내용은 잘라, 새 내용이 카드
+ * 밖으로 먼저 삐져나오지 않습니다.
+ *
+ * @param {Element} card
+ * @param {Node[]} nodes
+ * @param {{ fade?: boolean }} [options]  내용이 통째로 바뀔 때(구획이 바뀔 때) 새 내용이
+ *   떠오르듯 나타나게 합니다. 한 글자 고칠 때마다 깜빡이면 안 되므로 기본은 꺼져 있습니다.
+ */
+export function swap(card, nodes, { fade = false } = {}) {
+  const from = card.getBoundingClientRect().height
+  for (const animation of card.getAnimations()) animation.cancel()
+  card.replaceChildren(...nodes)
+  if (!from || matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+  const root = getComputedStyle(document.documentElement)
+  const timing = {
+    duration: parseFloat(root.getPropertyValue('--_duration-base')) || 240,
+    easing: root.getPropertyValue('--_easing-standard').trim() || 'ease',
+  }
+  const to = card.getBoundingClientRect().height
+  if (Math.abs(to - from) > 0.5) {
+    card.animate(
+      [{ blockSize: `${from}px`, minBlockSize: 0, overflow: 'clip' },
+        { blockSize: `${to}px`, minBlockSize: 0, overflow: 'clip' }],
+      timing,
+    )
+  }
+  if (fade) {
+    // 머리(이름·인증)는 그대로라 건너뜁니다. 바뀐 것은 그 아래입니다.
+    for (const node of nodes.slice(1)) node.animate?.([{ opacity: 0 }, { opacity: 1 }], timing)
+  }
+}
+
 /* ---- 화면 --------------------------------------------------------------- */
 
 /**
