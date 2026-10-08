@@ -347,15 +347,6 @@
           </div>
         </div>
 
-        <div class="verified-banner">
-          <svg class="verified-banner__icon" aria-hidden="true"><use href="#icon-infoCircle"></use></svg>
-          <p class="verified-banner__text">
-            <b>혼인·가족 정보 인증</b>
-            <span>서류로 혼인·가족 정보를 인증할 수 있어요</span>
-          </p>
-          <button class="btn btn--outlined btn--medium" type="button" data-verify-open="family"><span class="btn__label">인증하기</span></button>
-        </div>
-
         <div class="field" role="group" aria-labelledby="profile-kids-label" data-field="kids">
           <span class="field__label" id="profile-kids-label">자녀<span class="field__required" aria-hidden="true"></span><span class="sr-only">필수</span></span>
           <div class="choice-group">
@@ -383,6 +374,17 @@
             <label class="choice"><input type="radio" name="kids-custody" value="비양육"><span>비양육</span></label>
             <label class="choice"><input type="radio" name="kids-custody" value="공동 양육"><span>공동 양육</span></label>
           </div>
+        </div>
+
+        <!-- 혼인과 자녀를 함께 확인하는 인증이라 둘을 다 답한 뒤에 섭니다. 회사 인증이 회사
+             칸 아래에 서는 것과 같습니다(Figma 는 혼인 경험과 자녀 사이에 두었습니다). -->
+        <div class="verified-banner">
+          <svg class="verified-banner__icon" aria-hidden="true"><use href="#icon-infoCircle"></use></svg>
+          <p class="verified-banner__text">
+            <b>혼인·가족 정보 인증</b>
+            <span>서류로 혼인·가족 정보를 인증할 수 있어요</span>
+          </p>
+          <button class="btn btn--outlined btn--medium" type="button" data-verify-open="family"><span class="btn__label">인증하기</span></button>
         </div>
       </div>
 
