@@ -176,10 +176,8 @@ export function cardGrid(rows) {
  * @param {(profile: object) => void} [options.afterSave]
  * @param {(draft: object) => Array<{ field: Element, message: string }>} [options.validate]
  *   저장하기 전에 빠진 것을 찾습니다. 돌려준 것마다 그 칸 아래에 말이 섭니다.
- * @param {() => void} [options.tidy]
- *   저장하려는 순간, 빠진 것을 찾기 전에 돕니다. 고르다 만 것을 치우는 자리입니다.
  */
-export function initProfileForm({ form, part, saved, render, afterSave, validate, tidy }) {
+export function initProfileForm({ form, part, saved, render, afterSave, validate }) {
   const profile = load()
   write(form, profile[part] ?? {})
 
@@ -243,7 +241,6 @@ export function initProfileForm({ form, part, saved, render, afterSave, validate
 
   /** 빠진 것이 없을 때만 저장합니다. */
   function trySave() {
-    tidy?.()
     if (!check({ jump: true })) return false
     save()
     return true
