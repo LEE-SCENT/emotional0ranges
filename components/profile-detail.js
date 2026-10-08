@@ -142,6 +142,8 @@ const EDU_STATUS = {
 }
 
 const TABS = ['info', 'life', 'values', 'words']
+/** 구획의 이름. 탭에 적힌 것과 같고, 카드의 머리말에도 섭니다. */
+const TAB_NAMES = { info: '상세 정보', life: '라이프', values: '가치관', words: '한마디' }
 
 function choice(type, name, value, text = value) {
   const label = el('label', 'choice')
@@ -237,11 +239,16 @@ function card(profile, draft, tab) {
   const detail = el('div', 'profile-card__detail')
   if (tab === 'words') {
     detail.append(
-      el('p', 'profile-card__kicker', '한마디'),
+      el('p', 'profile-card__kicker', TAB_NAMES.words),
       el('p', 'profile-card__words', draft.words),
     )
   } else {
-    detail.append(el('p', 'profile-card__kicker', '상세 프로필'), cardGrid(detailOf[tab](draft)))
+    // 머리말에 어느 구획인지를 적습니다. 구획이 바뀌면 카드의 내용도 바뀌는데, 머리말이
+    // 셋 다 "상세 프로필"이면 무엇이 바뀐 것인지 알 길이 없습니다.
+    detail.append(
+      el('p', 'profile-card__kicker', `상세 프로필 · ${TAB_NAMES[tab]}`),
+      cardGrid(detailOf[tab](draft)),
+    )
   }
   return [cardHeader(profile), el('hr', 'profile-card__divider'), detail]
 }
