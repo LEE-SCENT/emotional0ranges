@@ -310,6 +310,20 @@ body:has(.profile__tabs) .gnb.is-sticky .gnb__tip { display: none; }
 }
 .profile__panel[hidden] { display: none; }
 
+/* ---- 알림 --------------------------------------------------------------
+   이 화면에서는 알림이 위에서 뜹니다. 아래에는 저장이 붙어 있어(넓은 화면은 폼의 단,
+   좁은 화면은 bottom-cta), 아래에서 뜨면 방금 누른 버튼과 겹칩니다.
+
+   넓은 화면에서는 GNB 바로 아래입니다. 내려온 방향이 위라, 나타날 때도 위에서 조금
+   밀려 내려옵니다(toast.css 는 아래에서 올라옵니다). */
+body:has(.profile) .toast-region {
+  inset-block: calc(var(--_gnb-max-height) + var(--spacing-200)) auto;
+}
+body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
+@keyframes profile-toast-in {
+  from { opacity: 0; translate: 0 calc(var(--spacing-200) * -1); }
+}
+
 /* ---- 좁은 화면 ---------------------------------------------------------- */
 
 @media (max-width: 960px) {
@@ -367,10 +381,9 @@ body:has(.profile__tabs) .gnb.is-sticky .gnb__tip { display: none; }
   .profile .tabs { gap: 0; margin-block-start: calc(var(--spacing-200) * -1); }
   .profile .tabs__item { flex: 1 1 0; padding-block-start: var(--spacing-200); }
 
-  /* 저장했다는 알림은 위에서 뜹니다. 아래에는 저장 버튼이 붙어 있어, 방금 누른
-     손가락이 알림을 가립니다. */
-  /* :has(.bottom-cta) 까지 적는 것은 toast.css 가 같은 무게의 선택자로 아래 자리를
-     정해두었기 때문입니다 — 그보다 무거워야 불러오는 순서와 상관없이 이깁니다. */
+  /* 좁은 화면에서는 topBar 위에 얹혀 뜹니다(Figma m_기본프로필). :has(.bottom-cta) 까지
+     적는 것은 toast.css 가 같은 무게의 선택자로 아래 자리를 정해두었기 때문입니다 —
+     그보다 무거워야 불러오는 순서와 상관없이 이깁니다. */
   body:has(.profile):has(.bottom-cta) .toast-region {
     inset-block: calc(var(--spacing-200) + env(safe-area-inset-top)) auto;
   }
