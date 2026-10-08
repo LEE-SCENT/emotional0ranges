@@ -145,8 +145,8 @@
         <div data-q="mbti"></div>
 
         <div class="profile__section">
-          <div class="field" role="group" aria-labelledby="profile-edu-label">
-            <span class="field__label" id="profile-edu-label">학력 · 학적 상태</span>
+          <div class="field" role="group" aria-labelledby="profile-edu-label" data-field="edu">
+            <span class="field__label" id="profile-edu-label">학력 · 학적 상태<span class="field__required" aria-hidden="true"></span><span class="sr-only">필수</span></span>
             <div class="choice-group" role="radiogroup" aria-label="학력">
               <label class="choice"><input type="radio" name="edu-level" value="고등학교"><span>고등학교</span></label>
               <label class="choice"><input type="radio" name="edu-level" value="전문대"><span>전문대</span></label>
@@ -157,8 +157,8 @@
             <div class="choice-group" role="radiogroup" aria-label="학적 상태" data-edu-status hidden></div>
           </div>
 
-          <div class="field">
-            <label class="field__label" for="profile-school">학교</label>
+          <div class="field" data-field="school">
+            <label class="field__label" for="profile-school">학교<span class="field__required" aria-hidden="true"></span><span class="sr-only">필수</span></label>
             <div class="profile__with-check">
               <div class="text-field">
                 <input id="profile-school" type="text" name="school" placeholder="학교명 입력" autocomplete="off">
@@ -190,7 +190,7 @@
       <div class="profile__panel" id="panel-values" role="tabpanel" data-panel="values" hidden></div>
 
       <div class="profile__panel" id="panel-words" role="tabpanel" data-panel="words" hidden>
-        <div class="field">
+        <div class="field" data-field="words">
           <div class="text-field text-field--area">
             <textarea name="words" maxlength="100" aria-label="한마디" aria-describedby="profile-words-count"></textarea>
           </div>
@@ -251,7 +251,7 @@
   initMyMenus()
   const { initConfirms } = await import('./components/confirm.js?v=f516d2db')
   initConfirms()
-  const { initProfileDetail } = await import('./components/profile-detail.js?v=a4845bf9')
+  const { initProfileDetail } = await import('./components/profile-detail.js?v=6b2c7c11')
   initProfileDetail()
   const { initTabs } = await import('./components/tabs.js?v=e1b6027e')
   initTabs()

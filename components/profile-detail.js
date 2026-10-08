@@ -11,7 +11,7 @@
  * 탭은 넷이고 저장은 하나입니다 — 탭은 한 폼을 나눠 보는 것일 뿐이라, 어느 탭에서
  * 저장하든 네 탭의 것이 함께 저장됩니다.
  */
-import { cardGrid, cardHeader, cardRow, el, initProfileForm, load } from './profile-form.js?v=bea15182'
+import { cardGrid, cardHeader, cardRow, el, initProfileForm, load } from './profile-form.js?v=fdba3179'
 
 /**
  * 물음 하나.
@@ -24,6 +24,7 @@ import { cardGrid, cardHeader, cardRow, el, initProfileForm, load } from './prof
  *   cols     넓은 화면의 칸 수. 없으면 글자 폭대로 흘러갑니다.
  *   short    카드에 적을 때 줄이는 법("평일 근무" → "평일").
  *   other    "기타" 를 고르면 글로 받는 칸이 열립니다.
+ *   optional 답하지 않아도 저장됩니다. 그 밖의 물음은 전부 답해야 합니다.
  *
  * ⚠️ 이름표에 "(최대 n개)" 가 없는 물음 가운데 여럿 고르는 것(기타·결혼 가치관)은
  *    Figma 의 예시에서 둘이 함께 켜져 있는 것을 보고 정했습니다. 흡연과 데이트
@@ -53,7 +54,8 @@ const QUESTIONS = [
       '일-집-일-집', '취미 부자'],
   },
   {
-    tab: 'life', name: 'assets', label: '기타', multi: true, cols: 4,
+    // 해당하는 것이 하나도 없을 수 있고 "없음"이라는 선택지도 없어, 이것만은 묻지 않습니다.
+    tab: 'life', name: 'assets', label: '기타', multi: true, cols: 4, optional: true,
     options: ['자가 보유', '자차 보유', '고액 연봉', '요리를 잘해요', '집안일 잘해요'],
   },
   {
@@ -143,13 +145,24 @@ function choice(type, name, value, text = value) {
   return label
 }
 
+/** 이름표. 답해야 하는 물음에는 점이 붙습니다. */
+function label(text, required) {
+  const node = el('span', 'field__label', text)
+  if (required) {
+    node.insertAdjacentHTML('beforeend', '<span class="field__required" aria-hidden="true"></span>')
+    node.append(el('span', 'sr-only', '필수'))
+  }
+  return node
+}
+
 /** 물음 하나를 폼의 칸으로. */
 function question(q) {
   const field = el('div', 'field')
   field.setAttribute('role', 'group')
   const title = q.max ? `${q.label} (최대 ${q.max}개)` : q.label
   field.setAttribute('aria-label', title)
-  field.append(el('span', 'field__label', title))
+  field.dataset.field = q.name
+  field.append(label(title, !q.optional))
 
   const group = el('div', `choice-group${q.cols ? ` choice-group--cols-${q.cols}` : ''}`)
   if (q.max) group.dataset.max = q.max
@@ -176,13 +189,48 @@ function mbti() {
   const field = el('div', 'field')
   field.setAttribute('role', 'group')
   field.setAttribute('aria-label', 'MBTI')
-  field.append(el('span', 'field__label', 'MBTI'))
+  field.dataset.field = 'mbti'
+  field.append(label('MBTI', true))
   const group = el('div', 'choice-group choice-group--cols-2 choice-group--pair')
   for (const [name, ...pair] of MBTI) {
     for (const [letter, word] of pair) group.append(choice('radio', name, letter, `${letter} · ${word}`))
   }
   field.append(group)
   return field
+}
+
+/* ---- 빠진 것 ------------------------------------------------------------ */
+
+/**
+ * 답하지 않은 물음을 찾습니다. 상세 프로필도 전부 답해야 저장됩니다(optional 만 빼고).
+ *
+ * 말은 물음의 이름을 넣지 않고 짓습니다 — "취미를", "생활패턴을"처럼 이름마다 조사가
+ * 갈려, 이름을 넣으면 스무 개의 말을 하나씩 손으로 적어야 합니다.
+ *
+ * ⚠️ 빠졌을 때의 모습과 말이 Figma 에 없습니다. 문구는 임시입니다.
+ */
+function missing(form, draft) {
+  const at = (name) => form.querySelector(`[data-field="${name}"]`)
+  const found = []
+  const need = (ok, name, message) => { if (!ok) found.push({ field: at(name), message }) }
+
+  need(MBTI.every(([name]) => draft[name]), 'mbti', '네 가지를 모두 선택해 주세요')
+  need(draft['edu-level'] && draft['edu-status'], 'edu',
+    draft['edu-level'] ? '학적 상태를 선택해 주세요' : '학력을 선택해 주세요')
+  need(draft.school.trim(), 'school', '학교명을 입력해 주세요')
+
+  for (const q of QUESTIONS) {
+    if (q.optional) continue
+    const picked = q.multi ? (draft[q.name] ?? []).length : draft[q.name]
+    if (!picked) need(false, q.name, q.multi ? '하나 이상 선택해 주세요' : '선택해 주세요')
+    // "기타"를 골랐으면 무엇인지까지가 답입니다.
+    else if (q.other && draft[q.name] === '기타') {
+      need(draft[`${q.name}-other`]?.trim(), q.name, '의견을 입력해 주세요')
+    }
+  }
+
+  need(draft.words.trim(), 'words', '한마디를 입력해 주세요')
+  return found
 }
 
 /* ---- 카드 --------------------------------------------------------------- */
@@ -276,6 +324,7 @@ export function initProfileDetail() {
     count.textContent = [...draft.words].length
   }
 
+  const tabs = document.querySelector('[data-profile-tabs]')
   const aside = document.querySelector('.profile__aside [data-profile-card]')
   const previews = document.querySelectorAll('.profile-preview [data-profile-card]')
 
@@ -283,6 +332,12 @@ export function initProfileDetail() {
     form,
     part: 'detail',
     saved: '상세 프로필을 저장했어요',
+    validate: (draft) => missing(form, draft),
+    // 빠진 물음이 다른 탭에 있으면 그 탭을 엽니다. 감춰진 판으로는 데려갈 수 없습니다.
+    reveal(field) {
+      const panel = field.closest('[data-panel]')
+      if (panel?.hidden) tabs.querySelector(`[data-tab="${panel.dataset.panel}"]`).click()
+    },
     render(profile, draft) {
       sync(draft)
       // 옆 단의 카드는 지금 보고 있는 탭의 것, 미리보기 창에는 넷이 나란히 섭니다.
@@ -293,7 +348,6 @@ export function initProfileDetail() {
 
   /* ---- 탭 ---------------------------------------------------------------
      밑줄을 옮기는 것은 tabs.js 가, 판을 갈아 끼우는 것은 여기서 합니다. */
-  const tabs = document.querySelector('[data-profile-tabs]')
   tabs.addEventListener('click', (e) => {
     const item = e.target.closest('[data-tab]')
     if (!item) return
