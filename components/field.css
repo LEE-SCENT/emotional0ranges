@@ -178,10 +178,43 @@
 .field__count b { color: var(--colors-fg-low); font-weight: inherit; }
 
 /* ---- 기간 --------------------------------------------------------------
-   시작과 끝을 한 상자에 담습니다. Figma 는 "2022년 1월 ~ 2022년 3월" 한 줄이고,
-   여기서는 그 한 줄을 달 고르는 칸 둘로 받습니다. */
-.text-field--period input { flex: 0 1 auto; }
-.text-field--period span { color: var(--colors-fg-low); }
+   "2022년 1월 ~ 2022년 3월" 한 줄입니다(Figma). 시작과 끝을 각각 달 고르는 칸으로
+   받되, 브라우저가 그리는 모습("----년 --월"과 제 달력 아이콘)은 감추고 고른 값만
+   우리 글자로 적습니다 — 진짜 <input type="month"> 는 글자 위에 투명하게 겹쳐 있어,
+   눌리는 것도 초점이 가는 것도 그쪽입니다(profile.js 가 글자를 맞춥니다). */
+.text-field--period { cursor: pointer; }
+.text-field--period > span { color: var(--colors-fg-low); }
+.text-field--period .text-field__icon { color: var(--colors-fg); }
+.text-field__month {
+  position: relative;
+  flex: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.text-field__month input {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  opacity: 0;
+  cursor: inherit;
+}
+/* 아직 고르지 않은 쪽은 안내 문구의 색입니다. */
+.text-field__month.is-empty { color: var(--colors-fg-lower); }
+.text-field__month:has(input:focus-visible) {
+  outline: 2px solid var(--colors-fg);
+  outline-offset: 2px;
+  border-radius: var(--_rounded-xs);
+}
+/* 달 고르는 칸이 없는 브라우저(데스크톱 Safari · Firefox)에서는 글자 칸으로 떨어져
+   겹쳐 둘 수 없습니다. 그때는 칸을 그대로 드러내고 우리 글자를 감춥니다. */
+.text-field__month.is-plain input {
+  position: static;
+  inline-size: 7em;
+  opacity: 1;
+  cursor: text;
+}
+.text-field__month.is-plain [data-month-text] { display: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .text-field { transition: none; }

@@ -36,6 +36,13 @@
 <link rel="stylesheet" href="./components/app-bar.css?v=1129f720">
 <link rel="stylesheet" href="./components/toast.css?v=447855c2">
 <link rel="stylesheet" href="./components/participants.css?v=3d11ed3c">
+<link rel="stylesheet" href="./components/checkbox.css?v=67340959">
+<link rel="stylesheet" href="./components/tabs.css?v=a962487a">
+<link rel="stylesheet" href="./components/field.css?v=55cc0f53">
+<link rel="stylesheet" href="./components/choice.css?v=526620f2">
+<link rel="stylesheet" href="./components/verified-banner.css?v=6f3f1c77">
+<link rel="stylesheet" href="./components/profile-card.css?v=39f3027f">
+<link rel="stylesheet" href="./components/verify.css?v=43d9233f">
 <style>
   body { margin:0; padding:24px; background:var(--colors-bg); color:var(--colors-fg);
          font-family:var(--_font-family-base); }
@@ -45,6 +52,9 @@
   .onbg { background:var(--colors-bg-contrast); padding:16px; border-radius:var(--_rounded-m); }
   .blurbg { background:linear-gradient(120deg,#c2410c,#f59e0b); padding:16px; border-radius:var(--_rounded-m); }
   small { font-size:11px; color:var(--colors-fg-lowest); }
+  .col { display:flex; flex-direction:column; gap:16px; max-width:772px; margin-bottom:10px; }
+  .sr-only { position:absolute; inline-size:1px; block-size:1px; margin:-1px; padding:0;
+             overflow:hidden; white-space:nowrap; clip-path:inset(50%); }
 </style>
 <div id="sprite" hidden></div>
 <h2>Breakpoint — 창 폭을 줄여보세요</h2>
@@ -89,6 +99,10 @@
   </div>
   <div class="toast">
     <p class="toast__label">찜을 해제했어요</p>
+  </div>
+  <div class="toast toast--success">
+    <svg class="toast__icon" aria-hidden="true"><use href="#icon-check"></use></svg>
+    <p class="toast__label">기본 프로필을 저장했어요</p>
   </div>
   <div class="toast toast--critical">
     <svg class="toast__icon" aria-hidden="true"><use href="#icon-error"></use></svg>
@@ -507,6 +521,173 @@
   </div>
 </article>
 
+
+<h2>Field — 기본 / 값 있음 / 아이콘 / 읽기 전용 / 비활성</h2>
+<div class="col">
+  <div class="field">
+    <label class="field__label" for="demo-f1">학교</label>
+    <div class="text-field"><input id="demo-f1" type="text" placeholder="학교명 입력"></div>
+  </div>
+  <div class="field">
+    <label class="field__label" for="demo-f2">학교<span class="field__required" aria-hidden="true"></span></label>
+    <div class="text-field"><input id="demo-f2" type="text" value="연세대학교 · 신촌캠퍼스"></div>
+    <p class="field__help">이름표 옆 점은 필수 표시(.field__required), 이 줄은 도움말(.field__help)입니다</p>
+  </div>
+  <div class="field">
+    <label class="field__label" for="demo-f3">직업</label>
+    <div class="text-field">
+      <svg class="text-field__icon" aria-hidden="true"><use href="#icon-search"></use></svg>
+      <input id="demo-f3" type="search" placeholder="직업 검색">
+    </div>
+  </div>
+  <div class="field">
+    <label class="field__label" for="demo-f4">이름 — 읽기 전용</label>
+    <div class="text-field text-field--readonly"><input id="demo-f4" type="text" value="김땡땡" readonly></div>
+  </div>
+  <div class="field">
+    <label class="field__label" for="demo-f5">회사 — 비활성</label>
+    <div class="text-field"><input id="demo-f5" type="text" value="MUSINSA" disabled></div>
+  </div>
+</div>
+<small>읽기 전용은 바탕이 기본(bg-low)이고 글자만 fg-low, 비활성은 바탕까지 bg-disabled 입니다. 칸을 눌러 초점을 주면 흰 바탕 + border-active 1px 이 됩니다.</small>
+
+<h2>Field — select (기본 / 고르기 전 / 비활성)</h2>
+<div class="col">
+  <div class="field-row">
+    <div class="text-field text-field--select"><select aria-label="시·도"><option>서울</option><option>경기</option></select><svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg></div>
+    <div class="text-field text-field--select"><select aria-label="대분류"><option value="">대분류</option><option>IT/개발/기획</option></select><svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg></div>
+    <div class="text-field text-field--select"><select aria-label="구" disabled><option>강남구</option></select><svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg></div>
+  </div>
+</div>
+
+<h2>Field — 기간 / 날짜 / 파일 / 긴 글</h2>
+<div class="col">
+  <div class="field-row">
+    <div class="text-field text-field--period">
+      <svg class="text-field__icon" aria-hidden="true"><use href="#icon-calendar"></use></svg>
+      <input type="month" value="2022-01" aria-label="시작"><span aria-hidden="true">~</span><input type="month" value="2022-03" aria-label="끝">
+    </div>
+    <div class="text-field">
+      <svg class="text-field__icon" aria-hidden="true"><use href="#icon-calendar"></use></svg>
+      <input type="date" value="2026-09-18" aria-label="서류 발급일">
+    </div>
+  </div>
+  <div class="file-field">
+    <button class="btn btn--outlined btn--medium" type="button"><span class="btn__label">파일 선택</span></button>
+  </div>
+  <div class="file-field">
+    <div class="text-field text-field--readonly">
+      <span class="file-field__name">졸업증명서_김땡땡.pdf</span>
+      <button class="file-field__clear" type="button" aria-label="파일 지우기"><svg aria-hidden="true"><use href="#icon-cancelCircleFilled"></use></svg></button>
+    </div>
+    <button class="btn btn--outlined btn--medium" type="button"><span class="btn__label">파일 변경</span></button>
+  </div>
+  <div class="field">
+    <div class="text-field text-field--area" style="min-block-size:120px"><textarea maxlength="100" aria-label="한마디">낯은 조금 가리지만 친해지면 장난도 많이 쳐요.</textarea></div>
+    <p class="field__count"><b>26</b>/100</p>
+  </div>
+</div>
+<small>파일 칸은 고르기 전(버튼 하나)과 후(파일 이름 + 바꾸기)입니다. 여기서는 모습만 놓았고, 실제 동작은 아래 Verify 창에서 볼 수 있습니다. 긴 글 칸의 실제 높이는 320 입니다.</small>
+
+<h2>Choice — 기본 / 고름 / 잠김 (하나만 · 여럿)</h2>
+<div class="col">
+  <div class="choice-group">
+    <label class="choice"><input type="radio" name="demo-c1" value="없음" checked><span>없음</span></label><label class="choice"><input type="radio" name="demo-c1" value="혼인신고 경험 있음"><span>혼인신고 경험 있음</span></label>
+    <label style="display:inline-flex;align-items:center;gap:8px;padding:8px 0 8px 6px;font-size:14px;font-weight:500;color:var(--colors-fg-low)"><span class="checkbox"><input type="checkbox"><span class="checkbox__box" aria-hidden="true"><svg><use href="#icon-check"></use></svg></span></span>사실혼 경험 있음</label>
+  </div>
+  <div class="choice-group choice-group--cols-4">
+    <label class="choice"><input type="checkbox" name="demo-c2" value="아웃도어 · 여행" checked><span>아웃도어 · 여행</span></label><label class="choice"><input type="checkbox" name="demo-c2" value="운동 · 스포츠" checked><span>운동 · 스포츠</span></label><label class="choice"><input type="checkbox" name="demo-c2" value="인문학 · 책 · 글" checked><span>인문학 · 책 · 글</span></label><label class="choice"><input type="checkbox" name="demo-c2" value="외국 · 언어" disabled><span>외국 · 언어</span></label>
+    <label class="choice"><input type="checkbox" name="demo-c2" value="문화 · 공연 · 축제" disabled><span>문화 · 공연 · 축제</span></label><label class="choice"><input type="checkbox" name="demo-c2" value="음악 · 악기" disabled><span>음악 · 악기</span></label>
+  </div>
+  <div class="choice-group choice-group--cols-2 choice-group--pair">
+    <label class="choice"><input type="radio" name="demo-c3" value="I · 내향" checked><span>I · 내향</span></label><label class="choice"><input type="radio" name="demo-c3" value="E · 외향"><span>E · 외향</span></label>
+  </div>
+</div>
+<small>둘째 줄은 최대 3개를 채운 모습입니다 — 고르지 않은 나머지가 잠깁니다(화면에서는 profile-form.js 가 data-max 를 보고 잠급니다). 칸 수는 960 이하에서 4·3 → 2, 2 → 1 로 줄고, --pair 만 2 로 남습니다.</small>
+
+<h2>VerifiedBanner — 인증 전 / 인증 후</h2>
+<div class="col">
+  <div class="verified-banner">
+    <svg class="verified-banner__icon" aria-hidden="true"><use href="#icon-infoCircle"></use></svg>
+    <p class="verified-banner__text"><b>학교 인증</b><span>학교 정보를 인증할 수 있어요</span></p>
+    <button class="btn btn--outlined btn--medium" type="button"><span class="btn__label">인증하기</span></button>
+  </div>
+  <div class="verified-banner verified-banner--done">
+    <div class="verified-banner__box">
+      <svg class="verified-banner__icon" aria-hidden="true"><use href="#icon-verifiedUserFilled"></use></svg>
+      <p class="verified-banner__text"><b>본인 인증 완료</b><span>본인인증으로 확인된 정보는 직접 수정할 수 없어요</span></p>
+    </div>
+    <button class="btn btn--blur btn--medium" type="button"><span class="btn__label">재인증</span></button>
+  </div>
+  <div class="verified-banner verified-banner--done">
+    <div class="verified-banner__box">
+      <svg class="verified-banner__icon" aria-hidden="true"><use href="#icon-verifiedUserFilled"></use></svg>
+      <p class="verified-banner__text"><b>회사 인증 완료</b></p>
+    </div>
+    <button class="btn btn--blur btn--medium" type="button"><span class="btn__label">재인증</span></button>
+  </div>
+</div>
+
+<h2>ProfileCard — 기본 / 상세 정보 / 한마디 · 권하는 카드</h2>
+<div class="row" style="align-items:flex-start;gap:16px">
+  <article class="profile-card">
+    <header class="profile-card__header">
+      <div class="profile-card__who"><h2 class="profile-card__name" style="margin:0;text-transform:none;letter-spacing:var(--typography-display-s-semibold-letter-spacing);color:inherit">김땡땡</h2><p class="profile-card__birth">1991년생 · 36세</p></div>
+      <div class="profile-card__tags"><span class="tag tag--accent-pri"><svg aria-hidden="true"><use href="#icon-verifiedUserFilled"></use></svg>회사 인증</span></div>
+      <img class="profile-card__symbol" src="./images/profile-card-symbol.svg" alt="" width="52" height="44">
+    </header>
+    <dl class="profile-card__grid">
+      <div><dt>성별</dt><dd>남성</dd></div><div><dt>키</dt><dd>175cm</dd></div>
+      <div class="is-wide"><dt>거주지</dt><dd>서울 · 강남구</dd></div>
+      <div><dt>직업</dt><dd>IT/개발/기획</dd></div><div><dt>근무지</dt><dd>서울 · 강남구</dd></div>
+      <div class="is-wide"><dt>혼인 경험</dt><dd>사실혼 경험 있음 · 혼인신고 경험 있음</dd></div>
+      <div class="is-wide"><dt>자녀</dt><dd>있음 · 2명 · 비양육</dd></div>
+    </dl>
+  </article>
+  <article class="profile-card profile-card--detail">
+    <header class="profile-card__header">
+      <div class="profile-card__who"><h2 class="profile-card__name" style="margin:0;text-transform:none;letter-spacing:var(--typography-display-s-semibold-letter-spacing);color:inherit">김땡땡</h2><p class="profile-card__birth">1991년생 · 36세</p></div>
+      <div class="profile-card__tags"><span class="tag tag--accent-pri"><svg aria-hidden="true"><use href="#icon-verifiedUserFilled"></use></svg>회사 인증</span><span class="tag tag--accent-pri"><svg aria-hidden="true"><use href="#icon-verifiedUserFilled"></use></svg>혼인·가족 인증</span></div>
+      <img class="profile-card__symbol" src="./images/profile-card-symbol.svg" alt="" width="52" height="44">
+    </header>
+    <hr class="profile-card__divider">
+    <div class="profile-card__detail">
+      <p class="profile-card__kicker">상세 프로필</p>
+      <dl class="profile-card__grid">
+        <div class="is-wide"><dt>MBTI</dt><dd><b class="profile-card__mbti">ESTJ</b><span class="profile-card__mbti-desc">외향·감각·사고·판단</span></dd></div>
+        <div><dt>학력 · 학적 상태</dt><dd>대학교 · 재학</dd></div><div><dt>학교</dt><dd>연세대학교 · 신촌캠퍼스</dd></div>
+        <div class="is-wide"><dt>나의 매력</dt><dd><span class="profile-card__chips"><span class="tag">착하다</span><span class="tag">자기관리가 잘 되어 있다</span><span class="tag">남 얘기를 잘 들어준다</span><span class="tag">긍정적이다</span><span class="tag">외모 자신감 있다</span></span></dd></div>
+      </dl>
+    </div>
+  </article>
+  <article class="profile-card profile-card--detail">
+    <header class="profile-card__header">
+      <div class="profile-card__who"><h2 class="profile-card__name" style="margin:0;text-transform:none;letter-spacing:var(--typography-display-s-semibold-letter-spacing);color:inherit">김땡땡</h2><p class="profile-card__birth">1991년생 · 36세</p></div>
+      <div class="profile-card__tags"><span class="tag tag--accent-pri"><svg aria-hidden="true"><use href="#icon-verifiedUserFilled"></use></svg>회사 인증</span><span class="tag tag--accent-pri"><svg aria-hidden="true"><use href="#icon-verifiedUserFilled"></use></svg>혼인·가족 인증</span></div>
+      <img class="profile-card__symbol" src="./images/profile-card-symbol.svg" alt="" width="52" height="44">
+    </header>
+    <hr class="profile-card__divider">
+    <div class="profile-card__detail">
+      <p class="profile-card__kicker">한마디</p>
+      <p class="profile-card__words">낯은 조금 가리지만 친해지면 장난도 많이 쳐요.
+맛있는 걸 먹으면서 오래 이야기하는 걸 좋아하고, 주말엔 산책하거나 새로운 동네를 구경해요.</p>
+    </div>
+  </article>
+  <div class="profile-promo" style="inline-size:380px">
+    <p class="profile-promo__text"><b>나를 더 보여주는 프로필을 작성해 보세요</b><span>상세 프로필을 작성하면 서로를 알아가는 데 도움이 돼요</span></p>
+    <a class="btn btn--filled btn--small" href="./profile-detail.html"><span class="btn__label">지금 작성하기</span></a>
+  </div>
+</div>
+<small>화면에서는 profile.js · profile-detail.js 가 폼의 저장 전 값으로 그립니다. 여기는 Figma 의 예시 값을 적어둔 것입니다. 한마디의 서체는 저장소에 없어 기기의 명조로 보입니다.</small>
+
+<h2>Verify — 서류 인증 창 (눌러서 엽니다)</h2>
+<div class="row">
+  <button class="btn btn--outlined btn--medium" type="button" data-verify-open="company"><span class="btn__label">회사·직업 인증</span></button>
+  <button class="btn btn--outlined btn--medium" type="button" data-verify-open="family"><span class="btn__label">혼인·가족 인증</span></button>
+  <button class="btn btn--outlined btn--medium" type="button" data-verify-open="school"><span class="btn__label">학교 인증</span></button>
+</div>
+<small>넓은 화면에서는 가운데, 960 이하에서는 아래에서 올라옵니다. 회사·직업은 "직접 인증" 탭의 "내 상황"을 바꿔가며 여덟 가지를 볼 수 있습니다.</small>
+
 <script type="module">
 document.getElementById('sprite').innerHTML = await (await fetch('./build/icons.svg?v=4a0d8096')).text()
 const ic = '<svg class="btn__icon" aria-hidden="true"><use href="#icon-chevronRight"></use></svg>'
@@ -629,4 +810,6 @@ for (const [id, dir] of [['r7','vertical'],['r8','horizontal']]) {
 
 const { initSegmentedControls } = await import('./components/segmented-control.js?v=bbd7c4b8')
 initSegmentedControls()
+const { initVerify } = await import('./components/verify.js?v=a625d654')
+initVerify()
 </script>

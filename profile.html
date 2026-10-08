@@ -21,11 +21,11 @@
 <link rel="stylesheet" href="./components/my-menu.css?v=59a441fb">
 <link rel="stylesheet" href="./components/tag.css?v=fef5c195">
 <link rel="stylesheet" href="./components/checkbox.css?v=67340959">
-<link rel="stylesheet" href="./components/field.css?v=36153714">
+<link rel="stylesheet" href="./components/field.css?v=55cc0f53">
 <link rel="stylesheet" href="./components/choice.css?v=526620f2">
 <link rel="stylesheet" href="./components/verified-banner.css?v=6f3f1c77">
 <link rel="stylesheet" href="./components/profile-card.css?v=39f3027f">
-<link rel="stylesheet" href="./components/profile.css?v=10a480d7">
+<link rel="stylesheet" href="./components/profile.css?v=e13ee7d6">
 <link rel="stylesheet" href="./components/tabs.css?v=a962487a">
 <link rel="stylesheet" href="./components/verify.css?v=43d9233f">
 <link rel="stylesheet" href="./components/confirm.css?v=598089ab">
@@ -134,18 +134,13 @@
       <!-- 본인인증으로 들어온 것들. 보여주기만 하고 고칠 수 없습니다. -->
       <div class="profile__section">
         <div class="field">
-          <span class="field__label">
-            <label for="profile-name">이름</label>
-            <button class="profile__hint" type="button" aria-describedby="profile-name-tip" aria-label="이름 안내">
-              <svg aria-hidden="true"><use href="#icon-infoCircle"></use></svg>
-              <span class="tooltip tooltip--bottom" role="tooltip" id="profile-name-tip">
-                <span class="tooltip__label">개명한 경우 고객센터로 문의해 주세요.</span>
-              </span>
-            </button>
-          </span>
+          <label class="field__label" for="profile-name">이름</label>
           <div class="text-field text-field--readonly">
-            <input id="profile-name" type="text" value="김땡땡" readonly data-me="name">
+            <input id="profile-name" type="text" value="김땡땡" readonly aria-describedby="profile-name-help" data-me="name">
           </div>
+          <!-- 고칠 수 없는 칸의 하나뿐인 출구라 늘 보이게 둡니다. 말풍선에 넣으면 올려볼 수
+               없는 폰에서는 있는 줄도 모릅니다. -->
+          <p class="field__help" id="profile-name-help">개명한 경우 고객센터로 문의해 주세요</p>
         </div>
 
         <div class="field-row">
@@ -306,23 +301,35 @@
               사실혼 경험 있음
             </label>
           </div>
-          <div class="field-row" data-periods hidden>
+          <div class="field-row profile__periods" data-periods hidden>
             <div class="field" data-period="married" hidden>
               <span class="field__label field__label--sub" id="profile-married-period">법률혼 기간</span>
               <div class="text-field text-field--period" role="group" aria-labelledby="profile-married-period">
                 <svg class="text-field__icon" aria-hidden="true"><use href="#icon-calendar"></use></svg>
-                <input type="month" name="married-from" aria-label="시작">
+                <label class="text-field__month">
+                  <span data-month-text>시작 월</span>
+                  <input type="month" name="married-from" aria-label="시작">
+                </label>
                 <span aria-hidden="true">~</span>
-                <input type="month" name="married-to" aria-label="끝">
+                <label class="text-field__month">
+                  <span data-month-text>종료 월</span>
+                  <input type="month" name="married-to" aria-label="끝">
+                </label>
               </div>
             </div>
             <div class="field" data-period="cohabited" hidden>
               <span class="field__label field__label--sub" id="profile-cohabited-period">사실혼 기간</span>
               <div class="text-field text-field--period" role="group" aria-labelledby="profile-cohabited-period">
                 <svg class="text-field__icon" aria-hidden="true"><use href="#icon-calendar"></use></svg>
-                <input type="month" name="cohabited-from" aria-label="시작">
+                <label class="text-field__month">
+                  <span data-month-text>시작 월</span>
+                  <input type="month" name="cohabited-from" aria-label="시작">
+                </label>
                 <span aria-hidden="true">~</span>
-                <input type="month" name="cohabited-to" aria-label="끝">
+                <label class="text-field__month">
+                  <span data-month-text>종료 월</span>
+                  <input type="month" name="cohabited-to" aria-label="끝">
+                </label>
               </div>
             </div>
           </div>
@@ -467,7 +474,7 @@
   initConfirms()
   // segmented 보다 먼저 돕니다. 저장된 쪽(검색·카테고리)을 고른 칸으로 세워둬야
   // 그쪽이 그 칸의 자리를 잽니다.
-  const { initProfile } = await import('./components/profile.js?v=625bdf04')
+  const { initProfile } = await import('./components/profile.js?v=d8fdbe63')
   initProfile()
   const { initSegmentedControls } = await import('./components/segmented-control.js?v=bbd7c4b8')
   initSegmentedControls()

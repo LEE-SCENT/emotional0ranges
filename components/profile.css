@@ -136,6 +136,10 @@
 /* 선택지 줄 끝에 서는 체크박스(혼인신고 경험 옆의 사실혼)는 왼쪽을 6 더 띄웁니다. */
 .choice-group > .profile__check { padding-inline-start: var(--spacing-150); }
 
+/* 기간 칸은 하나만 있어도 반 폭입니다(Figma) — 둘이 되었을 때 나란히 설 자리를 처음부터
+   잡아두어, 사실혼을 켜는 순간 법률혼 칸이 줄어들지 않습니다. */
+.profile__periods > .field { flex: 0 1 calc(50% - var(--spacing-150) / 2); }
+
 /* 근무지: 넓은 화면에서는 [시/도][구][고정 근무지 없음] 한 줄, 그 아래 안내.
    좁은 화면에서는 체크박스가 안내 아래로 내려갑니다(Figma m_기본프로필). */
 .profile__workplace {
@@ -147,37 +151,6 @@
 .profile__workplace > .field-row { grid-area: selects; }
 .profile__workplace > .field__help { grid-area: help; }
 .profile__workplace > .profile__check { grid-area: check; }
-
-/* 인증 전의 띠는 칸보다 좁습니다.
-   ⚠️ 679 는 Figma 의 고정 폭입니다(폼 772 가운데). 변수로 없어 프레임에서 읽었습니다. */
-.profile__form .verified-banner:not(.verified-banner--done) { max-inline-size: 679px; }
-
-/* 이름 옆 ⓘ. 올리거나 초점이 가면 말풍선이 아래에 뜹니다. */
-.profile__hint {
-  position: relative;
-  display: inline-flex;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--colors-fg-lower);
-  cursor: help;
-}
-.profile__hint svg { inline-size: var(--icon-size-xs); block-size: var(--icon-size-xs); }
-.profile__hint .tooltip {
-  position: absolute;
-  inset-block-start: calc(100% + var(--spacing-200));
-  inset-inline-start: 50%;
-  translate: -50% 0;
-  z-index: 5;
-  white-space: nowrap;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity var(--_duration-fast) var(--_easing-standard),
-    visibility var(--_duration-fast);
-}
-.profile__hint:hover .tooltip,
-.profile__hint:focus-visible .tooltip { opacity: 1; visibility: visible; }
-.profile__hint:focus-visible { outline: 2px solid var(--colors-fg); outline-offset: 2px; border-radius: var(--_rounded-full); }
 
 /* ---- 키 ---------------------------------------------------------------
    숫자를 치게 하지 않습니다. 한두 칸은 ± 로, 멀리는 막대로 옮깁니다 — 키는 대개
@@ -295,9 +268,12 @@
   .profile__only-narrow { display: revert; }
   .profile__form .profile-promo.profile__only-narrow { display: flex; }
 
-  .profile__form .verified-banner:not(.verified-banner--done) { max-inline-size: none; }
-
   .profile__height { max-inline-size: none; }
+
+  /* 좁은 화면에서는 기간 칸이 한 줄씩 다 씁니다. 반 폭에는 "2022년 1월 ~ 2022년 3월"이
+     들어가지 않습니다. */
+  .profile__periods { flex-direction: column; align-items: stretch; }
+  .profile__periods > .field { flex: none; }
 
   .profile__workplace {
     grid-template-columns: minmax(0, 1fr);
@@ -333,7 +309,3 @@
 
 /* topBar 오른쪽의 미리보기는 좁은 화면의 것입니다(넓은 화면에서는 카드가 늘 옆에
    있습니다). topBar 자체가 961 부터 사라지므로 따로 감출 것은 없습니다. */
-
-@media (prefers-reduced-motion: reduce) {
-  .profile__hint .tooltip { transition: none; }
-}

@@ -9,7 +9,7 @@
  * 몇 명인지 묻습니다. 나가고 저장하는 일은 profile-form.js 가 합니다.
  */
 import { openConfirm } from './confirm.js?v=f516d2db'
-import { cardGrid, cardHeader, cardRow, initProfileForm, load, store } from './profile-form.js?v=e0f36b57'
+import { cardGrid, cardHeader, cardRow, initProfileForm, load, store } from './profile-form.js?v=d6b4971e'
 
 /**
  * ⚠️ 예시입니다. 행정구역 전체가 아니라 화면을 맞춰 보는 데 필요한 만큼만 있습니다.
@@ -103,6 +103,23 @@ export function initProfile() {
   height.max = HEIGHT.max
   const heightText = form.querySelector('[data-height-text]')
 
+  /* 기간 칸(법률혼 · 사실혼). 브라우저의 달 고르는 칸 위에 우리 글자를 얹어 씁니다
+     (field.css). 글자를 눌러도 달력이 열리도록 showPicker 를 부릅니다 — <label> 은
+     초점만 옮기고 달력까지 열어주지는 않습니다. */
+  const months = [...form.querySelectorAll('.text-field__month')].map((box) => {
+    const input = box.querySelector('input')
+    const text = box.querySelector('[data-month-text]')
+    // 달 고르는 칸이 없는 브라우저는 type 을 text 로 되돌려 놓습니다.
+    if (input.type !== 'month') {
+      box.classList.add('is-plain')
+      input.placeholder = 'YYYY-MM'
+      input.pattern = '\\d{4}-\\d{2}'
+    }
+    input.max = new Date().toISOString().slice(0, 7)
+    box.addEventListener('click', () => { try { input.showPicker() } catch { input.focus() } })
+    return { box, input, text, hint: text.textContent }
+  })
+
   /* 칸끼리 얽힌 것들. 폼이 바뀔 때마다 통째로 다시 맞춥니다 — 무엇이 바뀌었는지
      가려 가며 고치면, 저장된 값을 처음 써넣을 때처럼 사건 없이 바뀐 자리를 놓칩니다. */
   function sync(draft) {
@@ -118,6 +135,13 @@ export function initProfile() {
     form.querySelector('[data-period="cohabited"]').hidden = !draft.cohabited
     form.querySelector('[data-periods]').hidden = draft.married !== 'yes' && !draft.cohabited
     form.querySelector('[data-kids-detail]').hidden = draft.kids !== 'yes'
+
+    // 기간 칸의 글자. 값("2022-01")을 "2022년 1월"로 적습니다.
+    for (const part of months) {
+      const [year, month] = part.input.value.split('-')
+      part.box.classList.toggle('is-empty', !month)
+      part.text.textContent = month ? `${year}년 ${Number(month)}월` : part.hint
+    }
   }
 
   /* ± 는 한 칸씩. 막대와 같은 값을 고치므로 둘이 따로 놀지 않습니다. */

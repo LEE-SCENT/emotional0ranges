@@ -43,9 +43,7 @@ const SAMPLE = {
     'company-public': true,
     married: 'none',
     cohabited: false,
-    kids: 'yes',
-    'kids-count': '2명',
-    'kids-custody': '비양육',
+    kids: 'none',
   },
   /* null 이면 아직 한 번도 쓰지 않은 것입니다. */
   detail: null,
