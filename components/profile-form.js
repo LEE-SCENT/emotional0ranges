@@ -176,13 +176,39 @@ export function cardGrid(rows) {
  * @param {(profile: object) => void} [options.afterSave]
  * @param {(draft: object) => Array<{ field: Element, message: string }>} [options.validate]
  *   저장하기 전에 빠진 것을 찾습니다. 돌려준 것마다 그 칸 아래에 말이 섭니다.
+ * @param {(values: object) => void} [options.prepare]
+ *   값을 써넣기 직전에 돕니다. 그 값이 들어갈 자리를 먼저 만들어두는 곳입니다.
  */
-export function initProfileForm({ form, part, saved, render, afterSave, validate }) {
+export function initProfileForm({ form, part, saved, render, afterSave, validate, prepare }) {
   const profile = load()
-  write(form, profile[part] ?? {})
+  // 값을 써넣기 전에 화면이 먼저 준비합니다(앞 칸에 따라 달라지는 뒤 칸의 목록 같은 것).
+  const fill = (values) => {
+    prepare?.(values)
+    write(form, values)
+  }
+  fill(profile[part] ?? {})
 
   let clean = JSON.stringify(read(form))
   const dirty = () => JSON.stringify(read(form)) !== clean
+
+  /* ---- 쓰던 것 ----------------------------------------------------------
+     저장하지 않은 채 새로고침해도 쓰던 것이 남습니다. 고친 것이 생기면 이 탭에
+     (sessionStorage) 적어두었다가 다시 열릴 때 그대로 써넣습니다 — 저장된 것은
+     아니어서 저장 버튼은 켜진 채로 돌아옵니다.
+
+     탭을 닫으면 사라집니다. 다른 날 다시 열었을 때 며칠 전에 쓰다 만 것이 저장된
+     것처럼 서 있으면 안 됩니다. */
+  const draftKey = `${KEY}:draft:${part}`
+  const keep = () => {
+    try {
+      if (dirty()) sessionStorage.setItem(draftKey, JSON.stringify(read(form)))
+      else sessionStorage.removeItem(draftKey)
+    } catch { /* 저장소를 못 쓰는 환경에서는 남기지 않습니다. */ }
+  }
+  try {
+    const draft = JSON.parse(sessionStorage.getItem(draftKey))
+    if (draft) fill(draft)
+  } catch { /* 위와 같습니다. */ }
   const saves = document.querySelectorAll('[data-profile-save]')
 
   /* 한도를 채운 묶음은 고르지 않은 나머지를 잠급니다. 하나를 빼면 다시 풀립니다. */
@@ -200,6 +226,7 @@ export function initProfileForm({ form, part, saved, render, afterSave, validate
     /* 고친 것이 없으면 저장할 것도 없습니다. 흐리게 두는 것은 저장이 어디 있는지는
        처음부터 보여야 하기 때문입니다. */
     for (const button of saves) button.disabled = !dirty()
+    keep()
   }
 
   function save() {

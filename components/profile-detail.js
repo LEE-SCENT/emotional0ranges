@@ -11,7 +11,7 @@
  * 탭은 넷이고 저장은 하나입니다 — 탭은 한 폼을 나눠 보는 것일 뿐이라, 어느 탭에서
  * 저장하든 네 탭의 것이 함께 저장됩니다.
  */
-import { cardGrid, cardHeader, cardRow, el, initProfileForm, load } from './profile-form.js?v=bea15182'
+import { cardGrid, cardHeader, cardRow, el, initProfileForm } from './profile-form.js?v=a86f3f27'
 
 /**
  * 물음 하나.
@@ -263,9 +263,6 @@ export function initProfileDetail() {
     const kept = [...statuses.querySelectorAll('input')].find((input) => input.value === keep)
     if (kept) kept.checked = true
   }
-  // 저장된 학력의 목록을 먼저 그려둡니다. 값을 써넣을 때(initProfileForm) 고를 것이
-  // 이미 있어야 합니다.
-  drawStatuses(load().detail?.['edu-level'] ?? '')
 
   function sync(draft) {
     drawStatuses(draft['edu-level'], draft['edu-status'])
@@ -283,6 +280,8 @@ export function initProfileDetail() {
     form,
     part: 'detail',
     saved: '상세 프로필을 저장했어요',
+    // 학력의 목록을 먼저 그려둡니다. 학적 상태를 써넣을 때 고를 것이 이미 있어야 합니다.
+    prepare: (values) => drawStatuses(values['edu-level'] ?? ''),
     render(profile, draft) {
       sync(draft)
       // 옆 단의 카드는 지금 보고 있는 탭의 것, 미리보기 창에는 넷이 나란히 섭니다.

@@ -9,7 +9,7 @@
  * 몇 명인지 묻습니다. 나가고 저장하는 일은 profile-form.js 가 합니다.
  */
 import { openConfirm } from './confirm.js?v=f516d2db'
-import { cardGrid, cardHeader, cardRow, initProfileForm, load, store } from './profile-form.js?v=bea15182'
+import { cardGrid, cardHeader, cardRow, initProfileForm, load, store } from './profile-form.js?v=a86f3f27'
 
 /**
  * ⚠️ 예시입니다. 행정구역 전체가 아니라 화면을 맞춰 보는 데 필요한 만큼만 있습니다.
@@ -140,14 +140,6 @@ export function initProfile() {
   const syncHome = chain($('home-sido'), $('home-gugun'), REGIONS, [null, '시/군/구'])
   const syncWork = chain($('work-sido'), $('work-gugun'), REGIONS, [null, '시/군/구'])
   const syncJob = chain($('job-major'), $('job-minor'), JOBS, ['대분류', '중분류'])
-
-  /* 저장된 값의 시/도·대분류를 먼저 넣고 뒤 칸의 목록을 그에 맞춥니다. 뒤 칸의 값은
-     initProfileForm 이 써넣는데, 그때 고를 것이 목록에 없으면 빈 칸으로 남습니다. */
-  const stored = load().basic
-  for (const [parent, syncList] of [['home-sido', syncHome], ['work-sido', syncWork], ['job-major', syncJob]]) {
-    if (stored[parent]) $(parent).value = stored[parent]
-    syncList()
-  }
 
   const height = $('height')
   height.min = HEIGHT.min
@@ -347,7 +339,7 @@ export function initProfile() {
      다른 길로 새 직업을 끝까지 골랐을 때에야 앞의 것이 내려갑니다.
 
      그래서 어느 탭인지는 저장하지 않습니다. 열 때는 값이 든 쪽의 탭이 열립니다. */
-  let mode = !stored['job-search'] && stored['job-major'] ? 'category' : 'search'
+  let mode = 'search'
   const modes = form.querySelector('[data-job-modes]')
   modes.addEventListener('click', (e) => {
     const item = e.target.closest('[data-job-mode]')
@@ -368,11 +360,23 @@ export function initProfile() {
     jobInput.value = ''
   })
 
-  // 열릴 탭이 고른 칸으로 서 있어야 합니다(segmented-control.js 가 그 칸을 잽니다).
-  for (const item of modes.querySelectorAll('[data-job-mode]')) {
-    const on = item.dataset.jobMode === mode
-    item.classList.toggle('is-selected', on)
-    item.setAttribute('aria-selected', String(on))
+  /* 값을 써넣기 전에 그 값이 들어갈 자리를 만듭니다. 시/도·대분류를 먼저 넣고 뒤 칸의
+     목록을 그에 맞춥니다 — 뒤 칸의 값을 써넣을 때 고를 것이 목록에 없으면 빈 칸으로
+     남습니다. 탭은 분류에 값이 든 쪽이 열립니다(대분류만 고르다 만 것도 그쪽입니다). */
+  function prepare(values) {
+    for (const [parent, syncList] of [['home-sido', syncHome], ['work-sido', syncWork], ['job-major', syncJob]]) {
+      $(parent).value = values[parent] ?? ''
+      // 시/도에는 빈 값이 없습니다. 없는 값을 넣으면 아무것도 골라지지 않으므로 첫 것으로.
+      if ($(parent).selectedIndex < 0) $(parent).selectedIndex = 0
+      syncList()
+    }
+    mode = values['job-major'] ? 'category' : 'search'
+    // 열릴 탭이 고른 칸으로 서 있어야 합니다(segmented-control.js 가 그 칸을 잽니다).
+    for (const item of modes.querySelectorAll('[data-job-mode]')) {
+      const on = item.dataset.jobMode === mode
+      item.classList.toggle('is-selected', on)
+      item.setAttribute('aria-selected', String(on))
+    }
   }
 
   const cards = document.querySelectorAll('[data-profile-card]')
@@ -383,6 +387,7 @@ export function initProfile() {
     part: 'basic',
     saved: '기본 프로필을 저장했어요',
     validate: (draft) => missing(form, draft),
+    prepare,
     render(profile, draft) {
       sync(draft)
       for (const card of cards) card.replaceChildren(cardHeader(profile), cardGrid(facts(profile, draft)))
