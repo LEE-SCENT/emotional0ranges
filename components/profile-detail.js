@@ -302,16 +302,35 @@ export function initProfileDetail() {
   /* ---- 탭 ---------------------------------------------------------------
      밑줄을 옮기는 것은 tabs.js 가, 판을 갈아 끼우는 것은 여기서 합니다. */
   const tabs = document.querySelector('[data-profile-tabs]')
+  const showTab = (name) => {
+    tab = name
+    for (const [key, panel] of Object.entries(panels)) panel.hidden = key !== tab
+    for (const button of tabs.querySelectorAll('[data-tab]')) {
+      button.setAttribute('aria-selected', String(button.dataset.tab === tab))
+    }
+    refresh()
+  }
   tabs.addEventListener('click', (e) => {
     const item = e.target.closest('[data-tab]')
     if (!item) return
-    tab = item.dataset.tab
-    for (const [name, panel] of Object.entries(panels)) panel.hidden = name !== tab
-    for (const button of tabs.querySelectorAll('[data-tab]')) {
-      button.setAttribute('aria-selected', String(button === item))
-    }
-    refresh()
+    showTab(item.dataset.tab)
+    // 어느 탭인지를 주소에 적어둡니다(#values). 새로고침해도 보던 탭으로 돌아오고, 그 탭을
+    // 가리키는 링크도 됩니다. 뒤로 가기에 탭마다 한 칸씩 쌓이지 않도록 갈아 끼웁니다.
+    history.replaceState(null, '', `#${tab}`)
   })
+
+  /* 주소에 탭이 적혀 있으면 그 탭에서 시작합니다. 밑줄은 tabs.js 가 is-active 인 항목을
+     재서 그리므로(이 뒤에 돕니다), 눌린 것처럼 그 표시까지 옮겨둡니다. */
+  const asked = location.hash.slice(1)
+  if (asked !== tab && TABS.includes(asked)) {
+    for (const button of tabs.querySelectorAll('[data-tab]')) {
+      const on = button.dataset.tab === asked
+      button.classList.toggle('is-active', on)
+      if (on) button.setAttribute('aria-current', 'true')
+      else button.removeAttribute('aria-current')
+    }
+    showTab(asked)
+  }
 
   // 미리보기 창은 지금 보고 있는 탭의 카드부터 보여줍니다.
   document.getElementById('profile-preview')?.addEventListener('profile-preview:open', (e) => {
