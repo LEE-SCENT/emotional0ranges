@@ -23,7 +23,7 @@
 <link rel="stylesheet" href="./components/my-menu.css?v=59a441fb">
 <link rel="stylesheet" href="./components/tag.css?v=fef5c195">
 <link rel="stylesheet" href="./components/checkbox.css?v=67340959">
-<link rel="stylesheet" href="./components/field.css?v=2fc81691">
+<link rel="stylesheet" href="./components/field.css?v=2843bbe4">
 <link rel="stylesheet" href="./components/choice.css?v=526620f2">
 <link rel="stylesheet" href="./components/verified-banner.css?v=6f3f1c77">
 <link rel="stylesheet" href="./components/profile-card.css?v=19c13dbf">
@@ -207,7 +207,7 @@
 
       <!-- 하는 일 -->
       <div class="profile__section">
-        <div class="field" role="group" aria-labelledby="profile-job-label">
+        <div class="field" role="group" aria-labelledby="profile-job-label" data-field="job">
           <span class="field__label" id="profile-job-label">직업</span>
           <div class="profile__occupation">
             <input type="hidden" name="job-mode" value="search">
@@ -295,7 +295,7 @@
 
       <!-- 혼인·가족 -->
       <div class="profile__section">
-        <div class="field" role="group" aria-labelledby="profile-married-label">
+        <div class="field" role="group" aria-labelledby="profile-married-label" data-field="married">
           <span class="field__label" id="profile-married-label">혼인 경험</span>
           <!-- 혼인신고(법률혼)는 없음·있음 가운데 하나이고, 사실혼은 그와 따로 켜고
                끕니다 — 둘 다 겪은 사람도, 사실혼만 겪은 사람도 있습니다. -->
@@ -353,7 +353,7 @@
           <button class="btn btn--outlined btn--medium" type="button" data-verify-open="family"><span class="btn__label">인증하기</span></button>
         </div>
 
-        <div class="field" role="group" aria-labelledby="profile-kids-label">
+        <div class="field" role="group" aria-labelledby="profile-kids-label" data-field="kids">
           <span class="field__label" id="profile-kids-label">자녀</span>
           <div class="choice-group">
             <label class="choice"><input type="radio" name="kids" value="none"><span>없음</span></label>
@@ -483,7 +483,7 @@
   initConfirms()
   // segmented 보다 먼저 돕니다. 저장된 쪽(검색·카테고리)을 고른 칸으로 세워둬야
   // 그쪽이 그 칸의 자리를 잽니다.
-  const { initProfile } = await import('./components/profile.js?v=2145c654')
+  const { initProfile } = await import('./components/profile.js?v=f6e9d88e')
   initProfile()
   const { initSegmentedControls } = await import('./components/segmented-control.js?v=bbd7c4b8')
   initSegmentedControls()

@@ -56,6 +56,19 @@
   line-height: var(--typography-body-s-regular-line-height);
 }
 
+/* 빠진 칸. 저장을 눌렀는데 비어 있을 때 그 칸 아래에 섭니다. 상자에는 붉은 테두리가
+   서고, 선택지 묶음처럼 상자가 없는 칸은 말만 섭니다.
+   ⚠️ Figma 에 이 상태가 없습니다. 색은 semantic/fg-critical 을 썼습니다. */
+.field__error {
+  margin: 0;
+  color: var(--colors-fg-critical);
+  font-size: var(--typography-body-s-regular-font-size);
+  font-weight: var(--typography-body-s-regular-font-weight);
+  line-height: var(--typography-body-s-regular-line-height);
+}
+.field--error .text-field:not(:focus-within),
+.text-field--error:not(:focus-within) { box-shadow: inset 0 0 0 1px var(--colors-fg-critical); }
+
 /* 칸 둘이 한 줄에 나란히(출생연도·성별, 시/도·구). */
 .field-row {
   display: flex;
@@ -295,6 +308,10 @@
   margin: 0;
   /* 사방을 4 띄웁니다. 올려둔 줄의 바탕이 판 끝까지 차지 않고 안쪽에 둥글게 섭니다. */
   padding: var(--spacing-100);
+  /* 줄 사이를 2 띄웁니다. 올려둔 줄과 골라져 있는 줄이 맞닿아도 바탕이 한 덩이로 붙지 않습니다. */
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-50);
   overflow-y: auto;
   overscroll-behavior: contain;
   border-radius: var(--_rounded-l);
@@ -307,8 +324,10 @@
   align-items: baseline;
   justify-content: space-between;
   gap: var(--spacing-300);
-  /* 판의 4 와 더해 글자는 칸 안의 글자와 같은 12 에서 시작합니다. */
-  padding: var(--spacing-250) var(--spacing-200);
+  /* 판의 4 와 더해 글자는 칸 안의 글자와 같은 12 에서 시작합니다. 위아래는 8 —
+     한 줄이 36 입니다. */
+  padding: var(--spacing-200);
+  flex: none;
   border-radius: var(--_rounded-m);
   color: var(--colors-fg);
   cursor: pointer;

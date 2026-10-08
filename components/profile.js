@@ -9,7 +9,7 @@
  * 몇 명인지 묻습니다. 나가고 저장하는 일은 profile-form.js 가 합니다.
  */
 import { openConfirm } from './confirm.js?v=f516d2db'
-import { cardGrid, cardHeader, cardRow, initProfileForm, load, store } from './profile-form.js?v=10543792'
+import { cardGrid, cardHeader, cardRow, initProfileForm, load, store } from './profile-form.js?v=1270c559'
 
 /**
  * ⚠️ 예시입니다. 행정구역 전체가 아니라 화면을 맞춰 보는 데 필요한 만큼만 있습니다.
@@ -79,6 +79,49 @@ function facts(profile, draft) {
       ? join('있음', draft['kids-count'], draft['kids-custody'])
       : draft.kids === 'none' ? '없음' : '', { wide: true }),
   ]
+}
+
+/**
+ * 빠진 것을 찾습니다. 기본 프로필은 전부 채워야 합니다 — 매칭과 추천이 이 값들로
+ * 돌아가서, 하나가 비면 그 사람은 조건에 걸리지도 빠지지도 않는 채로 남습니다.
+ *
+ * 키·거주지·회사는 늘 값이 있고, 근무지는 "고정 근무지 없음"도 답이라 묻지 않습니다.
+ * 고르면 딸린 것이 생기는 칸(혼인신고 경험 → 기간, 자녀 있음 → 수·양육)은 그 딸린
+ * 것까지가 답입니다.
+ *
+ * ⚠️ 빠졌을 때의 모습과 말이 Figma 에 없습니다. 문구는 임시입니다.
+ */
+function missing(form, draft) {
+  const at = (selector) => form.querySelector(selector)
+  const found = []
+  const need = (ok, selector, message) => { if (!ok) found.push({ field: at(selector), message }) }
+
+  if (draft['job-mode'] === 'search') {
+    need(draft['job-search'].trim(), '[data-field="job"]', '직업을 선택해 주세요')
+  } else {
+    need(draft['job-major'], '[data-field="job"]', '직업을 선택해 주세요')
+    if (draft['job-major'] && !draft['job-minor']) {
+      found.push({
+        field: at('[data-field="job"]'),
+        box: form.elements['job-minor'].closest('.text-field'),
+        message: '중분류를 선택해 주세요',
+      })
+    }
+  }
+
+  need(draft.married, '[data-field="married"]', '혼인 경험을 선택해 주세요')
+  if (draft.married === 'yes') {
+    need(draft['married-from'] && draft['married-to'], '[data-period="married"]', '법률혼 기간을 선택해 주세요')
+  }
+  if (draft.cohabited) {
+    need(draft['cohabited-from'] && draft['cohabited-to'], '[data-period="cohabited"]', '사실혼 기간을 선택해 주세요')
+  }
+
+  need(draft.kids, '[data-field="kids"]', '자녀 여부를 선택해 주세요')
+  if (draft.kids === 'yes') {
+    need(draft['kids-count'] && draft['kids-custody'], '[data-kids-detail]', '자녀 수와 양육 형태를 선택해 주세요')
+  }
+  return found
 }
 
 export function initProfile() {
@@ -295,6 +338,7 @@ export function initProfile() {
     form,
     part: 'basic',
     saved: '기본 프로필을 저장했어요',
+    validate: (draft) => missing(form, draft),
     render(profile, draft) {
       sync(draft)
       for (const card of cards) card.replaceChildren(cardHeader(profile), cardGrid(facts(profile, draft)))

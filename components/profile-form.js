@@ -35,7 +35,8 @@ const SAMPLE = {
     // 직업은 검색이 먼저입니다. 제 직업의 이름은 대개 알고 있고, 분류는 그 이름이
     // 목록에 없을 때 가는 길입니다.
     'job-mode': 'search',
-    'job-search': '',
+    // 기본 프로필은 전부 채워야 저장되므로, 이미 가입한 사람의 예시도 빈 칸이 없습니다.
+    'job-search': '개발자',
     'job-major': '',
     'job-minor': '',
     'work-sido': '서울',
@@ -174,8 +175,10 @@ export function cardGrid(rows) {
  * @param {(profile: object, draft: object) => void} options.render
  *   카드를 다시 그립니다. draft 는 아직 저장하지 않은 지금의 폼 값입니다.
  * @param {(profile: object) => void} [options.afterSave]
+ * @param {(draft: object) => Array<{ field: Element, message: string, box?: Element }>} [options.validate]
+ *   저장하기 전에 빠진 것을 찾습니다. 돌려준 것마다 그 칸 아래에 말이 섭니다.
  */
-export function initProfileForm({ form, part, saved, render, afterSave }) {
+export function initProfileForm({ form, part, saved, render, afterSave, validate }) {
   const profile = load()
   write(form, profile[part] ?? {})
 
@@ -207,12 +210,54 @@ export function initProfileForm({ form, part, saved, render, afterSave }) {
     refresh()
   }
 
-  form.addEventListener('input', refresh)
-  form.addEventListener('change', refresh)
+  /* ---- 빠진 것 ----------------------------------------------------------
+     저장을 누르기 전에는 아무 말도 하지 않습니다. 아직 쓰는 중인 칸에 대고 비었다고
+     하면, 채우려던 참인 사람을 재촉하는 것이 됩니다. 한 번 저장을 눌러 빠진 것을
+     본 뒤에는, 고치는 대로 그 자리의 말이 사라집니다. */
+  let warned = false
+  function check({ jump = false } = {}) {
+    for (const node of form.querySelectorAll('.field__error')) node.remove()
+    for (const node of form.querySelectorAll('.field--error, .text-field--error')) {
+      node.classList.remove('field--error', 'text-field--error')
+    }
+    const missing = validate?.(read(form)) ?? []
+    for (const { field, message, box } of missing) {
+      // 칸 안의 상자 가운데 하나만 빠졌으면(대분류는 골랐고 중분류만 남은 때) 그 상자에만
+      // 테두리를 세웁니다. 다 고른 상자까지 붉으면 무엇을 더 해야 하는지가 흐려집니다.
+      if (box) box.classList.add('text-field--error')
+      else field.classList.add('field--error')
+      const note = el('p', 'field__error', message)
+      // 읽어주는 쪽에도 들립니다. 눈으로만 붉어지면 무엇이 빠졌는지 알 수 없습니다.
+      note.setAttribute('role', 'alert')
+      field.append(note)
+    }
+    warned = missing.length > 0
+    if (jump && warned) {
+      const first = missing[0].field
+      // 미끄러지지 않고 바로 갑니다. 방금 누른 저장에 대한 대답이라, 가는 동안을 보여줄
+      // 것이 아니라 어디가 빠졌는지가 곧장 보여야 합니다.
+      first.querySelector('input:not([type="hidden"]), select, textarea')?.focus({ preventScroll: true })
+      first.scrollIntoView({ block: 'center' })
+    }
+    return !warned
+  }
+
+  /** 빠진 것이 없을 때만 저장합니다. */
+  function trySave() {
+    if (!check({ jump: true })) return false
+    save()
+    return true
+  }
+
+  const edited = () => {
+    refresh()
+    if (warned) check()
+  }
+  form.addEventListener('input', edited)
+  form.addEventListener('change', edited)
   form.addEventListener('submit', (e) => {
     e.preventDefault()
-    if (!dirty()) return
-    save()
+    if (!dirty() || !trySave()) return
     showToast(saved, { icon: '#icon-check', tone: 'success' })
     afterSave?.(profile)
   })
@@ -246,7 +291,8 @@ export function initProfileForm({ form, part, saved, render, afterSave }) {
   document.addEventListener('confirm:accept', (e) => {
     if (e.target.id === 'profile-promo') return go.detail()
     if (!leaving) return
-    save()
+    // 빠진 것이 있으면 나가지 않습니다. 창은 이미 닫혔고, 빠진 칸으로 데려갑니다.
+    if (!trySave()) return
     go[leaving]()
   })
 
