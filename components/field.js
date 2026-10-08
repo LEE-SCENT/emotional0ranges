@@ -127,20 +127,6 @@ function pick(value) {
   select.dispatchEvent(new Event('change', { bubbles: true }))
 }
 
-/**
- * 셀렉트를 코드에서 엽니다. 앞 칸을 고르면 뒤 칸이 이어서 열리는 자리에 씁니다
- * (대분류 → 중분류).
- *
- * 마우스가 있는 기기에서는 우리 판을, 그 밖에서는 기기의 판을 엽니다. 기기의 판은
- * 방금 사람이 무엇을 누른 직후에만 열 수 있어, 안 되면 초점만 옮깁니다.
- */
-export function openSelect(select) {
-  if (select.disabled) return
-  select.focus()
-  if (desktop.matches) show(select)
-  else try { select.showPicker() } catch { /* 초점만 옮겨진 채로 둡니다. */ }
-}
-
 function initSelectMenus() {
   // 기기의 판이 뜨지 않게 막고 우리 것을 여닫습니다.
   document.addEventListener('mousedown', (e) => {

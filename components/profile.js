@@ -9,8 +9,7 @@
  * 몇 명인지 묻습니다. 나가고 저장하는 일은 profile-form.js 가 합니다.
  */
 import { openConfirm } from './confirm.js?v=f516d2db'
-import { openSelect } from './field.js?v=1c677a35'
-import { cardGrid, cardHeader, cardRow, initProfileForm, load, store } from './profile-form.js?v=1270c559'
+import { cardGrid, cardHeader, cardRow, initProfileForm, load, store } from './profile-form.js?v=02c964e6'
 
 /**
  * ⚠️ 예시입니다. 행정구역 전체가 아니라 화면을 맞춰 보는 데 필요한 만큼만 있습니다.
@@ -329,13 +328,6 @@ export function initProfile() {
     jobInput.value = ''
     jobInput.dispatchEvent(new Event('input', { bubbles: true }))
     jobInput.focus()
-  })
-
-  /* 대분류를 고르면 곧바로 중분류를 엽니다. 직업은 둘을 다 골라야 답이라, 대분류만
-     고르고 멈출 일이 없습니다(기간 칸의 시작 → 끝과 같습니다). 대분류 쪽이 초점을
-     내려놓은 뒤에(field.js) 엽니다. */
-  $('job-major').addEventListener('change', () => {
-    if ($('job-major').value) setTimeout(() => openSelect($('job-minor')))
   })
 
   /* 검색 ↔ 카테고리. segmented-control.js 가 고른 칸을 옮기고, 여기서는 어느 쪽이

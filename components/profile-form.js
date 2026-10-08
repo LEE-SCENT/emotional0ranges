@@ -236,7 +236,12 @@ export function initProfileForm({ form, part, saved, render, afterSave, validate
       const first = missing[0].field
       // 미끄러지지 않고 바로 갑니다. 방금 누른 저장에 대한 대답이라, 가는 동안을 보여줄
       // 것이 아니라 어디가 빠졌는지가 곧장 보여야 합니다.
-      first.querySelector('input:not([type="hidden"]), select, textarea')?.focus({ preventScroll: true })
+      // 빠진 상자가 따로 있으면 그 상자로, 아니면 칸에서 눈에 보이는 첫 것으로 초점이 갑니다
+      // (감춰진 탭의 것은 건너뜁니다).
+      const within = missing[0].box ?? first
+      const target = [...within.querySelectorAll('input:not([type="hidden"]), select, textarea')]
+        .find((control) => control.offsetParent !== null)
+      target?.focus({ preventScroll: true })
       first.scrollIntoView({ block: 'center' })
     }
     return !warned
