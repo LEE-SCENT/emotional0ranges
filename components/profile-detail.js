@@ -302,6 +302,28 @@ export function initProfileDetail() {
   /* ---- 탭 ---------------------------------------------------------------
      밑줄을 옮기는 것은 tabs.js 가, 판을 갈아 끼우는 것은 여기서 합니다. */
   const tabs = document.querySelector('[data-profile-tabs]')
+  /* ---- 하나만 고르는 물음을 다시 비우기 ---------------------------------
+     고른 것을 한 번 더 누르면 풀립니다. 상세 프로필은 답하지 않아도 되는데, radio 는
+     한 번 고르면 다른 것으로 옮길 수만 있고 비울 수는 없습니다 — 잘못 눌렀거나 마음이
+     바뀐 사람에게 "답하지 않음"으로 돌아갈 길이 없었습니다.
+
+     눌린 그 순간에는 이미 켜져 있어, 방금 켜진 것인지 원래 켜져 있던 것인지를 알 수
+     없습니다. 그래서 물음마다 지금 켜진 값을 따로 들고 있다가 견줍니다. click 은 change
+     보다 먼저 오므로, click 때 들고 있는 값은 누르기 전의 것입니다. */
+  const held = new Map()
+  const hold = () => {
+    held.clear()
+    for (const radio of form.querySelectorAll('input[type="radio"]:checked')) held.set(radio.name, radio.value)
+  }
+  hold()
+  form.addEventListener('change', hold)
+  form.addEventListener('click', (e) => {
+    const radio = e.target
+    if (!radio.matches?.('input[type="radio"]') || held.get(radio.name) !== radio.value) return
+    radio.checked = false
+    radio.dispatchEvent(new Event('change', { bubbles: true }))
+  })
+
   const showTab = (name) => {
     tab = name
     for (const [key, panel] of Object.entries(panels)) panel.hidden = key !== tab
