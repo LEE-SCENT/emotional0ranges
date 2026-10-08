@@ -167,6 +167,22 @@ export function initProfile() {
   const thisMonth = new Date().toISOString().slice(0, 7)
   const periods = [...form.querySelectorAll('.text-field--period')].map((period) => {
     const [from, to] = period.querySelectorAll('input')
+    /* 시작을 고르면 곧바로 끝을 고르게 합니다. 기간은 둘이 한 답이라, 시작만 고르고
+       멈출 일이 없습니다. 이미 끝이 있으면 건드리지 않되, 새 시작보다 앞서게 됐으면
+       지우고 다시 고르게 합니다. */
+    from.addEventListener('change', () => {
+      if (!from.value || from.type !== 'month') return
+      if (to.value && to.value < from.value) {
+        to.value = ''
+        to.dispatchEvent(new Event('input', { bubbles: true }))
+      }
+      if (to.value) return
+      // 시작 쪽이 초점을 내려놓은 뒤에(field.js) 끝 쪽을 엽니다.
+      setTimeout(() => {
+        to.focus()
+        try { to.showPicker() } catch { /* 달력을 스스로 열 수 없는 브라우저에서는 초점만 옮깁니다. */ }
+      })
+    })
     return () => {
       from.max = to.value || thisMonth
       to.min = from.value
