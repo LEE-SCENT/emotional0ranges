@@ -124,6 +124,15 @@
   line-height: var(--typography-body-s-regular-line-height);
 }
 
+/* 직접 인증의 신청 기준. 유의사항(아래 선 밑의 목록)과 같은 글자이되, 고르기 전에 읽어야
+   하는 것이라 옅은 바탕에 담아 칸들 위에 세웁니다. */
+.verify__rules {
+  padding: var(--spacing-300) var(--spacing-400) var(--spacing-300) calc(var(--spacing-800) + var(--spacing-50));
+  border-radius: var(--_rounded-m);
+  background: var(--colors-bg-low);
+  word-break: keep-all;
+}
+
 .verify__submit { flex: none; inline-size: 100%; }
 
 /* ---- 여닫기 ------------------------------------------------------------ */

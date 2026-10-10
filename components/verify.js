@@ -23,6 +23,7 @@ import { showToast } from './toast.js?v=ccb77a07'
 import { lockScroll, unlockScroll } from './scroll-lock.js?v=40a2cd35'
 import { initDialogFocus } from './dialog-focus.js?v=a4704637'
 import { initTabs } from './tabs.js?v=aec7319a'
+import { load } from './profile-form.js?v=50619393'
 
 const RECENT = '최근 3개월 이내 발급된 서류만 인정돼요'
 const HIDE_ID = '주민등록번호 뒷자리는 가리고 제출해 주세요.'
@@ -39,7 +40,14 @@ const dated = [
   { type: 'file', label: '증빙 서류' },
 ]
 
-/** 회사·직업의 직접 인증. 내 상황마다 받는 서류와 유의사항이 다릅니다. */
+/**
+ * 회사·직업의 직접 인증. 내 상황마다 받는 서류와 유의사항이 다릅니다.
+ *
+ * for 가 있는 상황은 그 성별의 회원에게만 섭니다. 운영 사이트의 신청 기준입니다 —
+ * 남성은 소득을 증빙할 수 있는 직업이 있어야 하고(학생 가운데 의대생 · 로스쿨 재학생 ·
+ * 연구비 소득 대학원생만 따로 신청), 여성은 대학 · 대학원 학생과 이직 · 취업 준비 중인
+ * 경우도 신청할 수 있습니다. 무직 · 주부는 누구도 신청할 수 없습니다(RULES).
+ */
 const SITUATIONS = [
   {
     label: '직장인 (자동 인증 실패)',
@@ -66,9 +74,30 @@ const SITUATIONS = [
   },
   ...['의대생', '로스쿨 재학생', '연구비 소득 대학원생'].map((label) => ({
     label,
+    for: '남성',
     fields: dated,
     notes: ['재학증명서를 제출해 주세요.', HIDE_ID, ONE_YEAR, FAKE],
   })),
+  {
+    label: '대학 · 대학원생',
+    for: '여성',
+    fields: dated,
+    notes: ['재학증명서를 제출해 주세요.', OWN_RECENT, HIDE_ID, ONE_YEAR, FAKE],
+  },
+  /* ⚠️ 운영 사이트는 "안내된 자료로 신청"이라고만 적고 어떤 서류인지 보여주지 않습니다.
+        아래 서류는 자리를 채운 것이라 기획 확인이 필요합니다. */
+  {
+    label: '이직 준비 중',
+    for: '여성',
+    fields: dated,
+    notes: ['경력증명서 또는 건강보험 자격득실확인서를 제출해 주세요.', OWN_RECENT, HIDE_ID, ONE_YEAR, FAKE],
+  },
+  {
+    label: '취업 준비 중',
+    for: '여성',
+    fields: dated,
+    notes: ['최종 학력 졸업증명서를 제출해 주세요.', OWN_RECENT, HIDE_ID, ONE_YEAR, FAKE],
+  },
   {
     label: '기타',
     fields: dated,
@@ -77,6 +106,17 @@ const SITUATIONS = [
       '본인 명의의 서류만 인정돼요.', HIDE_ID, ONE_YEAR, FAKE],
   },
 ]
+
+/**
+ * 직접 인증으로 누가 신청할 수 있는지(운영 사이트의 문구). 회원의 성별에 맞는 줄만 섭니다
+ * — 남녀의 기준이 다른데 둘을 나란히 세우면, 내 것이 아닌 기준을 읽고 견주게 됩니다.
+ * 성별을 모르면(로그인 전 등) 둘 다 섭니다.
+ */
+const RULES = {
+  남성: '남성 회원은 소득을 증빙할 수 있는 직업이 있어야 해요. 의대생 · 로스쿨 재학생 · 연구비 소득 대학원생은 재학증명서로 신청할 수 있어요.',
+  여성: '여성 회원은 대학 · 대학원 재학 중이거나 이직 · 취업을 준비 중이어도 신청할 수 있어요.',
+}
+const NO_JOB = '무직 · 주부는 신청할 수 없어요.'
 
 const KINDS = {
   company: {
@@ -91,6 +131,7 @@ const KINDS = {
       submit: '인증하기',
     },
     tab: '직접 인증',
+    lead: '자동 확인이 어려운 분(프리랜서 · 사업자 · 전문직 · 학생 등)은 재직 · 자격 증빙을 올리면 검토 후 인증돼요.',
     situations: SITUATIONS,
   },
   family: {
@@ -304,10 +345,18 @@ function build(kind) {
     const auto = meansBody(spec.auto)
 
     // 직접 인증 쪽: 내 상황을 고르면 그에 맞는 칸으로 바뀝니다.
+    // 회원의 성별에 해당하는 상황만 섭니다(for). 값은 원래 목록의 자리라, 걸러도 서류가 맞습니다.
+    const gender = load().me?.gender
+    const rules = el('ul', 'verify__notes verify__rules')
+    for (const text of [...(RULES[gender] ? [RULES[gender]] : Object.values(RULES)), NO_JOB]) {
+      rules.append(el('li', '', text))
+    }
     const situation = el('div', 'field')
     const select = el('select')
     select.id = `verify-${++serial}`
-    for (const [index, item] of spec.situations.entries()) select.append(new Option(item.label, index))
+    for (const [index, item] of spec.situations.entries()) {
+      if (!item.for || !gender || item.for === gender) select.append(new Option(item.label, index))
+    }
     const selectBox = el('div', 'text-field text-field--select')
     selectBox.append(select)
     selectBox.insertAdjacentHTML('beforeend', icon('chevronDown'))
@@ -318,7 +367,7 @@ function build(kind) {
     const docs = el('div', 'verify__fields')
     const direct = el('div', 'verify__body')
     direct.hidden = true
-    direct.append(situation, docs)
+    direct.append(el('p', 'verify__lead', spec.lead), rules, situation, docs)
     const draw = () => { documents(docs, spec.situations[select.value]); check() }
     select.addEventListener('change', draw)
 
