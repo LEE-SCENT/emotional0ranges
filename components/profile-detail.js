@@ -11,7 +11,7 @@
  * 구획은 넷(상세 정보 · 라이프 · 가치관 · 한마디)이고 한 페이지에 이어집니다. 탭은
  * 구획으로 가는 길이고, 저장은 하나라 넷이 함께 저장됩니다.
  */
-import { cardGrid, cardHeader, cardRow, el, initProfileForm, swap } from './profile-form.js?v=50619393'
+import { cardGrid, cardHeader, cardRow, el, initProfileForm, load, swap } from './profile-form.js?v=50619393'
 import { selectTab } from './tabs.js?v=aec7319a'
 
 /**
@@ -24,6 +24,8 @@ import { selectTab } from './tabs.js?v=aec7319a'
  *   multi    여럿 고를 수 있는지. max 가 있으면 그만큼까지입니다.
  *   cols     넓은 화면의 칸 수. 없으면 글자 폭대로 흘러갑니다.
  *   short    카드에 적을 때 줄이는 법("평일 근무" → "평일").
+ *   word     가입한 사람의 성별에 따라 달리 적는 선택지({ 값: { 여성: '…' } }). 값은 그대로이고
+ *            보이는 글자만 바뀝니다.
  *   other    "기타" 를 고르면 글로 받는 칸이 열립니다.
  *   sensitive 민감정보(개인정보 보호법 제23조)라 동의한 사람에게만 묻습니다. 동의하지
  *            않으면 칸도 카드의 줄도 없습니다. 완성도에는 동의해도 들지 않습니다(progressOf).
@@ -52,6 +54,9 @@ const QUESTIONS = [
   },
   {
     tab: 'life', name: 'lifestyle', label: '생활패턴', card: '생활 패턴', multi: true, max: 3, cols: 4,
+    /* 기존 사이트는 가입한 사람의 성별에 따라 집돌이 · 집순이로 적습니다. 값은 '집돌이' 하나로
+       둡니다 — 성별로 값까지 갈리면 재인증으로 성별이 바뀐 날 고른 것이 풀립니다. */
+    word: { 집돌이: { 여성: '집순이' } },
     options: ['집돌이', '아침형 인간', '올빼미형 인간', '부지런히 자기계발', '꾸준한 운동', '워커홀릭',
       '일-집-일-집', '취미 부자'],
   },
@@ -215,6 +220,12 @@ function choice(type, name, value, text = value) {
   return label
 }
 
+/** 본인인증으로 들어온 성별. 화면을 그릴 때 한 번 읽습니다(initProfileDetail). */
+let gender = ''
+
+/** 선택지가 화면과 카드에 적히는 글자. */
+const wordOf = (q, option) => q.word?.[option]?.[gender] ?? option
+
 /** 물음 하나를 폼의 칸으로. */
 function question(q) {
   const field = el('div', 'field')
@@ -226,7 +237,9 @@ function question(q) {
 
   const group = el('div', `choice-group${q.cols ? ` choice-group--cols-${q.cols}` : ''}`)
   if (q.max) group.dataset.max = q.max
-  for (const option of q.options) group.append(choice(q.multi ? 'checkbox' : 'radio', q.name, option))
+  for (const option of q.options) {
+    group.append(choice(q.multi ? 'checkbox' : 'radio', q.name, option, wordOf(q, option)))
+  }
   field.append(group)
 
   if (q.other) {
@@ -267,7 +280,8 @@ const chosen = (q, draft) => {
     if (q.other && text === '기타' && draft[`${q.name}-other`]?.trim()) {
       return `기타 · ${draft[`${q.name}-other`].trim()}`
     }
-    return q.short ? q.short(text) : text
+    const word = wordOf(q, text)
+    return q.short ? q.short(word) : word
   })
 }
 
@@ -318,6 +332,7 @@ function card(profile, draft, tab) {
 export function initProfileDetail() {
   const form = document.querySelector('[data-profile-form]')
   if (!form) return
+  gender = load().me.gender
 
   // 물음을 제 탭의 제 자리에 세웁니다. 자리(data-q)가 따로 없으면 탭의 끝에 섭니다.
   const panels = Object.fromEntries(TABS.map((tab) => [tab, form.querySelector(`[data-panel="${tab}"]`)]))
