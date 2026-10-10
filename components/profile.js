@@ -131,7 +131,10 @@ function missing(form, draft) {
   if (draft.kids === 'yes') {
     need(draft['kids-count'] && draft['kids-custody'], '[data-kids-detail]', '자녀 수와 양육 형태를 선택해 주세요')
   }
-  return found
+  // 화면의 차례대로 돌려줍니다. 저장을 누르면 첫 번째 빠진 칸으로 가는데, 화면에서 더 아래의
+  // 칸으로 먼저 가면 그 위에 빠진 칸을 지나쳐 버립니다.
+  return found.sort((a, b) =>
+    (a.field.compareDocumentPosition(b.field) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1))
 }
 
 export function initProfile() {

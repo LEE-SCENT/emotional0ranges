@@ -160,87 +160,7 @@
       </div>
 
 
-      <!-- 본인인증으로 들어온 것들. 보여주기만 하고 고칠 수 없습니다. -->
-      <div class="profile__section">
-        <div class="field">
-          <label class="field__label" for="profile-name">이름</label>
-          <div class="text-field text-field--readonly">
-            <input id="profile-name" type="text" value="김땡땡" readonly aria-describedby="profile-name-help" data-me="name">
-          </div>
-          <!-- 고칠 수 없는 칸의 하나뿐인 출구라 늘 보이게 둡니다. 말풍선에 넣으면 올려볼 수
-               없는 폰에서는 있는 줄도 모릅니다. -->
-          <p class="field__help" id="profile-name-help">개명한 경우 고객센터로 문의해 주세요</p>
-        </div>
-
-        <div class="field-row">
-          <div class="field">
-            <label class="field__label" for="profile-birth">출생연도</label>
-            <div class="text-field text-field--readonly">
-              <input id="profile-birth" type="text" value="1991년생 · 36세" readonly data-me="birth">
-            </div>
-          </div>
-          <div class="field">
-            <label class="field__label" for="profile-gender">성별</label>
-            <div class="text-field text-field--readonly">
-              <input id="profile-gender" type="text" value="남성" readonly data-me="gender">
-            </div>
-          </div>
-        </div>
-
-        <div class="verified-banner verified-banner--done">
-          <div class="verified-banner__box">
-            <svg class="verified-banner__icon" aria-hidden="true"><use href="#icon-verifiedUserFilled"></use></svg>
-            <p class="verified-banner__text">
-              <b>본인 인증 완료</b>
-              <span>본인인증으로 확인된 정보는 직접 수정할 수 없어요</span>
-            </p>
-          </div>
-          <!-- 본인 인증은 우리 창이 아니라 본인확인 기관의 창이 따로 뜹니다(identity-check.js). -->
-          <button class="btn btn--blur btn--medium" type="button" data-identity-check><span class="btn__label">재인증</span></button>
-        </div>
-
-        <!-- 여기서부터가 스스로 채우는 칸입니다. 전부 채워야 저장되어 이름표마다 점이 붙습니다.
-             위의 이름·출생연도·성별과 아래의 회사는 인증으로 들어온 값이라 채울 것이 없어
-             점이 없습니다. 답에 딸려 나오는 칸(기간, 자녀 수·양육)에도 없습니다 — 위의
-             물음이 이미 필수라 그 답의 일부로 읽힙니다. 채워야 하는 것은 같습니다. -->
-        <div class="field">
-          <label class="field__label" for="profile-height">키<span class="field__required" aria-hidden="true"></span><span class="sr-only">필수</span></label>
-          <div class="profile__height">
-            <div class="profile__stepper">
-              <button class="btn btn--outlined btn--small btn--icon-only" type="button" data-height-step="-1" aria-label="1cm 줄이기">
-                <svg class="btn__icon" aria-hidden="true"><use href="#icon-minus"></use></svg>
-              </button>
-              <output for="profile-height" data-height-text>175cm</output>
-              <button class="btn btn--outlined btn--small btn--icon-only" type="button" data-height-step="1" aria-label="1cm 늘리기">
-                <svg class="btn__icon" aria-hidden="true"><use href="#icon-plus"></use></svg>
-              </button>
-            </div>
-            <input class="profile__slider" id="profile-height" name="height" type="range" step="1" value="175">
-          </div>
-        </div>
-
-        <div class="field" role="group" aria-labelledby="profile-home-label">
-          <span class="field__label" id="profile-home-label">거주지<span class="field__required" aria-hidden="true"></span><span class="sr-only">필수</span></span>
-          <div class="field-row">
-            <div class="field">
-              <div class="text-field text-field--select">
-                <select name="home-sido" aria-label="거주지 시·도"></select>
-                <svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg>
-              </div>
-            </div>
-            <div class="field" data-field="home-gugun">
-              <div class="text-field text-field--select">
-                <select name="home-gugun" aria-label="거주지 시·군·구"></select>
-                <svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <hr class="profile__divider">
-
-      <!-- 하는 일 -->
+      <!-- 하는 일. 운영 사이트와 같이 직업과 직장 인증이 먼저 섭니다. -->
       <div class="profile__section">
         <div class="field" role="group" aria-labelledby="profile-job-label" data-field="job">
           <span class="field__label" id="profile-job-label">직업<span class="field__required" aria-hidden="true"></span><span class="sr-only">필수</span></span>
@@ -281,34 +201,6 @@
           </div>
           <!-- 운영 사이트의 안내입니다. 명단과 카드에 이 직업이 어떻게 적히는지(profile.js). -->
           <p class="field__help" data-job-display hidden></p>
-        </div>
-
-        <div class="field" role="group" aria-labelledby="profile-work-label">
-          <span class="field__label" id="profile-work-label">근무지<span class="field__required" aria-hidden="true"></span><span class="sr-only">필수</span></span>
-          <div class="profile__workplace">
-            <div class="field-row">
-              <div class="field">
-                <div class="text-field text-field--select">
-                  <select name="work-sido" aria-label="근무지 시·도"></select>
-                  <svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg>
-                </div>
-              </div>
-              <div class="field" data-field="work-gugun">
-                <div class="text-field text-field--select">
-                  <select name="work-gugun" aria-label="근무지 시·군·구"></select>
-                  <svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg>
-                </div>
-              </div>
-            </div>
-            <p class="field__help">회사원은 직장 위치, 사업자는 사업장 위치, 프리랜서는 주 활동 지역 ㅡ 구 단위까지</p>
-            <label class="checkbox-label">
-              <span class="checkbox">
-                <input type="checkbox" name="work-none">
-                <span class="checkbox__box" aria-hidden="true"><svg><use href="#icon-check"></use></svg></span>
-              </span>
-              고정 근무지 없음
-            </label>
-          </div>
         </div>
 
         <!-- 회사는 인증으로 들어오는 값이라, 인증 전과 후가 다른 모습입니다(profile.js 가
@@ -379,6 +271,120 @@
             <button class="btn btn--outlined btn--medium" type="button" data-verify-open="company" data-verify-tab="direct">
               <span class="btn__label">서류 올리러 가기</span>
             </button>
+          </div>
+        </div>
+      </div>
+
+      <hr class="profile__divider">
+
+      <!-- 본인인증으로 들어온 것들. 보여주기만 하고 고칠 수 없습니다. 운영 사이트와 같이
+           안내가 먼저, 그다음 성별 · 출생연도 차례입니다. -->
+      <div class="profile__section">
+        <div class="verified-banner verified-banner--done">
+          <div class="verified-banner__box">
+            <svg class="verified-banner__icon" aria-hidden="true"><use href="#icon-verifiedUserFilled"></use></svg>
+            <p class="verified-banner__text">
+              <b>본인 인증 완료</b>
+              <span>본인인증으로 확인된 정보는 직접 수정할 수 없어요</span>
+            </p>
+          </div>
+          <!-- 본인 인증은 우리 창이 아니라 본인확인 기관의 창이 따로 뜹니다(identity-check.js). -->
+          <button class="btn btn--blur btn--medium" type="button" data-identity-check><span class="btn__label">재인증</span></button>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="profile-name">이름</label>
+          <div class="text-field text-field--readonly">
+            <input id="profile-name" type="text" value="김땡땡" readonly aria-describedby="profile-name-help" data-me="name">
+          </div>
+          <!-- 고칠 수 없는 칸의 하나뿐인 출구라 늘 보이게 둡니다. 말풍선에 넣으면 올려볼 수
+               없는 폰에서는 있는 줄도 모릅니다. -->
+          <p class="field__help" id="profile-name-help">개명한 경우 고객센터로 문의해 주세요</p>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label class="field__label" for="profile-gender">성별</label>
+            <div class="text-field text-field--readonly">
+              <input id="profile-gender" type="text" value="남성" readonly data-me="gender">
+            </div>
+          </div>
+          <div class="field">
+            <label class="field__label" for="profile-birth">출생연도</label>
+            <div class="text-field text-field--readonly">
+              <input id="profile-birth" type="text" value="1991년생 · 36세" readonly data-me="birth">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="profile__divider">
+
+      <!-- 사는 곳 · 일하는 곳 · 키 (운영 사이트의 차례) -->
+      <div class="profile__section">
+        <!-- 여기서부터가 스스로 채우는 칸입니다. 전부 채워야 저장되어 이름표마다 점이 붙습니다.
+             위의 이름·출생연도·성별과 아래의 회사는 인증으로 들어온 값이라 채울 것이 없어
+             점이 없습니다. 답에 딸려 나오는 칸(기간, 자녀 수·양육)에도 없습니다 — 위의
+             물음이 이미 필수라 그 답의 일부로 읽힙니다. 채워야 하는 것은 같습니다. -->
+        <div class="field" role="group" aria-labelledby="profile-home-label">
+          <span class="field__label" id="profile-home-label">거주지<span class="field__required" aria-hidden="true"></span><span class="sr-only">필수</span></span>
+          <div class="field-row">
+            <div class="field">
+              <div class="text-field text-field--select">
+                <select name="home-sido" aria-label="거주지 시·도"></select>
+                <svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg>
+              </div>
+            </div>
+            <div class="field" data-field="home-gugun">
+              <div class="text-field text-field--select">
+                <select name="home-gugun" aria-label="거주지 시·군·구"></select>
+                <svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field" role="group" aria-labelledby="profile-work-label">
+          <span class="field__label" id="profile-work-label">근무지<span class="field__required" aria-hidden="true"></span><span class="sr-only">필수</span></span>
+          <div class="profile__workplace">
+            <div class="field-row">
+              <div class="field">
+                <div class="text-field text-field--select">
+                  <select name="work-sido" aria-label="근무지 시·도"></select>
+                  <svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg>
+                </div>
+              </div>
+              <div class="field" data-field="work-gugun">
+                <div class="text-field text-field--select">
+                  <select name="work-gugun" aria-label="근무지 시·군·구"></select>
+                  <svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg>
+                </div>
+              </div>
+            </div>
+            <p class="field__help">회사원은 직장 위치, 사업자는 사업장 위치, 프리랜서는 주 활동 지역 ㅡ 구 단위까지</p>
+            <label class="checkbox-label">
+              <span class="checkbox">
+                <input type="checkbox" name="work-none">
+                <span class="checkbox__box" aria-hidden="true"><svg><use href="#icon-check"></use></svg></span>
+              </span>
+              고정 근무지 없음
+            </label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="profile-height">키<span class="field__required" aria-hidden="true"></span><span class="sr-only">필수</span></label>
+          <div class="profile__height">
+            <div class="profile__stepper">
+              <button class="btn btn--outlined btn--small btn--icon-only" type="button" data-height-step="-1" aria-label="1cm 줄이기">
+                <svg class="btn__icon" aria-hidden="true"><use href="#icon-minus"></use></svg>
+              </button>
+              <output for="profile-height" data-height-text>175cm</output>
+              <button class="btn btn--outlined btn--small btn--icon-only" type="button" data-height-step="1" aria-label="1cm 늘리기">
+                <svg class="btn__icon" aria-hidden="true"><use href="#icon-plus"></use></svg>
+              </button>
+            </div>
+            <input class="profile__slider" id="profile-height" name="height" type="range" step="1" value="175">
           </div>
         </div>
       </div>
@@ -583,7 +589,7 @@
   initConfirms()
   // segmented 보다 먼저 돕니다. 저장된 쪽(검색·카테고리)을 고른 칸으로 세워둬야
   // 그쪽이 그 칸의 자리를 잽니다.
-  const { initProfile } = await import('./components/profile.js?v=d28c9da5')
+  const { initProfile } = await import('./components/profile.js?v=fdfc671c')
   initProfile()
   const { initSegmentedControls } = await import('./components/segmented-control.js?v=bbd7c4b8')
   initSegmentedControls()
