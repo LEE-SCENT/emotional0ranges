@@ -437,5 +437,8 @@ export function initVerify() {
     if (dialog.open) return
     dialog.showModal()
     lockScroll()
+    // 화면에서 "서류 올리러 가기"로 왔으면 직접 인증 탭으로 엽니다(data-verify-tab="direct").
+    const tabs = dialog.querySelectorAll('.tabs__item')
+    if (tabs.length > 1) tabs[trigger.dataset.verifyTab === 'direct' ? 1 : 0].click()
   })
 }

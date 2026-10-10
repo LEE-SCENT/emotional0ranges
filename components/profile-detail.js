@@ -31,7 +31,7 @@ import { showToast } from './toast.js?v=ccb77a07'
  *            풀리고, 나머지를 고르면 이것이 풀립니다.
  *   word     가입한 사람의 성별에 따라 달리 적는 선택지({ 값: { 여성: '…' } }). 값은 그대로이고
  *            보이는 글자만 바뀝니다.
- *   other    "기타" 를 고르면 글로 받는 칸이 열립니다.
+ *   other    이 선택지("기타 의견" 같은)를 고르면 글로 받는 칸이 열립니다.
  *   sensitive 민감정보(개인정보 보호법 제23조)라 동의한 사람에게만 묻습니다. 동의하지
  *            않으면 칸도, 카드의 줄도, 완성도의 셈도 없습니다.
  *
@@ -43,13 +43,13 @@ const QUESTIONS = [
   {
     tab: 'info', name: 'charms', label: '나의 매력', multi: true, max: 5, cols: 3,
     options: ['착하다', '똑똑하다', '재미있다', '자기관리가 잘 되어 있다', '상대에게 잘 맞춰준다',
-      '리더십 있다', '애교 · 적극적', '남 얘기를 잘 들어준다', '잘 웃는다', '긍정적이다', '성실하다',
+      '리더십 있다', '애교·적극적', '남 얘기 잘 들어준다', '잘 웃는다', '긍정적이다', '성실하다',
       '야망 있고 진취적', '생활력이 강하다', '외모 자신감 있다', '대인관계 좋다', '편하게 해준다'],
   },
 
   {
     tab: 'life', name: 'housing', label: '주거 형태', multi: true, max: 3, cols: 4,
-    options: ['1인 가구', '가족과 함께', '기숙사 · 숙소 거주', '룸메이트 있음'],
+    options: ['1인 가구', '가족과 함께', '기숙사·숙소 거주', '룸메이트 있음'],
   },
   {
     tab: 'life', name: 'work-style', label: '근무 유형', multi: true, max: 3, cols: 4,
@@ -58,7 +58,7 @@ const QUESTIONS = [
     short: (text) => text.replace(/ 근무$/, ''),
   },
   {
-    tab: 'life', name: 'lifestyle', label: '생활패턴', card: '생활 패턴', multi: true, max: 3, cols: 4,
+    tab: 'life', name: 'lifestyle', label: '생활 패턴', multi: true, max: 3, cols: 4,
     /* 기존 사이트는 가입한 사람의 성별에 따라 집돌이 · 집순이로 적습니다. 값은 '집돌이' 하나로
        둡니다 — 성별로 값까지 갈리면 재인증으로 성별이 바뀐 날 고른 것이 풀립니다. */
     word: { 집돌이: { 여성: '집순이' } },
@@ -71,8 +71,8 @@ const QUESTIONS = [
   },
   {
     tab: 'life', name: 'drinking', label: '음주 성향', multi: true, max: 5, cols: 4,
-    options: ['아예 안 마셔요', '주 5회 이상', '주 3-4회', '주 1-2회', '주량이 세요', '주량이 약해요',
-      '위스키', '와인', '맥주', '소주', '사케', '막걸리', '칵테일'],
+    options: ['주 5회 이상', '주 3-4회', '주 1-2회', '한 달에 1-2회', '아예 안 마셔요', '주량이 세요',
+      '주량이 약해요', '위스키', '와인', '맥주', '소주', '사케', '막걸리', '칵테일'],
   },
   {
     tab: 'life', name: 'smoking', label: '흡연', cols: 4,
@@ -84,15 +84,14 @@ const QUESTIONS = [
   },
   {
     tab: 'life', name: 'hobbies', label: '취미', multi: true, max: 3, cols: 4,
-    options: ['아웃도어 · 여행', '운동 · 스포츠', '인문학 · 책 · 글', '외국 · 언어', '문화 · 공연 · 축제',
-      '음악 · 악기', '공예 · 만들기', '댄스 · 무용', '봉사활동', '맛집 · 사교', '차 · 바이크',
-      '사진 · 영상', '스포츠 관람', '게임 · 오락', '요리 · 제조', '반려동물', '자기계발 · 재테크'],
+    options: ['아웃도어·여행', '운동·스포츠', '인문학·책·글', '외국·언어', '문화·공연·축제',
+      '음악·악기', '공예·만들기', '댄스·무용', '봉사활동', '맛집·사교', '차·바이크',
+      '사진·영상', '스포츠 관람', '게임·오락', '요리·제조', '반려동물', '자기계발·재테크'],
   },
 
   {
     tab: 'values', name: 'date-count', label: '이상적인 데이트 횟수',
-    options: ['주1회', '주2회', '주3회', '주말만 함께', '가능한 날은 모두 함께'],
-    short: (text) => text.replace(/^주(\d)/, '주 $1'),
+    options: ['주 1회', '주 2회', '주 3회', '주말만 함께', '가능한 날은 모두 함께'],
   },
   {
     tab: 'values', name: 'date-style', label: '선호하는 데이트', multi: true, max: 3, cols: 2,
@@ -102,9 +101,9 @@ const QUESTIONS = [
       '운동, 게임 등 취미생활 같이 하기'],
   },
   {
-    tab: 'values', name: 'friends', label: '남사친, 여사친에 대해 어떻게 생각하세요?', cols: 2, other: true,
+    tab: 'values', name: 'friends', label: '남사친, 여사친에 대해 어떻게 생각하세요?', cols: 2, other: '기타 의견',
     options: ['거짓말만 하지 않는다면 만나도 된다', '만나지만 않는다면 연락 정도는 괜찮다',
-      '남녀 사이에 친구란 있을 수 없다', '기타'],
+      '남녀 사이에 친구란 있을 수 없다', '기타 의견'],
   },
   {
     tab: 'values', name: 'ideal', label: '선호하는 이성 스타일', multi: true, max: 3, cols: 3,
@@ -113,19 +112,12 @@ const QUESTIONS = [
       '자기관리를 잘하는', '열정적이고 발전 지향적인', '현재에 만족하고 즐길 줄 아는',
       '내향적인 집돌 집순이', '외향적인 밖돌 밖순이'],
   },
-  /* 결혼과 자녀는 따로 묻습니다. Figma 는 여섯을 "결혼 가치관" 한 물음에 두고 예시에서
-     둘(3-4년 안에 · 딩크)이 켜져 있어 여럿 고르는 물음으로 읽었는데, 그러면 "비혼주의"와
-     "1-2년 안에 결혼", "딩크"와 "자녀가 있었으면"이 함께 켜집니다. 여섯은 두 물음이
-     섞인 것이라 — 예시도 각각에서 하나씩 고른 모습입니다 — 나누고 하나씩만 받습니다.
-     ⚠️ "자녀 가치관"이라는 이름표는 Figma 에 없습니다. */
+  /* 운영 사이트와 같이 결혼과 자녀를 한 물음에 둡니다. 결혼 시기와 자녀 계획을 함께
+     고를 수 있어야 해서(3-4년 안에 + 딩크) 여럿 고르는 물음입니다. */
   {
-    tab: 'values', name: 'marriage', label: '결혼 가치관', cols: 2,
+    tab: 'values', name: 'marriage', label: '결혼 가치관', multi: true, cols: 2,
     options: ['비혼주의', '아직 결혼 생각은 없어요', '1-2년 안에 결혼하고 싶어요',
-      '3-4년 안에 결혼하고 싶어요'],
-  },
-  {
-    tab: 'values', name: 'children', label: '자녀 가치관', cols: 2,
-    options: ['딩크를 원해요', '자녀가 있었으면 좋겠어요'],
+      '3-4년 안에 결혼하고 싶어요', '딩크를 원해요', '자녀가 있었으면 좋겠어요'],
   },
   {
     tab: 'values', name: 'money', label: '경제 가치관', multi: true, max: 3, cols: 2,
@@ -150,9 +142,9 @@ const QUESTIONS = [
       '상황에 따라 유연하게 결정', '맞벌이 희망', '외벌이 희망'],
   },
   {
-    tab: 'values', name: 'seon-in-laws', label: '이상적인 가족 관계', seon: true, cols: 2, other: true,
+    tab: 'values', name: 'seon-in-laws', label: '이상적인 가족 관계', seon: true, cols: 2, other: '기타의견',
     options: ['양가에 자주 찾아뵙고 교류하는 편이 좋다', '명절이나 중요한 때만 챙기면 된다',
-      '최소한의 예의만 지키면 된다', '특별한 기준 없이 상황에 따라 맞춘다', '기타'],
+      '최소한의 예의만 지키면 된다', '특별한 기준 없이 상황에 따라 맞춘다', '기타의견'],
   },
   {
     tab: 'values', name: 'seon-income', label: '연소득', seon: true,
@@ -168,7 +160,7 @@ const QUESTIONS = [
   },
   {
     tab: 'values', name: 'seon-father-job', label: '아버지 직업군', seon: true,
-    options: ['회사원', '사업 · 자영업', '전문직', '공무원 · 공공기관', '은퇴', '주부', '기타'],
+    options: ['회사원', '사업·자영업', '전문직', '공무원·공공기관', '은퇴', '주부', '기타'],
   },
   {
     tab: 'values', name: 'seon-mother', label: '어머니 생존 여부', seon: true,
@@ -176,7 +168,7 @@ const QUESTIONS = [
   },
   {
     tab: 'values', name: 'seon-mother-job', label: '어머니 직업군', seon: true,
-    options: ['회사원', '사업 · 자영업', '전문직', '공무원 · 공공기관', '은퇴', '주부', '기타'],
+    options: ['회사원', '사업·자영업', '전문직', '공무원·공공기관', '은퇴', '주부', '기타'],
   },
   /* 형제자매는 여럿입니다(형도 여동생도 있을 수 있습니다). 외동과 밝히고 싶지 않음만
      홀로 섭니다 — "외동"과 "남동생 있음"이 함께 켜진 답은 어느 쪽도 믿을 수 없습니다. */
@@ -223,6 +215,7 @@ export function progressOf(draft = {}) {
     ['mbti', MBTI.every(([name]) => draft[name])],
     ['edu', filled(draft['edu-level'])],
     ['school', filled(draft.school)],
+    ['school-public', filled(draft['school-public'])],
     ...QUESTIONS.filter((q) => !q.seon && isAsked(q, draft)).map((q) => [q.name, filled(draft[q.name])]),
     ['words', filled(draft.words)],
   ]
@@ -243,15 +236,8 @@ const MBTI = [
   ['mbti-jp', ['J', '판단'], ['P', '인식']],
 ]
 
-/** 학력마다 고를 수 있는 학적 상태가 다릅니다 — 고등학교에는 재학이 없고, 수료는
-    석사·박사에만 있습니다. */
-const EDU_STATUS = {
-  고등학교: ['졸업', '중퇴'],
-  전문대: ['재학', '졸업', '중퇴'],
-  대학교: ['재학', '졸업', '중퇴'],
-  석사: ['재학', '수료', '졸업', '중퇴'],
-  박사: ['재학', '수료', '졸업', '중퇴'],
-}
+/** 학교 공개 여부에서 "공개"의 값(운영 사이트의 글자 그대로). */
+const SCHOOL_PUBLIC = '공개 (노출함)'
 
 const TABS = ['info', 'life', 'values', 'words']
 /** 마지막 어필이 이보다 길면 카드에서 본문 크기로 내려 적습니다(글자 수). 예전 한도(100)입니다. */
@@ -294,6 +280,7 @@ function question(q) {
   if (q.other) {
     const box = el('div', 'text-field')
     box.dataset.other = q.name
+    box.dataset.otherWhen = q.other
     box.hidden = true
     const input = el('input')
     input.type = 'text'
@@ -315,7 +302,7 @@ function mbti() {
   field.append(el('span', 'field__label', 'MBTI'))
   const group = el('div', 'choice-group choice-group--cols-2 choice-group--pair')
   for (const [name, ...pair] of MBTI) {
-    for (const [letter, word] of pair) group.append(choice('radio', name, letter, `${letter} · ${word}`))
+    for (const [letter, word] of pair) group.append(choice('radio', name, letter, `${letter}: ${word}`))
   }
   field.append(group)
   return field
@@ -326,8 +313,8 @@ function mbti() {
 const chosen = (q, draft) => {
   const picked = q.multi ? draft[q.name] ?? [] : draft[q.name] ? [draft[q.name]] : []
   return picked.map((text) => {
-    if (q.other && text === '기타' && draft[`${q.name}-other`]?.trim()) {
-      return `기타 · ${draft[`${q.name}-other`].trim()}`
+    if (q.other && text === q.other && draft[`${q.name}-other`]?.trim()) {
+      return `${q.other} · ${draft[`${q.name}-other`].trim()}`
     }
     const word = wordOf(q, text)
     return q.short ? q.short(word) : word
@@ -344,12 +331,11 @@ const detailOf = {
       type = document.createDocumentFragment()
       type.append(el('b', 'profile-card__mbti', letters), el('span', 'profile-card__mbti-desc', words))
     }
-    const edu = [draft['edu-level'], draft['edu-status']].filter(Boolean).join(' · ')
     return [
       cardRow('MBTI', type, { wide: true }),
-      cardRow('학력 · 학적 상태', edu),
+      cardRow('학력', draft['edu-level']),
       // 공개하겠다고 한 학교만 카드에 섭니다.
-      cardRow('학교', draft['school-public'] ? draft.school.trim() : ''),
+      cardRow('학교', draft['school-public'] === SCHOOL_PUBLIC ? draft.school.trim() : ''),
       cardRow('나의 매력', chosen(QUESTIONS[0], draft), { wide: true }),
     ]
   },
@@ -497,28 +483,14 @@ export function initProfileDetail() {
   progress.querySelector('.profile-progress__mark').style.insetInlineStart = `${EXCHANGE_AT}%`
   progress.querySelector('.profile-progress__goal').textContent = `${EXCHANGE_AT}% 이상이면 카드 교환`
 
-  const statuses = form.querySelector('[data-edu-status]')
   const count = form.querySelector('[data-words-count]')
   let tab = 'info'
   /** 옆 단의 카드에 지금 그려져 있는 구획. */
   let shown = tab
 
-  /* 학력이 바뀌면 고를 수 있는 학적 상태도 바뀝니다. 새 목록에 없는 것은 풀립니다. */
-  function drawStatuses(level, keep) {
-    if (statuses.dataset.for === level) return
-    statuses.dataset.for = level
-    const list = EDU_STATUS[level] ?? []
-    statuses.replaceChildren(...list.map((status) => choice('radio', 'edu-status', status)))
-    statuses.hidden = !list.length
-    const kept = [...statuses.querySelectorAll('input')].find((input) => input.value === keep)
-    if (kept) kept.checked = true
-  }
-
   function sync(draft) {
-    drawStatuses(draft['edu-level'], draft['edu-status'])
-
     for (const box of form.querySelectorAll('[data-other]')) {
-      box.hidden = draft[box.dataset.other] !== '기타'
+      box.hidden = draft[box.dataset.other] !== box.dataset.otherWhen
     }
     for (const q of QUESTIONS.filter((item) => item.sensitive)) {
       form.querySelector(`[data-unit="${q.name}"]`).hidden = !isAsked(q, draft)
@@ -554,8 +526,6 @@ export function initProfileDetail() {
     form,
     part: 'detail',
     saved: '상세 프로필을 저장했어요',
-    // 학력의 목록을 먼저 그려둡니다. 학적 상태를 써넣을 때 고를 것이 이미 있어야 합니다.
-    prepare: (values) => drawStatuses(values['edu-level'] ?? ''),
     render(profile, draft) {
       sync(draft)
       // 옆 단의 카드는 지금 보고 있는 구획의 것, 미리보기 창에는 넷이 나란히 섭니다.

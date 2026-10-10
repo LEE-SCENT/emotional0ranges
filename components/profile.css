@@ -628,9 +628,71 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
   word-break: keep-all;
 }
 
-/* 좁은 화면에서는 [저장]이 붙은 칸이 한 줄을 다 쓰고, 옆의 "프로필에 정보 공개"는 아래
-   줄로 내려갑니다. 칸 · 저장 · 공개가 한 줄에 서면 칸이 이름 몇 글자도 못 담습니다. */
-@media (max-width: 960px) {
-  .profile__with-check:has(.profile__field-row) { flex-wrap: wrap; }
-  .profile__with-check > .profile__field-row { flex: 1 1 100%; }
+/* 도움말 줄 안의 링크 모양 버튼("증명서로 인증하기"). 운영 사이트와 같이 브랜드색에 밑줄입니다. */
+.profile__link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--colors-fg-brand);
+  font: inherit;
+  font-weight: var(--typography-body-s-semibold-font-weight);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
 }
+
+/* ---- 직장 인증 전 (기본 프로필) --------------------------------------------
+   운영 사이트와 같이 폼의 첫머리에 비공개 안내가, 직장 인증 자리에 두 길(건강보험 ·
+   서류)이 펼쳐집니다. */
+.profile-assure {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-400);
+  padding: var(--spacing-500);
+  border-radius: var(--_rounded-l);
+  background: var(--colors-bg-low);
+}
+.profile-assure__text,
+.profile-way__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-50);
+  margin: 0;
+  word-break: keep-all;
+}
+.profile-assure__text b,
+.profile-way__text b {
+  color: var(--colors-fg);
+  font-size: var(--typography-body-m-semibold-font-size);
+  font-weight: var(--typography-body-m-semibold-font-weight);
+  line-height: var(--typography-body-m-semibold-line-height);
+}
+.profile-assure__text span,
+.profile-way__text span {
+  color: var(--colors-fg-low);
+  font-size: var(--typography-body-s-regular-font-size);
+  line-height: var(--typography-body-s-regular-line-height);
+}
+.profile-way {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-400);
+  padding: var(--spacing-500);
+  border: 1px solid var(--colors-border);
+  border-radius: var(--_rounded-l);
+}
+.profile-way > .field { align-self: stretch; }
+.profile-way__rule {
+  margin: 0;
+  padding: var(--spacing-300) var(--spacing-400);
+  border-radius: var(--_rounded-m);
+  background: var(--colors-bg-low);
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-xs-regular-font-size);
+  line-height: var(--typography-body-xs-regular-line-height);
+  word-break: keep-all;
+}
+/* "20초 만에 직장 인증하기"로 내려왔을 때 제목이 붙어 있는 GNB · topBar 뒤로 들어가지 않게. */
+#profile-company-verify { scroll-margin-block-start: calc(var(--profile-sticky-top) + var(--spacing-500)); }

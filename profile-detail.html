@@ -28,7 +28,7 @@
 <link rel="stylesheet" href="./components/tabs.css?v=a962487a">
 <link rel="stylesheet" href="./components/verified-banner.css?v=6f3f1c77">
 <link rel="stylesheet" href="./components/profile-card.css?v=eaf662c0">
-<link rel="stylesheet" href="./components/profile.css?v=6bfcbbb5">
+<link rel="stylesheet" href="./components/profile.css?v=38cf7a0b">
 <link rel="stylesheet" href="./components/verify.css?v=9ecc570b">
 <link rel="stylesheet" href="./components/confirm.css?v=598089ab">
 <link rel="stylesheet" href="./components/toast.css?v=c91e6fe0">
@@ -169,42 +169,36 @@
 
         <div class="profile__section">
           <div class="field" role="group" aria-labelledby="profile-edu-label" data-unit="edu">
-            <span class="field__label" id="profile-edu-label">학력 · 학적 상태</span>
+            <span class="field__label" id="profile-edu-label">학력</span>
             <div class="choice-group" role="radiogroup" aria-label="학력">
               <label class="choice"><input type="radio" name="edu-level" value="고등학교"><span>고등학교</span></label>
               <label class="choice"><input type="radio" name="edu-level" value="전문대"><span>전문대</span></label>
               <label class="choice"><input type="radio" name="edu-level" value="대학교"><span>대학교</span></label>
               <label class="choice"><input type="radio" name="edu-level" value="석사"><span>석사</span></label>
               <label class="choice"><input type="radio" name="edu-level" value="박사"><span>박사</span></label>
-              <!-- 기존 사이트에서 옮겨 왔습니다. 학적 상태는 묻지 않습니다(어느 학교급인지 모릅니다). -->
               <label class="choice"><input type="radio" name="edu-level" value="기타"><span>기타</span></label>
             </div>
-            <div class="choice-group" role="radiogroup" aria-label="학적 상태" data-edu-status hidden></div>
           </div>
 
+          <!-- 학교 · 학교 인증 · 학교 공개 여부. 운영 사이트와 같은 차례와 글자입니다.
+               인증은 띠가 아니라 칸 아래 한 줄의 링크입니다. -->
           <div class="field" data-unit="school">
             <label class="field__label" for="profile-school">학교</label>
-            <div class="profile__with-check">
-              <div class="text-field">
-                <input id="profile-school" type="text" name="school" placeholder="학교명 입력" autocomplete="off">
-              </div>
-              <label class="checkbox-label">
-                <span class="checkbox">
-                  <input type="checkbox" name="school-public">
-                  <span class="checkbox__box" aria-hidden="true"><svg><use href="#icon-check"></use></svg></span>
-                </span>
-                프로필에 정보 공개
-              </label>
+            <div class="text-field">
+              <input id="profile-school" type="text" name="school" placeholder="짧게 적어주세요" autocomplete="off">
             </div>
+            <p class="field__help">
+              <button class="profile__link" type="button" data-verify-open="school">증명서로 인증하기</button>
+              · 승인되면 프로필에 뱃지가 붙어요
+            </p>
           </div>
 
-          <div class="verified-banner">
-            <svg class="verified-banner__icon" aria-hidden="true"><use href="#icon-infoCircle"></use></svg>
-            <p class="verified-banner__text">
-              <b>학교 인증</b>
-              <span>학교 정보를 인증할 수 있어요</span>
-            </p>
-            <button class="btn btn--outlined btn--medium" type="button" data-verify-open="school"><span class="btn__label">인증하기</span></button>
+          <div class="field" role="group" aria-labelledby="profile-school-public-label" data-unit="school-public">
+            <span class="field__label" id="profile-school-public-label">학교 공개 여부</span>
+            <div class="choice-group" role="radiogroup" aria-label="학교 공개 여부">
+              <label class="choice"><input type="radio" name="school-public" value="공개 (노출함)"><span>공개 (노출함)</span></label>
+              <label class="choice"><input type="radio" name="school-public" value="비공개 (노출 안 함)"><span>비공개 (노출 안 함)</span></label>
+            </div>
           </div>
         </div>
 
@@ -270,7 +264,7 @@
               <label class="field__label" for="profile-seon-wish">결혼 시기, 방법에 대한 희망 사항</label>
               <div class="text-field">
                 <input id="profile-seon-wish" type="text" name="seon-wish" maxlength="100" autocomplete="off"
-                       placeholder="예: 2년 안에, 스몰웨딩으로">
+                       placeholder="짧게 적어주세요">
               </div>
             </div>
             <div data-q="seon-income"></div>
@@ -286,7 +280,7 @@
               <label class="field__label" for="profile-seon-hometown">본가 지역</label>
               <div class="text-field">
                 <input id="profile-seon-hometown" type="text" name="seon-hometown" maxlength="30" autocomplete="off"
-                       placeholder="예: 부산 해운대구">
+                       placeholder="짧게 적어주세요">
               </div>
             </div>
           </div>
@@ -303,7 +297,7 @@
           <label class="field__label" for="profile-words">마지막 어필</label>
           <div class="text-field text-field--area">
             <textarea id="profile-words" name="words" maxlength="2000" aria-describedby="profile-words-count"
-                      placeholder="어떤 사람인지, 어떤 만남을 기대하는지 적어 보세요"></textarea>
+                      placeholder="입력해 주세요 (선택 사항)"></textarea>
           </div>
           <p class="field__count" id="profile-words-count"><b data-words-count>0</b>/2000</p>
         </div>
@@ -375,13 +369,13 @@
   initMyMenus()
   const { initConfirms } = await import('./components/confirm.js?v=f516d2db')
   initConfirms()
-  const { initProfileDetail } = await import('./components/profile-detail.js?v=e6f7e232')
+  const { initProfileDetail } = await import('./components/profile-detail.js?v=12fa01cd')
   initProfileDetail()
   const { initTabs } = await import('./components/tabs.js?v=aec7319a')
   initTabs()
   const { initSegmentedControls } = await import('./components/segmented-control.js?v=bbd7c4b8')
   initSegmentedControls()
-  const { initVerify } = await import('./components/verify.js?v=8395f3cc')
+  const { initVerify } = await import('./components/verify.js?v=7f4bd6fe')
   initVerify()
   // 고르는 칸(셀렉트·달·날짜)은 고르고 나면 초점을 내려놓습니다.
   const { initFields } = await import('./components/field.js?v=de1ad19d')

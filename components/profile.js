@@ -9,8 +9,9 @@
  * 몇 명인지 묻습니다. 나가고 저장하는 일은 profile-form.js 가 합니다.
  */
 import { openConfirm } from './confirm.js?v=f516d2db'
+import { showToast } from './toast.js?v=ccb77a07'
 import { cardGrid, cardHeader, cardRow, initProfileForm, load, store, swap } from './profile-form.js?v=25fd6e27'
-import { EXCHANGE_AT, progressOf } from './profile-detail.js?v=e6f7e232'
+import { progressOf } from './profile-detail.js?v=12fa01cd'
 
 /**
  * ⚠️ 예시입니다. 행정구역 전체가 아니라 화면을 맞춰 보는 데 필요한 만큼만 있습니다.
@@ -81,7 +82,7 @@ function facts(profile, draft) {
     cardRow('근무지', draft['work-none']
       ? '고정 근무지 없음'
       : join(draft['work-sido'], draft['work-gugun'])),
-    cardRow('혼인 경험', married.length ? married.join(' · ') : '없음', { wide: true }),
+    cardRow('혼인 경험', married.length ? married.join(' · ') : '미혼', { wide: true }),
     cardRow('자녀', draft.kids === 'yes'
       ? join('있음', draft['kids-count'], draft['kids-custody'])
       : draft.kids === 'none' ? '없음' : '', { wide: true }),
@@ -192,8 +193,14 @@ export function initProfile() {
 
   /* 칸끼리 얽힌 것들. 폼이 바뀔 때마다 통째로 다시 맞춥니다 — 무엇이 바뀌었는지
      가려 가며 고치면, 저장된 값을 처음 써넣을 때처럼 사건 없이 바뀐 자리를 놓칩니다. */
+  const jobDisplay = form.querySelector('[data-job-display]')
+
   function sync(draft) {
     heightText.textContent = `${draft.height}cm`
+    // 명단과 카드에 적히는 직업(운영 사이트의 안내). 카드의 직업 칸과 같은 값입니다.
+    const job = draft['job-search'].trim() || draft['job-minor'] || draft['job-major']
+    jobDisplay.hidden = !job
+    jobDisplay.textContent = job ? `명단·카드 표시 「${job}」(직장 기준)` : ''
     jobClear.hidden = !draft['job-search']
 
     const search = mode === 'search'
@@ -399,17 +406,24 @@ export function initProfile() {
     }
   }
 
+  /* 건강보험으로 재직 확인하기. 고른 인증 수단의 앱으로 승인을 요청합니다.
+     ⚠️ 보낼 곳이 없습니다. 회사 인증 창의 건강보험 쪽과 같이 알림만 띄웁니다(verify.js). */
+  document.querySelector('[data-verify-health]')?.addEventListener('click', () => {
+    showToast('인증을 요청했어요', { icon: '#icon-check', tone: 'success' })
+  })
+
   function drawPromo(profile) {
-    const { percent, need } = progressOf(profile.detail ?? {})
+    // 문구는 운영 사이트 그대로입니다. 남은 문항이 없으면 권할 것도 없어 거둡니다.
+    const { percent, missing } = progressOf(profile.detail ?? {})
     for (const promo of promos) {
-      promo.hidden = !need
+      promo.hidden = !missing.length
       const title = promo.querySelector('[data-promo-title]')
       const desc = promo.querySelector('[data-promo-desc]')
       const cta = promo.querySelector('[data-promo-cta]')
       if (!title) continue
-      title.textContent = profile.detail ? `상세 프로필 ${percent}% 작성했어요` : '나를 더 보여주는 프로필을 작성해 보세요'
-      desc.textContent = `${need}개 더 채우면 프로필 카드를 교환할 수 있어요 (${EXCHANGE_AT}% 이상)`
-      cta.textContent = profile.detail ? '이어서 작성하기' : '지금 작성하기'
+      title.textContent = `상세 프로필 완성도 ${percent}%`
+      desc.textContent = '지금 보고 계신 기본 정보는 완성도 계산에 들어가지 않아요(취미·가치관 등 상세 문항만 셉니다).'
+      cta.textContent = `${missing.length}문항 남았어요 — 채우러 가기 →`
     }
   }
 
