@@ -25,6 +25,8 @@ import { selectTab } from './tabs.js?v=aec7319a'
  *   cols     넓은 화면의 칸 수. 없으면 글자 폭대로 흘러갑니다.
  *   short    카드에 적을 때 줄이는 법("평일 근무" → "평일").
  *   other    "기타" 를 고르면 글로 받는 칸이 열립니다.
+ *   sensitive 민감정보(개인정보 보호법 제23조)라 동의한 사람에게만 묻습니다. 동의하지
+ *            않으면 칸도 카드의 줄도 없습니다. 완성도에는 동의해도 들지 않습니다(progressOf).
  *
  * ⚠️ 이름표에 "(최대 n개)" 가 없는 물음 가운데 여럿 고르는 것(기타)은 Figma 의
  *    예시에서 둘이 함께 켜져 있는 것을 보고 정했습니다. 흡연과 데이트 횟수는 하나만
@@ -35,7 +37,7 @@ const QUESTIONS = [
     tab: 'info', name: 'charms', label: '나의 매력', multi: true, max: 5, cols: 3,
     options: ['착하다', '똑똑하다', '재미있다', '자기관리가 잘 되어 있다', '상대에게 잘 맞춰준다',
       '리더십 있다', '애교 · 적극적', '남 얘기를 잘 들어준다', '잘 웃는다', '긍정적이다', '성실하다',
-      '야만적이고 진취적', '생활력이 강하다', '외모 자신감 있다', '대인관계 좋다', '편하게 해준다'],
+      '야망 있고 진취적', '생활력이 강하다', '외모 자신감 있다', '대인관계 좋다', '편하게 해준다'],
   },
 
   {
@@ -64,7 +66,7 @@ const QUESTIONS = [
   },
   {
     tab: 'life', name: 'smoking', label: '흡연', cols: 4,
-    options: ['비흡연', '연초', '전자담배', '금연 노력중'],
+    options: ['비흡연', '연초', '전자담배', '금연 노력 중'],
   },
   {
     tab: 'life', name: 'pets', label: '반려동물', multi: true, max: 3, cols: 4,
@@ -74,7 +76,7 @@ const QUESTIONS = [
     tab: 'life', name: 'hobbies', label: '취미', multi: true, max: 3, cols: 4,
     options: ['아웃도어 · 여행', '운동 · 스포츠', '인문학 · 책 · 글', '외국 · 언어', '문화 · 공연 · 축제',
       '음악 · 악기', '공예 · 만들기', '댄스 · 무용', '봉사활동', '맛집 · 사교', '차 · 바이크',
-      '사진 · 영상', '스포츠 관람', '게임 · 오락', '요리 · 제조', '반려동물', '자기계발 · 재태크'],
+      '사진 · 영상', '스포츠 관람', '게임 · 오락', '요리 · 제조', '반려동물', '자기계발 · 재테크'],
   },
 
   {
@@ -98,7 +100,7 @@ const QUESTIONS = [
     tab: 'values', name: 'ideal', label: '선호하는 이성 스타일', multi: true, max: 3, cols: 3,
     options: ['귀여운', '지적인', '섹시한', '다정한', '운동하는', '예의 바른', '나에게 잘 맞춰주는',
       '긍정적인', '나를 리드하고 적극적인', '차분하고 조용한', '섬세하고 잘 챙겨주는', '유쾌하고 재밌는',
-      '자기관리를 잘 하는', '열정적이고 발전 지향적인', '현재에 만족하고 즐길 줄 아는',
+      '자기관리를 잘하는', '열정적이고 발전 지향적인', '현재에 만족하고 즐길 줄 아는',
       '내향적인 집돌 집순이', '외향적인 밖돌 밖순이'],
   },
   /* 결혼과 자녀는 따로 묻습니다. Figma 는 여섯을 "결혼 가치관" 한 물음에 두고 예시에서
@@ -121,7 +123,65 @@ const QUESTIONS = [
       '예금, 적금 등 안전 지향형', '주식, 부동산 등 약간 공격형', '코인, 선물 등 공격형', '소비 후 저축',
       '저축 후 소비', '저축을 많이 해요'],
   },
+
+  /* 기존 사이트에서 옮겨 온 세 물음. 동의 아래에 섭니다(profile-detail.html 의 data-sensitive).
+     ⚠️ 기존 사이트는 동의 전이라 선택지가 보이지 않았습니다. 아래 선택지는 자리를 채운
+        것이라 기획 확인이 필요합니다. */
+  {
+    tab: 'values', name: 'politics', label: '정치 성향', sensitive: true, cols: 3,
+    options: ['진보', '중도', '보수', '관심 없어요'],
+  },
+  {
+    tab: 'values', name: 'religion', label: '종교', sensitive: true, cols: 3, other: true,
+    options: ['무교', '기독교', '천주교', '불교', '원불교', '기타'],
+  },
+  /* 종교가 있는 사람에게만 묻습니다 — 무교인 사람에게 활동을 물으면 답할 것이 없습니다. */
+  {
+    tab: 'values', name: 'faith', label: '종교 참여 정도', sensitive: true, cols: 2,
+    options: ['거의 하지 않아요', '명절이나 행사 때만', '한 달에 1-2회', '매주'],
+  },
 ]
+
+/** 이 물음을 지금 묻는지. 동의하지 않았거나, 앞의 답 때문에 물을 것이 없으면 묻지 않습니다. */
+const isAsked = (q, draft) => {
+  if (!q.sensitive) return true
+  if (!draft['sensitive-consent']) return false
+  if (q.name === 'faith') return Boolean(draft.religion) && draft.religion !== '무교'
+  return true
+}
+
+/* ---- 완성도 -------------------------------------------------------------
+   카드 교환의 문턱입니다. 물음 하나가 한 칸이고, MBTI 는 넷을 다 골라야 한 칸입니다.
+
+   민감정보는 동의했더라도 셈에 넣지 않습니다. 넣으면 동의하는 순간 칸이 셋 늘어 완성도가
+   도리어 떨어지고 문턱이 멀어집니다 — 선택이라던 동의가 손해가 되는 셈입니다.
+   ⚠️ 기존 사이트는 "동의하지 않으면 완성도에서 제외"였습니다(동의하면 셈에 듭니다). */
+
+/** 이 넘으면 프로필 카드를 교환할 수 있습니다(%). */
+export const EXCHANGE_AT = 80
+
+/**
+ * @param {object} draft  상세 프로필의 값. 한 번도 쓰지 않았으면 {}.
+ * @returns {{ percent: number, need: number, missing: string[] }}
+ *   need 는 문턱까지 더 채워야 하는 칸의 수, missing 은 비어 있는 칸의 이름(차례대로).
+ */
+export function progressOf(draft = {}) {
+  const filled = (value) => (Array.isArray(value) ? value.length > 0 : Boolean(value?.trim?.() ?? value))
+  const units = [
+    ['mbti', MBTI.every(([name]) => draft[name])],
+    ['edu', filled(draft['edu-level'])],
+    ['school', filled(draft.school)],
+    ...QUESTIONS.filter((q) => !q.sensitive).map((q) => [q.name, filled(draft[q.name])]),
+    ['words', filled(draft.words)],
+  ]
+  const done = units.filter(([, ok]) => ok).length
+  return {
+    // 내림입니다. 반올림하면 79.5 가 80 으로 서서, 교환할 수 있다고 적힌 채 교환이 막힙니다.
+    percent: Math.floor((done / units.length) * 100),
+    need: Math.max(0, Math.ceil((units.length * EXCHANGE_AT) / 100) - done),
+    missing: units.filter(([, ok]) => !ok).map(([name]) => name),
+  }
+}
 
 /** MBTI 는 물음 넷이 한 덩어리입니다. 줄마다 둘 가운데 하나를 고릅니다. */
 const MBTI = [
@@ -158,6 +218,7 @@ function choice(type, name, value, text = value) {
 /** 물음 하나를 폼의 칸으로. */
 function question(q) {
   const field = el('div', 'field')
+  field.dataset.unit = q.name
   field.setAttribute('role', 'group')
   const title = q.max ? `${q.label} (최대 ${q.max}개)` : q.label
   field.setAttribute('aria-label', title)
@@ -186,6 +247,7 @@ function question(q) {
 
 function mbti() {
   const field = el('div', 'field')
+  field.dataset.unit = 'mbti'
   field.setAttribute('role', 'group')
   field.setAttribute('aria-label', 'MBTI')
   field.append(el('span', 'field__label', 'MBTI'))
@@ -230,7 +292,7 @@ const detailOf = {
   },
   life: (draft) => QUESTIONS.filter((q) => q.tab === 'life')
     .map((q) => cardRow(q.card ?? q.label, chosen(q, draft), { wide: true })),
-  values: (draft) => QUESTIONS.filter((q) => q.tab === 'values')
+  values: (draft) => QUESTIONS.filter((q) => q.tab === 'values' && isAsked(q, draft))
     .map((q) => cardRow(q.card ?? q.label, chosen(q, draft), { wide: true })),
 }
 
@@ -265,6 +327,27 @@ export function initProfileDetail() {
     if (slot) slot.replaceWith(question(q))
     else panels[q.tab].append(question(q))
   }
+  // 민감정보는 가치관의 끝에 섭니다. 앞의 물음들까지 동의에 묶인 것처럼 읽히지 않게,
+  // 동의가 맡는 세 물음만 한 덩어리로 아래에 둡니다.
+  const sensitive = form.querySelector('[data-sensitive]')
+  panels.values.append(sensitive)
+  const consent = form.elements['sensitive-consent']
+
+  /* 동의를 거두면 답도 지웁니다. 칸만 감추고 값을 남겨두면, 거둔 동의 뒤에서 민감정보를
+     들고 있는 것이 됩니다. 폼이 값을 읽기 전에(capture) 지워, 카드와 완성도가 한 번에
+     맞게 그려집니다. */
+  form.addEventListener('change', (e) => {
+    if (e.target !== consent || consent.checked) return
+    for (const input of sensitive.querySelectorAll('[data-unit] input')) {
+      if (input.type === 'text') input.value = ''
+      else input.checked = false
+    }
+  }, true)
+
+  const progress = document.querySelector('[data-progress]')
+  // 문턱은 EXCHANGE_AT 한 곳에서 옵니다. 눈금과 글자가 숫자를 따로 들면 언젠가 갈립니다.
+  progress.querySelector('.profile-progress__mark').style.insetInlineStart = `${EXCHANGE_AT}%`
+  progress.querySelector('.profile-progress__goal').textContent = `${EXCHANGE_AT}% 이상이면 카드 교환`
 
   const statuses = form.querySelector('[data-edu-status]')
   const count = form.querySelector('[data-words-count]')
@@ -289,7 +372,28 @@ export function initProfileDetail() {
     for (const box of form.querySelectorAll('[data-other]')) {
       box.hidden = draft[box.dataset.other] !== '기타'
     }
+    for (const q of QUESTIONS.filter((item) => item.sensitive)) {
+      form.querySelector(`[data-unit="${q.name}"]`).hidden = !isAsked(q, draft)
+    }
     count.textContent = [...draft.words].length
+    drawProgress(draft)
+  }
+
+  /* 완성도. 저장하기 전의 값으로 셉니다 — 고르는 대로 오르는 것이 보여야 채우는 손이
+     멈추지 않습니다. */
+  function drawProgress(draft) {
+    const { percent, need, missing } = progressOf(draft)
+    progress.querySelector('[data-progress-percent]').textContent = `${percent}%`
+    progress.querySelector('[data-progress-fill]').style.inlineSize = `${percent}%`
+    progress.querySelector('[role="progressbar"]').setAttribute('aria-valuenow', percent)
+    progress.querySelector('[data-progress-note]').textContent = need
+      // 오른쪽 위에 "카드 교환"이 이미 서 있어 여기서는 줄입니다 — 폰에서 한 줄에 들어갑니다.
+      ? `${need}개 더 채우면 교환할 수 있어요`
+      : '이제 프로필 카드를 교환할 수 있어요'
+    progress.classList.toggle('is-ready', !need)
+    // 다 채웠으면 갈 곳이 없습니다.
+    progress.querySelector('[data-progress-jump]').hidden = !missing.length
+    progress.dataset.next = missing[0] ?? ''
   }
 
   const aside = document.querySelector('.profile__aside [data-profile-card]')
@@ -395,6 +499,17 @@ export function initProfileDetail() {
     // scrollend 가 없는 브라우저, 이미 그 자리라 굴러가지 않는 때를 위해.
     if (travelling) setTimeout(arrive, 800)
   }
+  /* 안 채운 칸으로 곧장 갑니다. 스무 개 넘는 물음 가운데 무엇이 비었는지를 찾으며
+     내려가게 하지 않습니다. 채우고 다시 누르면 그 다음 빈 칸입니다. */
+  progress.querySelector('[data-progress-jump]').addEventListener('click', () => {
+    const field = form.querySelector(`[data-unit="${progress.dataset.next}"]`)
+    if (!field) return
+    touched = null
+    field.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })
+    ;[...field.querySelectorAll('input:not([disabled]), textarea')]
+      .find((control) => control.offsetParent !== null)?.focus({ preventScroll: true })
+  })
+
   tabs.addEventListener('click', (e) => {
     const item = e.target.closest('[data-tab]')
     if (!item) return

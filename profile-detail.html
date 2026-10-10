@@ -28,7 +28,7 @@
 <link rel="stylesheet" href="./components/tabs.css?v=a962487a">
 <link rel="stylesheet" href="./components/verified-banner.css?v=6f3f1c77">
 <link rel="stylesheet" href="./components/profile-card.css?v=19c13dbf">
-<link rel="stylesheet" href="./components/profile.css?v=c6fb5b19">
+<link rel="stylesheet" href="./components/profile.css?v=0337581d">
 <link rel="stylesheet" href="./components/verify.css?v=43d9233f">
 <link rel="stylesheet" href="./components/confirm.css?v=598089ab">
 <link rel="stylesheet" href="./components/toast.css?v=c91e6fe0">
@@ -130,6 +130,27 @@
 
   <div class="profile__body">
     <form class="profile__form" data-profile-form novalidate>
+      <!-- 완성도. 카드 교환의 문턱(80%)이 이 화면을 채우는 까닭이라, 탭보다 먼저 섭니다.
+           숫자와 막대는 고르는 대로 따라 오릅니다(profile-detail.js). 막대 위의 눈금이
+           문턱의 자리입니다. -->
+      <section class="profile-progress" aria-labelledby="profile-progress-label" data-progress>
+        <div class="profile-progress__head">
+          <p class="profile-progress__label" id="profile-progress-label">완성도 <b data-progress-percent>0%</b></p>
+          <p class="profile-progress__goal">80% 이상이면 카드 교환</p>
+        </div>
+        <div class="profile-progress__bar" role="progressbar" aria-labelledby="profile-progress-label"
+             aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <span class="profile-progress__fill" data-progress-fill></span>
+          <span class="profile-progress__mark" aria-hidden="true"></span>
+        </div>
+        <div class="profile-progress__foot">
+          <p class="profile-progress__note" data-progress-note aria-live="polite"></p>
+          <button class="btn btn--outlined btn--small" type="button" data-progress-jump>
+            <span class="btn__label">안 채운 항목 채우기</span>
+          </button>
+        </div>
+      </section>
+
       <!-- 네 구획이 한 페이지에 이어집니다. 탭은 화면을 가르는 것이 아니라 구획으로 가는
            길입니다 — 누르면 그 구획으로 내려가고, 읽어 내려가면 지금 보고 있는 구획의
            탭이 켜집니다(profile-detail.js). 저장은 하나이고 넷을 함께 저장합니다. -->
@@ -147,7 +168,7 @@
         <div data-q="mbti"></div>
 
         <div class="profile__section">
-          <div class="field" role="group" aria-labelledby="profile-edu-label">
+          <div class="field" role="group" aria-labelledby="profile-edu-label" data-unit="edu">
             <span class="field__label" id="profile-edu-label">학력 · 학적 상태</span>
             <div class="choice-group" role="radiogroup" aria-label="학력">
               <label class="choice"><input type="radio" name="edu-level" value="고등학교"><span>고등학교</span></label>
@@ -155,11 +176,13 @@
               <label class="choice"><input type="radio" name="edu-level" value="대학교"><span>대학교</span></label>
               <label class="choice"><input type="radio" name="edu-level" value="석사"><span>석사</span></label>
               <label class="choice"><input type="radio" name="edu-level" value="박사"><span>박사</span></label>
+              <!-- 기존 사이트에서 옮겨 왔습니다. 학적 상태는 묻지 않습니다(어느 학교급인지 모릅니다). -->
+              <label class="choice"><input type="radio" name="edu-level" value="기타"><span>기타</span></label>
             </div>
             <div class="choice-group" role="radiogroup" aria-label="학적 상태" data-edu-status hidden></div>
           </div>
 
-          <div class="field">
+          <div class="field" data-unit="school">
             <label class="field__label" for="profile-school">학교</label>
             <div class="profile__with-check">
               <div class="text-field">
@@ -191,11 +214,36 @@
       <hr class="profile__divider">
       <section class="profile__panel" id="life" aria-label="라이프" data-panel="life"></section>
       <hr class="profile__divider">
-      <section class="profile__panel" id="values" aria-label="가치관" data-panel="values"></section>
+      <section class="profile__panel" id="values" aria-label="가치관" data-panel="values">
+        <!-- 민감정보 세 물음. 동의해야 열립니다(profile-detail.js 가 가치관의 끝으로 옮깁니다).
+             동의는 선택이라 완성도에 들지 않습니다 — 하지 않아도 교환에는 아무 영향이 없습니다. -->
+        <div class="profile-sensitive" data-sensitive>
+          <div class="profile-sensitive__head">
+            <p class="profile-sensitive__title">정치 성향 · 종교 <span>(선택)</span></p>
+            <p class="profile-sensitive__desc">동의하면 이 물음들이 열리고, 상대에게 보이는 프로필 카드에 표시돼요</p>
+          </div>
+          <ul class="profile-sensitive__terms" aria-label="민감정보 수집·이용 안내">
+            <li><b>수집 항목</b> 정치 성향, 종교, 종교 참여 정도</li>
+            <li><b>이용 목적</b> 프로필 카드 표시, 매칭 추천</li>
+            <li><b>보유 기간</b> 회원 탈퇴 또는 동의 철회 시까지</li>
+            <li>동의하지 않아도 서비스 이용에 불이익이 없어요. 동의를 해제하면 답한 내용도 함께 지워져요.</li>
+          </ul>
+          <label class="checkbox-label">
+            <span class="checkbox">
+              <input type="checkbox" name="sensitive-consent">
+              <span class="checkbox__box" aria-hidden="true"><svg><use href="#icon-check"></use></svg></span>
+            </span>
+            민감정보 수집·이용에 동의해요
+          </label>
+          <div data-q="politics"></div>
+          <div data-q="religion"></div>
+          <div data-q="faith"></div>
+        </div>
+      </section>
       <hr class="profile__divider">
 
       <section class="profile__panel" id="words" aria-label="한마디" data-panel="words">
-        <div class="field">
+        <div class="field" data-unit="words">
           <!-- 구획이 이어져 있어, 이 칸에도 다른 물음처럼 이름표가 섭니다. -->
           <label class="field__label" for="profile-words">한마디</label>
           <div class="text-field text-field--area">
@@ -269,7 +317,7 @@
   initMyMenus()
   const { initConfirms } = await import('./components/confirm.js?v=f516d2db')
   initConfirms()
-  const { initProfileDetail } = await import('./components/profile-detail.js?v=df4fb03b')
+  const { initProfileDetail } = await import('./components/profile-detail.js?v=93c2ef14')
   initProfileDetail()
   const { initTabs } = await import('./components/tabs.js?v=aec7319a')
   initTabs()

@@ -386,3 +386,110 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
 
 /* topBar 오른쪽의 미리보기는 좁은 화면의 것입니다(넓은 화면에서는 카드가 늘 옆에
    있습니다). topBar 자체가 961 부터 사라지므로 따로 감출 것은 없습니다. */
+
+/* ---- 완성도 (상세 프로필) ------------------------------------------------
+   카드 교환의 문턱(80%)까지 얼마나 남았는지. 숫자, 막대, 그리고 막대 위의 눈금이
+   문턱의 자리입니다 — 숫자만으로는 80 이 얼마나 먼지가 보이지 않습니다.
+
+   한 번만 섭니다. 붙어 따라오는 것은 탭이고, 이 덩어리는 화면의 첫머리에서 무엇을
+   위해 채우는지를 말하는 자리입니다. 같은 숫자가 두 군데 서면 어느 쪽을 봐야 할지
+   고르게 됩니다. */
+.profile-progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-300);
+  padding: var(--spacing-500);
+  border-radius: var(--_rounded-l);
+  background: var(--colors-bg-low);
+}
+.profile-progress__head,
+.profile-progress__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-300);
+}
+.profile-progress p { margin: 0; }
+.profile-progress__label {
+  color: var(--colors-fg);
+  font-size: var(--typography-body-l-semibold-font-size);
+  font-weight: var(--typography-body-l-semibold-font-weight);
+  line-height: var(--typography-body-l-semibold-line-height);
+}
+.profile-progress__label b { color: var(--colors-fg-brand); font-weight: inherit; }
+.profile-progress__goal,
+.profile-progress__note {
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-s-regular-font-size);
+  line-height: var(--typography-body-s-regular-line-height);
+}
+.profile-progress.is-ready .profile-progress__note { color: var(--colors-fg-brand); }
+.profile-progress__foot .btn { flex: none; }
+
+.profile-progress__bar {
+  position: relative;
+  block-size: var(--spacing-200);
+  border-radius: var(--_rounded-full);
+  background: var(--colors-border);
+}
+.profile-progress__fill {
+  display: block;
+  block-size: 100%;
+  inline-size: 0;
+  border-radius: inherit;
+  background: var(--colors-bg-brand);
+  transition: inline-size var(--_duration-fast) var(--_easing-standard);
+}
+/* 문턱의 눈금. 막대보다 위아래로 조금 길어, 채워진 뒤에도 자리가 보입니다. */
+.profile-progress__mark {
+  position: absolute;
+  inset-block: calc(var(--spacing-50) * -1);
+  inline-size: 2px;
+  border-radius: var(--_rounded-full);
+  background: var(--colors-fg);
+}
+@media (prefers-reduced-motion: reduce) {
+  .profile-progress__fill { transition: none; }
+}
+
+/* ---- 민감정보 (상세 프로필 · 가치관의 끝) --------------------------------
+   동의가 맡는 세 물음만 한 덩어리로 묶습니다. 테두리로 두르는 것은 이 안의 물음만
+   동의에 묶여 있다는 것을 보이기 위해서입니다 — 기존 사이트는 동의를 구획의 첫머리에
+   두어, 아래의 데이트 물음까지 동의가 있어야 열리는 것처럼 읽혔습니다. */
+.profile-sensitive {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-400);
+  padding: var(--spacing-500);
+  border: 1px solid var(--colors-border);
+  border-radius: var(--_rounded-l);
+}
+.profile-sensitive p { margin: 0; }
+.profile-sensitive__head { display: flex; flex-direction: column; gap: var(--spacing-50); }
+.profile-sensitive__title {
+  color: var(--colors-fg);
+  font-size: var(--typography-body-l-semibold-font-size);
+  font-weight: var(--typography-body-l-semibold-font-weight);
+  line-height: var(--typography-body-l-semibold-line-height);
+}
+.profile-sensitive__title span { color: var(--colors-fg-lower); font-weight: var(--typography-body-l-regular-font-weight); }
+.profile-sensitive__desc {
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-s-regular-font-size);
+  line-height: var(--typography-body-s-regular-line-height);
+}
+/* 법이 정한 고지라 줄이지 않되, 물음보다 앞으로 나서지 않게 작고 흐리게 둡니다. */
+.profile-sensitive__terms {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-100);
+  margin: 0;
+  padding: var(--spacing-300) var(--spacing-400);
+  border-radius: var(--_rounded-m);
+  background: var(--colors-bg-low);
+  list-style: none;
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-xs-regular-font-size);
+  line-height: var(--typography-body-xs-regular-line-height);
+}
+.profile-sensitive__terms b { margin-inline-end: var(--spacing-100); color: var(--colors-fg-low); font-weight: var(--typography-body-xs-semibold-font-weight); }

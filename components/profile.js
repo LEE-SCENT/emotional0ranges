@@ -10,6 +10,7 @@
  */
 import { openConfirm } from './confirm.js?v=f516d2db'
 import { cardGrid, cardHeader, cardRow, initProfileForm, load, store, swap } from './profile-form.js?v=50619393'
+import { EXCHANGE_AT, progressOf } from './profile-detail.js?v=93c2ef14'
 
 /**
  * ⚠️ 예시입니다. 행정구역 전체가 아니라 화면을 맞춰 보는 데 필요한 만큼만 있습니다.
@@ -382,6 +383,24 @@ export function initProfile() {
   const cards = document.querySelectorAll('[data-profile-card]')
   const promos = document.querySelectorAll('[data-profile-promo]')
 
+  /* 상세 프로필을 권하는 카드. 카드 교환의 문턱을 넘을 때까지 남아, 얼마나 남았는지를
+     말합니다 — 한 번 저장했다고 거두면 반쯤 쓰다 만 사람에게는 이어 쓸 길이 사라집니다.
+     셈은 상세 프로필 화면의 것과 같은 progressOf 입니다. 숫자가 두 화면에서 다르면
+     어느 쪽도 믿을 수 없습니다. */
+  function drawPromo(profile) {
+    const { percent, need } = progressOf(profile.detail ?? {})
+    for (const promo of promos) {
+      promo.hidden = !need
+      const title = promo.querySelector('[data-promo-title]')
+      const desc = promo.querySelector('[data-promo-desc]')
+      const cta = promo.querySelector('[data-promo-cta]')
+      if (!title) continue
+      title.textContent = profile.detail ? `상세 프로필 ${percent}% 작성했어요` : '나를 더 보여주는 프로필을 작성해 보세요'
+      desc.textContent = `${need}개 더 채우면 프로필 카드를 교환할 수 있어요 (${EXCHANGE_AT}% 이상)`
+      cta.textContent = profile.detail ? '이어서 작성하기' : '지금 작성하기'
+    }
+  }
+
   initProfileForm({
     form,
     part: 'basic',
@@ -391,8 +410,7 @@ export function initProfile() {
     render(profile, draft) {
       sync(draft)
       for (const card of cards) swap(card, [cardHeader(profile), cardGrid(facts(profile, draft))])
-      // 상세 프로필을 한 번이라도 저장했으면 더 권하지 않습니다.
-      for (const promo of promos) promo.hidden = Boolean(profile.detail)
+      drawPromo(profile)
     },
     /* 상세 프로필을 아직 쓰지 않았고 권한 적도 없으면, 저장 알림이 사라진 뒤에
        한 번 권합니다. 알림과 겹쳐 뜨면 저장이 됐는지를 읽기 전에 다음 것을 묻게 됩니다. */

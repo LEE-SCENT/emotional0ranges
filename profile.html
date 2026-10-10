@@ -27,7 +27,7 @@
 <link rel="stylesheet" href="./components/choice.css?v=fd460b98">
 <link rel="stylesheet" href="./components/verified-banner.css?v=6f3f1c77">
 <link rel="stylesheet" href="./components/profile-card.css?v=19c13dbf">
-<link rel="stylesheet" href="./components/profile.css?v=c6fb5b19">
+<link rel="stylesheet" href="./components/profile.css?v=0337581d">
 <link rel="stylesheet" href="./components/tabs.css?v=a962487a">
 <link rel="stylesheet" href="./components/verify.css?v=43d9233f">
 <link rel="stylesheet" href="./components/confirm.css?v=598089ab">
@@ -415,11 +415,11 @@
       <hr class="profile__divider profile__only-narrow" data-profile-promo>
       <div class="profile-promo profile__only-narrow" data-profile-promo>
         <p class="profile-promo__text">
-          <b>나를 더 보여주는 프로필을 작성해 보세요</b>
-          <span>상세 프로필을 작성하면 서로를 알아가는 데 도움이 돼요</span>
+          <b data-promo-title>나를 더 보여주는 프로필을 작성해 보세요</b>
+          <span data-promo-desc>상세 프로필을 작성하면 서로를 알아가는 데 도움이 돼요</span>
         </p>
         <a class="btn btn--filled btn--small" href="./profile-detail.html" data-profile-leave="detail">
-          <span class="btn__label">지금 작성하기</span>
+          <span class="btn__label" data-promo-cta>지금 작성하기</span>
         </a>
       </div>
     </form>
@@ -428,11 +428,11 @@
       <article class="profile-card" data-profile-card></article>
       <div class="profile-promo" data-profile-promo>
         <p class="profile-promo__text">
-          <b>나를 더 보여주는 프로필을 작성해 보세요</b>
-          <span>상세 프로필을 작성하면 서로를 알아가는 데 도움이 돼요</span>
+          <b data-promo-title>나를 더 보여주는 프로필을 작성해 보세요</b>
+          <span data-promo-desc>상세 프로필을 작성하면 서로를 알아가는 데 도움이 돼요</span>
         </p>
         <a class="btn btn--filled btn--small" href="./profile-detail.html" data-profile-leave="detail">
-          <span class="btn__label">지금 작성하기</span>
+          <span class="btn__label" data-promo-cta>지금 작성하기</span>
         </a>
       </div>
     </aside>
@@ -519,7 +519,7 @@
   initConfirms()
   // segmented 보다 먼저 돕니다. 저장된 쪽(검색·카테고리)을 고른 칸으로 세워둬야
   // 그쪽이 그 칸의 자리를 잽니다.
-  const { initProfile } = await import('./components/profile.js?v=ec5998ff')
+  const { initProfile } = await import('./components/profile.js?v=7949b587')
   initProfile()
   const { initSegmentedControls } = await import('./components/segmented-control.js?v=bbd7c4b8')
   initSegmentedControls()
