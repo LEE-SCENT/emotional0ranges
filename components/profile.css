@@ -453,7 +453,7 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
 }
 
 /* ---- 민감정보 (상세 프로필 · 가치관의 끝) --------------------------------
-   동의가 맡는 세 물음만 한 덩어리로 묶습니다. 테두리로 두르는 것은 이 안의 물음만
+   동의가 맡는 두 물음만 한 덩어리로 묶습니다. 테두리로 두르는 것은 이 안의 물음만
    동의에 묶여 있다는 것을 보이기 위해서입니다 — 기존 사이트는 동의를 구획의 첫머리에
    두어, 아래의 데이트 물음까지 동의가 있어야 열리는 것처럼 읽혔습니다. */
 .profile-sensitive {
@@ -475,6 +475,7 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
 .profile-sensitive__title span { color: var(--colors-fg-lower); font-weight: var(--typography-body-l-regular-font-weight); }
 .profile-sensitive__desc {
   color: var(--colors-fg-lower);
+  word-break: keep-all;
   font-size: var(--typography-body-s-regular-font-size);
   line-height: var(--typography-body-s-regular-line-height);
 }
@@ -489,6 +490,7 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
   background: var(--colors-bg-low);
   list-style: none;
   color: var(--colors-fg-lower);
+  word-break: keep-all;
   font-size: var(--typography-body-xs-regular-font-size);
   line-height: var(--typography-body-xs-regular-line-height);
 }

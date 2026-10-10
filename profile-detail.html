@@ -28,7 +28,7 @@
 <link rel="stylesheet" href="./components/tabs.css?v=a962487a">
 <link rel="stylesheet" href="./components/verified-banner.css?v=6f3f1c77">
 <link rel="stylesheet" href="./components/profile-card.css?v=eaf662c0">
-<link rel="stylesheet" href="./components/profile.css?v=734bc3b4">
+<link rel="stylesheet" href="./components/profile.css?v=a006be3c">
 <link rel="stylesheet" href="./components/verify.css?v=43d9233f">
 <link rel="stylesheet" href="./components/confirm.css?v=598089ab">
 <link rel="stylesheet" href="./components/toast.css?v=c91e6fe0">
@@ -262,7 +262,7 @@
           </div>
         </div>
 
-        <!-- 민감정보 세 물음. 동의해야 열립니다(profile-detail.js 가 가치관의 끝으로 옮깁니다).
+        <!-- 민감정보 두 물음. 동의해야 열립니다(profile-detail.js 가 가치관의 끝으로 옮깁니다).
              동의는 선택이라 완성도에 들지 않습니다 — 하지 않아도 교환에는 아무 영향이 없습니다. -->
         <div class="profile-sensitive" data-sensitive>
           <div class="profile-sensitive__head">
@@ -270,7 +270,7 @@
             <p class="profile-sensitive__desc">동의하면 이 물음들이 열리고, 상대에게 보이는 프로필 카드에 표시돼요</p>
           </div>
           <ul class="profile-sensitive__terms" aria-label="민감정보 수집·이용 안내">
-            <li><b>수집 항목</b> 정치 성향, 종교, 종교 참여 정도</li>
+            <li><b>수집 항목</b> 정치 성향, 종교</li>
             <li><b>이용 목적</b> 프로필 카드 표시, 매칭 추천</li>
             <li><b>보유 기간</b> 회원 탈퇴 또는 동의 철회 시까지</li>
             <li>동의하지 않아도 서비스 이용에 불이익이 없어요. 동의를 해제하면 답한 내용도 함께 지워져요.</li>
@@ -284,7 +284,6 @@
           </label>
           <div data-q="politics"></div>
           <div data-q="religion"></div>
-          <div data-q="faith"></div>
         </div>
       </section>
       <hr class="profile__divider">
@@ -366,7 +365,7 @@
   initMyMenus()
   const { initConfirms } = await import('./components/confirm.js?v=f516d2db')
   initConfirms()
-  const { initProfileDetail } = await import('./components/profile-detail.js?v=549233e7')
+  const { initProfileDetail } = await import('./components/profile-detail.js?v=6e75cf33')
   initProfileDetail()
   const { initTabs } = await import('./components/tabs.js?v=aec7319a')
   initTabs()

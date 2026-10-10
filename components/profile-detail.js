@@ -190,31 +190,22 @@ const QUESTIONS = [
     options: ['외동', '형/오빠 있음', '누나/언니 있음', '남동생 있음', '여동생 있음', '밝히고 싶지 않음'],
   },
 
-  /* 기존 사이트에서 옮겨 온 세 물음. 동의 아래에 섭니다(profile-detail.html 의 data-sensitive).
-     ⚠️ 기존 사이트는 동의 전이라 선택지가 보이지 않았습니다. 아래 선택지는 자리를 채운
-        것이라 기획 확인이 필요합니다. */
+  /* 기존 사이트(dev-app)에서 동의한 뒤 열리는 두 물음. 선택지와 차례도 그대로입니다.
+     동의 아래에 섭니다(profile-detail.html 의 data-sensitive).
+     기존 사이트의 동의 고지는 "종교 참여 정도"도 수집 항목으로 적고 있지만, 동의한 뒤에
+     그 물음은 없습니다. 묻지 않는 것을 수집한다고 적지 않도록 고지에서도 뺐습니다. */
   {
-    tab: 'values', name: 'politics', label: '정치 성향', sensitive: true, cols: 3,
-    options: ['진보', '중도', '보수', '관심 없어요'],
+    tab: 'values', name: 'politics', label: '정치 성향', sensitive: true,
+    options: ['보수', '진보', '중도', '관심 없음', '밝히고 싶지 않음'],
   },
   {
-    tab: 'values', name: 'religion', label: '종교', sensitive: true, cols: 3, other: true,
-    options: ['무교', '기독교', '천주교', '불교', '원불교', '기타'],
-  },
-  /* 종교가 있는 사람에게만 묻습니다 — 무교인 사람에게 활동을 물으면 답할 것이 없습니다. */
-  {
-    tab: 'values', name: 'faith', label: '종교 참여 정도', sensitive: true, cols: 2,
-    options: ['거의 하지 않아요', '명절이나 행사 때만', '한 달에 1-2회', '매주'],
+    tab: 'values', name: 'religion', label: '종교', sensitive: true,
+    options: ['기독교', '불교', '천주교', '무교', '기타 종교', '밝히고 싶지 않음'],
   },
 ]
 
-/** 이 물음을 지금 묻는지. 동의하지 않았거나, 앞의 답 때문에 물을 것이 없으면 묻지 않습니다. */
-const isAsked = (q, draft) => {
-  if (!q.sensitive) return true
-  if (!draft['sensitive-consent']) return false
-  if (q.name === 'faith') return Boolean(draft.religion) && draft.religion !== '무교'
-  return true
-}
+/** 이 물음을 지금 묻는지. 민감정보는 동의한 사람에게만 묻습니다. */
+const isAsked = (q, draft) => !q.sensitive || Boolean(draft['sensitive-consent'])
 
 /* ---- 완성도 -------------------------------------------------------------
    카드 교환의 문턱입니다. 물음 하나가 한 칸이고, MBTI 는 넷을 다 골라야 한 칸입니다.
@@ -409,7 +400,7 @@ export function initProfileDetail() {
     else panels[q.tab].append(question(q))
   }
   // 민감정보는 가치관의 끝에 섭니다. 앞의 물음들까지 동의에 묶인 것처럼 읽히지 않게,
-  // 동의가 맡는 세 물음만 한 덩어리로 아래에 둡니다.
+  // 동의가 맡는 두 물음만 한 덩어리로 아래에 둡니다.
   const sensitive = form.querySelector('[data-sensitive]')
   panels.values.append(sensitive)
   const consent = form.elements['sensitive-consent']
