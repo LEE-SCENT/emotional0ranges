@@ -27,8 +27,8 @@
 <link rel="stylesheet" href="./components/choice.css?v=fd460b98">
 <link rel="stylesheet" href="./components/tabs.css?v=a962487a">
 <link rel="stylesheet" href="./components/verified-banner.css?v=6f3f1c77">
-<link rel="stylesheet" href="./components/profile-card.css?v=19c13dbf">
-<link rel="stylesheet" href="./components/profile.css?v=0337581d">
+<link rel="stylesheet" href="./components/profile-card.css?v=eaf662c0">
+<link rel="stylesheet" href="./components/profile.css?v=9b7ba78e">
 <link rel="stylesheet" href="./components/verify.css?v=43d9233f">
 <link rel="stylesheet" href="./components/confirm.css?v=598089ab">
 <link rel="stylesheet" href="./components/toast.css?v=c91e6fe0">
@@ -244,13 +244,15 @@
 
       <section class="profile__panel" id="words" aria-label="한마디" data-panel="words">
         <div class="field" data-unit="words">
-          <!-- 구획이 이어져 있어, 이 칸에도 다른 물음처럼 이름표가 섭니다. -->
-          <label class="field__label" for="profile-words">한마디</label>
+          <!-- 구획이 이어져 있어, 이 칸에도 다른 물음처럼 이름표가 섭니다.
+               이름표와 한도(2000)는 기존 사이트의 "마지막 어필"을 따랐습니다. 탭과 카드의
+               머리말은 구획의 이름(한마디) 그대로입니다. -->
+          <label class="field__label" for="profile-words">마지막 어필</label>
           <div class="text-field text-field--area">
-            <textarea id="profile-words" name="words" maxlength="100" aria-describedby="profile-words-count"
+            <textarea id="profile-words" name="words" maxlength="2000" aria-describedby="profile-words-count"
                       placeholder="어떤 사람인지, 어떤 만남을 기대하는지 적어 보세요"></textarea>
           </div>
-          <p class="field__count" id="profile-words-count"><b data-words-count>0</b>/100</p>
+          <p class="field__count" id="profile-words-count"><b data-words-count>0</b>/2000</p>
         </div>
       </section>
 
@@ -317,7 +319,7 @@
   initMyMenus()
   const { initConfirms } = await import('./components/confirm.js?v=f516d2db')
   initConfirms()
-  const { initProfileDetail } = await import('./components/profile-detail.js?v=0a77b61c')
+  const { initProfileDetail } = await import('./components/profile-detail.js?v=4c1397e8')
   initProfileDetail()
   const { initTabs } = await import('./components/tabs.js?v=aec7319a')
   initTabs()

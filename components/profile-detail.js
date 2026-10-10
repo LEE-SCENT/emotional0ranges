@@ -207,6 +207,8 @@ const EDU_STATUS = {
 }
 
 const TABS = ['info', 'life', 'values', 'words']
+/** 마지막 어필이 이보다 길면 카드에서 본문 크기로 내려 적습니다(글자 수). 예전 한도(100)입니다. */
+const WORDS_SHORT = 100
 /** 구획의 이름. 탭에 적힌 것과 같고, 카드의 머리말에도 섭니다. */
 const TAB_NAMES = { info: '상세 정보', life: '라이프', values: '가치관', words: '한마디' }
 
@@ -316,7 +318,9 @@ function card(profile, draft, tab) {
   if (tab === 'words') {
     detail.append(
       el('p', 'profile-card__kicker', TAB_NAMES.words),
-      el('p', 'profile-card__words', draft.words),
+      // 짧은 글은 명조로 크게 섭니다. 길면(2000자까지 받습니다) 같은 크기로는 카드 한
+      // 장이 글로 덮여, 본문 크기의 고딕으로 내려 읽히게 둡니다.
+      el('p', `profile-card__words${[...draft.words].length > WORDS_SHORT ? ' profile-card__words--long' : ''}`, draft.words),
     )
   } else {
     // 머리말에 어느 구획인지를 적습니다. 구획이 바뀌면 카드의 내용도 바뀌는데, 머리말이

@@ -493,3 +493,54 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
   line-height: var(--typography-body-xs-regular-line-height);
 }
 .profile-sensitive__terms b { margin-inline-end: var(--spacing-100); color: var(--colors-fg-low); font-weight: var(--typography-body-xs-semibold-font-weight); }
+
+/* ---- 인증 전과 후로 갈리는 묶음 --------------------------------------------
+   묶음 자체는 자리를 차지하지 않습니다. 안의 칸들이 구획의 간격(gap)을 그대로 받아,
+   묶여 있는지 아닌지가 화면에서 보이지 않습니다. */
+.profile__group { display: contents; }
+
+/* 이름표 옆의 상태(미등록). 이름표와 같은 줄에서 작게 섭니다. tag 는 사진 위에 얹는
+   반투명이라 흰 바탕에서는 사라집니다 — 카드의 칩(profile-card.css)처럼 옅은 회색을
+   깝니다. 아직 하지 않은 것이라 강조색은 쓰지 않습니다. */
+.profile__status {
+  margin-inline-start: var(--spacing-100);
+  padding: var(--spacing-50) var(--spacing-150);
+  background: var(--colors-bg-low);
+  color: var(--colors-fg-lower);
+  backdrop-filter: none;
+  vertical-align: middle;
+}
+
+/* ---- 비공개 안내 (회사 인증 전) ---------------------------------------------
+   권하는 띠(verified-banner)보다 먼저, 그보다 조용하게 섭니다. 바탕을 깔지 않는 것은
+   아래 띠와 같은 무게로 서면 둘 가운데 무엇을 눌러야 하는지가 흐려지기 때문입니다. */
+.profile-private {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-200);
+}
+.profile-private__icon {
+  flex: none;
+  inline-size: var(--icon-size-s);
+  block-size: var(--icon-size-s);
+  color: var(--colors-fg-low);
+}
+.profile-private__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-50);
+  margin: 0;
+}
+.profile-private__text b {
+  color: var(--colors-fg);
+  font-size: var(--typography-body-m-medium-font-size);
+  font-weight: var(--typography-body-m-medium-font-weight);
+  line-height: var(--typography-body-m-medium-line-height);
+}
+.profile-private__text span {
+  color: var(--colors-fg-lower);
+  /* 어절 가운데서 줄이 갈리지 않게("프 / 로필"). */
+  word-break: keep-all;
+  font-size: var(--typography-body-s-regular-font-size);
+  line-height: var(--typography-body-s-regular-line-height);
+}

@@ -282,3 +282,14 @@
   .profile-preview,
   .profile-preview::backdrop { transition: none; }
 }
+
+/* 긴 어필. 명조를 크게 쓰는 것은 한두 줄의 말을 위한 것이라, 길어지면 본문으로 내립니다. */
+.profile-card__words--long {
+  font-family: var(--_font-family-base);
+  font-weight: var(--typography-body-m-regular-font-weight);
+  font-size: var(--typography-body-m-regular-font-size);
+  line-height: var(--typography-body-m-regular-line-height);
+  /* 본문은 어절 단위로 줄을 바꿉니다("주말에 / 는"). 한 어절이 줄보다 긴 것만 위의
+     overflow-wrap 이 자릅니다. */
+  word-break: keep-all;
+}

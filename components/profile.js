@@ -10,7 +10,7 @@
  */
 import { openConfirm } from './confirm.js?v=f516d2db'
 import { cardGrid, cardHeader, cardRow, initProfileForm, load, store, swap } from './profile-form.js?v=50619393'
-import { EXCHANGE_AT, progressOf } from './profile-detail.js?v=0a77b61c'
+import { EXCHANGE_AT, progressOf } from './profile-detail.js?v=4c1397e8'
 
 /**
  * ⚠️ 예시입니다. 행정구역 전체가 아니라 화면을 맞춰 보는 데 필요한 만큼만 있습니다.
@@ -387,6 +387,18 @@ export function initProfile() {
      말합니다 — 한 번 저장했다고 거두면 반쯤 쓰다 만 사람에게는 이어 쓸 길이 사라집니다.
      셈은 상세 프로필 화면의 것과 같은 progressOf 입니다. 숫자가 두 화면에서 다르면
      어느 쪽도 믿을 수 없습니다. */
+  /* 회사 인증 전과 후. 인증 전에는 회사 칸 대신 비공개 안내와 인증하기가 섭니다.
+     ⚠️ 예시 회원은 인증을 마친 사람이라, 인증 전의 모습은 주소에 ?company=none 을 붙여
+        봅니다(my-menu.js 의 ?me=1 과 같은 자리). 저장소의 값은 건드리지 않습니다. */
+  const companyDone = (profile) =>
+    profile.verified.company && new URLSearchParams(location.search).get('company') !== 'none'
+  function drawCompany(profile) {
+    const done = companyDone(profile)
+    for (const group of document.querySelectorAll('[data-company]')) {
+      group.hidden = (group.dataset.company === 'done') !== done
+    }
+  }
+
   function drawPromo(profile) {
     const { percent, need } = progressOf(profile.detail ?? {})
     for (const promo of promos) {
@@ -411,6 +423,7 @@ export function initProfile() {
       sync(draft)
       for (const card of cards) swap(card, [cardHeader(profile), cardGrid(facts(profile, draft))])
       drawPromo(profile)
+      drawCompany(profile)
     },
     /* 상세 프로필을 아직 쓰지 않았고 권한 적도 없으면, 저장 알림이 사라진 뒤에
        한 번 권합니다. 알림과 겹쳐 뜨면 저장이 됐는지를 읽기 전에 다음 것을 묻게 됩니다. */
