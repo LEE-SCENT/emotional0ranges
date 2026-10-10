@@ -452,49 +452,46 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
   .profile-progress__fill { transition: none; }
 }
 
-/* ---- 민감정보 (상세 프로필 · 가치관의 끝) --------------------------------
-   동의가 맡는 두 물음만 한 덩어리로 묶습니다. 테두리로 두르는 것은 이 안의 물음만
-   동의에 묶여 있다는 것을 보이기 위해서입니다 — 기존 사이트는 동의를 구획의 첫머리에
-   두어, 아래의 데이트 물음까지 동의가 있어야 열리는 것처럼 읽혔습니다. */
+/* ---- 민감정보 동의 (상세 프로필 · 가치관의 첫머리) -----------------------
+   운영 사이트와 같은 자리, 같은 문구입니다. 동의하면 이 덩어리는 사라지고 그 아래 두
+   물음이 열립니다. 테두리로 둘러, 동의를 구하는 자리가 물음과 섞여 읽히지 않게 합니다. */
 .profile-sensitive {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: var(--spacing-400);
   padding: var(--spacing-500);
   border: 1px solid var(--colors-border);
   border-radius: var(--_rounded-l);
 }
 .profile-sensitive p { margin: 0; }
-.profile-sensitive__head { display: flex; flex-direction: column; gap: var(--spacing-50); }
-.profile-sensitive__title {
-  color: var(--colors-fg);
-  font-size: var(--typography-body-l-semibold-font-size);
-  font-weight: var(--typography-body-l-semibold-font-weight);
-  line-height: var(--typography-body-l-semibold-line-height);
-}
-.profile-sensitive__title span { color: var(--colors-fg-lower); font-weight: var(--typography-body-l-regular-font-weight); }
 .profile-sensitive__desc {
   color: var(--colors-fg-lower);
   word-break: keep-all;
   font-size: var(--typography-body-s-regular-font-size);
   line-height: var(--typography-body-s-regular-line-height);
 }
-/* 법이 정한 고지라 줄이지 않되, 물음보다 앞으로 나서지 않게 작고 흐리게 둡니다. */
+/* 법이 정한 고지라 줄이지 않되, 동의보다 앞으로 나서지 않게 작고 흐리게 둡니다. */
 .profile-sensitive__terms {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-100);
-  margin: 0;
+  gap: var(--spacing-200);
+  align-self: stretch;
   padding: var(--spacing-300) var(--spacing-400);
   border-radius: var(--_rounded-m);
   background: var(--colors-bg-low);
-  list-style: none;
   color: var(--colors-fg-lower);
   word-break: keep-all;
   font-size: var(--typography-body-xs-regular-font-size);
   line-height: var(--typography-body-xs-regular-line-height);
 }
-.profile-sensitive__terms b { margin-inline-end: var(--spacing-100); color: var(--colors-fg-low); font-weight: var(--typography-body-xs-semibold-font-weight); }
+.profile-sensitive__terms ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-50);
+  margin: 0;
+  padding-inline-start: var(--spacing-400);
+}
 
 /* ---- 인증 전과 후로 갈리는 묶음 --------------------------------------------
    묶음 자체는 자리를 차지하지 않습니다. 안의 칸들이 구획의 간격(gap)을 그대로 받아,
@@ -600,3 +597,40 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
   line-height: var(--typography-body-s-semibold-line-height);
 }
 .profile-extra__group:not(:first-child) { margin-block-start: var(--spacing-400); }
+
+/* ---- 칸마다의 저장 (상세 프로필) -------------------------------------------
+   운영 사이트와 같이 고르는 칸은 고르는 즉시 저장되고, 글로 쓰는 칸에만 [저장]이 섭니다.
+   한 줄 칸은 칸 바로 옆, 긴 글 칸은 글자 수 옆입니다. */
+.profile__field-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-200);
+  flex: 1 1 auto;
+  min-inline-size: 0;
+}
+.profile__field-row > .text-field { flex: 1 1 auto; min-inline-size: 0; }
+.profile__field-save { flex: none; }
+.profile__field-foot {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacing-300);
+}
+.profile__field-foot .field__count { margin: 0; }
+
+/* [완료] 위의 한 줄. 무엇이 이미 저장됐는지를 말해, 완료가 저장 버튼이 아니라는 것을 압니다. */
+.profile__autosave {
+  margin: var(--spacing-800) 0 0;
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-s-regular-font-size);
+  line-height: var(--typography-body-s-regular-line-height);
+  text-align: center;
+  word-break: keep-all;
+}
+
+/* 좁은 화면에서는 [저장]이 붙은 칸이 한 줄을 다 쓰고, 옆의 "프로필에 정보 공개"는 아래
+   줄로 내려갑니다. 칸 · 저장 · 공개가 한 줄에 서면 칸이 이름 몇 글자도 못 담습니다. */
+@media (max-width: 960px) {
+  .profile__with-check:has(.profile__field-row) { flex-wrap: wrap; }
+  .profile__with-check > .profile__field-row { flex: 1 1 100%; }
+}

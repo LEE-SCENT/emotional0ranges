@@ -230,8 +230,14 @@ export function initProfileForm({ form, part, saved, render, afterSave, validate
   }
   fill(profile[part] ?? {})
 
-  let clean = JSON.stringify(read(form))
-  const dirty = () => JSON.stringify(read(form)) !== clean
+  /* 저장된 값. 칸마다 견줍니다 — 상세 프로필은 칸 하나씩도 저장하므로(save(names)),
+     통째로 견주면 저장한 칸과 아직 아닌 칸을 가를 수 없습니다. */
+  let kept = read(form)
+  const same = (a, b) => JSON.stringify(a) === JSON.stringify(b)
+  const dirty = (names = Object.keys(read(form))) => {
+    const now = read(form)
+    return names.some((name) => !same(now[name], kept[name]))
+  }
 
   /* ---- 쓰던 것 ----------------------------------------------------------
      저장하지 않은 채 새로고침해도 쓰던 것이 남습니다. 고친 것이 생기면 이 탭에
@@ -271,10 +277,17 @@ export function initProfileForm({ form, part, saved, render, afterSave, validate
     keep()
   }
 
-  function save() {
-    profile[part] = read(form)
-    store(profile)
-    clean = JSON.stringify(profile[part])
+  /**
+   * 저장합니다. names 를 주면 그 칸들만 저장하고 나머지는 저장된 그대로 둡니다
+   * (상세 프로필의 "고르면 바로 저장" · 칸마다의 저장 버튼).
+   */
+  function save(names) {
+    const now = read(form)
+    const picked = names ? Object.fromEntries(names.map((name) => [name, now[name]])) : now
+    // 저장소의 것 위에 얹습니다. 이 화면이 열린 뒤 다른 탭에서 저장한 것도 지우지 않습니다.
+    profile[part] = names ? { ...(load()[part] ?? kept), ...picked } : now
+    kept = { ...kept, ...picked }
+    store({ ...load(), [part]: profile[part] })
     refresh()
   }
 
@@ -401,7 +414,7 @@ export function initProfileForm({ form, part, saved, render, afterSave, validate
   initPreview(() => render(profile, read(form)))
   refresh()
 
-  return { profile, refresh, dirty }
+  return { profile, refresh, dirty, save }
 }
 
 /**

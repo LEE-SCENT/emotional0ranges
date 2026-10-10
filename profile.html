@@ -27,7 +27,7 @@
 <link rel="stylesheet" href="./components/choice.css?v=fd460b98">
 <link rel="stylesheet" href="./components/verified-banner.css?v=6f3f1c77">
 <link rel="stylesheet" href="./components/profile-card.css?v=eaf662c0">
-<link rel="stylesheet" href="./components/profile.css?v=a006be3c">
+<link rel="stylesheet" href="./components/profile.css?v=6bfcbbb5">
 <link rel="stylesheet" href="./components/tabs.css?v=a962487a">
 <link rel="stylesheet" href="./components/verify.css?v=9ecc570b">
 <link rel="stylesheet" href="./components/confirm.css?v=598089ab">
@@ -126,7 +126,8 @@
     </a>
     <div class="profile__title">
       <h1>기본 프로필</h1>
-      <p>입력한 정보는 더 잘 맞는 매칭과 모임을 추천하는 데 활용돼요</p>
+      <!-- 운영 사이트의 문구 그대로입니다. -->
+      <p>매칭과 모임 추천에 쓰이는 정보예요. 솔직하게 채울수록 더 잘 맞는 사람을 만나요. 신뢰할 수 있는 모임을 위해 정확한 정보만 입력해 주세요. (허위 정보 기재 시 법적 책임)</p>
     </div>
   </header>
 
@@ -549,11 +550,11 @@
   initConfirms()
   // segmented 보다 먼저 돕니다. 저장된 쪽(검색·카테고리)을 고른 칸으로 세워둬야
   // 그쪽이 그 칸의 자리를 잽니다.
-  const { initProfile } = await import('./components/profile.js?v=17996d0b')
+  const { initProfile } = await import('./components/profile.js?v=a162c7be')
   initProfile()
   const { initSegmentedControls } = await import('./components/segmented-control.js?v=bbd7c4b8')
   initSegmentedControls()
-  const { initVerify } = await import('./components/verify.js?v=7e16d1e4')
+  const { initVerify } = await import('./components/verify.js?v=8395f3cc')
   initVerify()
   const { initIdentityCheck } = await import('./components/identity-check.js?v=21a9cf52')
   initIdentityCheck()

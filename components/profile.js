@@ -9,8 +9,8 @@
  * 몇 명인지 묻습니다. 나가고 저장하는 일은 profile-form.js 가 합니다.
  */
 import { openConfirm } from './confirm.js?v=f516d2db'
-import { cardGrid, cardHeader, cardRow, initProfileForm, load, store, swap } from './profile-form.js?v=50619393'
-import { EXCHANGE_AT, progressOf } from './profile-detail.js?v=6e75cf33'
+import { cardGrid, cardHeader, cardRow, initProfileForm, load, store, swap } from './profile-form.js?v=25fd6e27'
+import { EXCHANGE_AT, progressOf } from './profile-detail.js?v=e6f7e232'
 
 /**
  * ⚠️ 예시입니다. 행정구역 전체가 아니라 화면을 맞춰 보는 데 필요한 만큼만 있습니다.

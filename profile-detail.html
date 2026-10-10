@@ -28,7 +28,7 @@
 <link rel="stylesheet" href="./components/tabs.css?v=a962487a">
 <link rel="stylesheet" href="./components/verified-banner.css?v=6f3f1c77">
 <link rel="stylesheet" href="./components/profile-card.css?v=eaf662c0">
-<link rel="stylesheet" href="./components/profile.css?v=a006be3c">
+<link rel="stylesheet" href="./components/profile.css?v=6bfcbbb5">
 <link rel="stylesheet" href="./components/verify.css?v=9ecc570b">
 <link rel="stylesheet" href="./components/confirm.css?v=598089ab">
 <link rel="stylesheet" href="./components/toast.css?v=c91e6fe0">
@@ -215,6 +215,37 @@
       <section class="profile__panel" id="life" aria-label="라이프" data-panel="life"></section>
       <hr class="profile__divider">
       <section class="profile__panel" id="values" aria-label="가치관" data-panel="values">
+        <!-- 민감정보 동의. 운영 사이트와 같이 가치관의 첫머리에 서고, 문구도 그대로입니다.
+             [동의하고 답하기]를 누르면 이 덩어리는 사라지고 바로 아래 두 물음이 열립니다
+             (profile-detail.js). 동의한 값은 감춰진 칸(sensitive-consent)에 담겨 저장됩니다.
+             철회는 고지에 적힌 대로 물음을 비우거나 고객센터로 합니다. -->
+        <div class="profile-sensitive" data-sensitive>
+          <p class="profile-sensitive__desc">동의하면 이 구획의 문항이 열려요.</p>
+          <label class="checkbox-label">
+            <span class="checkbox">
+              <input type="checkbox" data-sensitive-agree>
+              <span class="checkbox__box" aria-hidden="true"><svg><use href="#icon-check"></use></svg></span>
+            </span>
+            민감정보(정치적 견해·종교) 수집·이용 동의에 동의합니다.
+          </label>
+          <div class="profile-sensitive__terms" aria-label="민감정보 수집·이용 안내">
+            <p>아래 항목은 개인정보 보호법 제23조의 민감정보(정치적 견해, 종교)에 해당합니다.</p>
+            <ul>
+              <li>수집 항목: 정치 성향, 종교, 종교 참여 정도</li>
+              <li>수집·이용 목적: 이상형 매칭 서비스 제공(프로필 카드 표시 및 매칭 추천)</li>
+              <li>보유·이용 기간: 회원 탈퇴 시 또는 동의 철회 시까지</li>
+              <li>동의 거부 권리: 동의하지 않으셔도 서비스 이용에 불이익이 없습니다.</li>
+            </ul>
+            <p>동의하지 않으면 해당 문항은 표시되지 않고 프로필 완성도에서도 제외됩니다.
+              동의 철회는 마이페이지 &gt; 프로필 카드에서 해당 항목을 비우거나 고객센터로 요청하실 수 있습니다.</p>
+          </div>
+          <button class="btn btn--filled btn--medium" type="button" data-sensitive-accept disabled>
+            <span class="btn__label">동의하고 답하기</span>
+          </button>
+          <input type="checkbox" name="sensitive-consent" hidden>
+        </div>
+        <div data-q="politics"></div>
+        <div data-q="religion"></div>
         <!-- 선개팅 추가 프로필(기존 사이트에서 옮겨 왔습니다). 경제 가치관 앞으로 옮겨지고,
              접혀 있다가 펼칩니다(profile-detail.js). 고르는 물음은 data-q 자리에 그려지고,
              글로 받는 두 칸만 여기 적혀 있습니다. 모두 답하지 않아도 되고, 선개팅 모임에서
@@ -234,7 +265,6 @@
             <p class="profile-extra__group">결혼 후 가정 관리</p>
             <div data-q="seon-leave"></div>
             <div data-q="seon-money"></div>
-            <div data-q="seon-earners"></div>
             <div data-q="seon-in-laws"></div>
             <div class="field">
               <label class="field__label" for="profile-seon-wish">결혼 시기, 방법에 대한 희망 사항</label>
@@ -262,29 +292,6 @@
           </div>
         </div>
 
-        <!-- 민감정보 두 물음. 동의해야 열립니다(profile-detail.js 가 가치관의 끝으로 옮깁니다).
-             동의는 선택이라 완성도에 들지 않습니다 — 하지 않아도 교환에는 아무 영향이 없습니다. -->
-        <div class="profile-sensitive" data-sensitive>
-          <div class="profile-sensitive__head">
-            <p class="profile-sensitive__title">정치 성향 · 종교 <span>(선택)</span></p>
-            <p class="profile-sensitive__desc">동의하면 이 물음들이 열리고, 상대에게 보이는 프로필 카드에 표시돼요</p>
-          </div>
-          <ul class="profile-sensitive__terms" aria-label="민감정보 수집·이용 안내">
-            <li><b>수집 항목</b> 정치 성향, 종교</li>
-            <li><b>이용 목적</b> 프로필 카드 표시, 매칭 추천</li>
-            <li><b>보유 기간</b> 회원 탈퇴 또는 동의 철회 시까지</li>
-            <li>동의하지 않아도 서비스 이용에 불이익이 없어요. 동의를 해제하면 답한 내용도 함께 지워져요.</li>
-          </ul>
-          <label class="checkbox-label">
-            <span class="checkbox">
-              <input type="checkbox" name="sensitive-consent">
-              <span class="checkbox__box" aria-hidden="true"><svg><use href="#icon-check"></use></svg></span>
-            </span>
-            민감정보 수집·이용에 동의해요
-          </label>
-          <div data-q="politics"></div>
-          <div data-q="religion"></div>
-        </div>
       </section>
       <hr class="profile__divider">
 
@@ -302,11 +309,14 @@
         </div>
       </section>
 
-      <!-- 넓은 화면의 저장. 읽어 내려가는 동안 화면 아래에 붙어 따라오다가, 폼의 끝에 닿으면
+      <!-- 운영 사이트와 같이 고르면 바로 저장되고, 글로 쓰는 칸은 칸마다 [저장]이 있습니다
+           (profile-detail.js). 그래서 끝의 버튼은 저장이 아니라 [완료]입니다 — 다 됐으면
+           나갑니다. 넓은 화면에서는 읽어 내려가는 동안 화면 아래에 붙어 따라오다가 폼의 끝에서
            제자리에 섭니다(profile.css). 좁은 화면에서는 아래의 bottom-cta 가 대신합니다. -->
+      <p class="profile__autosave">선택하면 바로 저장돼요. 채운 항목은 상대가 보는 프로필 카드에 표시돼요.</p>
       <div class="profile__actions">
-        <button class="btn btn--filled btn--large profile__save" type="submit" data-profile-save disabled>
-          <span class="btn__label">저장</span>
+        <button class="btn btn--filled btn--large profile__save" type="button" data-profile-done>
+          <span class="btn__label">완료</span>
         </button>
       </div>
     </form>
@@ -318,8 +328,8 @@
 </main>
 
 <div class="bottom-cta">
-  <button class="btn btn--filled btn--large" type="button" data-profile-save disabled>
-    <span class="btn__label">저장</span>
+  <button class="btn btn--filled btn--large" type="button" data-profile-done>
+    <span class="btn__label">완료</span>
   </button>
 </div>
 
@@ -365,13 +375,13 @@
   initMyMenus()
   const { initConfirms } = await import('./components/confirm.js?v=f516d2db')
   initConfirms()
-  const { initProfileDetail } = await import('./components/profile-detail.js?v=6e75cf33')
+  const { initProfileDetail } = await import('./components/profile-detail.js?v=e6f7e232')
   initProfileDetail()
   const { initTabs } = await import('./components/tabs.js?v=aec7319a')
   initTabs()
   const { initSegmentedControls } = await import('./components/segmented-control.js?v=bbd7c4b8')
   initSegmentedControls()
-  const { initVerify } = await import('./components/verify.js?v=7e16d1e4')
+  const { initVerify } = await import('./components/verify.js?v=8395f3cc')
   initVerify()
   // 고르는 칸(셀렉트·달·날짜)은 고르고 나면 초점을 내려놓습니다.
   const { initFields } = await import('./components/field.js?v=de1ad19d')

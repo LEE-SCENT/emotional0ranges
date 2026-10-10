@@ -11,8 +11,9 @@
  * 구획은 넷(상세 정보 · 라이프 · 가치관 · 한마디)이고 한 페이지에 이어집니다. 탭은
  * 구획으로 가는 길이고, 저장은 하나라 넷이 함께 저장됩니다.
  */
-import { cardGrid, cardHeader, cardRow, el, initProfileForm, load, swap } from './profile-form.js?v=50619393'
+import { cardGrid, cardHeader, cardRow, el, initProfileForm, load, swap } from './profile-form.js?v=25fd6e27'
 import { selectTab } from './tabs.js?v=aec7319a'
+import { showToast } from './toast.js?v=ccb77a07'
 
 /**
  * 물음 하나.
@@ -32,7 +33,7 @@ import { selectTab } from './tabs.js?v=aec7319a'
  *            보이는 글자만 바뀝니다.
  *   other    "기타" 를 고르면 글로 받는 칸이 열립니다.
  *   sensitive 민감정보(개인정보 보호법 제23조)라 동의한 사람에게만 묻습니다. 동의하지
- *            않으면 칸도 카드의 줄도 없습니다. 완성도에는 동의해도 들지 않습니다(progressOf).
+ *            않으면 칸도, 카드의 줄도, 완성도의 셈도 없습니다.
  *
  * ⚠️ 이름표에 "(최대 n개)" 가 없는 물음 가운데 여럿 고르는 것(기타)은 Figma 의
  *    예시에서 둘이 함께 켜져 있는 것을 보고 정했습니다. 흡연과 데이트 횟수는 하나만
@@ -141,17 +142,12 @@ const QUESTIONS = [
     tab: 'values', name: 'seon-leave', label: '육아 휴직 가능 여부', seon: true,
     options: ['가능', '불가', '모름'],
   },
-  /* 기존 사이트는 관리 방식 넷과 맞벌이 · 외벌이를 한 물음에 두었습니다. 둘은 다른 것을
-     묻고 있어(누가 관리하는가 · 누가 버는가) 결혼 · 자녀 가치관처럼 나눕니다.
-     ⚠️ "맞벌이 · 외벌이"라는 이름표는 기존 사이트에 없습니다. */
+  /* 운영 사이트와 같이 관리 방식과 맞벌이 · 외벌이가 한 물음에 섭니다. 둘을 함께 고를 수
+     있어야 해서(공동 관리 + 맞벌이 희망) 여럿 고르는 물음입니다. */
   {
-    tab: 'values', name: 'seon-money', label: '이상적인 경제 관리', seon: true, cols: 2,
-    options: ['한 사람이 전적으로 관리', '공동 관리 (협의 후 분배)', '각자 관리 (필요 비용만 공유)',
-      '상황에 따라 유연하게 결정'],
-  },
-  {
-    tab: 'values', name: 'seon-earners', label: '맞벌이 · 외벌이', seon: true,
-    options: ['맞벌이 희망', '외벌이 희망'],
+    tab: 'values', name: 'seon-money', label: '이상적인 경제 관리', seon: true, multi: true, cols: 2,
+    options: ['한 사람이 전적으로 관리', '공동관리(협의 후 분배)', '각자 관리(필요 비용만 공유)',
+      '상황에 따라 유연하게 결정', '맞벌이 희망', '외벌이 희망'],
   },
   {
     tab: 'values', name: 'seon-in-laws', label: '이상적인 가족 관계', seon: true, cols: 2, other: true,
@@ -210,9 +206,8 @@ const isAsked = (q, draft) => !q.sensitive || Boolean(draft['sensitive-consent']
 /* ---- 완성도 -------------------------------------------------------------
    카드 교환의 문턱입니다. 물음 하나가 한 칸이고, MBTI 는 넷을 다 골라야 한 칸입니다.
 
-   민감정보는 동의했더라도 셈에 넣지 않습니다. 넣으면 동의하는 순간 칸이 셋 늘어 완성도가
-   도리어 떨어지고 문턱이 멀어집니다 — 선택이라던 동의가 손해가 되는 셈입니다.
-   ⚠️ 기존 사이트는 "동의하지 않으면 완성도에서 제외"였습니다(동의하면 셈에 듭니다). */
+   민감정보는 운영 사이트와 같이 동의한 사람에게만 셈에 듭니다("동의하지 않으면 프로필
+   완성도에서도 제외"). 선개팅 추가 프로필은 모두 선택이라 셈에 들지 않습니다. */
 
 /** 이 넘으면 프로필 카드를 교환할 수 있습니다(%). */
 export const EXCHANGE_AT = 80
@@ -228,7 +223,7 @@ export function progressOf(draft = {}) {
     ['mbti', MBTI.every(([name]) => draft[name])],
     ['edu', filled(draft['edu-level'])],
     ['school', filled(draft.school)],
-    ...QUESTIONS.filter((q) => !q.sensitive && !q.seon).map((q) => [q.name, filled(draft[q.name])]),
+    ...QUESTIONS.filter((q) => !q.seon && isAsked(q, draft)).map((q) => [q.name, filled(draft[q.name])]),
     ['words', filled(draft.words)],
   ]
   const done = units.filter(([, ok]) => ok).length
@@ -399,11 +394,20 @@ export function initProfileDetail() {
     if (slot) slot.replaceWith(question(q))
     else panels[q.tab].append(question(q))
   }
-  // 민감정보는 가치관의 끝에 섭니다. 앞의 물음들까지 동의에 묶인 것처럼 읽히지 않게,
-  // 동의가 맡는 두 물음만 한 덩어리로 아래에 둡니다.
+  /* ---- 민감정보 동의 -----------------------------------------------------
+     운영 사이트와 같습니다. 동의에 체크해야 [동의하고 답하기]가 켜지고, 누르면 동의가
+     저장되며 이 덩어리는 사라지고 두 물음이 열립니다. */
   const sensitive = form.querySelector('[data-sensitive]')
-  panels.values.append(sensitive)
   const consent = form.elements['sensitive-consent']
+  const agree = sensitive.querySelector('[data-sensitive-agree]')
+  const accept = sensitive.querySelector('[data-sensitive-accept]')
+  agree.addEventListener('change', () => { accept.disabled = !agree.checked })
+  accept.addEventListener('click', () => {
+    consent.checked = true
+    consent.dispatchEvent(new Event('change', { bubbles: true }))
+    // 덩어리가 사라지면 초점이 갈 곳을 잃습니다. 막 열린 첫 물음으로 옮깁니다.
+    form.querySelector('[data-unit="politics"] input')?.focus()
+  })
 
   /* 선개팅 추가 프로필은 경제 가치관 앞에 섭니다(기존 사이트의 자리). 접혀 있다가 펼칩니다
      — 모두 고르지 않아도 되는 열 몇 개의 물음이라, 처음부터 펼쳐두면 꼭 채워야 할 것처럼
@@ -430,16 +434,63 @@ export function initProfileDetail() {
     }
   }, true)
 
-  /* 동의를 거두면 답도 지웁니다. 칸만 감추고 값을 남겨두면, 거둔 동의 뒤에서 민감정보를
-     들고 있는 것이 됩니다. 폼이 값을 읽기 전에(capture) 지워, 카드와 완성도가 한 번에
-     맞게 그려집니다. */
+  /* ---- 저장 ---------------------------------------------------------------
+     운영 사이트와 같이 고르는 칸은 고르는 즉시 저장되고, 글로 쓰는 칸은 칸마다 [저장]을
+     눌러 저장합니다. 고른 것마다 알림을 띄우지는 않습니다 — 누를 때마다 뜨면 알림이
+     고르는 손을 가립니다. 글을 저장했을 때만 알립니다. */
+  let api = null
   form.addEventListener('change', (e) => {
-    if (e.target !== consent || consent.checked) return
-    for (const input of sensitive.querySelectorAll('[data-unit] input')) {
-      if (input.type === 'text') input.value = ''
-      else input.checked = false
+    const input = e.target
+    if (!api || !input.name || (input.type !== 'radio' && input.type !== 'checkbox')) return
+    api.save([input.name])
+  })
+
+  const texts = [...form.querySelectorAll('input[type="text"][name], textarea[name]')]
+  const fieldSaves = new Map()
+  for (const input of texts) {
+    const button = el('button', 'btn btn--filled btn--medium profile__field-save')
+    button.type = 'button'
+    button.disabled = true
+    button.append(el('span', 'btn__label', '저장'))
+    button.setAttribute('aria-label', `${input.labels?.[0]?.textContent.trim() || input.getAttribute('aria-label') || ''} 저장`.trim())
+    const box = input.closest('.text-field')
+    if (input.tagName === 'TEXTAREA') {
+      // 긴 글 칸은 옆자리가 없어 글자 수 옆, 칸의 오른쪽 아래에 섭니다.
+      const foot = el('div', 'profile__field-foot')
+      const count = box.parentElement.querySelector('.field__count')
+      count.replaceWith(foot)
+      foot.append(count, button)
+    } else {
+      // 한 줄 칸은 칸 바로 옆입니다(운영 사이트의 학교 칸과 같습니다).
+      const row = el('div', 'profile__field-row')
+      box.replaceWith(row)
+      row.append(box, button)
     }
-  }, true)
+    const saveText = () => {
+      if (button.disabled) return
+      api.save([input.name])
+      showToast('저장했어요', { icon: '#icon-check', tone: 'success' })
+    }
+    button.addEventListener('click', saveText)
+    // 한 줄 칸에서는 엔터가 그 칸의 저장입니다.
+    if (input.tagName !== 'TEXTAREA') {
+      input.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter' || e.isComposing) return
+        e.preventDefault()
+        saveText()
+      })
+    }
+    fieldSaves.set(input.name, button)
+  }
+
+  /* [완료] — 다 됐으면 나갑니다. 저장하지 않은 글이 남아 있으면 함께 저장하고 나갑니다. */
+  for (const done of document.querySelectorAll('[data-profile-done]')) {
+    done.addEventListener('click', () => {
+      if (api.dirty()) api.save()
+      if (history.length > 1) history.back()
+      else location.href = './my.html'
+    })
+  }
 
   const progress = document.querySelector('[data-progress]')
   // 문턱은 EXCHANGE_AT 한 곳에서 옵니다. 눈금과 글자가 숫자를 따로 들면 언젠가 갈립니다.
@@ -472,6 +523,9 @@ export function initProfileDetail() {
     for (const q of QUESTIONS.filter((item) => item.sensitive)) {
       form.querySelector(`[data-unit="${q.name}"]`).hidden = !isAsked(q, draft)
     }
+    sensitive.hidden = Boolean(draft['sensitive-consent'])
+    // 글 칸의 [저장]은 저장된 것과 다를 때만 켜집니다.
+    for (const [name, button] of fieldSaves) button.disabled = !api?.dirty([name])
     count.textContent = [...draft.words].length
     drawProgress(draft)
   }
@@ -496,7 +550,7 @@ export function initProfileDetail() {
   const aside = document.querySelector('.profile__aside [data-profile-card]')
   const previews = document.querySelectorAll('.profile-preview [data-profile-card]')
 
-  const { refresh } = initProfileForm({
+  api = initProfileForm({
     form,
     part: 'detail',
     saved: '상세 프로필을 저장했어요',
@@ -574,7 +628,7 @@ export function initProfileDetail() {
     // 어느 구획인지를 주소에 적어둡니다(#values). 새로고침해도 보던 구획으로 돌아오고, 그
     // 구획을 가리키는 링크도 됩니다. 뒤로 가기에 한 칸씩 쌓이지 않도록 갈아 끼웁니다.
     history.replaceState(null, '', `#${tab}`)
-    refresh()
+    api.refresh()
   }
 
   /* 눌러서 내려가는 동안에는 지나가는 구획의 탭이 차례로 켜지지 않게 잠급니다. 누른 탭이
@@ -628,6 +682,9 @@ export function initProfileDetail() {
   // 주소에 구획이 적혀 있으면 그리로 갑니다. 물음을 다 그린 뒤라야 자리가 맞습니다.
   const asked = location.hash.slice(1)
   if (asked !== tab && TABS.includes(asked)) requestAnimationFrame(() => go(asked, 'instant'))
+
+  // 쓰던 것(새로고침 전의 저장하지 않은 글)이 돌아왔으면 그 칸의 [저장]이 켜져야 합니다.
+  api.refresh()
 
   // 값이 다 써넣어진 뒤라야 답한 것이 있는지 알 수 있습니다(저장된 것, 쓰던 것 모두).
   openSeon([...seonBody.querySelectorAll('input')]
