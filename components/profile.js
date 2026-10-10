@@ -11,7 +11,7 @@
 import { openConfirm } from './confirm.js?v=f516d2db'
 import { showToast } from './toast.js?v=ccb77a07'
 import { cardGrid, cardHeader, cardRow, initProfileForm, load, store, swap } from './profile-form.js?v=25fd6e27'
-import { progressOf } from './profile-detail.js?v=12fa01cd'
+import { progressOf } from './profile-detail.js?v=529074da'
 
 /**
  * ⚠️ 예시입니다. 행정구역 전체가 아니라 화면을 맞춰 보는 데 필요한 만큼만 있습니다.
@@ -225,7 +225,11 @@ export function initProfile() {
     // 명단과 카드에 적히는 직업(운영 사이트의 안내). 카드의 직업 칸과 같은 값입니다.
     const job = draft['job-search'].trim() || draft['job-minor'] || draft['job-major']
     jobDisplay.hidden = !job
-    jobDisplay.textContent = job ? `명단·카드 표시 「${job}」(직장 기준)` : ''
+    // 앞에 직군이 섭니다(운영 사이트: "IT/개발/기획 · 명단·카드 표시 「디자이너」(직장 기준)").
+    const group = draft['job-major'] || Object.keys(JOBS).find((key) => JOBS[key].includes(job))
+    jobDisplay.textContent = job
+      ? `${group ? `${group} · ` : ''}명단·카드 표시 「${job}」(직장 기준)`
+      : ''
     jobClear.hidden = !draft['job-search']
 
     const search = mode === 'search'

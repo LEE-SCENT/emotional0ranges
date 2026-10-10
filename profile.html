@@ -27,7 +27,7 @@
 <link rel="stylesheet" href="./components/choice.css?v=fd460b98">
 <link rel="stylesheet" href="./components/verified-banner.css?v=6f3f1c77">
 <link rel="stylesheet" href="./components/profile-card.css?v=eaf662c0">
-<link rel="stylesheet" href="./components/profile.css?v=c62b5298">
+<link rel="stylesheet" href="./components/profile.css?v=9938764b">
 <link rel="stylesheet" href="./components/tabs.css?v=a962487a">
 <link rel="stylesheet" href="./components/verify.css?v=9ecc570b">
 <link rel="stylesheet" href="./components/confirm.css?v=598089ab">
@@ -125,7 +125,9 @@
       <svg class="btn__icon" aria-hidden="true"><use href="#icon-arrowBack"></use></svg>
     </a>
     <div class="profile__title">
-      <h1>기본 프로필</h1>
+      <!-- 운영 사이트의 머리말과 제목입니다. -->
+      <p class="profile__kicker">MY PROFILE</p>
+      <h1>프로필</h1>
       <!-- 운영 사이트의 문구 그대로입니다. -->
       <p>매칭과 모임 추천에 쓰이는 정보예요. 솔직하게 채울수록 더 잘 맞는 사람을 만나요. 신뢰할 수 있는 모임을 위해 정확한 정보만 입력해 주세요. (허위 정보 기재 시 법적 책임)</p>
     </div>
@@ -398,6 +400,12 @@
             </label>
             <label class="choice"><input type="radio" name="married" value="yes"><span>혼인신고 경험 있음</span></label>
           </div>
+          <!-- 운영 사이트와 같이 혼인 경험 바로 아래에 증명서 인증 한 줄과 안내가 섭니다. -->
+          <p class="field__help">
+            <button class="profile__link" type="button" data-verify-open="family">증명서로 인증하기</button>
+            · 승인되면 프로필에 뱃지가 붙어요
+          </p>
+          <p class="field__help">해당하는 것을 모두 골라 주세요</p>
           <div class="field-row profile__periods" data-periods hidden>
             <div class="field" data-period="married" hidden>
               <span class="field__label field__label--sub" id="profile-married-period">법률혼 기간</span>
@@ -461,17 +469,9 @@
           </div>
         </div>
 
-        <!-- 혼인과 자녀를 함께 확인하는 인증이라 둘을 다 답한 뒤에 섭니다. 회사 인증이 회사
-             칸 아래에 서는 것과 같습니다(Figma 는 혼인 경험과 자녀 사이에 두었습니다). -->
-        <div class="verified-banner">
-          <svg class="verified-banner__icon" aria-hidden="true"><use href="#icon-infoCircle"></use></svg>
-          <p class="verified-banner__text">
-            <b>혼인·가족 정보 인증</b>
-            <span>서류로 혼인·가족 정보를 인증할 수 있어요</span>
-          </p>
-          <button class="btn btn--outlined btn--medium" type="button" data-verify-open="family"><span class="btn__label">인증하기</span></button>
-        </div>
       </div>
+
+      <p class="profile__autosave">학력 · 음주 · 자기소개는 상세 프로필에서 적어요.</p>
 
       <!-- 넓은 화면의 저장. 읽어 내려가는 동안 화면 아래에 붙어 따라오다가, 폼의 끝에 닿으면
            제자리에 섭니다(profile.css). 좁은 화면에서는 아래의 bottom-cta 가 대신합니다. -->
@@ -578,7 +578,7 @@
   initConfirms()
   // segmented 보다 먼저 돕니다. 저장된 쪽(검색·카테고리)을 고른 칸으로 세워둬야
   // 그쪽이 그 칸의 자리를 잽니다.
-  const { initProfile } = await import('./components/profile.js?v=bcae9451')
+  const { initProfile } = await import('./components/profile.js?v=4d29b8d8')
   initProfile()
   const { initSegmentedControls } = await import('./components/segmented-control.js?v=bbd7c4b8')
   initSegmentedControls()

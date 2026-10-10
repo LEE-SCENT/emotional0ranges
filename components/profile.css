@@ -701,3 +701,78 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
 /* 고를 수 없는 성별. 고른 모양은 그대로 두고 누르는 손만 막습니다(흐리게 하면 무엇이
    확정됐는지가 흐려집니다). */
 [data-me-gender] .choice { cursor: default; }
+
+/* ---- 운영 사이트에 맞춘 것들 ----------------------------------------------- */
+
+/* 제목 위의 머리말("MY PROFILE" · "프로필 카드"). */
+.profile__title .profile__kicker {
+  order: -1;
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-s-medium-font-size);
+  font-weight: var(--typography-body-s-medium-font-weight);
+  line-height: var(--typography-body-s-medium-line-height);
+}
+
+/* 완성도의 버튼과 그 아래 한 줄. 버튼이 남은 수를 말합니다. */
+.profile-progress__foot { flex-direction: column; align-items: stretch; gap: var(--spacing-150); }
+.profile-progress__foot .btn { inline-size: 100%; }
+.profile-progress__hint {
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-s-regular-font-size);
+  line-height: var(--typography-body-s-regular-line-height);
+  text-align: center;
+}
+
+/* 탭 위에 붙어 따라오는 작은 완성도. 탭은 그 아래에 붙습니다(--profile-mini). */
+.profile--detail { --profile-mini: var(--spacing-1000); }
+.profile-progress-mini {
+  position: sticky;
+  inset-block-start: var(--profile-sticky-top);
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-300);
+  box-sizing: border-box;
+  block-size: var(--profile-mini);
+  margin-block-start: var(--spacing-400);
+  background: var(--colors-bg);
+  font-size: var(--typography-body-s-regular-font-size);
+  line-height: var(--typography-body-s-regular-line-height);
+  color: var(--colors-fg-lower);
+  white-space: nowrap;
+}
+.profile-progress-mini__label { color: var(--colors-fg); font-weight: var(--typography-body-s-semibold-font-weight); }
+.profile-progress-mini__label b { color: var(--colors-fg-brand); font-weight: inherit; }
+.profile-progress-mini__bar {
+  flex: 1 1 auto;
+  block-size: var(--spacing-100);
+  border-radius: var(--_rounded-full);
+  background: var(--colors-border);
+  overflow: hidden;
+}
+.profile-progress-mini__bar span {
+  display: block;
+  block-size: 100%;
+  inline-size: 0;
+  background: var(--colors-bg-brand);
+  transition: inline-size var(--_duration-fast) var(--_easing-standard);
+}
+.profile--detail .profile__tabs { inset-block-start: calc(var(--profile-sticky-top) + var(--profile-mini)); }
+.profile--detail .profile__panel {
+  scroll-margin-block-start: calc(var(--profile-sticky-top) + var(--profile-mini) + var(--spacing-1200) + var(--spacing-500));
+}
+
+/* 이름표 옆의 상태(미작성 · 1~3개 선택 · 0/3). */
+.profile__label-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--spacing-300);
+}
+.profile__status-text {
+  flex: none;
+  color: var(--colors-fg-lowest);
+  font-size: var(--typography-body-s-regular-font-size);
+  line-height: var(--typography-body-s-regular-line-height);
+  font-feature-settings: 'tnum' 1;
+}

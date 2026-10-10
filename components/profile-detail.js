@@ -266,9 +266,10 @@ function question(q) {
   const field = el('div', 'field')
   field.dataset.unit = q.name
   field.setAttribute('role', 'group')
-  const title = q.max ? `${q.label} (최대 ${q.max}개)` : q.label
-  field.setAttribute('aria-label', title)
-  field.append(el('span', 'field__label', title))
+  // 고를 수 있는 수는 이름표 옆(운영 사이트와 같이 오른쪽의 "1~3개 선택")에 섭니다
+  // (drawStatus). 읽어주는 쪽에는 이름에 붙여 들려줍니다.
+  field.setAttribute('aria-label', q.max ? `${q.label} (최대 ${q.max}개)` : q.label)
+  field.append(el('span', 'field__label', q.label))
 
   const group = el('div', `choice-group${q.cols ? ` choice-group--cols-${q.cols}` : ''}`)
   if (q.max) group.dataset.max = q.max
@@ -481,7 +482,8 @@ export function initProfileDetail() {
   const progress = document.querySelector('[data-progress]')
   // 문턱은 EXCHANGE_AT 한 곳에서 옵니다. 눈금과 글자가 숫자를 따로 들면 언젠가 갈립니다.
   progress.querySelector('.profile-progress__mark').style.insetInlineStart = `${EXCHANGE_AT}%`
-  progress.querySelector('.profile-progress__goal').textContent = `${EXCHANGE_AT}% 이상이면 카드 교환`
+  progress.querySelector('.profile-progress__goal').textContent = `${EXCHANGE_AT}% 이상이면 교환할 수 있어요`
+  document.querySelector('.profile-progress-mini__goal').textContent = `${EXCHANGE_AT}% 이상이면 교환`
 
   const count = form.querySelector('[data-words-count]')
   let tab = 'info'
@@ -504,19 +506,53 @@ export function initProfileDetail() {
 
   /* 완성도. 저장하기 전의 값으로 셉니다 — 고르는 대로 오르는 것이 보여야 채우는 손이
      멈추지 않습니다. */
+  /* ---- 이름표 옆의 상태 ----------------------------------------------------
+     운영 사이트와 같이 물음마다 오른쪽에 "미작성", 여럿 고르는 물음에는 "1~3개 선택 · 0/3".
+     MBTI 와 선개팅 추가 프로필에는 없습니다(운영 사이트와 같습니다). */
+  const STATUS_KEY = { edu: 'edu-level' }
+  const statusOf = new Map()
+  for (const field of form.querySelectorAll('[data-unit]')) {
+    const name = field.dataset.unit
+    if (name === 'mbti' || field.closest('[data-seon]')) continue
+    const label = field.querySelector('.field__label')
+    const row = el('div', 'profile__label-row')
+    label.replaceWith(row)
+    const status = el('span', 'profile__status-text')
+    row.append(label, status)
+    statusOf.set(name, status)
+  }
+  function drawStatus(draft) {
+    for (const [name, status] of statusOf) {
+      const q = QUESTIONS.find((item) => item.name === name)
+      const value = draft[STATUS_KEY[name] ?? name]
+      const count = Array.isArray(value) ? value.length : 0
+      const done = Array.isArray(value) ? count > 0 : Boolean(value?.trim?.() ?? value)
+      const parts = []
+      if (!done) parts.push('미작성')
+      if (q?.max) parts.push(`1~${q.max}개 선택`, `${count}/${q.max}`)
+      status.textContent = parts.join(' · ')
+    }
+  }
+
   function drawProgress(draft) {
     const { percent, need, missing } = progressOf(draft)
-    progress.querySelector('[data-progress-percent]').textContent = `${percent}%`
-    progress.querySelector('[data-progress-fill]').style.inlineSize = `${percent}%`
+    // 위의 큰 덩어리와 탭 위의 작은 막대가 같은 숫자를 씁니다.
+    for (const node of document.querySelectorAll('[data-progress-percent]')) node.textContent = `${percent}%`
+    for (const node of document.querySelectorAll('[data-progress-fill]')) node.style.inlineSize = `${percent}%`
     progress.querySelector('[role="progressbar"]').setAttribute('aria-valuenow', percent)
-    progress.querySelector('[data-progress-note]').textContent = need
-      // 오른쪽 위에 "카드 교환"이 이미 서 있어 여기서는 줄입니다 — 폰에서 한 줄에 들어갑니다.
-      ? `${need}개 더 채우면 교환할 수 있어요`
-      : '이제 프로필 카드를 교환할 수 있어요'
+    // 버튼이 남은 수를 말합니다(운영 사이트의 문구). 문턱을 넘은 뒤에도 빈 칸이 있으면 그리로 갑니다.
+    progress.querySelector('[data-progress-need]').textContent = need
+      ? `${need}개만 더 채우면 교환할 수 있어요`
+      : '남은 항목 채우기'
+    const note = progress.querySelector('[data-progress-note]')
+    note.textContent = '이제 프로필 카드를 교환할 수 있어요'
+    note.hidden = Boolean(need)
     progress.classList.toggle('is-ready', !need)
     // 다 채웠으면 갈 곳이 없습니다.
     progress.querySelector('[data-progress-jump]').hidden = !missing.length
+    progress.querySelector('[data-progress-hint]').hidden = !missing.length
     progress.dataset.next = missing[0] ?? ''
+    drawStatus(draft)
   }
 
   const aside = document.querySelector('.profile__aside [data-profile-card]')

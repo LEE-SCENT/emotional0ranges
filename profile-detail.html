@@ -28,7 +28,7 @@
 <link rel="stylesheet" href="./components/tabs.css?v=a962487a">
 <link rel="stylesheet" href="./components/verified-banner.css?v=6f3f1c77">
 <link rel="stylesheet" href="./components/profile-card.css?v=eaf662c0">
-<link rel="stylesheet" href="./components/profile.css?v=c62b5298">
+<link rel="stylesheet" href="./components/profile.css?v=9938764b">
 <link rel="stylesheet" href="./components/verify.css?v=9ecc570b">
 <link rel="stylesheet" href="./components/confirm.css?v=598089ab">
 <link rel="stylesheet" href="./components/toast.css?v=c91e6fe0">
@@ -114,7 +114,7 @@
     <svg class="btn__icon" aria-hidden="true"><use href="#icon-arrowBack"></use></svg>
   </a>
   <button class="btn btn--outlined btn--medium" type="button" data-profile-preview-open>
-    <span class="btn__label">프로필 미리보기</span>
+    <span class="btn__label">내 프로필 보기</span>
   </button>
 </header>
 
@@ -124,7 +124,9 @@
       <svg class="btn__icon" aria-hidden="true"><use href="#icon-arrowBack"></use></svg>
     </a>
     <div class="profile__title">
-      <h1>상세 프로필</h1>
+      <!-- 운영 사이트의 머리말과 제목입니다. -->
+      <p class="profile__kicker">프로필 카드</p>
+      <h1>내 카드 꾸미기</h1>
     </div>
   </header>
 
@@ -136,20 +138,31 @@
       <section class="profile-progress" aria-labelledby="profile-progress-label" data-progress>
         <div class="profile-progress__head">
           <p class="profile-progress__label" id="profile-progress-label">완성도 <b data-progress-percent>0%</b></p>
-          <p class="profile-progress__goal">80% 이상이면 카드 교환</p>
+          <p class="profile-progress__goal">80% 이상이면 교환할 수 있어요</p>
         </div>
         <div class="profile-progress__bar" role="progressbar" aria-labelledby="profile-progress-label"
              aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
           <span class="profile-progress__fill" data-progress-fill></span>
           <span class="profile-progress__mark" aria-hidden="true"></span>
         </div>
+        <!-- 운영 사이트와 같이 버튼 자체가 남은 수를 말하고, 그 아래에 무엇을 하는 버튼인지
+             한 줄이 붙습니다. 다 채우면 버튼 대신 note 가 섭니다. -->
         <div class="profile-progress__foot">
-          <p class="profile-progress__note" data-progress-note aria-live="polite"></p>
-          <button class="btn btn--outlined btn--small" type="button" data-progress-jump>
-            <span class="btn__label">안 채운 항목 채우기</span>
+          <button class="btn btn--outlined btn--medium" type="button" data-progress-jump>
+            <span class="btn__label" data-progress-need></span>
           </button>
+          <p class="profile-progress__hint" data-progress-hint>눌러서 안 채운 항목으로 바로 이동해요.</p>
+          <p class="profile-progress__note" data-progress-note aria-live="polite" hidden></p>
         </div>
       </section>
+
+      <!-- 읽어 내려가는 동안 탭 위에 붙어 따라오는 작은 완성도(운영 사이트와 같습니다).
+           위의 큰 덩어리와 같은 숫자라 읽어주는 쪽에는 한 번만 들리게 감춥니다. -->
+      <div class="profile-progress-mini" aria-hidden="true">
+        <span class="profile-progress-mini__label">완성도 <b data-progress-percent>0%</b></span>
+        <span class="profile-progress-mini__bar"><span data-progress-fill></span></span>
+        <span class="profile-progress-mini__goal">80% 이상이면 교환</span>
+      </div>
 
       <!-- 네 구획이 한 페이지에 이어집니다. 탭은 화면을 가르는 것이 아니라 구획으로 가는
            길입니다 — 누르면 그 구획으로 내려가고, 읽어 내려가면 지금 보고 있는 구획의
@@ -248,7 +261,7 @@
           <div class="profile-extra__head">
             <p class="profile-extra__text">
               <b id="profile-seon-title">선개팅 추가 프로필</b>
-              <span>모두 선택 사항이에요 · 선개팅 모임에서 상대가 내 프로필을 볼 때만 보여요</span>
+              <span>모든 문항은 선택사항이에요 · 선개팅 모임에서 상대가 내 프로필을 볼 때만 보여요</span>
             </p>
             <button class="btn btn--ghost btn--small" type="button" data-seon-toggle
                     aria-expanded="false" aria-controls="profile-seon-body" aria-describedby="profile-seon-title">
@@ -369,7 +382,7 @@
   initMyMenus()
   const { initConfirms } = await import('./components/confirm.js?v=f516d2db')
   initConfirms()
-  const { initProfileDetail } = await import('./components/profile-detail.js?v=12fa01cd')
+  const { initProfileDetail } = await import('./components/profile-detail.js?v=529074da')
   initProfileDetail()
   const { initTabs } = await import('./components/tabs.js?v=aec7319a')
   initTabs()
