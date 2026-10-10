@@ -173,16 +173,14 @@
 /* 근무지: 넓은 화면에서는 [시/도][구][고정 근무지 없음] 한 줄, 그 아래 안내.
    좁은 화면에서는 체크박스가 안내 아래로 내려갑니다(Figma m_기본프로필). */
 .profile__workplace {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  grid-template-areas: 'selects check' 'help .';
-  gap: var(--spacing-150) var(--spacing-300);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-150);
 }
-.profile__workplace > .field-row { grid-area: selects; }
-.profile__workplace > .field__help { grid-area: help; }
-/* 위에 맞춥니다. 구 아래에 빠졌다는 말이 서면 줄이 길어지는데, 그때 체크박스가 가운데로
-   내려오지 않습니다. */
-.profile__workplace > .checkbox-label { grid-area: check; align-self: start; }
+.profile__workplace > .field-row { align-self: stretch; }
+/* [지역 선택 · 고정 근무지 없음]과 고르는 칸 사이는 이름표-칸 사이(8)만큼 더 띄웁니다. */
+.profile__workplace > .segmented { margin-block-end: var(--spacing-100); }
 
 /* ---- 키 ---------------------------------------------------------------
    숫자를 치게 하지 않습니다. 한두 칸은 ± 로, 멀리는 막대로 옮깁니다 — 키는 대개
@@ -352,11 +350,6 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
   .profile__periods { flex-direction: column; align-items: stretch; }
   .profile__periods > .field { flex: none; }
 
-  .profile__workplace {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: 'selects' 'help' 'check';
-  }
-  .profile__workplace > .checkbox-label { justify-self: start; }
 
   /* 자녀 수는 열 개라 두 줄로 접히는 대신 옆으로 넘깁니다. 화면 끝까지 닿도록
      컨테이너 여백만큼 밖으로 내고, 같은 만큼 안을 채워 첫 단추의 자리를 지킵니다. */
@@ -696,3 +689,15 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
 }
 /* "20초 만에 직장 인증하기"로 내려왔을 때 제목이 붙어 있는 GNB · topBar 뒤로 들어가지 않게. */
 #profile-company-verify { scroll-margin-block-start: calc(var(--profile-sticky-top) + var(--spacing-500)); }
+
+/* 본인인증 안내 한 줄(기본 프로필). 칸의 도움말과 같은 크기입니다. */
+.profile__note {
+  margin: 0;
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-s-regular-font-size);
+  line-height: var(--typography-body-s-regular-line-height);
+  word-break: keep-all;
+}
+/* 고를 수 없는 성별. 고른 모양은 그대로 두고 누르는 손만 막습니다(흐리게 하면 무엇이
+   확정됐는지가 흐려집니다). */
+[data-me-gender] .choice { cursor: default; }

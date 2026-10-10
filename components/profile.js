@@ -75,11 +75,11 @@ function facts(profile, draft) {
   return [
     cardRow('성별', profile.me.gender),
     cardRow('키', `${draft.height}cm`),
-    cardRow('거주지', join(draft['home-sido'], draft['home-gugun']), { wide: true }),
+    cardRow('거주 지역', join(draft['home-sido'], draft['home-gugun']), { wide: true }),
     // 검색으로 고른 것이거나 분류로 고른 것. 어느 탭을 보고 있는지와는 상관없습니다 —
     // 탭을 옮긴 것만으로 직업이 사라지지 않습니다.
     cardRow('직업', draft['job-search'].trim() || draft['job-minor'] || draft['job-major']),
-    cardRow('근무지', draft['work-none']
+    cardRow('근무 지역', draft['work-none']
       ? '고정 근무지 없음'
       : join(draft['work-sido'], draft['work-gugun'])),
     cardRow('혼인 경험', married.length ? married.join(' · ') : '미혼', { wide: true }),
@@ -198,6 +198,28 @@ export function initProfile() {
      가려 가며 고치면, 저장된 값을 처음 써넣을 때처럼 사건 없이 바뀐 자리를 놓칩니다. */
   const jobDisplay = form.querySelector('[data-job-display]')
 
+  /* 근무 지역의 [지역 선택 · 고정 근무지 없음]. 고른 것을 감춰진 칸에 담아 폼의 값으로 둡니다. */
+  const workModes = form.querySelector('[data-work-modes]')
+  const workNone = form.elements['work-none']
+  const workPlace = workModes.parentElement.querySelector('.field-row')
+  const workHelp = form.querySelector('[data-work-help]')
+  workModes.addEventListener('click', (e) => {
+    const item = e.target.closest('[data-work-mode]')
+    if (!item) return
+    const none = item.dataset.workMode === 'none'
+    if (workNone.checked === none) return
+    workNone.checked = none
+    workNone.dispatchEvent(new Event('change', { bubbles: true }))
+  })
+
+  /* 본인인증으로 들어온 성별 · 출생연도. 성별은 고른 모양으로 보이되 바꿀 수 없습니다. */
+  const me = load().me
+  for (const input of form.querySelectorAll('[data-me-gender] input')) {
+    input.checked = input.value === me.gender
+    input.addEventListener('click', (e) => e.preventDefault())
+  }
+  form.querySelector('[data-me-birth]').value = String(me.birthYear)
+
   function sync(draft) {
     heightText.textContent = `${draft.height}cm`
     // 명단과 카드에 적히는 직업(운영 사이트의 안내). 카드의 직업 칸과 같은 값입니다.
@@ -210,7 +232,14 @@ export function initProfile() {
     form.querySelector('[data-job-search]').hidden = !search
     form.querySelector('[data-job-category]').hidden = search
 
-    $('work-sido').disabled = $('work-gugun').disabled = draft['work-none']
+    // 고정 근무지 없음이면 고르는 칸과 그 도움말을 걷습니다(운영 사이트와 같습니다).
+    workPlace.hidden = workHelp.hidden = draft['work-none']
+    for (const item of workModes.querySelectorAll('[data-work-mode]')) {
+      const on = (item.dataset.workMode === 'none') === draft['work-none']
+      if (item.classList.contains('is-selected') === on) continue
+      item.classList.toggle('is-selected', on)
+      item.setAttribute('aria-selected', String(on))
+    }
 
     form.querySelector('[data-period="married"]').hidden = draft.married !== 'yes'
     form.querySelector('[data-period="cohabited"]').hidden = !draft.cohabited

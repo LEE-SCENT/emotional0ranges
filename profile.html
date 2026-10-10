@@ -27,7 +27,7 @@
 <link rel="stylesheet" href="./components/choice.css?v=fd460b98">
 <link rel="stylesheet" href="./components/verified-banner.css?v=6f3f1c77">
 <link rel="stylesheet" href="./components/profile-card.css?v=eaf662c0">
-<link rel="stylesheet" href="./components/profile.css?v=38cf7a0b">
+<link rel="stylesheet" href="./components/profile.css?v=c62b5298">
 <link rel="stylesheet" href="./components/tabs.css?v=a962487a">
 <link rel="stylesheet" href="./components/verify.css?v=9ecc570b">
 <link rel="stylesheet" href="./components/confirm.css?v=598089ab">
@@ -280,40 +280,27 @@
       <!-- 본인인증으로 들어온 것들. 보여주기만 하고 고칠 수 없습니다. 운영 사이트와 같이
            안내가 먼저, 그다음 성별 · 출생연도 차례입니다. -->
       <div class="profile__section">
-        <div class="verified-banner verified-banner--done">
-          <div class="verified-banner__box">
-            <svg class="verified-banner__icon" aria-hidden="true"><use href="#icon-verifiedUserFilled"></use></svg>
-            <p class="verified-banner__text">
-              <b>본인 인증 완료</b>
-              <span>본인인증으로 확인된 정보는 직접 수정할 수 없어요</span>
-            </p>
+        <!-- 운영 사이트와 같이 이름 칸은 없고 안내 한 줄이 섭니다. "본인인증을 다시"는 본인확인
+             기관의 창을 띄웁니다(identity-check.js). -->
+        <p class="profile__note">이름 · 나이 · 성별은 휴대폰 본인인증으로 등록돼 여기서 바꿀 수 없어요.
+          바꾸시려면 <button class="profile__link" type="button" data-identity-check>본인인증을 다시</button> 해 주세요.
+          개명은 고객센터로 문의해 주세요.</p>
+
+        <!-- 성별은 고르는 모양으로 보이되 고를 수 없습니다(profile.js). 이름이 없는 칸이라
+             폼의 값에 들지 않습니다. -->
+        <div class="field" role="group" aria-labelledby="profile-gender-label">
+          <span class="field__label" id="profile-gender-label">성별</span>
+          <div class="choice-group choice-group--cols-2 choice-group--pair" role="radiogroup" aria-label="성별" aria-readonly="true" data-me-gender>
+            <label class="choice"><input type="radio" value="남성" aria-describedby="profile-gender-help"><span>남성</span></label>
+            <label class="choice"><input type="radio" value="여성" aria-describedby="profile-gender-help"><span>여성</span></label>
           </div>
-          <!-- 본인 인증은 우리 창이 아니라 본인확인 기관의 창이 따로 뜹니다(identity-check.js). -->
-          <button class="btn btn--blur btn--medium" type="button" data-identity-check><span class="btn__label">재인증</span></button>
+          <p class="field__help" id="profile-gender-help">본인인증으로 확정되어 바꿀 수 없어요.</p>
         </div>
 
         <div class="field">
-          <label class="field__label" for="profile-name">이름</label>
+          <label class="field__label" for="profile-birth">출생연도</label>
           <div class="text-field text-field--readonly">
-            <input id="profile-name" type="text" value="김땡땡" readonly aria-describedby="profile-name-help" data-me="name">
-          </div>
-          <!-- 고칠 수 없는 칸의 하나뿐인 출구라 늘 보이게 둡니다. 말풍선에 넣으면 올려볼 수
-               없는 폰에서는 있는 줄도 모릅니다. -->
-          <p class="field__help" id="profile-name-help">개명한 경우 고객센터로 문의해 주세요</p>
-        </div>
-
-        <div class="field-row">
-          <div class="field">
-            <label class="field__label" for="profile-gender">성별</label>
-            <div class="text-field text-field--readonly">
-              <input id="profile-gender" type="text" value="남성" readonly data-me="gender">
-            </div>
-          </div>
-          <div class="field">
-            <label class="field__label" for="profile-birth">출생연도</label>
-            <div class="text-field text-field--readonly">
-              <input id="profile-birth" type="text" value="1991년생 · 36세" readonly data-me="birth">
-            </div>
+            <input id="profile-birth" type="text" readonly data-me-birth>
           </div>
         </div>
       </div>
@@ -327,48 +314,50 @@
              점이 없습니다. 답에 딸려 나오는 칸(기간, 자녀 수·양육)에도 없습니다 — 위의
              물음이 이미 필수라 그 답의 일부로 읽힙니다. 채워야 하는 것은 같습니다. -->
         <div class="field" role="group" aria-labelledby="profile-home-label">
-          <span class="field__label" id="profile-home-label">거주지<span class="field__required" aria-hidden="true"></span><span class="sr-only">필수</span></span>
+          <span class="field__label" id="profile-home-label">거주 지역<span class="field__required" aria-hidden="true"></span><span class="sr-only">필수</span></span>
           <div class="field-row">
             <div class="field">
               <div class="text-field text-field--select">
-                <select name="home-sido" aria-label="거주지 시·도"></select>
+                <select name="home-sido" aria-label="거주 지역 시·도"></select>
                 <svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg>
               </div>
             </div>
             <div class="field" data-field="home-gugun">
               <div class="text-field text-field--select">
-                <select name="home-gugun" aria-label="거주지 시·군·구"></select>
+                <select name="home-gugun" aria-label="거주 지역 시·군·구"></select>
                 <svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg>
               </div>
             </div>
           </div>
+          <p class="field__help">구 단위까지 선택해 주세요</p>
         </div>
 
         <div class="field" role="group" aria-labelledby="profile-work-label">
-          <span class="field__label" id="profile-work-label">근무지<span class="field__required" aria-hidden="true"></span><span class="sr-only">필수</span></span>
+          <span class="field__label" id="profile-work-label">근무 지역<span class="field__required" aria-hidden="true"></span><span class="sr-only">필수</span></span>
+          <!-- 운영 사이트와 같이 [지역 선택 · 고정 근무지 없음]을 먼저 고릅니다. 고른 것은 감춰진
+               칸(work-none)에 담깁니다(profile.js). -->
           <div class="profile__workplace">
+            <div class="segmented segmented--default" role="tablist" aria-label="근무 지역" data-work-modes>
+              <span class="segmented__thumb" aria-hidden="true"></span>
+              <button class="segmented__item is-selected" type="button" role="tab" aria-selected="true" data-work-mode="place">지역 선택</button>
+              <button class="segmented__item" type="button" role="tab" aria-selected="false" data-work-mode="none">고정 근무지 없음</button>
+            </div>
+            <input type="checkbox" name="work-none" hidden>
             <div class="field-row">
               <div class="field">
                 <div class="text-field text-field--select">
-                  <select name="work-sido" aria-label="근무지 시·도"></select>
+                  <select name="work-sido" aria-label="근무 지역 시·도"></select>
                   <svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg>
                 </div>
               </div>
               <div class="field" data-field="work-gugun">
                 <div class="text-field text-field--select">
-                  <select name="work-gugun" aria-label="근무지 시·군·구"></select>
+                  <select name="work-gugun" aria-label="근무 지역 시·군·구"></select>
                   <svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg>
                 </div>
               </div>
             </div>
-            <p class="field__help">회사원은 직장 위치, 사업자는 사업장 위치, 프리랜서는 주 활동 지역 ㅡ 구 단위까지</p>
-            <label class="checkbox-label">
-              <span class="checkbox">
-                <input type="checkbox" name="work-none">
-                <span class="checkbox__box" aria-hidden="true"><svg><use href="#icon-check"></use></svg></span>
-              </span>
-              고정 근무지 없음
-            </label>
+            <p class="field__help" data-work-help>회사원은 직장 위치, 사업자는 사업장 위치, 프리랜서는 주 활동 지역 — 구 단위까지</p>
           </div>
         </div>
 
@@ -589,7 +578,7 @@
   initConfirms()
   // segmented 보다 먼저 돕니다. 저장된 쪽(검색·카테고리)을 고른 칸으로 세워둬야
   // 그쪽이 그 칸의 자리를 잽니다.
-  const { initProfile } = await import('./components/profile.js?v=fdfc671c')
+  const { initProfile } = await import('./components/profile.js?v=bcae9451')
   initProfile()
   const { initSegmentedControls } = await import('./components/segmented-control.js?v=bbd7c4b8')
   initSegmentedControls()
