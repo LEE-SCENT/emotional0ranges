@@ -45,7 +45,7 @@
 <link rel="stylesheet" href="./components/review.css?v=1516c2bf">
 <link rel="stylesheet" href="./components/detail.css?v=7cae8d5d">
 <link rel="stylesheet" href="./components/favorite.css?v=8148f536">
-<link rel="stylesheet" href="./components/toast.css?v=447855c2">
+<link rel="stylesheet" href="./components/toast.css?v=c91e6fe0">
 <link rel="stylesheet" href="./components/participants.css?v=3d11ed3c">
 <link rel="stylesheet" href="./components/app-bar.css?v=1129f720">
 <link rel="stylesheet" href="./components/top-bar.css?v=753a02dd">
@@ -743,11 +743,11 @@
   await import('./components/scroll-restore.js?v=f612a7a5')
   const { initStickyGnb } = await import('./components/gnb.js?v=ca09b963')
   initStickyGnb()
-  const { initMyMenus } = await import('./components/my-menu.js?v=e1871d34')
+  const { initMyMenus } = await import('./components/my-menu.js?v=fe953b87')
   initMyMenus()
   // 일정·후기를 읽는 스크립트들보다 먼저 돕니다. 그들이 세어둔 뒤에 목록을
   // 갈아끼우면 서로 다른 것을 보게 됩니다.
-  const { initProduct } = await import('./components/product.js?v=e8c97a14')
+  const { initProduct } = await import('./components/product.js?v=ff4d8518')
   initProduct()
   const { initSchedule } = await import('./components/schedule.js?v=a9e9003f')
   initSchedule()
@@ -759,7 +759,7 @@
   initRecentReview()
   const { initConfirms } = await import('./components/confirm.js?v=f516d2db')
   initConfirms()
-  const { initParticipants } = await import('./components/participants.js?v=096c0fef')
+  const { initParticipants } = await import('./components/participants.js?v=74911a84')
   initParticipants()
   const { initSeatAlert } = await import('./components/seat-alert.js?v=1bc45aee')
   initSeatAlert()
@@ -768,7 +768,7 @@
   const { initFavorites } = await import('./components/favorite.js?v=8480b907')
   initFavorites()
   // 비슷한 모임 카드도 목록과 같은 데이터에서 지역·일정 수를 받습니다.
-  const { initProductCards } = await import('./components/product-cards.js?v=3bc2a574')
+  const { initProductCards } = await import('./components/product-cards.js?v=186d4984')
   initProductCards()
   const { initDetailIntro } = await import('./components/detail-intro.js?v=c2d2bd44')
   initDetailIntro()

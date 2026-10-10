@@ -26,8 +26,9 @@
   /* 넓은 화면: 화면 아래에서 32px 위. 홈 표시줄이 있는 기기에서는 그만큼 더 띄웁니다. */
   inset-block-end: calc(var(--spacing-800) + env(safe-area-inset-bottom));
   inset-inline: 0;
-  /* GNB·상단바(20)보다 위입니다. 알림이 그 아래로 들어가면 아무것도 알리지 못합니다. */
-  z-index: 25;
+  /* GNB·상단바(20)와 내 메뉴 판(30)보다 위입니다. 알림이 그 아래로 들어가면
+     아무것도 알리지 못합니다 — 판의 "준비 중" 알림은 판이 열린 채로 뜹니다. */
+  z-index: 35;
   display: flex;
   justify-content: center;
   /* 화면 가장자리와의 거리. 컨테이너 밖이라 직접 두르되 같은 토큰을 봅니다. */
@@ -42,6 +43,14 @@
   body:has(.bottom-cta) .toast-region {
     inset-block-end: calc(
       var(--_bottom-cta-height) + var(--spacing-300) + env(safe-area-inset-bottom)
+    );
+  }
+  /* 앱바도 같습니다 — 띠가 탭 이름을 덮으면 어느 탭에 있는지가 가려집니다.
+     앱바가 아래로 물러나 있어도 이 높이에 섭니다. 앱바가 다시 올라올 때 띠가
+     함께 움직이면, 읽던 글이 자리를 옮깁니다. */
+  body:has(.app-bar--fixed) .toast-region {
+    inset-block-end: calc(
+      var(--_app-bar-height) + var(--spacing-300) + env(safe-area-inset-bottom)
     );
   }
 }

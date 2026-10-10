@@ -27,7 +27,7 @@
  */
 
 import { PRODUCTS, areaOf, isOpen, seatTags } from './products.js?v=a3d5fd4b'
-import { ME } from './my-menu.js?v=e1871d34'
+import { ME } from './my-menu.js?v=fe953b87'
 import { dateAfter, dayText } from './schedule.js?v=a9e9003f'
 
 const won = (n) => `${n.toLocaleString('ko-KR')}원`

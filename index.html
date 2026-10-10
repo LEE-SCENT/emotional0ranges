@@ -34,6 +34,7 @@
 <link rel="stylesheet" href="./components/tooltip.css?v=7ec024df">
 <link rel="stylesheet" href="./components/gnb.css?v=d585826e">
 <link rel="stylesheet" href="./components/my-menu.css?v=59a441fb">
+<link rel="stylesheet" href="./components/toast.css?v=c91e6fe0">
 <link rel="stylesheet" href="./components/kv.css?v=9316ae22">
 <link rel="stylesheet" href="./components/tag.css?v=fef5c195">
 <link rel="stylesheet" href="./components/product-card.css?v=85b7c185">
@@ -451,7 +452,7 @@
   initKvCarousels()
   const { initStickyGnb } = await import('./components/gnb.js?v=ca09b963')
   initStickyGnb()
-  const { initMyMenus } = await import('./components/my-menu.js?v=e1871d34')
+  const { initMyMenus } = await import('./components/my-menu.js?v=fe953b87')
   initMyMenus()
   const { initAutoHide } = await import('./components/auto-hide.js?v=ef9c163a')
   initAutoHide()
@@ -460,6 +461,6 @@
   // 카드의 날짜·잔여석·가격은 상세와 같은 데이터에서 나옵니다. 적어두면 어긋납니다.
   // 뒤로 돌아온 화면은 맨 위에서 시작합니다.
   await import('./components/scroll-restore.js?v=f612a7a5')
-  const { initProductCards } = await import('./components/product-cards.js?v=3bc2a574')
+  const { initProductCards } = await import('./components/product-cards.js?v=186d4984')
   initProductCards()
 </script>

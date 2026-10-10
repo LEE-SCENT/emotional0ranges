@@ -8,9 +8,9 @@
  * 같은 목록이 한 벌씩 생겨, 항목이 하나 늘 때 네 군데를 고치게 됩니다.
  *
  * 아직 갈 곳이 없는 항목은 href 를 비워둡니다 — 화면이 생기면 여기만 채우면 됩니다.
- * 비워둔 항목도 눌리기는 해야 합니다. 눌러도 아무 일이 없는 것과, 누를 수조차 없는
- * 것은 다릅니다 — 앞의 것은 "아직 준비 중"이고 뒤의 것은 "당신에게는 없는 기능"으로
- * 읽힙니다.
+ * 비워둔 항목도 눌리기는 해야 합니다. 누를 수조차 없는 것은 "당신에게는 없는
+ * 기능"으로 읽힙니다. 다만 눌러도 아무 일이 없으면 그것은 "준비 중"이 아니라
+ * 고장으로 읽혀, 누르면 "아직 준비 중이에요"를 띄웁니다(notReady).
  *
  * ⚠️ 폰에서는 이 판이 아니라 별도 화면으로 갈 예정입니다(my-menu.css 의 메모).
  *    그 화면이 생기면 좁은 폭에서 initMyMenu 가 판을 열지 않고 그 주소로 보냅니다.
@@ -18,6 +18,8 @@
  * ⚠️ 이름·등급·알림 여부는 로그인한 회원 정보가 들어올 자리입니다. 지금은 Figma 의
  *    예시 값을 그대로 두었습니다(find.js 의 ME 와 같은 자리입니다).
  */
+
+import { showToast } from './toast.js?v=ccb77a07'
 
 /**
  * ⚠️ 로그인한 회원 정보가 들어올 자리입니다.
@@ -103,6 +105,28 @@ const el = (tag, className, text) => {
   return node
 }
 
+/**
+ * 아직 갈 곳이 없는 자리를 눌렀을 때.
+ *
+ * 아무 일도 일어나지 않으면 눌린 줄 모르거나 고장 난 줄 압니다. 눌린 것은 맞고
+ * 화면이 아직 없다는 것을 그 자리에서 말합니다.
+ */
+function notReady(node) {
+  node.addEventListener('click', (e) => {
+    e.preventDefault()
+    showToast('아직 준비 중이에요', { icon: '#icon-infoCircle' })
+  })
+}
+
+/**
+ * 판에서만 menuitem 입니다. 폰의 마이 화면은 메뉴가 아니라 화면이라 감싸는
+ * role="menu" 가 없고, 그 밖에 선 menuitem 은 화면을 읽어주는 쪽에서 뜻을 잃습니다
+ * — 거기서는 링크와 버튼 그대로 둡니다.
+ */
+function menuItem(node, page) {
+  if (!page) node.setAttribute('role', 'menuitem')
+}
+
 const arrow = () =>
   '<svg class="my-menu__arrow" aria-hidden="true"><use href="#icon-chevronRight"></use></svg>'
 
@@ -112,12 +136,12 @@ const arrow = () =>
  * 갈 곳이 있으면 <a>, 없으면 <button> 입니다 — 링크로 두면 새 탭으로 열거나 주소를
  * 복사할 수 있어야 하는데, href 가 비어 있으면 그 약속을 지키지 못합니다.
  */
-function item({ label, desc, icon, badge, href, quiet, action }) {
+function item({ label, desc, icon, badge, href, quiet, action }, page) {
   const node = href ? el('a', 'my-menu__item') : el('button', 'my-menu__item')
   if (href) node.href = href
   else node.type = 'button'
   if (quiet) node.classList.add('my-menu__item--quiet')
-  node.setAttribute('role', 'menuitem')
+  menuItem(node, page)
 
   if (icon) {
     node.insertAdjacentHTML(
@@ -142,6 +166,7 @@ function item({ label, desc, icon, badge, href, quiet, action }) {
 
   node.insertAdjacentHTML('beforeend', arrow())
   if (action === 'logout') node.addEventListener('click', () => setDemo(false))
+  else if (!href) notReady(node)
   return node
 }
 
@@ -170,7 +195,8 @@ function profile(page) {
      내가 어떻게 보이는지는 스스로 열어보기 전에는 알 수 없는 것이라 권해야 합니다. */
   const card = el('a', 'my-menu__card')
   card.href = '#'
-  card.setAttribute('role', 'menuitem')
+  menuItem(card, page)
+  notReady(card)
   card.innerHTML = '<img src="./images/my-profile-card.png" alt="">'
   const text = el('span', 'my-menu__card-text')
   text.append(
@@ -318,7 +344,8 @@ function signedOut(page) {
   signup.append(el('span', null, '아직 회원이 아니신가요?'))
   const link = el('button', 'my-menu__signup-link', '회원가입')
   link.type = 'button'
-  link.setAttribute('role', 'menuitem')
+  menuItem(link, page)
+  notReady(link)
   signup.append(link)
 
   /* 폰에서는 이 화면이 곧 로그인 화면입니다 — 판처럼 다른 화면으로 넘길 자리가
@@ -363,7 +390,7 @@ export function renderMyMenu(box, { page = false } = {}) {
 
   box.replaceChildren(
     ME ? profile(page) : signedOut(page),
-    ...lines.map((entry) => (entry ? item(entry) : el('hr', 'my-menu__divider'))),
+    ...lines.map((entry) => (entry ? item(entry, page) : el('hr', 'my-menu__divider'))),
   )
 
   /* GNB 의 로그인 버튼과 같은 사실을 말합니다 — 로그인한 사람에게 로그인 버튼이
