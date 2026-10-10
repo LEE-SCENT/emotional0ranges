@@ -24,6 +24,10 @@ import { selectTab } from './tabs.js?v=aec7319a'
  *   multi    여럿 고를 수 있는지. max 가 있으면 그만큼까지입니다.
  *   cols     넓은 화면의 칸 수. 없으면 글자 폭대로 흘러갑니다.
  *   short    카드에 적을 때 줄이는 법("평일 근무" → "평일").
+ *   seon     선개팅 추가 프로필(profile-detail.html 의 data-seon)에 섭니다. 모두 답하지 않아도
+ *            되고, 선개팅 모임에서 상대가 볼 때만 보여 완성도에도 프로필 카드에도 들지 않습니다.
+ *   only     여럿 고르는 물음에서 홀로 서야 하는 선택지(외동 · 밝히고 싶지 않음). 고르면 나머지가
+ *            풀리고, 나머지를 고르면 이것이 풀립니다.
  *   word     가입한 사람의 성별에 따라 달리 적는 선택지({ 값: { 여성: '…' } }). 값은 그대로이고
  *            보이는 글자만 바뀝니다.
  *   other    "기타" 를 고르면 글로 받는 칸이 열립니다.
@@ -129,6 +133,63 @@ const QUESTIONS = [
       '저축 후 소비', '저축을 많이 해요'],
   },
 
+  /* ---- 선개팅 추가 프로필 ---------------------------------------------------
+     기존 사이트에서 옮겨 왔습니다. 자리는 profile-detail.html 의 data-q 입니다.
+     기존 사이트는 고르는 방식(하나 · 여럿)을 따로 적지 않아, 선택지가 서로를 밀어내면
+     하나로, 함께 참일 수 있으면 여럿으로 정했습니다. */
+  {
+    tab: 'values', name: 'seon-leave', label: '육아 휴직 가능 여부', seon: true,
+    options: ['가능', '불가', '모름'],
+  },
+  /* 기존 사이트는 관리 방식 넷과 맞벌이 · 외벌이를 한 물음에 두었습니다. 둘은 다른 것을
+     묻고 있어(누가 관리하는가 · 누가 버는가) 결혼 · 자녀 가치관처럼 나눕니다.
+     ⚠️ "맞벌이 · 외벌이"라는 이름표는 기존 사이트에 없습니다. */
+  {
+    tab: 'values', name: 'seon-money', label: '이상적인 경제 관리', seon: true, cols: 2,
+    options: ['한 사람이 전적으로 관리', '공동 관리 (협의 후 분배)', '각자 관리 (필요 비용만 공유)',
+      '상황에 따라 유연하게 결정'],
+  },
+  {
+    tab: 'values', name: 'seon-earners', label: '맞벌이 · 외벌이', seon: true,
+    options: ['맞벌이 희망', '외벌이 희망'],
+  },
+  {
+    tab: 'values', name: 'seon-in-laws', label: '이상적인 가족 관계', seon: true, cols: 2, other: true,
+    options: ['양가에 자주 찾아뵙고 교류하는 편이 좋다', '명절이나 중요한 때만 챙기면 된다',
+      '최소한의 예의만 지키면 된다', '특별한 기준 없이 상황에 따라 맞춘다', '기타'],
+  },
+  {
+    tab: 'values', name: 'seon-income', label: '연소득', seon: true,
+    options: ['4천 이하', '4천~6천', '6천~1억', '1억~2억', '2억 이상'],
+  },
+  {
+    tab: 'values', name: 'seon-assets', label: '자산 규모', seon: true,
+    options: ['5천 미만', '5천~1억', '1억~3억', '3억~5억', '5억~10억', '10억 이상'],
+  },
+  {
+    tab: 'values', name: 'seon-father', label: '아버지 생존 여부', seon: true,
+    options: ['생존', '별세', '밝히고 싶지 않음'],
+  },
+  {
+    tab: 'values', name: 'seon-father-job', label: '아버지 직업군', seon: true,
+    options: ['회사원', '사업 · 자영업', '전문직', '공무원 · 공공기관', '은퇴', '주부', '기타'],
+  },
+  {
+    tab: 'values', name: 'seon-mother', label: '어머니 생존 여부', seon: true,
+    options: ['생존', '별세', '밝히고 싶지 않음'],
+  },
+  {
+    tab: 'values', name: 'seon-mother-job', label: '어머니 직업군', seon: true,
+    options: ['회사원', '사업 · 자영업', '전문직', '공무원 · 공공기관', '은퇴', '주부', '기타'],
+  },
+  /* 형제자매는 여럿입니다(형도 여동생도 있을 수 있습니다). 외동과 밝히고 싶지 않음만
+     홀로 섭니다 — "외동"과 "남동생 있음"이 함께 켜진 답은 어느 쪽도 믿을 수 없습니다. */
+  {
+    tab: 'values', name: 'seon-siblings', label: '형제자매', seon: true, multi: true, cols: 3,
+    only: ['외동', '밝히고 싶지 않음'],
+    options: ['외동', '형/오빠 있음', '누나/언니 있음', '남동생 있음', '여동생 있음', '밝히고 싶지 않음'],
+  },
+
   /* 기존 사이트에서 옮겨 온 세 물음. 동의 아래에 섭니다(profile-detail.html 의 data-sensitive).
      ⚠️ 기존 사이트는 동의 전이라 선택지가 보이지 않았습니다. 아래 선택지는 자리를 채운
         것이라 기획 확인이 필요합니다. */
@@ -176,7 +237,7 @@ export function progressOf(draft = {}) {
     ['mbti', MBTI.every(([name]) => draft[name])],
     ['edu', filled(draft['edu-level'])],
     ['school', filled(draft.school)],
-    ...QUESTIONS.filter((q) => !q.sensitive).map((q) => [q.name, filled(draft[q.name])]),
+    ...QUESTIONS.filter((q) => !q.sensitive && !q.seon).map((q) => [q.name, filled(draft[q.name])]),
     ['words', filled(draft.words)],
   ]
   const done = units.filter(([, ok]) => ok).length
@@ -308,7 +369,8 @@ const detailOf = {
   },
   life: (draft) => QUESTIONS.filter((q) => q.tab === 'life')
     .map((q) => cardRow(q.card ?? q.label, chosen(q, draft), { wide: true })),
-  values: (draft) => QUESTIONS.filter((q) => q.tab === 'values' && isAsked(q, draft))
+  // 선개팅 추가 프로필은 선개팅 모임에서만 보입니다. 늘 보이는 이 카드에는 서지 않습니다.
+  values: (draft) => QUESTIONS.filter((q) => q.tab === 'values' && !q.seon && isAsked(q, draft))
     .map((q) => cardRow(q.card ?? q.label, chosen(q, draft), { wide: true })),
 }
 
@@ -351,6 +413,31 @@ export function initProfileDetail() {
   const sensitive = form.querySelector('[data-sensitive]')
   panels.values.append(sensitive)
   const consent = form.elements['sensitive-consent']
+
+  /* 선개팅 추가 프로필은 경제 가치관 앞에 섭니다(기존 사이트의 자리). 접혀 있다가 펼칩니다
+     — 모두 고르지 않아도 되는 열 몇 개의 물음이라, 처음부터 펼쳐두면 꼭 채워야 할 것처럼
+     화면을 차지합니다. 이미 답한 것이 있으면 펼친 채로 엽니다. */
+  const seon = form.querySelector('[data-seon]')
+  form.querySelector('[data-unit="money"]').before(seon)
+  const seonToggle = seon.querySelector('[data-seon-toggle]')
+  const seonBody = seon.querySelector('[data-seon-body]')
+  const openSeon = (open) => {
+    seonBody.hidden = !open
+    seonToggle.setAttribute('aria-expanded', String(open))
+    seonToggle.querySelector('.btn__label').textContent = open ? '접기' : '펼치기'
+  }
+  seonToggle.addEventListener('click', () => openSeon(seonBody.hidden))
+
+  /* 홀로 서야 하는 선택지(only). 폼이 값을 읽기 전에(capture) 맞춰둡니다. */
+  form.addEventListener('change', (e) => {
+    const box = e.target
+    const q = QUESTIONS.find((item) => item.only && item.name === box.name)
+    if (!q || !box.checked) return
+    const alone = q.only.includes(box.value)
+    for (const other of form.querySelectorAll(`input[name="${q.name}"]:checked`)) {
+      if (other !== box && (alone || q.only.includes(other.value))) other.checked = false
+    }
+  }, true)
 
   /* 동의를 거두면 답도 지웁니다. 칸만 감추고 값을 남겨두면, 거둔 동의 뒤에서 민감정보를
      들고 있는 것이 됩니다. 폼이 값을 읽기 전에(capture) 지워, 카드와 완성도가 한 번에
@@ -550,6 +637,10 @@ export function initProfileDetail() {
   // 주소에 구획이 적혀 있으면 그리로 갑니다. 물음을 다 그린 뒤라야 자리가 맞습니다.
   const asked = location.hash.slice(1)
   if (asked !== tab && TABS.includes(asked)) requestAnimationFrame(() => go(asked, 'instant'))
+
+  // 값이 다 써넣어진 뒤라야 답한 것이 있는지 알 수 있습니다(저장된 것, 쓰던 것 모두).
+  openSeon([...seonBody.querySelectorAll('input')]
+    .some((input) => (input.type === 'text' ? input.value.trim() : input.checked)))
 
   // 미리보기 창은 지금 보고 있는 탭의 카드부터 보여줍니다.
   document.getElementById('profile-preview')?.addEventListener('profile-preview:open', (e) => {

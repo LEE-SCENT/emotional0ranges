@@ -544,3 +544,57 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
   font-size: var(--typography-body-s-regular-font-size);
   line-height: var(--typography-body-s-regular-line-height);
 }
+
+/* ---- 선개팅 추가 프로필 (상세 프로필 · 가치관) -----------------------------
+   늘 보이는 카드가 아니라 선개팅 모임에서만 보이는 물음들이라 한 상자에 묶어 접어둡니다.
+   민감정보 상자(.profile-sensitive)와 같은 테두리입니다 — 둘 다 "이 안의 것은 다르게
+   쓰인다"를 말하는 상자입니다. */
+.profile-extra {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--colors-border);
+  border-radius: var(--_rounded-l);
+}
+.profile-extra__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-300);
+  padding: var(--spacing-500);
+}
+.profile-extra__head .btn { flex: none; }
+.profile-extra__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-50);
+  margin: 0;
+}
+.profile-extra__text b {
+  color: var(--colors-fg);
+  font-size: var(--typography-body-l-semibold-font-size);
+  font-weight: var(--typography-body-l-semibold-font-weight);
+  line-height: var(--typography-body-l-semibold-line-height);
+}
+.profile-extra__text span {
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-s-regular-font-size);
+  line-height: var(--typography-body-s-regular-line-height);
+  word-break: keep-all;
+}
+.profile-extra__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-800);
+  padding: var(--spacing-500);
+  border-block-start: 1px solid var(--colors-border);
+}
+/* 묶음의 이름(결혼 후 가정 관리 · 가족 정보). 물음의 이름표보다 작고 흐려, 물음이 아니라
+   물음들의 머리로 읽힙니다. 아래 물음과는 붙여 둡니다. */
+.profile-extra__group {
+  margin: 0 0 calc(var(--spacing-600) * -1);
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-s-semibold-font-size);
+  font-weight: var(--typography-body-s-semibold-font-weight);
+  line-height: var(--typography-body-s-semibold-line-height);
+}
+.profile-extra__group:not(:first-child) { margin-block-start: var(--spacing-400); }

@@ -28,7 +28,7 @@
 <link rel="stylesheet" href="./components/tabs.css?v=a962487a">
 <link rel="stylesheet" href="./components/verified-banner.css?v=6f3f1c77">
 <link rel="stylesheet" href="./components/profile-card.css?v=eaf662c0">
-<link rel="stylesheet" href="./components/profile.css?v=9b7ba78e">
+<link rel="stylesheet" href="./components/profile.css?v=734bc3b4">
 <link rel="stylesheet" href="./components/verify.css?v=43d9233f">
 <link rel="stylesheet" href="./components/confirm.css?v=598089ab">
 <link rel="stylesheet" href="./components/toast.css?v=c91e6fe0">
@@ -215,6 +215,53 @@
       <section class="profile__panel" id="life" aria-label="라이프" data-panel="life"></section>
       <hr class="profile__divider">
       <section class="profile__panel" id="values" aria-label="가치관" data-panel="values">
+        <!-- 선개팅 추가 프로필(기존 사이트에서 옮겨 왔습니다). 경제 가치관 앞으로 옮겨지고,
+             접혀 있다가 펼칩니다(profile-detail.js). 고르는 물음은 data-q 자리에 그려지고,
+             글로 받는 두 칸만 여기 적혀 있습니다. 모두 답하지 않아도 되고, 선개팅 모임에서
+             상대가 볼 때만 보여 완성도에도 옆의 프로필 카드에도 들지 않습니다. -->
+        <div class="profile-extra" data-seon>
+          <div class="profile-extra__head">
+            <p class="profile-extra__text">
+              <b id="profile-seon-title">선개팅 추가 프로필</b>
+              <span>모두 선택 사항이에요 · 선개팅 모임에서 상대가 내 프로필을 볼 때만 보여요</span>
+            </p>
+            <button class="btn btn--ghost btn--small" type="button" data-seon-toggle
+                    aria-expanded="false" aria-controls="profile-seon-body" aria-describedby="profile-seon-title">
+              <span class="btn__label">펼치기</span>
+            </button>
+          </div>
+          <div class="profile-extra__body" id="profile-seon-body" data-seon-body hidden>
+            <p class="profile-extra__group">결혼 후 가정 관리</p>
+            <div data-q="seon-leave"></div>
+            <div data-q="seon-money"></div>
+            <div data-q="seon-earners"></div>
+            <div data-q="seon-in-laws"></div>
+            <div class="field">
+              <label class="field__label" for="profile-seon-wish">결혼 시기, 방법에 대한 희망 사항</label>
+              <div class="text-field">
+                <input id="profile-seon-wish" type="text" name="seon-wish" maxlength="100" autocomplete="off"
+                       placeholder="예: 2년 안에, 스몰웨딩으로">
+              </div>
+            </div>
+            <div data-q="seon-income"></div>
+            <div data-q="seon-assets"></div>
+
+            <p class="profile-extra__group">가족 정보</p>
+            <div data-q="seon-father"></div>
+            <div data-q="seon-father-job"></div>
+            <div data-q="seon-mother"></div>
+            <div data-q="seon-mother-job"></div>
+            <div data-q="seon-siblings"></div>
+            <div class="field">
+              <label class="field__label" for="profile-seon-hometown">본가 지역</label>
+              <div class="text-field">
+                <input id="profile-seon-hometown" type="text" name="seon-hometown" maxlength="30" autocomplete="off"
+                       placeholder="예: 부산 해운대구">
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- 민감정보 세 물음. 동의해야 열립니다(profile-detail.js 가 가치관의 끝으로 옮깁니다).
              동의는 선택이라 완성도에 들지 않습니다 — 하지 않아도 교환에는 아무 영향이 없습니다. -->
         <div class="profile-sensitive" data-sensitive>
@@ -319,7 +366,7 @@
   initMyMenus()
   const { initConfirms } = await import('./components/confirm.js?v=f516d2db')
   initConfirms()
-  const { initProfileDetail } = await import('./components/profile-detail.js?v=4c1397e8')
+  const { initProfileDetail } = await import('./components/profile-detail.js?v=549233e7')
   initProfileDetail()
   const { initTabs } = await import('./components/tabs.js?v=aec7319a')
   initTabs()
