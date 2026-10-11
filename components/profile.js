@@ -11,7 +11,7 @@
 import { openConfirm } from './confirm.js?v=f516d2db'
 import { showToast } from './toast.js?v=ccb77a07'
 import { cardGrid, cardHeader, cardRow, initProfileForm, load, store, swap } from './profile-form.js?v=25fd6e27'
-import { progressOf } from './profile-detail.js?v=685ec7d6'
+import { progressOf } from './profile-detail.js?v=13c53301'
 
 /**
  * ⚠️ 예시입니다. 행정구역 전체가 아니라 화면을 맞춰 보는 데 필요한 만큼만 있습니다.
@@ -198,8 +198,9 @@ export function initProfile() {
      가려 가며 고치면, 저장된 값을 처음 써넣을 때처럼 사건 없이 바뀐 자리를 놓칩니다. */
   const jobDisplay = form.querySelector('[data-job-display]')
 
-  /* 본인인증으로 들어온 성별 · 출생연도. 둘 다 읽기 전용 칸에 적기만 합니다. */
+  /* 본인인증으로 들어온 이름 · 성별 · 출생연도. 모두 읽기 전용 칸에 적기만 합니다. */
   const me = load().me
+  form.querySelector('[data-me-name]').value = me.name
   form.querySelector('[data-me-gender]').value = me.gender
   form.querySelector('[data-me-birth]').value = String(me.birthYear)
 

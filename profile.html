@@ -31,7 +31,7 @@
 <link rel="stylesheet" href="./components/choice.css?v=fd460b98">
 <link rel="stylesheet" href="./components/verified-banner.css?v=6f3f1c77">
 <link rel="stylesheet" href="./components/profile-card.css?v=eaf662c0">
-<link rel="stylesheet" href="./components/profile.css?v=855c2894">
+<link rel="stylesheet" href="./components/profile.css?v=409d5434">
 <link rel="stylesheet" href="./components/tabs.css?v=a962487a">
 <link rel="stylesheet" href="./components/verify.css?v=9ecc570b">
 <link rel="stylesheet" href="./components/confirm.css?v=598089ab">
@@ -286,15 +286,23 @@
       <div class="profile__section">
         <!-- 운영 사이트와 같이 이름 칸은 없고 안내 한 줄이 섭니다. "본인인증을 다시"는 본인확인
              기관의 창을 띄웁니다(identity-check.js). -->
-        <p class="profile__note">이름 · 나이 · 성별은 휴대폰 본인인증으로 등록돼 여기서 바꿀 수 없어요.
+        <p class="profile__note">이름 · 성별 · 출생연도는 휴대폰 본인인증으로 등록돼 여기서 바꿀 수 없어요.
           바꾸시려면 <button class="profile__link" type="button" data-identity-check>본인인증을 다시</button> 해 주세요.
           개명은 고객센터로 문의해 주세요.</p>
 
         <!-- 성별은 출생연도와 같이 읽기 전용 칸입니다(profile.js 가 값을 넣습니다). 고를 수 없는 값을
              남성·여성 두 선택지로 보이면 고를 수 있는 것처럼 읽힙니다. 이름이 없는 칸이라 폼의
              값에 들지 않습니다. 바꿀 수 없다는 말은 위의 안내 한 줄이 이미 합니다.
-             둘 다 짧고 같은 출처(본인인증)의 값이라 폰에서도 한 줄에 반씩 섭니다. -->
-        <div class="field-row">
+             이름 · 성별 · 출생연도는 같은 출처(본인인증)의 값이라 한 묶음으로 섭니다. 넓은 화면은 셋이
+             한 줄, 좁은 화면은 이름이 한 줄을 다 쓰고 그 아래 성별 · 출생연도가 반씩입니다 — 셋을
+             한 줄에 두면 긴 이름이 잘립니다(profile.css 의 .profile__me). -->
+        <div class="profile__me">
+          <div class="field profile__me-name">
+            <label class="field__label" for="profile-name">이름</label>
+            <div class="text-field text-field--readonly">
+              <input id="profile-name" type="text" readonly data-me-name>
+            </div>
+          </div>
           <div class="field">
             <label class="field__label" for="profile-gender">성별</label>
             <div class="text-field text-field--readonly">
@@ -587,7 +595,7 @@
   initConfirms()
   // segmented 보다 먼저 돕니다. 저장된 쪽(검색·카테고리)을 고른 칸으로 세워둬야
   // 그쪽이 그 칸의 자리를 잽니다.
-  const { initProfile } = await import('./components/profile.js?v=146653f7')
+  const { initProfile } = await import('./components/profile.js?v=2e0b8b84')
   initProfile()
   const { initSegmentedControls } = await import('./components/segmented-control.js?v=bbd7c4b8')
   initSegmentedControls()

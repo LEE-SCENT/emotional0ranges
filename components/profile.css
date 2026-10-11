@@ -85,6 +85,14 @@
   padding: 0;
   border: 0;
 }
+
+/* 본인인증 값 셋(이름 · 성별 · 출생연도). 칸 사이는 한 줄 두 칸(.field-row)과 같고, 줄 사이는
+   구획의 간격과 같습니다. */
+.profile__me {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--spacing-400) var(--spacing-150);
+}
 /* 상세 프로필은 물음 하나가 구획 하나라 선 없이 32 로만 띄웁니다. */
 .profile__divider {
   margin: 0;
@@ -367,6 +375,10 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
   .profile__form .profile-promo.profile__only-narrow { display: flex; }
 
   .profile__height { max-inline-size: none; }
+
+  /* 이름은 한 줄을 다 쓰고, 성별 · 출생연도가 그 아래 반씩 섭니다. */
+  .profile__me { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .profile__me-name { grid-column: 1 / -1; }
 
   /* 완성도의 한 줄과 [n 채우기]는 위아래로 섭니다. 버튼이 칸의 이름을 적어 길이가 바뀌는데
      ("선호하는 이성 스타일 채우기"), 옆에 두면 그때마다 한 줄이 두 줄로 꺾입니다. */
