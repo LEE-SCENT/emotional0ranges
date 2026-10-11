@@ -239,19 +239,19 @@
           </div>
         </div>
 
-        <!-- 인증 전. 기존 사이트의 "직장 인증 · 미등록" 입니다.
-             권하기 전에 비공개라는 것부터 말합니다 — 회사를 묻는 서비스에서 사람들이 가장
-             먼저 걱정하는 것은 "상대에게 보이는가"이고, 그 걱정이 풀려야 인증을 누릅니다. -->
+        <!-- 인증 전. 혼인·가족 정보 인증과 같은 인증 권유 띠(VerifiedBanner)입니다 — 인증 후의
+             "회사 인증 완료" 띠와 한 쌍이라, 인증 전과 후가 같은 자리에서 같은 꼴로 바뀝니다.
+             인증하는 길(건강보험 자동 · 서류 직접)은 창 안에 탭으로 있습니다(verify.js).
+             비공개라는 안내는 폼 첫머리의 안심 박스가 먼저 합니다. -->
         <div class="profile__group" data-company="none" hidden>
-          <div class="field">
-            <span class="field__label">직장 인증 <span class="tag profile__status">미등록</span></span>
-            <p class="field__help">직장을 인증하면 같은 회사 사람이 모임에 있는지 중복 확인으로 알 수 있어요.</p>
+          <div class="verified-banner">
+            <svg class="verified-banner__icon" aria-hidden="true"><use href="#icon-infoCircle"></use></svg>
+            <p class="verified-banner__text">
+              <b>직장 인증</b>
+              <span>같은 회사 사람이 모임에 있는지 확인할 수 있어요</span>
+            </p>
+            <button class="btn btn--outlined btn--medium" type="button" data-verify-open="company"><span class="btn__label">인증하기</span></button>
           </div>
-          <!-- 인증하는 길(건강보험 자동 · 서류 직접)은 창 안에 탭으로 있습니다(verify.js). 화면에
-               두 길을 펼쳐 두면 창과 같은 것이 두 번 서고, 기본 정보가 한참 아래로 밀립니다. -->
-          <button class="btn btn--outlined btn--medium" type="button" data-verify-open="company">
-            <span class="btn__label">직장 인증하기</span>
-          </button>
         </div>
       </div>
 
