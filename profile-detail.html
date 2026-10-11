@@ -209,7 +209,8 @@
       <section class="profile__panel" id="life" aria-label="라이프" data-panel="life"></section>
       <hr class="profile__divider">
       <section class="profile__panel" id="values" aria-label="가치관" data-panel="values">
-        <!-- 민감정보 동의. 운영 사이트와 같이 가치관의 첫머리에 서고, 문구도 그대로입니다.
+        <!-- 민감정보 동의. 운영 사이트와 같이 가치관의 첫머리에 서고, 문구는 동의 문장만
+             결제의 필수 동의처럼 [선택]을 앞에 두고 겹치는 "동의"를 덜었습니다.
              [동의하고 답하기]를 누르면 이 덩어리는 사라지고 바로 아래 두 물음이 열립니다
              (profile-detail.js). 동의한 값은 감춰진 칸(sensitive-consent)에 담겨 저장됩니다.
              철회는 고지에 적힌 대로 물음을 비우거나 고객센터로 합니다. -->
@@ -223,7 +224,7 @@
           </label>
           <div class="profile-sensitive__body">
             <label class="profile-sensitive__text" for="sensitive-agree">
-              <b id="sensitive-agree-title">민감정보(정치적 견해·종교) 수집·이용 동의에 동의합니다.</b>
+              <b id="sensitive-agree-title">[선택] 민감정보(정치적 견해·종교) 수집·이용에 동의합니다</b>
               <span>동의하면 이 구획의 문항이 열려요.</span>
             </label>
             <div class="profile-sensitive__terms" aria-label="민감정보 수집·이용 안내">
