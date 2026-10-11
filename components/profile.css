@@ -475,7 +475,8 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
 
 .profile-progress__bar {
   position: relative;
-  block-size: var(--spacing-200);
+  /* 6 입니다. 더 얇으면(4) 구분선처럼 읽히고, 조금 채운 막대(4%)가 점으로만 보입니다. */
+  block-size: var(--spacing-150);
   border-radius: var(--_rounded-full);
   background: var(--colors-border);
 }
