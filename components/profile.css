@@ -618,18 +618,23 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
 }
 .profile-extra__group:not(:first-child) { margin-block-start: var(--spacing-400); }
 
-/* ---- 칸마다의 저장 (상세 프로필) -------------------------------------------
-   운영 사이트와 같이 고르는 칸은 고르는 즉시 저장되고, 글로 쓰는 칸에만 [저장]이 섭니다.
-   한 줄 칸은 칸 바로 옆, 긴 글 칸은 글자 수 옆입니다. */
-.profile__field-row {
-  display: flex;
+/* ---- 글 칸의 "저장됨" (상세 프로필) ---------------------------------------
+   글은 칸을 떠날 때 저절로 저장되고, 그때 작게 "저장됨"이 섭니다. 한 줄 칸은 칸 안의
+   오른쪽 끝, 긴 글 칸은 글자 수 옆입니다. 다시 쓰기 시작하면 사라집니다. */
+.profile__field-status {
+  flex: none;
+  display: inline-flex;
   align-items: center;
-  gap: var(--spacing-200);
-  flex: 1 1 auto;
-  min-inline-size: 0;
+  gap: var(--spacing-50);
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-s-regular-font-size);
+  line-height: var(--typography-body-s-regular-line-height);
 }
-.profile__field-row > .text-field { flex: 1 1 auto; min-inline-size: 0; }
-.profile__field-save { flex: none; }
+.profile__field-status[hidden] { display: none; }
+.profile__field-status svg {
+  inline-size: var(--spacing-400);
+  block-size: var(--spacing-400);
+}
 .profile__field-foot {
   display: flex;
   align-items: center;

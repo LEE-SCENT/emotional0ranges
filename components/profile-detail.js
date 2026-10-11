@@ -13,7 +13,6 @@
  */
 import { cardGrid, cardHeader, cardRow, el, initProfileForm, load, swap } from './profile-form.js?v=25fd6e27'
 import { selectTab } from './tabs.js?v=aec7319a'
-import { showToast } from './toast.js?v=ccb77a07'
 
 /**
  * 물음 하나.
@@ -381,18 +380,23 @@ export function initProfileDetail() {
     else panels[q.tab].append(question(q))
   }
   /* ---- 민감정보 동의 -----------------------------------------------------
-     운영 사이트와 같습니다. 동의에 체크해야 [동의하고 답하기]가 켜지고, 누르면 동의가
-     저장되며 이 덩어리는 사라지고 두 물음이 열립니다. */
+     체크가 곧 동의입니다. 체크하면 바로 아래에 두 물음이 열리고, 동의는 고른 칸처럼 바로
+     저장됩니다. 동의 덩어리는 이 화면에 있는 동안 체크된 채 남아, 잘못 눌렀으면 그 자리에서
+     풉니다 — 풀면 두 물음이 닫히고 답도 지웁니다(동의 철회). 동의한 채로 다시 들어오면
+     덩어리 없이 물음만 섭니다. */
   const sensitive = form.querySelector('[data-sensitive]')
   const consent = form.elements['sensitive-consent']
   const agree = sensitive.querySelector('[data-sensitive-agree]')
-  const accept = sensitive.querySelector('[data-sensitive-accept]')
-  agree.addEventListener('change', () => { accept.disabled = !agree.checked })
-  accept.addEventListener('click', () => {
-    consent.checked = true
+  let agreedHere = false
+  agree.addEventListener('change', () => {
+    agreedHere = true
+    consent.checked = agree.checked
+    const names = QUESTIONS.filter((q) => q.sensitive).map((q) => q.name)
+    if (!agree.checked) {
+      for (const input of form.querySelectorAll(names.map((name) => `input[name="${name}"]`).join())) input.checked = false
+    }
     consent.dispatchEvent(new Event('change', { bubbles: true }))
-    // 덩어리가 사라지면 초점이 갈 곳을 잃습니다. 막 열린 첫 물음으로 옮깁니다.
-    form.querySelector('[data-unit="politics"] input')?.focus()
+    if (!agree.checked) api.save(names)
   })
 
   /* 선개팅 추가 프로필은 경제 가치관 앞에 섭니다(기존 사이트의 자리). 접혀 있다가 펼칩니다
@@ -409,6 +413,12 @@ export function initProfileDetail() {
   }
   seonToggle.addEventListener('click', () => openSeon(seonBody.hidden))
 
+  /* 민감정보 동의와 두 물음은 가치관의 맨 끝입니다. 탭의 첫머리에 서면 가장 무겁고
+     고르지 않아도 되는 물음이 가벼운 물음들을 가로막습니다 — 다 답한 뒤에 더 답할 수
+     있는 것으로 만납니다. */
+  panels.values.append(sensitive, ...QUESTIONS.filter((q) => q.sensitive)
+    .map((q) => form.querySelector(`[data-unit="${q.name}"]`)))
+
   /* 홀로 서야 하는 선택지(only). 폼이 값을 읽기 전에(capture) 맞춰둡니다. */
   form.addEventListener('change', (e) => {
     const box = e.target
@@ -421,52 +431,47 @@ export function initProfileDetail() {
   }, true)
 
   /* ---- 저장 ---------------------------------------------------------------
-     운영 사이트와 같이 고르는 칸은 고르는 즉시 저장되고, 글로 쓰는 칸은 칸마다 [저장]을
-     눌러 저장합니다. 고른 것마다 알림을 띄우지는 않습니다 — 누를 때마다 뜨면 알림이
-     고르는 손을 가립니다. 글을 저장했을 때만 알립니다. */
+     모두 저절로 저장됩니다. 고르는 칸은 고르는 즉시, 글로 쓰는 칸은 칸을 떠날 때(change)
+     입니다 — 한 글자마다 저장하면 쓰다 만 문장이 상대가 보는 카드에 오릅니다. 알림은
+     띄우지 않고, 글 칸에만 작게 "저장됨"을 적습니다. 무엇을 고쳤는지는 고른 칸이 스스로
+     보여주지만, 글은 떠난 뒤에 저장됐는지가 보이지 않습니다. */
   let api = null
+  const statuses = new Map()
   form.addEventListener('change', (e) => {
     const input = e.target
-    if (!api || !input.name || (input.type !== 'radio' && input.type !== 'checkbox')) return
+    if (!api || !input.name) return
+    if (!api.dirty([input.name])) return
     api.save([input.name])
+    const status = statuses.get(input.name)
+    if (status) status.hidden = false
   })
 
   const texts = [...form.querySelectorAll('input[type="text"][name], textarea[name]')]
-  const fieldSaves = new Map()
   for (const input of texts) {
-    const button = el('button', 'btn btn--filled btn--medium profile__field-save')
-    button.type = 'button'
-    button.disabled = true
-    button.append(el('span', 'btn__label', '저장'))
-    button.setAttribute('aria-label', `${input.labels?.[0]?.textContent.trim() || input.getAttribute('aria-label') || ''} 저장`.trim())
+    const status = el('span', 'profile__field-status')
+    status.setAttribute('role', 'status')
+    status.hidden = true
+    status.innerHTML = '<svg aria-hidden="true"><use href="#icon-check"></use></svg>저장됨'
     const box = input.closest('.text-field')
     if (input.tagName === 'TEXTAREA') {
-      // 긴 글 칸은 옆자리가 없어 글자 수 옆, 칸의 오른쪽 아래에 섭니다.
+      // 긴 글 칸은 글자 수 옆, 칸의 오른쪽 아래에 섭니다.
       const foot = el('div', 'profile__field-foot')
       const count = box.parentElement.querySelector('.field__count')
       count.replaceWith(foot)
-      foot.append(count, button)
+      foot.append(status, count)
     } else {
-      // 한 줄 칸은 칸 바로 옆입니다(운영 사이트의 학교 칸과 같습니다).
-      const row = el('div', 'profile__field-row')
-      box.replaceWith(row)
-      row.append(box, button)
-    }
-    const saveText = () => {
-      if (button.disabled) return
-      api.save([input.name])
-      showToast('저장했어요', { icon: '#icon-check', tone: 'success' })
-    }
-    button.addEventListener('click', saveText)
-    // 한 줄 칸에서는 엔터가 그 칸의 저장입니다.
-    if (input.tagName !== 'TEXTAREA') {
+      // 한 줄 칸은 칸 안의 오른쪽 끝입니다. 밖에 두면 나타날 때 칸이 줄거나 아래가 밀립니다.
+      box.append(status)
+      // 엔터는 쓰기를 마치는 것입니다. 폼을 보내지 않고 그 자리에서 저장합니다.
       input.addEventListener('keydown', (e) => {
         if (e.key !== 'Enter' || e.isComposing) return
         e.preventDefault()
-        saveText()
+        input.dispatchEvent(new Event('change', { bubbles: true }))
       })
     }
-    fieldSaves.set(input.name, button)
+    // 다시 고치기 시작하면 "저장됨"은 더 이상 참이 아닙니다.
+    input.addEventListener('input', () => { status.hidden = true })
+    statuses.set(input.name, status)
   }
 
   /* [완료] — 다 됐으면 나갑니다. 저장하지 않은 글이 남아 있으면 함께 저장하고 나갑니다. */
@@ -495,9 +500,7 @@ export function initProfileDetail() {
     for (const q of QUESTIONS.filter((item) => item.sensitive)) {
       form.querySelector(`[data-unit="${q.name}"]`).hidden = !isAsked(q, draft)
     }
-    sensitive.hidden = Boolean(draft['sensitive-consent'])
-    // 글 칸의 [저장]은 저장된 것과 다를 때만 켜집니다.
-    for (const [name, button] of fieldSaves) button.disabled = !api?.dirty([name])
+    sensitive.hidden = Boolean(draft['sensitive-consent']) && !agreedHere
     count.textContent = [...draft.words].length
     drawProgress(draft)
   }
@@ -653,7 +656,6 @@ export function initProfileDetail() {
   const asked = location.hash.slice(1)
   if (asked !== tab && TABS.includes(asked)) requestAnimationFrame(() => go(asked, 'instant'))
 
-  // 쓰던 것(새로고침 전의 저장하지 않은 글)이 돌아왔으면 그 칸의 [저장]이 켜져야 합니다.
   api.refresh()
 
   // 값이 다 써넣어진 뒤라야 답한 것이 있는지 알 수 있습니다(저장된 것, 쓰던 것 모두).

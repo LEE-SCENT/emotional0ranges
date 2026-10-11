@@ -28,7 +28,7 @@
 <link rel="stylesheet" href="./components/tabs.css?v=a962487a">
 <link rel="stylesheet" href="./components/verified-banner.css?v=6f3f1c77">
 <link rel="stylesheet" href="./components/profile-card.css?v=eaf662c0">
-<link rel="stylesheet" href="./components/profile.css?v=e0161ae7">
+<link rel="stylesheet" href="./components/profile.css?v=e0339ce1">
 <link rel="stylesheet" href="./components/verify.css?v=9ecc570b">
 <link rel="stylesheet" href="./components/confirm.css?v=598089ab">
 <link rel="stylesheet" href="./components/toast.css?v=c91e6fe0">
@@ -209,13 +209,10 @@
       <section class="profile__panel" id="life" aria-label="라이프" data-panel="life"></section>
       <hr class="profile__divider">
       <section class="profile__panel" id="values" aria-label="가치관" data-panel="values">
-        <!-- 민감정보 동의. 운영 사이트와 같이 가치관의 첫머리에 서고, 문구는 동의 문장만
-             결제의 필수 동의처럼 [선택]을 앞에 두고 겹치는 "동의"를 덜었습니다.
-             [동의하고 답하기]를 누르면 이 덩어리는 사라지고 바로 아래 두 물음이 열립니다
-             (profile-detail.js). 동의한 값은 감춰진 칸(sensitive-consent)에 담겨 저장됩니다.
-             철회는 고지에 적힌 대로 물음을 비우거나 고객센터로 합니다. -->
-        <!-- 생김새는 결제의 필수 동의(checkout.html)와 같습니다. 체크박스가 줄 맨 위에 서고
-             글과 고지가 그 옆에서 흐릅니다. 고지는 법이 정한 것이라 접지 않습니다. -->
+        <!-- 민감정보 동의. 가치관의 맨 끝으로 옮겨집니다(profile-detail.js). 체크가 곧 동의이고,
+             체크하면 바로 아래 두 물음이 열립니다. 동의한 값은 감춰진 칸(sensitive-consent)에
+             담겨 저장됩니다. 철회는 체크를 풀거나, 고지에 적힌 대로 물음을 비우거나 고객센터로 합니다.
+             생김새는 결제의 필수 동의(checkout.html)와 같습니다. 고지는 법이 정한 것이라 접지 않습니다. -->
         <div class="profile-sensitive" data-sensitive>
           <label class="checkbox">
             <input type="checkbox" id="sensitive-agree" data-sensitive-agree
@@ -225,12 +222,12 @@
           <div class="profile-sensitive__body">
             <label class="profile-sensitive__text" for="sensitive-agree">
               <b id="sensitive-agree-title">[선택] 민감정보(정치적 견해·종교) 수집·이용에 동의합니다</b>
-              <span>동의하면 이 구획의 문항이 열려요.</span>
+              <span>동의하면 정치 성향·종교 문항이 열려요.</span>
             </label>
             <div class="profile-sensitive__terms" aria-label="민감정보 수집·이용 안내">
               <p>아래 항목은 개인정보 보호법 제23조의 민감정보(정치적 견해, 종교)에 해당합니다.</p>
               <ul>
-                <li>수집 항목: 정치 성향, 종교, 종교 참여 정도</li>
+                <li>수집 항목: 정치 성향, 종교</li>
                 <li>수집·이용 목적: 이상형 매칭 서비스 제공(프로필 카드 표시 및 매칭 추천)</li>
                 <li>보유·이용 기간: 회원 탈퇴 시 또는 동의 철회 시까지</li>
                 <li>동의 거부 권리: 동의하지 않으셔도 서비스 이용에 불이익이 없습니다.</li>
@@ -238,9 +235,6 @@
               <p>동의하지 않으면 해당 문항은 표시되지 않고 프로필 완성도에서도 제외됩니다.
                 동의 철회는 마이페이지 &gt; 프로필 카드에서 해당 항목을 비우거나 고객센터로 요청하실 수 있습니다.</p>
             </div>
-            <button class="btn btn--filled btn--medium" type="button" data-sensitive-accept disabled>
-              <span class="btn__label">동의하고 답하기</span>
-            </button>
           </div>
           <input type="checkbox" name="sensitive-consent" hidden>
         </div>
@@ -309,11 +303,10 @@
         </div>
       </section>
 
-      <!-- 운영 사이트와 같이 고르면 바로 저장되고, 글로 쓰는 칸은 칸마다 [저장]이 있습니다
-           (profile-detail.js). 그래서 끝의 버튼은 저장이 아니라 [완료]입니다 — 다 됐으면
+      <!-- 고르면 바로, 글은 칸을 떠날 때 저절로 저장됩니다(profile-detail.js). 그래서 끝의 버튼은 저장이 아니라 [완료]입니다 — 다 됐으면
            나갑니다. 넓은 화면에서는 읽어 내려가는 동안 화면 아래에 붙어 따라오다가 폼의 끝에서
            제자리에 섭니다(profile.css). 좁은 화면에서는 아래의 bottom-cta 가 대신합니다. -->
-      <p class="profile__autosave">선택하면 바로 저장돼요. 채운 항목은 상대가 보는 프로필 카드에 표시돼요.</p>
+      <p class="profile__autosave">선택하거나 입력하면 바로 저장돼요. 채운 항목은 상대가 보는 프로필 카드에 표시돼요.</p>
       <div class="profile__actions">
         <button class="btn btn--filled btn--large profile__save" type="button" data-profile-done>
           <span class="btn__label">완료</span>
@@ -375,7 +368,7 @@
   initMyMenus()
   const { initConfirms } = await import('./components/confirm.js?v=f516d2db')
   initConfirms()
-  const { initProfileDetail } = await import('./components/profile-detail.js?v=12fa01cd')
+  const { initProfileDetail } = await import('./components/profile-detail.js?v=9bdd1ab9')
   initProfileDetail()
   const { initTabs } = await import('./components/tabs.js?v=aec7319a')
   initTabs()
