@@ -387,8 +387,11 @@
           <!-- 혼인신고(법률혼)는 없음·있음 가운데 하나이고, 사실혼은 그와 따로 켜고
                끕니다 — 둘 다 겪은 사람도, 사실혼만 겪은 사람도 있습니다. -->
           <div class="choice-group">
-            <!-- 운영 사이트의 차례와 글자입니다(미혼 → 사실혼 → 혼인신고). -->
+            <!-- 글자는 운영 사이트 그대로이고, 차례는 다릅니다(운영: 미혼 → 사실혼 → 혼인신고).
+                 하나만 고르는 두 카드를 붙여 두고, 따로 켜는 사실혼은 그 오른쪽에 둡니다 —
+                 사이에 끼면 두 카드가 한 묶음으로 읽히지 않습니다. -->
             <label class="choice"><input type="radio" name="married" value="none"><span>미혼</span></label>
+            <label class="choice"><input type="radio" name="married" value="yes"><span>혼인신고 경험 있음</span></label>
             <label class="checkbox-label">
               <span class="checkbox">
                 <input type="checkbox" name="cohabited">
@@ -396,7 +399,6 @@
               </span>
               사실혼 경험 있음
             </label>
-            <label class="choice"><input type="radio" name="married" value="yes"><span>혼인신고 경험 있음</span></label>
           </div>
           <div class="field-row profile__periods" data-periods hidden>
             <div class="field" data-period="married" hidden>
