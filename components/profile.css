@@ -382,9 +382,22 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
   .profile-extra__head { padding: var(--spacing-400); }
   .profile-extra__body { padding: var(--spacing-200) var(--spacing-400) var(--spacing-400); }
 
-  /* 완성도의 한 줄과 [n 채우기]는 위아래로 섭니다. 버튼이 칸의 이름을 적어 길이가 바뀌는데
-     ("선호하는 이성 스타일 채우기"), 옆에 두면 그때마다 한 줄이 두 줄로 꺾입니다. */
-  .profile-progress__foot { flex-direction: column; align-items: flex-start; }
+  /* 좁은 화면에서는 [n 채우기]가 "완성도 30%"의 오른쪽 끝으로 올라갑니다. 아래 한 줄
+     ("n개 더 채우면 …")은 버튼과 나란히 서면 버튼 이름의 길이에 따라 두 줄로 꺾이고, 버튼을
+     그 아래 따로 세우면 덩어리가 한 줄만큼 길어집니다. 머리 줄은 숫자가 짧아 자리가 남습니다. */
+  /* .profile 을 앞에 다는 것은 이 덩어리의 기본 꼴(아래, 같은 무게)이 파일에서 더 뒤에 있어서입니다. */
+  .profile .profile-progress {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: 'label jump' 'bar bar' 'note note';
+    align-items: center;
+  }
+  .profile .profile-progress__head,
+  .profile .profile-progress__foot { display: contents; }
+  .profile .profile-progress__label { grid-area: label; }
+  .profile .profile-progress__bar { grid-area: bar; }
+  .profile .profile-progress__note { grid-area: note; }
+  .profile .profile-progress__foot .btn { grid-area: jump; }
 
   /* 좁은 화면에서는 기간 칸이 한 줄씩 다 씁니다. 반 폭에는 "2022년 1월 ~ 2022년 3월"이
      들어가지 않습니다. */
