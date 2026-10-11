@@ -530,12 +530,15 @@ export function initProfileDetail() {
       ? `${need}개 더 채우면 카드를 교환할 수 있어요`
       : '이제 프로필 카드를 교환할 수 있어요'
     progress.classList.toggle('is-ready', !need)
-    // 다 채웠으면 갈 곳이 없습니다. 버튼은 다음에 갈 칸의 이름을 적습니다 — 누르기 전에
-    // 어디로 가는지 알고, 하나 채울 때마다 이름이 바뀌어 나아가는 것이 보입니다.
+    // 다 채웠으면 갈 곳이 없습니다. 문턱 전에는 버튼이 다음에 갈 칸의 이름을 적습니다 —
+    // 누르기 전에 어디로 가는지 알고, 하나 채울 때마다 이름이 바뀌어 나아가는 것이 보입니다.
+    // 문턱을 넘으면 교환은 이미 되므로 칸 하나를 짚어 재촉하지 않고 "안 채운 항목"으로 권합니다.
     const jump = progress.querySelector('[data-progress-jump]')
     jump.hidden = !missing.length
     progress.dataset.next = missing[0] ?? ''
-    if (missing.length) jump.querySelector('.btn__label').textContent = `${unitName(missing[0])} 채우기`
+    if (missing.length) {
+      jump.querySelector('.btn__label').textContent = need ? `${unitName(missing[0])} 채우기` : '안 채운 항목 채우기'
+    }
   }
 
   /** 칸의 이름(버튼에 적는 것). 이름표에서 읽고 "(최대 n개)"는 뗍니다. 긴 물음은 줄입니다. */
