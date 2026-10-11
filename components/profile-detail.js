@@ -432,46 +432,23 @@ export function initProfileDetail() {
 
   /* ---- 저장 ---------------------------------------------------------------
      모두 저절로 저장됩니다. 고르는 칸은 고르는 즉시, 글로 쓰는 칸은 칸을 떠날 때(change)
-     입니다 — 한 글자마다 저장하면 쓰다 만 문장이 상대가 보는 카드에 오릅니다. 알림은
-     띄우지 않고, 글 칸에만 작게 "저장됨"을 적습니다. 무엇을 고쳤는지는 고른 칸이 스스로
-     보여주지만, 글은 떠난 뒤에 저장됐는지가 보이지 않습니다. */
+     입니다 — 한 글자마다 저장하면 쓰다 만 문장이 상대가 보는 카드에 오릅니다. 알림도
+     "저장됨"도 띄우지 않습니다. 고르는 칸처럼 조용히 저장되고, 저절로 저장된다는 것은
+     [완료] 위의 한 줄이 미리 말해둡니다. */
   let api = null
-  const statuses = new Map()
   form.addEventListener('change', (e) => {
     const input = e.target
-    if (!api || !input.name) return
-    if (!api.dirty([input.name])) return
+    if (!api || !input.name || !api.dirty([input.name])) return
     api.save([input.name])
-    const status = statuses.get(input.name)
-    if (status) status.hidden = false
   })
 
-  const texts = [...form.querySelectorAll('input[type="text"][name], textarea[name]')]
-  for (const input of texts) {
-    const status = el('span', 'profile__field-status')
-    status.setAttribute('role', 'status')
-    status.hidden = true
-    status.innerHTML = '<svg aria-hidden="true"><use href="#icon-check"></use></svg>저장됨'
-    const box = input.closest('.text-field')
-    if (input.tagName === 'TEXTAREA') {
-      // 긴 글 칸은 글자 수 옆, 칸의 오른쪽 아래에 섭니다.
-      const foot = el('div', 'profile__field-foot')
-      const count = box.parentElement.querySelector('.field__count')
-      count.replaceWith(foot)
-      foot.append(status, count)
-    } else {
-      // 한 줄 칸은 칸 안의 오른쪽 끝입니다. 밖에 두면 나타날 때 칸이 줄거나 아래가 밀립니다.
-      box.append(status)
-      // 엔터는 쓰기를 마치는 것입니다. 폼을 보내지 않고 그 자리에서 저장합니다.
-      input.addEventListener('keydown', (e) => {
-        if (e.key !== 'Enter' || e.isComposing) return
-        e.preventDefault()
-        input.dispatchEvent(new Event('change', { bubbles: true }))
-      })
-    }
-    // 다시 고치기 시작하면 "저장됨"은 더 이상 참이 아닙니다.
-    input.addEventListener('input', () => { status.hidden = true })
-    statuses.set(input.name, status)
+  // 한 줄 칸에서 엔터는 쓰기를 마치는 것입니다. 폼을 보내지 않고 그 자리에서 저장합니다.
+  for (const input of form.querySelectorAll('input[type="text"][name]')) {
+    input.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter' || e.isComposing) return
+      e.preventDefault()
+      input.dispatchEvent(new Event('change', { bubbles: true }))
+    })
   }
 
   /* [완료] — 다 됐으면 나갑니다. 저장하지 않은 글이 남아 있으면 함께 저장하고 나갑니다. */
