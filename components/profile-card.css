@@ -176,24 +176,28 @@
 }
 
 /* ---- 상세 프로필을 권하는 카드 -------------------------------------------
-   기본 프로필만 쓴 사람에게 다음 걸음을 보여줍니다. 상세 프로필을 한 번이라도
-   저장하면 사라집니다. */
+   기본 프로필만 쓴 사람에게 다음 걸음을 보여줍니다. 글과 버튼이 한 줄에 서는 띠입니다 —
+   인증 띠(VerifiedBanner)와 같은 꼴(모서리 · 줄 높이)이라 폼 안에서 상자 하나만 튀지
+   않습니다. 버튼만 채운 검정이라, 정보를 알리는 인증 띠보다 한 걸음 더 권합니다. */
 .profile-promo {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: var(--spacing-300);
   box-sizing: border-box;
-  padding: var(--spacing-400) var(--spacing-500);
-  border-radius: var(--_rounded-2xl);
+  padding: var(--spacing-300) var(--spacing-400);
+  border-radius: var(--_rounded-l);
   /* 직장 인증 추천 카드와 같은 추천 카드의 바탕입니다(profile.css 의 --profile-recommend-*).
      프로필 화면 밖에서 쓰이면 예전 바탕으로 돌아갑니다. */
   background: var(--profile-recommend-bg, var(--colors-bg-low));
   box-shadow: inset 0 0 0 1px var(--profile-recommend-border, transparent);
   font-family: var(--_font-family-base);
 }
+.profile-promo .btn { flex: none; }
 .profile-promo__text {
+  flex: 1 1 0;
+  min-inline-size: 0;
   margin: 0;
+  word-break: keep-all;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-50);
