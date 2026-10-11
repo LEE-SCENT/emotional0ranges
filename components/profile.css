@@ -665,6 +665,8 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
   text-align: center;
   word-break: keep-all;
 }
+/* 넓은 화면에서는 [완료] 바로 아래에 붙는 한 줄입니다. */
+.profile__actions > .profile__autosave { margin-block-start: var(--spacing-200); }
 
 /* 도움말 줄 안의 링크 모양 버튼("증명서로 인증하기"). 운영 사이트와 같이 브랜드색에 밑줄입니다. */
 .profile__link {
