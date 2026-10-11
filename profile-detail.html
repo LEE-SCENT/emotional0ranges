@@ -28,11 +28,11 @@
 <link rel="stylesheet" href="./components/tag.css?v=fef5c195">
 <link rel="stylesheet" href="./components/checkbox.css?v=44baaa09">
 <link rel="stylesheet" href="./components/field.css?v=0f1aa06c">
-<link rel="stylesheet" href="./components/choice.css?v=fd460b98">
+<link rel="stylesheet" href="./components/choice.css?v=d3a5098d">
 <link rel="stylesheet" href="./components/tabs.css?v=a962487a">
 <link rel="stylesheet" href="./components/verified-banner.css?v=6f3f1c77">
 <link rel="stylesheet" href="./components/profile-card.css?v=ebd319ba">
-<link rel="stylesheet" href="./components/profile.css?v=53b39eda">
+<link rel="stylesheet" href="./components/profile.css?v=330ff151">
 <link rel="stylesheet" href="./components/verify.css?v=9ecc570b">
 <link rel="stylesheet" href="./components/confirm.css?v=6a6a0bdf">
 <link rel="stylesheet" href="./components/toast.css?v=c91e6fe0">
@@ -265,9 +265,10 @@
               <b id="profile-seon-title">선개팅 추가 프로필</b>
               <span>모두 선택 사항이에요 · 선개팅 모임에서 상대가 내 프로필을 볼 때만 보여요</span>
             </p>
-            <button class="btn btn--ghost btn--small" type="button" data-seon-toggle
-                    aria-expanded="false" aria-controls="profile-seon-body" aria-describedby="profile-seon-title">
-              <span class="btn__label">펼치기</span>
+            <!-- 펼치고 접는 것은 민감정보 동의 · 결제 규정과 같은 화살표입니다. 머리 줄 전체가 눌립니다. -->
+            <button class="profile-sensitive__toggle profile-extra__toggle" type="button" data-seon-toggle
+                    aria-expanded="false" aria-controls="profile-seon-body" aria-label="선개팅 추가 프로필 펼치기">
+              <svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg>
             </button>
           </div>
           <div class="profile-extra__body" id="profile-seon-body" data-seon-body hidden>
@@ -282,6 +283,8 @@
                        placeholder="짧게 적어주세요">
               </div>
             </div>
+            <!-- 연소득 · 자산은 가정 관리가 아니라 따로 묶습니다. -->
+            <p class="profile-extra__group">경제 정보</p>
             <div data-q="seon-income"></div>
             <div data-q="seon-assets"></div>
 
@@ -402,7 +405,7 @@
   initMyMenus()
   const { initConfirms } = await import('./components/confirm.js?v=f516d2db')
   initConfirms()
-  const { initProfileDetail } = await import('./components/profile-detail.js?v=530f6a30')
+  const { initProfileDetail } = await import('./components/profile-detail.js?v=014299ae')
   initProfileDetail()
   const { initTabs } = await import('./components/tabs.js?v=aec7319a')
   initTabs()

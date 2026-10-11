@@ -24,6 +24,7 @@ import { selectTab } from './tabs.js?v=aec7319a'
  *   card     카드의 이름표. 없으면 label 을 씁니다.
  *   multi    여럿 고를 수 있는지. max 가 있으면 그만큼까지입니다.
  *   cols     넓은 화면의 칸 수. 없으면 글자 폭대로 흘러갑니다.
+ *   list     문장으로 된 선택지라 한 줄에 하나씩, 왼쪽에 붙여 세웁니다(cols 대신).
  *   short    카드에 적을 때 줄이는 법("평일 근무" → "평일").
  *   seon     선개팅 추가 프로필(profile-detail.html 의 data-seon)에 섭니다. 모두 답하지 않아도
  *            되고, 선개팅 모임에서 상대가 볼 때만 보여 완성도에도 프로필 카드에도 들지 않습니다.
@@ -139,14 +140,15 @@ const QUESTIONS = [
   /* 운영 사이트와 같이 관리 방식과 맞벌이 · 외벌이가 한 물음에 섭니다. 둘을 함께 고를 수
      있어야 해서(공동 관리 + 맞벌이 희망) 여럿 고르는 물음입니다. */
   {
-    tab: 'values', name: 'seon-money', label: '이상적인 경제 관리', seon: true, multi: true, cols: 2,
+    tab: 'values', name: 'seon-money', label: '이상적인 경제 관리', seon: true, multi: true, list: true,
     options: ['한 사람이 전적으로 관리', '공동관리(협의 후 분배)', '각자 관리(필요 비용만 공유)',
       '상황에 따라 유연하게 결정', '맞벌이 희망', '외벌이 희망'],
   },
   {
-    tab: 'values', name: 'seon-in-laws', label: '이상적인 가족 관계', seon: true, cols: 2, other: '기타의견',
+    // "기타 의견"은 남사친 · 여사친 물음과 띄어쓰기를 맞췄습니다(운영 사이트는 "기타의견").
+    tab: 'values', name: 'seon-in-laws', label: '이상적인 가족 관계', seon: true, list: true, other: '기타 의견',
     options: ['양가에 자주 찾아뵙고 교류하는 편이 좋다', '명절이나 중요한 때만 챙기면 된다',
-      '최소한의 예의만 지키면 된다', '특별한 기준 없이 상황에 따라 맞춘다', '기타의견'],
+      '최소한의 예의만 지키면 된다', '특별한 기준 없이 상황에 따라 맞춘다', '기타 의견'],
   },
   {
     tab: 'values', name: 'seon-income', label: '연소득', seon: true,
@@ -286,7 +288,7 @@ function question(q) {
   field.setAttribute('aria-label', title)
   field.append(el('span', 'field__label', title))
 
-  const group = el('div', `choice-group${q.cols ? ` choice-group--cols-${q.cols}` : ''}`)
+  const group = el('div', `choice-group${q.list ? ' choice-group--list' : q.cols ? ` choice-group--cols-${q.cols}` : ''}`)
   if (q.max) group.dataset.max = q.max
   for (const option of q.options) {
     group.append(choice(q.multi ? 'checkbox' : 'radio', q.name, option, wordOf(q, option)))
@@ -459,9 +461,10 @@ export function initProfileDetail() {
   const openSeon = (open) => {
     seonBody.hidden = !open
     seonToggle.setAttribute('aria-expanded', String(open))
-    seonToggle.querySelector('.btn__label').textContent = open ? '접기' : '펼치기'
+    seonToggle.setAttribute('aria-label', open ? '선개팅 추가 프로필 접기' : '선개팅 추가 프로필 펼치기')
   }
-  seonToggle.addEventListener('click', () => openSeon(seonBody.hidden))
+  // 화살표만이 아니라 머리 줄 어디를 눌러도 펼치고 접습니다(민감정보 동의의 화살표와 같은 꼴).
+  seon.querySelector('.profile-extra__head').addEventListener('click', () => openSeon(seonBody.hidden))
 
   /* 민감정보 동의와 두 물음은 가치관의 맨 끝입니다. 탭의 첫머리에 서면 가장 무겁고
      고르지 않아도 되는 물음이 가벼운 물음들을 가로막습니다 — 다 답한 뒤에 더 답할 수

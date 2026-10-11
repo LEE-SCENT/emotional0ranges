@@ -378,6 +378,10 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
 
   .profile__height { max-inline-size: none; }
 
+  /* 선개팅 상자는 좌우 여백을 줄여 선택지가 쓸 폭을 넓힙니다. */
+  .profile-extra__head,
+  .profile-extra__body { padding: var(--spacing-400); }
+
   /* 완성도의 한 줄과 [n 채우기]는 위아래로 섭니다. 버튼이 칸의 이름을 적어 길이가 바뀌는데
      ("선호하는 이성 스타일 채우기"), 옆에 두면 그때마다 한 줄이 두 줄로 꺾입니다. */
   .profile-progress__foot { flex-direction: column; align-items: flex-start; }
@@ -664,8 +668,8 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
   justify-content: space-between;
   gap: var(--spacing-300);
   padding: var(--spacing-500);
+  cursor: pointer;
 }
-.profile-extra__head .btn { flex: none; }
 .profile-extra__text {
   display: flex;
   flex-direction: column;
@@ -674,9 +678,9 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
 }
 .profile-extra__text b {
   color: var(--colors-fg);
-  font-size: var(--typography-body-l-semibold-font-size);
-  font-weight: var(--typography-body-l-semibold-font-weight);
-  line-height: var(--typography-body-l-semibold-line-height);
+  font-size: var(--typography-heading-xs-semibold-font-size);
+  font-weight: var(--typography-heading-xs-semibold-font-weight);
+  line-height: var(--typography-heading-xs-semibold-line-height);
 }
 .profile-extra__text span {
   color: var(--colors-fg-lower);
@@ -691,16 +695,20 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
   padding: var(--spacing-500);
   border-block-start: 1px solid var(--colors-border);
 }
-/* 묶음의 이름(결혼 후 가정 관리 · 가족 정보). 물음의 이름표보다 작고 흐려, 물음이 아니라
-   물음들의 머리로 읽힙니다. 아래 물음과는 붙여 둡니다. */
+/* 묶음의 이름(결혼 후 가정 관리 · 경제 정보 · 가족 정보). 물음의 이름표보다 한 단계 크고
+   굵어, 아래 물음들의 머리로 읽힙니다. 두 번째 묶음부터는 위에 선을 그어 묶음이 갈리는
+   자리를 보입니다. 아래 물음과는 붙여 둡니다. */
 .profile-extra__group {
-  margin: 0 0 calc(var(--spacing-600) * -1);
-  color: var(--colors-fg-lower);
-  font-size: var(--typography-body-s-semibold-font-size);
-  font-weight: var(--typography-body-s-semibold-font-weight);
-  line-height: var(--typography-body-s-semibold-line-height);
+  margin: 0 0 calc(var(--spacing-400) * -1);
+  color: var(--colors-fg);
+  font-size: var(--typography-body-l-semibold-font-size);
+  font-weight: var(--typography-body-l-semibold-font-weight);
+  line-height: var(--typography-body-l-semibold-line-height);
 }
-.profile-extra__group:not(:first-child) { margin-block-start: var(--spacing-400); }
+.profile-extra__group:not(:first-child) {
+  padding-block-start: var(--spacing-800);
+  border-block-start: 1px solid var(--colors-border);
+}
 
 /* [완료] 위의 한 줄. 무엇이 이미 저장됐는지를 말해, 완료가 저장 버튼이 아니라는 것을 압니다. */
 .profile__autosave {
