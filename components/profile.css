@@ -148,7 +148,6 @@
   position: sticky;
   inset-block-start: calc(var(--profile-sticky-top) + var(--spacing-600));
 }
-.profile__aside .profile-promo { inline-size: 380px; max-inline-size: 100%; }
 /* 화면이 낮으면 카드가 아래에서 잘립니다 — 따라오느라 붙어 있어서, 페이지를 내려도 카드의
    아래쪽은 끝내 올라오지 않습니다. 오른쪽 단의 키를 화면에 맞추고 그 안에서 굴립니다.
    위는 붙는 자리, 아래는 같은 만큼(24) 띄웁니다.
@@ -379,7 +378,6 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
   .profile__aside,
   .profile__actions { display: none; }
   .profile__only-narrow { display: revert; }
-  .profile__form .profile-promo.profile__only-narrow { display: flex; }
 
   .profile__height { max-inline-size: none; }
 
