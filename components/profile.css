@@ -350,6 +350,11 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
   .profile__periods { flex-direction: column; align-items: stretch; }
   .profile__periods > .field { flex: none; }
 
+  /* 근무지의 [지역 선택 · 고정 근무지 없음]은 아래 [시/도][구] 줄과 같은 폭으로 섭니다.
+     항목이 반씩 나눠 가져, 글자 길이와 상관없이 가운데 경계가 아래 두 칸의 경계와
+     맞습니다(찾기 화면의 탭과 같은 방식). */
+  .profile__workplace > .segmented { align-self: stretch; }
+  .profile__workplace > .segmented .segmented__item { flex: 1 1 0; }
 
   /* 자녀 수는 열 개라 두 줄로 접히는 대신 옆으로 넘깁니다. 화면 끝까지 닿도록
      컨테이너 여백만큼 밖으로 내고, 같은 만큼 안을 채워 첫 단추의 자리를 지킵니다. */
