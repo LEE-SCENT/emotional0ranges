@@ -28,7 +28,7 @@
 <link rel="stylesheet" href="./components/tabs.css?v=a962487a">
 <link rel="stylesheet" href="./components/verified-banner.css?v=6f3f1c77">
 <link rel="stylesheet" href="./components/profile-card.css?v=eaf662c0">
-<link rel="stylesheet" href="./components/profile.css?v=5891d4d9">
+<link rel="stylesheet" href="./components/profile.css?v=1bdddc1d">
 <link rel="stylesheet" href="./components/verify.css?v=9ecc570b">
 <link rel="stylesheet" href="./components/confirm.css?v=598089ab">
 <link rel="stylesheet" href="./components/toast.css?v=c91e6fe0">
@@ -220,20 +220,30 @@
             <span class="checkbox__box" aria-hidden="true"><svg><use href="#icon-check"></use></svg></span>
           </label>
           <div class="profile-sensitive__body">
-            <label class="profile-sensitive__text" for="sensitive-agree">
-              <b id="sensitive-agree-title">[선택] 민감정보(정치적 견해·종교) 수집·이용에 동의합니다</b>
-              <span>동의하면 정치 성향·종교 문항이 열려요.</span>
-            </label>
-            <div class="profile-sensitive__terms" aria-label="민감정보 수집·이용 안내">
-              <p>아래 항목은 개인정보 보호법 제23조의 민감정보(정치적 견해, 종교)에 해당합니다.</p>
-              <ul>
-                <li>수집 항목: 정치 성향, 종교</li>
-                <li>수집·이용 목적: 이상형 매칭 서비스 제공(프로필 카드 표시 및 매칭 추천)</li>
-                <li>보유·이용 기간: 회원 탈퇴 시 또는 동의 철회 시까지</li>
-                <li>동의 거부 권리: 동의하지 않으셔도 서비스 이용에 불이익이 없습니다.</li>
-              </ul>
-              <p>동의하지 않으면 해당 문항은 표시되지 않고 프로필 완성도에서도 제외됩니다.
-                동의 철회는 마이페이지 &gt; 프로필 카드에서 해당 항목을 비우거나 고객센터로 요청하실 수 있습니다.</p>
+            <div class="profile-sensitive__head">
+              <label class="profile-sensitive__text" for="sensitive-agree">
+                <b id="sensitive-agree-title">[선택] 민감정보(정치적 견해·종교) 수집·이용에 동의합니다</b>
+                <span>동의하면 정치 성향·종교 문항이 열려요.</span>
+              </label>
+              <!-- 동의한 뒤에만 섭니다. 고지는 동의하기 전에 다 읽혀야 하고, 동의한 뒤에는
+                   접혀서 막 열린 두 물음이 고지 아래로 밀리지 않게 합니다(profile-detail.js). -->
+              <button class="profile-sensitive__toggle" type="button" aria-expanded="true"
+                      aria-controls="sensitive-terms" aria-label="안내 접기" hidden data-sensitive-toggle>
+                <svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg>
+              </button>
+            </div>
+            <div class="profile-sensitive__terms" id="sensitive-terms" aria-label="민감정보 수집·이용 안내">
+              <div class="profile-sensitive__terms-inner">
+                <p>아래 항목은 개인정보 보호법 제23조의 민감정보(정치적 견해, 종교)에 해당합니다.</p>
+                <ul>
+                  <li>수집 항목: 정치 성향, 종교</li>
+                  <li>수집·이용 목적: 이상형 매칭 서비스 제공(프로필 카드 표시 및 매칭 추천)</li>
+                  <li>보유·이용 기간: 회원 탈퇴 시 또는 동의 철회 시까지</li>
+                  <li>동의 거부 권리: 동의하지 않으셔도 서비스 이용에 불이익이 없습니다.</li>
+                </ul>
+                <p>동의하지 않으면 해당 문항은 표시되지 않고 프로필 완성도에서도 제외됩니다.
+                  동의 철회는 마이페이지 &gt; 프로필 카드에서 해당 항목을 비우거나 고객센터로 요청하실 수 있습니다.</p>
+              </div>
             </div>
           </div>
           <input type="checkbox" name="sensitive-consent" hidden>
@@ -368,7 +378,7 @@
   initMyMenus()
   const { initConfirms } = await import('./components/confirm.js?v=f516d2db')
   initConfirms()
-  const { initProfileDetail } = await import('./components/profile-detail.js?v=7f4fe610')
+  const { initProfileDetail } = await import('./components/profile-detail.js?v=4def115d')
   initProfileDetail()
   const { initTabs } = await import('./components/tabs.js?v=aec7319a')
   initTabs()

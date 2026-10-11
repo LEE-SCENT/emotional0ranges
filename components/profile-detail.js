@@ -388,8 +388,21 @@ export function initProfileDetail() {
   const consent = form.elements['sensitive-consent']
   const agree = sensitive.querySelector('[data-sensitive-agree]')
   let agreedHere = false
+  /* 고지는 동의하기 전에는 늘 펼쳐져 있고, 동의하면 접힙니다 — 접지 않으면 막 열린 두
+     물음이 긴 고지 아래, 폰에서는 화면 밖에 열려 체크해도 아무 일이 없는 것처럼 보입니다.
+     접혀도 무엇에 동의했는지(제목 줄)는 남고, 화살표로 다시 펼쳐 읽습니다. 철회하면 다시
+     펼칩니다. */
+  const termsToggle = sensitive.querySelector('[data-sensitive-toggle]')
+  const openTerms = (open) => {
+    sensitive.classList.toggle('is-collapsed', !open)
+    termsToggle.setAttribute('aria-expanded', String(open))
+    termsToggle.setAttribute('aria-label', open ? '안내 접기' : '안내 펼치기')
+  }
+  termsToggle.addEventListener('click', () => openTerms(sensitive.classList.contains('is-collapsed')))
   agree.addEventListener('change', () => {
     agreedHere = true
+    termsToggle.hidden = !agree.checked
+    openTerms(!agree.checked)
     consent.checked = agree.checked
     const names = QUESTIONS.filter((q) => q.sensitive).map((q) => q.name)
     if (!agree.checked) {

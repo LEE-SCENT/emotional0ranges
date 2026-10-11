@@ -480,11 +480,18 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--spacing-400);
   word-break: keep-all;
 }
-/* 글도 체크박스를 켭니다. 네모 하나는 손가락으로 겨누기에 좁습니다. */
+/* 동의 문장과 펼침 화살표가 한 줄에 섭니다(결제의 .checkout__agree-head). */
+.profile-sensitive__head {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-300);
+  align-self: stretch;
+}
 .profile-sensitive__text {
+  flex: 1 1 0;
+  min-inline-size: 0;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-100);
@@ -502,10 +509,49 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
   font-size: var(--typography-body-s-regular-font-size);
   line-height: var(--typography-body-s-regular-line-height);
 }
+/* 동의한 뒤에 접습니다. 높이를 재지 않고 grid 의 1fr -> 0fr 로 접는 것, 위 여백을 잘려나가는
+   안쪽에 두는 것은 결제의 규정(checkout.css 의 .checkout__terms)과 같습니다. */
 .profile-sensitive__terms {
+  display: grid;
+  grid-template-rows: 1fr;
+  align-self: stretch;
+  transition: grid-template-rows var(--_duration-base) var(--_easing-standard);
+}
+.profile-sensitive.is-collapsed .profile-sensitive__terms { grid-template-rows: 0fr; }
+.profile-sensitive__terms-inner {
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-200);
+}
+.profile-sensitive__terms-inner > :first-child { margin-block-start: var(--spacing-400); }
+
+.profile-sensitive__toggle {
+  position: relative;
+  flex: none;
+  display: flex;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--colors-fg-lowest);
+  cursor: pointer;
+}
+.profile-sensitive__toggle[hidden] { display: none; }
+.profile-sensitive__toggle svg {
+  inline-size: var(--_button-icon-size-m);
+  block-size: var(--_button-icon-size-m);
+  transition: rotate var(--_duration-base) var(--_easing-standard);
+}
+.profile-sensitive__toggle[aria-expanded='true'] svg { rotate: 180deg; }
+/* 보이는 크기는 그대로 두고 눌리는 자리만 넓힙니다. */
+.profile-sensitive__toggle::before {
+  content: '';
+  position: absolute;
+  inset: calc(-1 * var(--spacing-200));
+}
+@media (prefers-reduced-motion: reduce) {
+  .profile-sensitive__terms,
+  .profile-sensitive__toggle svg { transition: none; }
 }
 .profile-sensitive__terms ul {
   margin: 0;
