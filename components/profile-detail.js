@@ -140,7 +140,7 @@ const QUESTIONS = [
   /* 운영 사이트와 같이 관리 방식과 맞벌이 · 외벌이가 한 물음에 섭니다. 둘을 함께 고를 수
      있어야 해서(공동 관리 + 맞벌이 희망) 여럿 고르는 물음입니다. */
   {
-    tab: 'values', name: 'seon-money', label: '이상적인 경제 관리', seon: true, multi: true, list: true,
+    tab: 'values', name: 'seon-money', label: '이상적인 경제 관리', seon: true, multi: true, cols: 2,
     options: ['한 사람이 전적으로 관리', '공동관리(협의 후 분배)', '각자 관리(필요 비용만 공유)',
       '상황에 따라 유연하게 결정', '맞벌이 희망', '외벌이 희망'],
   },
