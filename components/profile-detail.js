@@ -395,19 +395,19 @@ export function initProfileDetail() {
     else panels[q.tab].append(question(q))
   }
   /* ---- 민감정보 동의 -----------------------------------------------------
-     체크가 곧 동의입니다. 체크하면 바로 아래에 두 물음이 열리고, 동의는 고른 칸처럼 바로
-     저장됩니다. 동의 덩어리는 동의한 뒤에도 사라지지 않고 체크된 채 접혀 남습니다 — 다시
-     들어와서도 마찬가지입니다. 철회는 동의만큼 쉬워야 하므로, 같은 체크를 푸는 것이 철회입니다.
+     결제의 필수 동의(checkout.js)와 같은 구조입니다. 체크가 곧 동의이고 글을 눌러도 켜집니다.
+     체크하면 바로 아래에 물음이 열리고, 동의는 고른 칸처럼 바로 저장됩니다. 동의 덩어리는
+     동의한 뒤에도 사라지지 않고 체크된 채 남습니다. 철회는 동의만큼 쉬워야 하므로, 같은 체크를 푸는 것이 철회입니다.
      풀면 두 물음이 닫히고 답도 지웁니다. 지울 답이 있으면 한 번 묻습니다(sensitive-withdraw). */
   const sensitive = form.querySelector('[data-sensitive]')
   const consent = form.elements['sensitive-consent']
   const agree = sensitive.querySelector('[data-sensitive-agree]')
   const sensitiveNames = QUESTIONS.filter((q) => q.sensitive).map((q) => q.name)
   const sensitiveInputs = () => form.querySelectorAll(sensitiveNames.map((name) => `input[name="${name}"]`).join())
-  /* 고지는 동의하기 전에는 늘 펼쳐져 있고, 동의하면 접힙니다 — 접지 않으면 막 열린 두
-     물음이 긴 고지 아래, 폰에서는 화면 밖에 열려 체크해도 아무 일이 없는 것처럼 보입니다.
-     접혀도 무엇에 동의했는지(제목 줄)는 남고, 화살표로 다시 펼쳐 읽습니다. 철회하면 다시
-     펼칩니다. */
+  /* 고지는 펼친 채로 시작하고, 접는 것은 읽은 사람이 화살표로 스스로 합니다 — 결제와 같습니다.
+     체크해도 저절로 접히지 않습니다(글을 눌러 읽으려다 켜진 동의가 고지까지 감추면 안 됩니다).
+     다만 이미 동의해 둔 채 다시 들어왔을 때는 접힌 채로 엽니다. 읽고 동의한 것이라, 펼쳐 두면
+     긴 고지가 물음을 가립니다. */
   const termsToggle = sensitive.querySelector('[data-sensitive-toggle]')
   const openTerms = (open) => {
     sensitive.classList.toggle('is-collapsed', !open)
@@ -415,14 +415,10 @@ export function initProfileDetail() {
     termsToggle.setAttribute('aria-label', open ? '안내 접기' : '안내 펼치기')
   }
   termsToggle.addEventListener('click', () => openTerms(sensitive.classList.contains('is-collapsed')))
-  /** 체크와 접힘을 동의 값에 맞춥니다. */
-  const showConsent = (agreed) => {
-    agree.checked = agreed
-    termsToggle.hidden = !agreed
-    openTerms(!agreed)
-  }
   const setConsent = (agreed) => {
-    showConsent(agreed)
+    agree.checked = agreed
+    // 철회하면 동의하기 전으로 돌아가므로 고지를 다시 펼칩니다.
+    if (!agreed) openTerms(true)
     consent.checked = agreed
     if (!agreed) for (const input of sensitiveInputs()) input.checked = false
     consent.dispatchEvent(new Event('change', { bubbles: true }))
@@ -754,7 +750,8 @@ export function initProfileDetail() {
 
   api.refresh()
   // 저장된 동의를 체크와 접힘에 옮깁니다. 값이 다 써넣어진 뒤라야 압니다.
-  showConsent(consent.checked)
+  agree.checked = consent.checked
+  openTerms(!consent.checked)
 
   // 값이 다 써넣어진 뒤라야 답한 것이 있는지 알 수 있습니다(저장된 것, 쓰던 것 모두).
   openSeon([...seonBody.querySelectorAll('input')]

@@ -214,7 +214,7 @@
         <!-- 민감정보 동의. 가치관의 맨 끝으로 옮겨집니다(profile-detail.js). 체크가 곧 동의이고,
              체크하면 바로 아래 두 물음이 열립니다. 동의한 값은 감춰진 칸(sensitive-consent)에
              담겨 저장됩니다. 동의한 뒤에도 체크된 채 접혀 남고, 체크를 풀면 철회입니다(고객센터로도).
-             생김새는 결제의 필수 동의(checkout.html)와 같습니다. 고지는 법이 정한 것이라 접지 않습니다. -->
+             생김새와 접기는 결제의 필수 동의(checkout.html)와 같습니다. -->
         <div class="profile-sensitive" data-sensitive>
           <label class="checkbox">
             <input type="checkbox" id="sensitive-agree" data-sensitive-agree
@@ -227,10 +227,10 @@
                 <b id="sensitive-agree-title">[선택] 민감정보(정치적 견해·종교) 수집·이용에 동의합니다</b>
                 <span>동의하면 정치 성향·종교 문항이 열려요</span>
               </label>
-              <!-- 동의한 뒤에만 섭니다. 고지는 동의하기 전에 다 읽혀야 하고, 동의한 뒤에는
-                   접혀서 막 열린 두 물음이 고지 아래로 밀리지 않게 합니다(profile-detail.js). -->
+              <!-- 결제의 규정 접기와 같습니다. 펼친 채로 시작하고, 읽은 사람이 스스로 접습니다
+                   (profile-detail.js). -->
               <button class="profile-sensitive__toggle" type="button" aria-expanded="true"
-                      aria-controls="sensitive-terms" aria-label="안내 접기" hidden data-sensitive-toggle>
+                      aria-controls="sensitive-terms" aria-label="안내 접기" data-sensitive-toggle>
                 <svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg>
               </button>
             </div>
@@ -399,7 +399,7 @@
   initMyMenus()
   const { initConfirms } = await import('./components/confirm.js?v=f516d2db')
   initConfirms()
-  const { initProfileDetail } = await import('./components/profile-detail.js?v=c734ac94')
+  const { initProfileDetail } = await import('./components/profile-detail.js?v=0c6d4baa')
   initProfileDetail()
   const { initTabs } = await import('./components/tabs.js?v=aec7319a')
   initTabs()
