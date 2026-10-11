@@ -146,7 +146,7 @@ const QUESTIONS = [
   },
   {
     // "기타 의견"은 남사친 · 여사친 물음과 띄어쓰기를 맞췄습니다(운영 사이트는 "기타의견").
-    tab: 'values', name: 'seon-in-laws', label: '이상적인 가족 관계', seon: true, list: true, other: '기타 의견',
+    tab: 'values', name: 'seon-in-laws', label: '이상적인 가족 관계', seon: true, cols: 2, other: '기타 의견',
     options: ['양가에 자주 찾아뵙고 교류하는 편이 좋다', '명절이나 중요한 때만 챙기면 된다',
       '최소한의 예의만 지키면 된다', '특별한 기준 없이 상황에 따라 맞춘다', '기타 의견'],
   },
