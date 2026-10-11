@@ -263,6 +263,17 @@
 
 .profile-preview:focus { outline: none; }
 
+/* 미리보기가 열려 있는 동안 화면 아래의 [완료] 띠는 아래로 내려가 숨습니다. 어두워진 바탕
+   위에 또렷한 검은 버튼이 남아 있으면 카드를 닫기 전에 눌러야 할 것처럼 보이고, 닫기(×)와
+   함께 서서 어느 쪽이 이 창의 일인지 흐려집니다. 닫으면 같은 길로 돌아옵니다. */
+body:has(.profile-preview) .bottom-cta {
+  transition: translate var(--_duration-base) var(--_easing-standard);
+}
+body:has(.profile-preview[open]) .bottom-cta { translate: 0 100%; }
+@media (prefers-reduced-motion: reduce) {
+  body:has(.profile-preview) .bottom-cta { transition: none; }
+}
+
 .profile-preview,
 .profile-preview::backdrop {
   transition:
