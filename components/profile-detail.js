@@ -442,6 +442,26 @@ export function initProfileDetail() {
     api.save([input.name])
   })
 
+  /* 칸을 떠나지 않고 화면을 떠나는 길 — 폰에서 다른 앱으로 넘어가기, 탭 닫기, 화면
+     끄기, 새로고침 — 에서도 쓰던 글을 저장합니다. 그 길에서는 change 가 오지 않아, 저장
+     표시도 없는 화면에서 모르는 사이에 글을 잃습니다. 페이지가 가려지는 순간이 마지막으로
+     확실히 오는 때입니다. beforeunload 는 폼(profile-form.js)이 "나가시겠습니까?"를
+     묻기 전에 받도록 먼저 붙입니다 — 저장했으니 물을 것이 없습니다.
+     [저장 안 함]을 고른 뒤에는 저장하지 않습니다. 버리기로 한 글입니다. */
+  let discarding = false
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('[data-profile-discard]')) discarding = true
+  }, true)
+  const saveAll = () => {
+    if (discarding || !api?.dirty()) return
+    api.save()
+  }
+  addEventListener('beforeunload', saveAll)
+  addEventListener('pagehide', saveAll)
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') saveAll()
+  })
+
   // 한 줄 칸에서 엔터는 쓰기를 마치는 것입니다. 폼을 보내지 않고 그 자리에서 저장합니다.
   for (const input of form.querySelectorAll('input[type="text"][name]')) {
     input.addEventListener('keydown', (e) => {
