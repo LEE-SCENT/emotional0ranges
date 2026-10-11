@@ -167,7 +167,10 @@
 
   .gnb__inner { gap: var(--spacing-400); }
 
-  .gnb__segmented { display: block; }
+  /* 온라인이 아직 열리지 않아 오프라인 하나만 남는 전환이라 지금은 감춥니다. 마크업은
+     그대로 두었으니, 온라인이 열리면 이 줄을 `display: block` 으로 되돌리면 됩니다
+     (화면 아래의 MobileSwitch 도 함께). */
+  .gnb__segmented { display: none; }
   .gnb__menu { display: flex; }
 
   /* 이 폭부터는 앱바가 없으므로 메뉴 버튼이 돌아오고, 알림은 large 에서만 붙습니다. */
