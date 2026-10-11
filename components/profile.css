@@ -682,6 +682,12 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
   font-weight: var(--typography-body-l-semibold-font-weight);
   line-height: var(--typography-body-l-semibold-line-height);
 }
+/* 제목 뒤의 (선택). 제목의 일부가 아니라 덧붙인 말이라 한 단계 흐리고 가늡니다. */
+.profile-extra__text b small {
+  color: var(--colors-fg-lower);
+  font-size: inherit;
+  font-weight: var(--typography-body-l-regular-font-weight);
+}
 .profile-extra__text span {
   color: var(--colors-fg-lower);
   font-size: var(--typography-body-s-regular-font-size);
