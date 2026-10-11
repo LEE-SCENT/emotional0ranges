@@ -32,7 +32,7 @@
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
 <link rel="stylesheet" href="./components/segmented-control.css?v=027af639">
 <link rel="stylesheet" href="./components/tooltip.css?v=7ec024df">
-<link rel="stylesheet" href="./components/gnb.css?v=9cd24b29">
+<link rel="stylesheet" href="./components/gnb.css?v=31996315">
 <link rel="stylesheet" href="./components/my-menu.css?v=59a441fb">
 <link rel="stylesheet" href="./components/toast.css?v=c91e6fe0">
 <link rel="stylesheet" href="./components/kv.css?v=9316ae22">
@@ -41,7 +41,7 @@
 <link rel="stylesheet" href="./components/section-title.css?v=4a8451fd">
 <link rel="stylesheet" href="./components/footer.css?v=090dd8fc">
 <link rel="stylesheet" href="./components/notice.css?v=071f16b5">
-<link rel="stylesheet" href="./components/mobile-switch.css?v=62d02071">
+<link rel="stylesheet" href="./components/mobile-switch.css?v=97bd1681">
 <link rel="stylesheet" href="./components/app-bar.css?v=1129f720">
 <style>
   /* 본문 기본 서체. 컴포넌트마다 제 서체를 정하고 있지만, 그 밖의 글자
@@ -68,7 +68,7 @@
     </div>
     <!-- 로고와 액션은 화면 끝에 두고, 가운데 블록만 본문과 같은 1280 에서 멈춥니다. -->
     <div class="gnb__center">
-      <div class="gnb__segmented">
+      <div class="gnb__segmented" hidden>
         <!-- 지금 열려 있는 것은 오프라인뿐입니다. 온라인은 자리만 잡아두고, 아래
              말풍선이 그리로 가는 길을 알립니다 — 눌러도 아무 데도 가지 않는 칸을
              다른 칸과 같은 무게로 두면 이미 열린 것으로 읽힙니다. -->
@@ -402,7 +402,7 @@
   </footer>
 </div>
 
-<div class="mobile-switch">
+<div class="mobile-switch" hidden>
   <div class="mobile-switch__inner">
     <div class="tooltip tooltip--top tooltip--has-close mobile-switch__tip">
       <span class="tooltip__label">온라인 매칭 지금 보러 가기</span>

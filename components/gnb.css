@@ -100,8 +100,7 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-150);
-  /* 늘 가운데 블록의 오른쪽 끝입니다. 왼쪽의 전환이 감춰져 혼자 남아도 로고 쪽으로
-     밀려가지 않아, 전환이 돌아올 때 메뉴가 자리를 옮기지 않습니다. */
+  /* 왼쪽에 전환이 있으면 가운데 블록의 오른쪽 끝입니다. */
   margin-inline-start: auto;
   /* 메뉴는 ghost 버튼을 그대로 쓰되 글자색만 fg 로 올립니다.
      .btn 셀렉터를 덮어쓰지 않고 버튼이 읽는 변수를 이 범위에서만 재지정합니다 —
@@ -170,11 +169,13 @@
 
   .gnb__inner { gap: var(--spacing-400); }
 
-  /* 온라인이 아직 열리지 않아 오프라인 하나만 남는 전환이라 지금은 감춥니다. 마크업은
-     그대로 두었으니, 온라인이 열리면 이 줄을 `display: block` 으로 되돌리면 됩니다
-     (화면 아래의 MobileSwitch 도 함께). */
-  .gnb__segmented { display: none; }
+  /* 온라인이 아직 열리지 않아, 지금은 각 페이지의 마크업에서 hidden 으로 감춰 둡니다.
+     온라인이 열리면 그 hidden 만 지우면 됩니다(화면 아래의 MobileSwitch 도 함께). */
+  .gnb__segmented:not([hidden]) { display: block; }
   .gnb__menu { display: flex; }
+  /* 전환이 감춰져 메뉴 혼자 남으면 가운데에 섭니다. 전환의 hidden 을 지우면 저절로
+     오른쪽 끝으로 돌아갑니다. */
+  .gnb__center:has(> .gnb__segmented[hidden]) .gnb__menu { margin-inline: auto; }
 
   /* 이 폭부터는 앱바가 없으므로 메뉴 버튼이 돌아오고, 알림은 large 에서만 붙습니다. */
   .gnb__actions .my-menu { display: flex; }

@@ -50,7 +50,9 @@ body:has(.app-bar--fixed.is-hidden) .mobile-switch {
   white-space: nowrap;
 }
 
-/* 온라인이 아직 열리지 않아 지금은 어느 폭에서도 감춥니다(GNB 의 전환과 함께).
-   온라인이 열리면 이 줄을 지우면 됩니다 — 961 부터는 GNB 안의 전환이 대신하므로
-   그 폭에서는 다시 감춰야 합니다. */
-.mobile-switch { display: none; }
+/* 961 부터는 GNB 안의 segmentedControl 이 대신하므로 필요 없습니다.
+   온라인이 아직 열리지 않아 지금은 마크업에서 hidden 으로 감춰 둡니다(GNB 의 전환과 함께). */
+.mobile-switch[hidden] { display: none; }
+@media (min-width: 961px) {
+  .mobile-switch { display: none; }
+}
