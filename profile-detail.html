@@ -28,7 +28,7 @@
 <link rel="stylesheet" href="./components/tabs.css?v=a962487a">
 <link rel="stylesheet" href="./components/verified-banner.css?v=6f3f1c77">
 <link rel="stylesheet" href="./components/profile-card.css?v=eaf662c0">
-<link rel="stylesheet" href="./components/profile.css?v=d00681a6">
+<link rel="stylesheet" href="./components/profile.css?v=e0161ae7">
 <link rel="stylesheet" href="./components/verify.css?v=9ecc570b">
 <link rel="stylesheet" href="./components/confirm.css?v=598089ab">
 <link rel="stylesheet" href="./components/toast.css?v=c91e6fe0">
@@ -213,29 +213,34 @@
              [동의하고 답하기]를 누르면 이 덩어리는 사라지고 바로 아래 두 물음이 열립니다
              (profile-detail.js). 동의한 값은 감춰진 칸(sensitive-consent)에 담겨 저장됩니다.
              철회는 고지에 적힌 대로 물음을 비우거나 고객센터로 합니다. -->
+        <!-- 생김새는 결제의 필수 동의(checkout.html)와 같습니다. 체크박스가 줄 맨 위에 서고
+             글과 고지가 그 옆에서 흐릅니다. 고지는 법이 정한 것이라 접지 않습니다. -->
         <div class="profile-sensitive" data-sensitive>
-          <p class="profile-sensitive__desc">동의하면 이 구획의 문항이 열려요.</p>
-          <label class="checkbox-label">
-            <span class="checkbox">
-              <input type="checkbox" data-sensitive-agree>
-              <span class="checkbox__box" aria-hidden="true"><svg><use href="#icon-check"></use></svg></span>
-            </span>
-            민감정보(정치적 견해·종교) 수집·이용 동의에 동의합니다.
+          <label class="checkbox">
+            <input type="checkbox" id="sensitive-agree" data-sensitive-agree
+                   aria-labelledby="sensitive-agree-title">
+            <span class="checkbox__box" aria-hidden="true"><svg><use href="#icon-check"></use></svg></span>
           </label>
-          <div class="profile-sensitive__terms" aria-label="민감정보 수집·이용 안내">
-            <p>아래 항목은 개인정보 보호법 제23조의 민감정보(정치적 견해, 종교)에 해당합니다.</p>
-            <ul>
-              <li>수집 항목: 정치 성향, 종교, 종교 참여 정도</li>
-              <li>수집·이용 목적: 이상형 매칭 서비스 제공(프로필 카드 표시 및 매칭 추천)</li>
-              <li>보유·이용 기간: 회원 탈퇴 시 또는 동의 철회 시까지</li>
-              <li>동의 거부 권리: 동의하지 않으셔도 서비스 이용에 불이익이 없습니다.</li>
-            </ul>
-            <p>동의하지 않으면 해당 문항은 표시되지 않고 프로필 완성도에서도 제외됩니다.
-              동의 철회는 마이페이지 &gt; 프로필 카드에서 해당 항목을 비우거나 고객센터로 요청하실 수 있습니다.</p>
+          <div class="profile-sensitive__body">
+            <label class="profile-sensitive__text" for="sensitive-agree">
+              <b id="sensitive-agree-title">민감정보(정치적 견해·종교) 수집·이용 동의에 동의합니다.</b>
+              <span>동의하면 이 구획의 문항이 열려요.</span>
+            </label>
+            <div class="profile-sensitive__terms" aria-label="민감정보 수집·이용 안내">
+              <p>아래 항목은 개인정보 보호법 제23조의 민감정보(정치적 견해, 종교)에 해당합니다.</p>
+              <ul>
+                <li>수집 항목: 정치 성향, 종교, 종교 참여 정도</li>
+                <li>수집·이용 목적: 이상형 매칭 서비스 제공(프로필 카드 표시 및 매칭 추천)</li>
+                <li>보유·이용 기간: 회원 탈퇴 시 또는 동의 철회 시까지</li>
+                <li>동의 거부 권리: 동의하지 않으셔도 서비스 이용에 불이익이 없습니다.</li>
+              </ul>
+              <p>동의하지 않으면 해당 문항은 표시되지 않고 프로필 완성도에서도 제외됩니다.
+                동의 철회는 마이페이지 &gt; 프로필 카드에서 해당 항목을 비우거나 고객센터로 요청하실 수 있습니다.</p>
+            </div>
+            <button class="btn btn--filled btn--medium" type="button" data-sensitive-accept disabled>
+              <span class="btn__label">동의하고 답하기</span>
+            </button>
           </div>
-          <button class="btn btn--filled btn--medium" type="button" data-sensitive-accept disabled>
-            <span class="btn__label">동의하고 답하기</span>
-          </button>
           <input type="checkbox" name="sensitive-consent" hidden>
         </div>
         <div data-q="politics"></div>

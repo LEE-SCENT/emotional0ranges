@@ -465,40 +465,52 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
    물음이 열립니다. 테두리로 둘러, 동의를 구하는 자리가 물음과 섞여 읽히지 않게 합니다. */
 .profile-sensitive {
   display: flex;
-  flex-direction: column;
   align-items: flex-start;
   gap: var(--spacing-400);
-  padding: var(--spacing-500);
+  padding: var(--spacing-400) var(--spacing-500);
   border: 1px solid var(--colors-border);
   border-radius: var(--_rounded-l);
 }
 .profile-sensitive p { margin: 0; }
-.profile-sensitive__desc {
-  color: var(--colors-fg-lower);
+/* 아래부터는 결제의 필수 동의(checkout.css 의 .checkout__agree)와 같은 글자와 간격입니다.
+   동의를 구하는 자리는 어디서든 같은 모양이어야, 무엇에 동의하는지를 읽는 데만 머뭅니다. */
+.profile-sensitive__body {
+  flex: 1 1 0;
+  min-inline-size: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-400);
   word-break: keep-all;
+}
+/* 글도 체크박스를 켭니다. 네모 하나는 손가락으로 겨누기에 좁습니다. */
+.profile-sensitive__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-100);
+  cursor: pointer;
+}
+.profile-sensitive__text b {
+  color: var(--colors-fg);
+  font-size: var(--typography-body-m-medium-font-size);
+  font-weight: var(--typography-body-m-medium-font-weight);
+  line-height: var(--typography-body-m-medium-line-height);
+}
+.profile-sensitive__text > span,
+.profile-sensitive__terms {
+  color: var(--colors-fg-low);
   font-size: var(--typography-body-s-regular-font-size);
   line-height: var(--typography-body-s-regular-line-height);
 }
-/* 법이 정한 고지라 줄이지 않되, 동의보다 앞으로 나서지 않게 작고 흐리게 둡니다. */
 .profile-sensitive__terms {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-200);
-  align-self: stretch;
-  padding: var(--spacing-300) var(--spacing-400);
-  border-radius: var(--_rounded-m);
-  background: var(--colors-bg-low);
-  color: var(--colors-fg-lower);
-  word-break: keep-all;
-  font-size: var(--typography-body-xs-regular-font-size);
-  line-height: var(--typography-body-xs-regular-line-height);
 }
 .profile-sensitive__terms ul {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-50);
   margin: 0;
-  padding-inline-start: var(--spacing-400);
+  /* 결제의 규정과 같이 글머리 기호가 18 에서 시작합니다. */
+  padding-inline-start: 18px;
 }
 
 /* ---- 인증 전과 후로 갈리는 묶음 --------------------------------------------
