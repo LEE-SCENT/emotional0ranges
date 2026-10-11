@@ -12,6 +12,7 @@
  * 구획으로 가는 길이고, 저장은 하나라 넷이 함께 저장됩니다.
  */
 import { cardGrid, cardHeader, cardRow, el, initProfileForm, load, swap } from './profile-form.js?v=25fd6e27'
+import { openConfirm } from './confirm.js?v=f516d2db'
 import { selectTab } from './tabs.js?v=aec7319a'
 
 /**
@@ -384,13 +385,14 @@ export function initProfileDetail() {
   }
   /* ---- 민감정보 동의 -----------------------------------------------------
      체크가 곧 동의입니다. 체크하면 바로 아래에 두 물음이 열리고, 동의는 고른 칸처럼 바로
-     저장됩니다. 동의 덩어리는 이 화면에 있는 동안 체크된 채 남아, 잘못 눌렀으면 그 자리에서
-     풉니다 — 풀면 두 물음이 닫히고 답도 지웁니다(동의 철회). 동의한 채로 다시 들어오면
-     덩어리 없이 물음만 섭니다. */
+     저장됩니다. 동의 덩어리는 동의한 뒤에도 사라지지 않고 체크된 채 접혀 남습니다 — 다시
+     들어와서도 마찬가지입니다. 철회는 동의만큼 쉬워야 하므로, 같은 체크를 푸는 것이 철회입니다.
+     풀면 두 물음이 닫히고 답도 지웁니다. 지울 답이 있으면 한 번 묻습니다(sensitive-withdraw). */
   const sensitive = form.querySelector('[data-sensitive]')
   const consent = form.elements['sensitive-consent']
   const agree = sensitive.querySelector('[data-sensitive-agree]')
-  let agreedHere = false
+  const sensitiveNames = QUESTIONS.filter((q) => q.sensitive).map((q) => q.name)
+  const sensitiveInputs = () => form.querySelectorAll(sensitiveNames.map((name) => `input[name="${name}"]`).join())
   /* 고지는 동의하기 전에는 늘 펼쳐져 있고, 동의하면 접힙니다 — 접지 않으면 막 열린 두
      물음이 긴 고지 아래, 폰에서는 화면 밖에 열려 체크해도 아무 일이 없는 것처럼 보입니다.
      접혀도 무엇에 동의했는지(제목 줄)는 남고, 화살표로 다시 펼쳐 읽습니다. 철회하면 다시
@@ -402,17 +404,30 @@ export function initProfileDetail() {
     termsToggle.setAttribute('aria-label', open ? '안내 접기' : '안내 펼치기')
   }
   termsToggle.addEventListener('click', () => openTerms(sensitive.classList.contains('is-collapsed')))
-  agree.addEventListener('change', () => {
-    agreedHere = true
-    termsToggle.hidden = !agree.checked
-    openTerms(!agree.checked)
-    consent.checked = agree.checked
-    const names = QUESTIONS.filter((q) => q.sensitive).map((q) => q.name)
-    if (!agree.checked) {
-      for (const input of form.querySelectorAll(names.map((name) => `input[name="${name}"]`).join())) input.checked = false
-    }
+  /** 체크와 접힘을 동의 값에 맞춥니다. */
+  const showConsent = (agreed) => {
+    agree.checked = agreed
+    termsToggle.hidden = !agreed
+    openTerms(!agreed)
+  }
+  const setConsent = (agreed) => {
+    showConsent(agreed)
+    consent.checked = agreed
+    if (!agreed) for (const input of sensitiveInputs()) input.checked = false
     consent.dispatchEvent(new Event('change', { bubbles: true }))
-    if (!agree.checked) api.save(names)
+    if (!agreed) api.save(sensitiveNames)
+  }
+  agree.addEventListener('change', () => {
+    if (agree.checked) return setConsent(true)
+    // 지울 답이 없으면 바로 풉니다. 있으면 체크를 되돌려 두고 묻습니다 — 창을 닫고 물러나면
+    // 아무것도 바뀌지 않은 채여야 합니다.
+    if (![...sensitiveInputs()].some((input) => input.checked)) return setConsent(false)
+    agree.checked = true
+    openConfirm('sensitive-withdraw')
+  })
+  document.getElementById('sensitive-withdraw').addEventListener('confirm:accept', () => {
+    setConsent(false)
+    agree.focus()
   })
 
   /* 선개팅 추가 프로필은 경제 가치관 앞에 섭니다(기존 사이트의 자리). 접혀 있다가 펼칩니다
@@ -512,7 +527,6 @@ export function initProfileDetail() {
     for (const q of QUESTIONS.filter((item) => item.sensitive)) {
       form.querySelector(`[data-unit="${q.name}"]`).hidden = !isAsked(q, draft)
     }
-    sensitive.hidden = Boolean(draft['sensitive-consent']) && !agreedHere
     count.textContent = [...draft.words].length
     drawProgress(draft)
   }
@@ -714,6 +728,8 @@ export function initProfileDetail() {
   if (asked !== tab && TABS.includes(asked)) requestAnimationFrame(() => go(asked, 'instant'))
 
   api.refresh()
+  // 저장된 동의를 체크와 접힘에 옮깁니다. 값이 다 써넣어진 뒤라야 압니다.
+  showConsent(consent.checked)
 
   // 값이 다 써넣어진 뒤라야 답한 것이 있는지 알 수 있습니다(저장된 것, 쓰던 것 모두).
   openSeon([...seonBody.querySelectorAll('input')]

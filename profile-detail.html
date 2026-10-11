@@ -34,7 +34,7 @@
 <link rel="stylesheet" href="./components/profile-card.css?v=eaf662c0">
 <link rel="stylesheet" href="./components/profile.css?v=409d5434">
 <link rel="stylesheet" href="./components/verify.css?v=9ecc570b">
-<link rel="stylesheet" href="./components/confirm.css?v=598089ab">
+<link rel="stylesheet" href="./components/confirm.css?v=6a6a0bdf">
 <link rel="stylesheet" href="./components/toast.css?v=c91e6fe0">
 <link rel="stylesheet" href="./components/bottom-cta.css?v=4d73a6db">
 <link rel="stylesheet" href="./components/top-bar.css?v=7633d627">
@@ -213,7 +213,7 @@
       <section class="profile__panel" id="values" aria-label="가치관" data-panel="values">
         <!-- 민감정보 동의. 가치관의 맨 끝으로 옮겨집니다(profile-detail.js). 체크가 곧 동의이고,
              체크하면 바로 아래 두 물음이 열립니다. 동의한 값은 감춰진 칸(sensitive-consent)에
-             담겨 저장됩니다. 철회는 체크를 풀거나, 고지에 적힌 대로 물음을 비우거나 고객센터로 합니다.
+             담겨 저장됩니다. 동의한 뒤에도 체크된 채 접혀 남고, 체크를 풀면 철회입니다(고객센터로도).
              생김새는 결제의 필수 동의(checkout.html)와 같습니다. 고지는 법이 정한 것이라 접지 않습니다. -->
         <div class="profile-sensitive" data-sensitive>
           <label class="checkbox">
@@ -244,7 +244,7 @@
                   <li>동의 거부 권리: 동의하지 않으셔도 서비스 이용에 불이익이 없습니다.</li>
                 </ul>
                 <p>동의하지 않으면 해당 문항은 표시되지 않고 프로필 완성도에서도 제외됩니다.
-                  동의 철회는 마이페이지 &gt; 프로필 카드에서 해당 항목을 비우거나 고객센터로 요청하실 수 있습니다.</p>
+                  동의 철회는 이 화면에서 체크를 해제하거나 고객센터로 요청하실 수 있습니다.</p>
               </div>
             </div>
           </div>
@@ -361,6 +361,21 @@
   </div>
 </dialog>
 
+<!-- 민감정보 동의 철회. 답한 것이 있을 때만 묻습니다(profile-detail.js). 지우는 쪽이 오른쪽
+     버튼이고, 물러나는 길은 [취소]와 창 바깥 · Esc 입니다. -->
+<dialog class="confirm confirm--sheet" id="sensitive-withdraw" aria-labelledby="sensitive-withdraw-title">
+  <div class="confirm__panel">
+    <div class="confirm__text">
+      <h2 id="sensitive-withdraw-title">민감정보 동의를 철회할까요?</h2>
+      <p>정치 성향·종교 답이 지워지고 프로필에서도 빠져요.</p>
+    </div>
+    <div class="confirm__actions">
+      <button class="btn btn--outlined btn--large" type="button" data-confirm-close><span class="btn__label">취소</span></button>
+      <button class="btn btn--filled btn--large" type="button" data-confirm-accept><span class="btn__label">동의 철회</span></button>
+    </div>
+  </div>
+</dialog>
+
 <!-- 좁은 화면의 프로필 미리보기. 카드는 옆 단의 것과 같은 것을 그립니다. -->
 <dialog class="profile-preview" id="profile-preview" aria-label="프로필 미리보기">
   <div class="profile-preview__track">
@@ -384,7 +399,7 @@
   initMyMenus()
   const { initConfirms } = await import('./components/confirm.js?v=f516d2db')
   initConfirms()
-  const { initProfileDetail } = await import('./components/profile-detail.js?v=ec345598')
+  const { initProfileDetail } = await import('./components/profile-detail.js?v=f92bea8c')
   initProfileDetail()
   const { initTabs } = await import('./components/tabs.js?v=aec7319a')
   initTabs()
