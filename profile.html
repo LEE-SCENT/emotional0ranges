@@ -30,8 +30,8 @@
 <link rel="stylesheet" href="./components/field.css?v=0f1aa06c">
 <link rel="stylesheet" href="./components/choice.css?v=d3a5098d">
 <link rel="stylesheet" href="./components/verified-banner.css?v=6f3f1c77">
-<link rel="stylesheet" href="./components/profile-card.css?v=a6bd0d08">
-<link rel="stylesheet" href="./components/profile.css?v=a69c2b33">
+<link rel="stylesheet" href="./components/profile-card.css?v=5acf6e9a">
+<link rel="stylesheet" href="./components/profile.css?v=06b50cd2">
 <link rel="stylesheet" href="./components/tabs.css?v=a962487a">
 <link rel="stylesheet" href="./components/verify.css?v=9ecc570b">
 <link rel="stylesheet" href="./components/confirm.css?v=6a6a0bdf">
@@ -149,14 +149,14 @@
         </a>
       </div>
 
-      <!-- 직장 인증 전에만 섭니다(profile.js). 운영 사이트의 문구 그대로입니다. -->
+      <!-- 직장 인증을 권하는 추천 카드. 인증 전에만 섭니다(profile.js). 운영 사이트의 안내를
+           세 가지(비공개 · 중복 확인 용도 · 공개는 직접 선택)로 줄였습니다 — "약 20초면 완료"는
+           버튼이 말합니다. 인증 상태는 직업 아래의 띠(VerifiedBanner)가 따로 보여줍니다. -->
       <div class="profile-assure" data-company="none" hidden>
         <p class="profile-assure__text">
-          <b>안심하세요! 직장 정보는 기본 비공개입니다.</b>
-          <span>입력한 직장 정보는 상대방에게 바로 공개되지 않습니다.</span>
-          <span>같은 직장 사람을 소개팅에서 만나는 일을 줄이기 위해 중복 확인 용도로 사용됩니다.</span>
-          <span>직장 정보는 직접 공개를 선택한 경우에만 노출됩니다.</span>
-          <span>건강보험 간편인증으로 약 20초면 완료됩니다.</span>
+          <b>안심하세요! 직장 정보는 기본 비공개예요</b>
+          <span>상대에게 바로 공개되지 않고, 같은 직장 사람과 마주치지 않도록 중복 확인에만 쓰여요.</span>
+          <span>직접 공개를 선택한 경우에만 프로필에 보여요.</span>
         </p>
         <!-- 아래 직장 인증 자리로 내려가지 않고 곧장 인증 창을 엽니다(건강보험 탭부터). -->
         <button class="btn btn--filled btn--medium" type="button" data-verify-open="company">
