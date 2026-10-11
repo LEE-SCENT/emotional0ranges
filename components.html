@@ -40,7 +40,7 @@
 <link rel="stylesheet" href="./components/participants.css?v=3d11ed3c">
 <link rel="stylesheet" href="./components/checkbox.css?v=44baaa09">
 <link rel="stylesheet" href="./components/tabs.css?v=a962487a">
-<link rel="stylesheet" href="./components/field.css?v=d42ed3d6">
+<link rel="stylesheet" href="./components/field.css?v=0f1aa06c">
 <link rel="stylesheet" href="./components/choice.css?v=fd460b98">
 <link rel="stylesheet" href="./components/verified-banner.css?v=6f3f1c77">
 <link rel="stylesheet" href="./components/profile-card.css?v=eaf662c0">
@@ -578,11 +578,13 @@
   <div class="field-row">
     <div class="text-field text-field--period">
       <svg class="text-field__icon" aria-hidden="true"><use href="#icon-calendar"></use></svg>
-      <input type="month" value="2022-01" aria-label="시작"><span aria-hidden="true">~</span><input type="month" value="2022-03" aria-label="끝">
+      <label class="text-field__month"><span data-month-text>2022년 1월</span><input type="month" value="2022-01" aria-label="시작"></label>
+      <span aria-hidden="true">~</span>
+      <label class="text-field__month"><span data-month-text>2022년 3월</span><input type="month" value="2022-03" aria-label="끝"></label>
     </div>
     <div class="text-field">
       <svg class="text-field__icon" aria-hidden="true"><use href="#icon-calendar"></use></svg>
-      <input type="date" value="2026-09-18" aria-label="서류 발급일">
+      <label class="text-field__month text-field__date"><span>2026년 9월 18일</span><input type="date" value="2026-09-18" aria-label="서류 발급일"></label>
     </div>
   </div>
   <div class="file-field">
@@ -922,7 +924,7 @@ for (const [id, dir] of [['r7','vertical'],['r8','horizontal']]) {
 
 const { initSegmentedControls } = await import('./components/segmented-control.js?v=bbd7c4b8')
 initSegmentedControls()
-const { initVerify } = await import('./components/verify.js?v=7f4bd6fe')
+const { initVerify } = await import('./components/verify.js?v=151c8074')
 initVerify()
 // 고르는 칸(셀렉트·달·날짜)은 고르고 나면 초점을 내려놓습니다.
 const { initFields } = await import('./components/field.js?v=de1ad19d')

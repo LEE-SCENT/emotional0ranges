@@ -187,7 +187,26 @@ function dateBox(labelText) {
   // 서류는 대개 방금 뗀 것이라 오늘로 시작합니다. 오늘보다 뒤는 고를 수 없습니다.
   const today = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10)
   input.value = input.max = today
-  box.append(input)
+  /* 브라우저가 그리는 날짜("2026/10/11"처럼 기기마다 다릅니다)는 감추고, 고른 값을 서비스의
+     날짜 표기("2026년 10월 11일")로 적습니다. 진짜 날짜 칸은 글자 위에 투명하게 겹쳐 있어
+     눌리는 것도 초점이 가는 것도 그쪽입니다 — 기간 칸(.text-field__month)과 같은 방법입니다. */
+  const wrap = el('label', 'text-field__month text-field__date')
+  const text = el('span')
+  const write = () => {
+    const [y, m, d] = input.value.split('-')
+    wrap.classList.toggle('is-empty', !d)
+    text.textContent = d ? `${y}년 ${Number(m)}월 ${Number(d)}일` : '날짜 선택'
+  }
+  // 날짜 고르는 칸이 없는 브라우저는 type 을 text 로 되돌려 놓습니다. 그때는 칸을 그대로 씁니다.
+  if (input.type !== 'date') {
+    wrap.classList.add('is-plain')
+    input.placeholder = 'YYYY-MM-DD'
+  }
+  input.addEventListener('input', write)
+  input.addEventListener('change', write)
+  write()
+  wrap.append(text, input)
+  box.append(wrap)
   // 칸 어디를 눌러도 달력이 열립니다(브라우저의 작은 달력 아이콘은 감춰져 있습니다).
   box.addEventListener('click', () => { try { input.showPicker() } catch { input.focus() } })
   return box

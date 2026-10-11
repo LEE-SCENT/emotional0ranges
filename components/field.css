@@ -232,6 +232,9 @@
   cursor: text;
 }
 .text-field__month.is-plain [data-month-text] { display: none; }
+.text-field__date.is-plain > span { display: none; }
+/* 날짜는 칸에 하나뿐이라 남은 폭을 다 씁니다 — 글자 밖 빈 곳을 눌러도 같은 칸입니다. */
+.text-field__date { flex: 1 1 auto; min-inline-size: 0; }
 
 @media (prefers-reduced-motion: reduce) {
   .text-field { transition: none; }
