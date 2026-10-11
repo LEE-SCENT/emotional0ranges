@@ -9,7 +9,6 @@
  * 몇 명인지 묻습니다. 나가고 저장하는 일은 profile-form.js 가 합니다.
  */
 import { openConfirm } from './confirm.js?v=f516d2db'
-import { showToast } from './toast.js?v=ccb77a07'
 import { cardGrid, cardHeader, cardRow, initProfileForm, load, store, swap } from './profile-form.js?v=8daf7ac8'
 import { progressOf } from './profile-detail.js?v=5d2495ab'
 
@@ -416,12 +415,6 @@ export function initProfile() {
       group.hidden = (group.dataset.company === 'done') !== done
     }
   }
-
-  /* 건강보험으로 재직 확인하기. 고른 인증 수단의 앱으로 승인을 요청합니다.
-     ⚠️ 보낼 곳이 없습니다. 회사 인증 창의 건강보험 쪽과 같이 알림만 띄웁니다(verify.js). */
-  document.querySelector('[data-verify-health]')?.addEventListener('click', () => {
-    showToast('인증을 요청했어요', { icon: '#icon-check', tone: 'success' })
-  })
 
   function drawPromo(profile) {
     // 문구는 운영 사이트 그대로입니다. 남은 문항이 없으면 권할 것도 없어 거둡니다.

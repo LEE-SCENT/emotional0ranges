@@ -758,8 +758,8 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
 }
 
 /* ---- 직장 인증 전 (기본 프로필) --------------------------------------------
-   운영 사이트와 같이 폼의 첫머리에 비공개 안내가, 직장 인증 자리에 두 길(건강보험 ·
-   서류)이 펼쳐집니다. */
+   운영 사이트와 같이 폼의 첫머리에 비공개 안내가 섭니다. 인증하는 길은 창(verify.js)
+   안에 있고, 안내와 직장 인증 자리의 버튼이 그 창을 엽니다. */
 .profile-assure {
   display: flex;
   flex-direction: column;
@@ -769,49 +769,24 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
   border-radius: var(--_rounded-l);
   background: var(--colors-bg-low);
 }
-.profile-assure__text,
-.profile-way__text {
+.profile-assure__text {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-50);
   margin: 0;
   word-break: keep-all;
 }
-.profile-assure__text b,
-.profile-way__text b {
+.profile-assure__text b {
   color: var(--colors-fg);
   font-size: var(--typography-body-m-semibold-font-size);
   font-weight: var(--typography-body-m-semibold-font-weight);
   line-height: var(--typography-body-m-semibold-line-height);
 }
-.profile-assure__text span,
-.profile-way__text span {
+.profile-assure__text span {
   color: var(--colors-fg-low);
   font-size: var(--typography-body-s-regular-font-size);
   line-height: var(--typography-body-s-regular-line-height);
 }
-.profile-way {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--spacing-400);
-  padding: var(--spacing-500);
-  border: 1px solid var(--colors-border);
-  border-radius: var(--_rounded-l);
-}
-.profile-way > .field { align-self: stretch; }
-.profile-way__rule {
-  margin: 0;
-  padding: var(--spacing-300) var(--spacing-400);
-  border-radius: var(--_rounded-m);
-  background: var(--colors-bg-low);
-  color: var(--colors-fg-lower);
-  font-size: var(--typography-body-xs-regular-font-size);
-  line-height: var(--typography-body-xs-regular-line-height);
-  word-break: keep-all;
-}
-/* "20초 만에 직장 인증하기"로 내려왔을 때 제목이 붙어 있는 GNB · topBar 뒤로 들어가지 않게. */
-#profile-company-verify { scroll-margin-block-start: calc(var(--profile-sticky-top) + var(--spacing-500)); }
 
 /* 본인인증 안내 한 줄(기본 프로필). 칸의 도움말과 같은 크기입니다. */
 .profile__note {
