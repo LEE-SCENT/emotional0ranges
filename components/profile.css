@@ -356,6 +356,14 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
   .profile__workplace > .segmented { align-self: stretch; }
   .profile__workplace > .segmented .segmented__item { flex: 1 1 0; }
 
+  /* 직업의 [검색 · 카테고리]도 같습니다. 옆에 서던 검색 칸(또는 분류 두 칸)은 그 아래로
+     내려가 한 줄을 다 씁니다. 그 사이는 근무지와 같게 띄웁니다. */
+  .profile__occupation { flex-direction: column; align-items: stretch; }
+  .profile__occupation > .text-field,
+  .profile__occupation > .field-row { flex: none; }
+  .profile__occupation > .segmented { margin-block-end: var(--spacing-100); }
+  .profile__occupation > .segmented .segmented__item { flex: 1 1 0; }
+
   /* 자녀 수는 열 개라 두 줄로 접히는 대신 옆으로 넘깁니다. 화면 끝까지 닿도록
      컨테이너 여백만큼 밖으로 내고, 같은 만큼 안을 채워 첫 단추의 자리를 지킵니다. */
   .choice-group--scroll {
