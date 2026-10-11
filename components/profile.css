@@ -21,12 +21,11 @@
   /* ⚠️ 72 는 GNB 높이입니다. Figma 에 변수로 없어 프레임에서 읽었습니다
      (checkout.css · detail.css 와 같은 값). */
   --profile-sticky-top: 72px;
-  /* 추천 카드(직장 인증 · 상세 프로필 권유)의 바탕과 테두리. 브랜드색을 옅게 깔아 일반 안내와
-     갈라 "해 보세요"로 읽히게 합니다(운영 사이트의 직장 인증 카드와 같은 결).
-     ⚠️ 옅은 브랜드 바탕의 semantic 토큰이 없어 primitive 를 여기서만 씁니다.
-        semantic 에 colors-bg-brand-subtle · colors-border-brand-subtle 이 생기면 갈아 끼웁니다. */
-  --profile-recommend-bg: var(--_colors-twist-orange-50);
-  --profile-recommend-border: var(--_colors-twist-orange-100);
+  /* 추천 카드(직장 인증 · 상세 프로필 권유)의 바탕. 인증 띠(VerifiedBanner)와 같은 따뜻한
+     중립색이라, 입력 칸(bg-low)과 갈리면서도 화면에서 튀지 않습니다. 테두리는 없습니다.
+     ⚠️ 이 색의 semantic 토큰이 없어 verified-banner.css 와 같이 primitive 를 씁니다. */
+  --profile-recommend-bg: var(--_colors-casual-neutral-50);
+  --profile-recommend-border: transparent;
   padding-block-start: var(--spacing-800);
   font-family: var(--_font-family-base);
 }
