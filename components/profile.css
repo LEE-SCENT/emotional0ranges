@@ -396,8 +396,9 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
    있습니다). topBar 자체가 961 부터 사라지므로 따로 감출 것은 없습니다. */
 
 /* ---- 완성도 (상세 프로필) ------------------------------------------------
-   카드 교환의 문턱(80%)까지 얼마나 남았는지. 숫자, 막대, 그리고 막대 위의 눈금이
-   문턱의 자리입니다 — 숫자만으로는 80 이 얼마나 먼지가 보이지 않습니다.
+   카드 교환의 문턱(80%)까지 얼마나 남았는지. 지금의 숫자와 막대, 그리고 "n개 더 채우면"
+   한 줄입니다. 문턱 자체는 숫자로도 눈금으로도 그리지 않습니다 — 해야 할 일은 "몇 개
+   더"가 가장 바로 말합니다.
 
    한 번만 섭니다. 붙어 따라오는 것은 탭이고, 이 덩어리는 화면의 첫머리에서 무엇을
    위해 채우는지를 말하는 자리입니다. 같은 숫자가 두 군데 서면 어느 쪽을 봐야 할지
@@ -446,14 +447,6 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
   border-radius: inherit;
   background: var(--colors-bg-brand);
   transition: inline-size var(--_duration-fast) var(--_easing-standard);
-}
-/* 문턱의 눈금. 막대보다 위아래로 조금 길어, 채워진 뒤에도 자리가 보입니다. */
-.profile-progress__mark {
-  position: absolute;
-  inset-block: calc(var(--spacing-50) * -1);
-  inline-size: 2px;
-  border-radius: var(--_rounded-full);
-  background: var(--colors-fg);
 }
 @media (prefers-reduced-motion: reduce) {
   .profile-progress__fill { transition: none; }
