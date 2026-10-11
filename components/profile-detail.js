@@ -190,7 +190,9 @@ const QUESTIONS = [
   },
   {
     tab: 'values', name: 'religion', label: '종교', sensitive: true,
-    options: ['기독교', '불교', '천주교', '무교', '기타 종교', '밝히고 싶지 않음'],
+    // 무교가 가장 흔한 답이라 맨 앞에 둡니다(운영 사이트는 기독교가 먼저). 미리 골라 두지는
+    // 않습니다 — 무교도 종교에 대한 민감정보라, 본인이 고른 답만 저장해야 합니다.
+    options: ['무교', '기독교', '불교', '천주교', '기타 종교', '밝히고 싶지 않음'],
   },
   {
     tab: 'values', name: 'religion-practice', label: '종교 참여 정도', card: '종교 참여', sensitive: true,
