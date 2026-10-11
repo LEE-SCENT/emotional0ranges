@@ -29,7 +29,7 @@
 <link rel="stylesheet" href="./components/checkbox.css?v=44baaa09">
 <link rel="stylesheet" href="./components/field.css?v=0f1aa06c">
 <link rel="stylesheet" href="./components/choice.css?v=d3a5098d">
-<link rel="stylesheet" href="./components/verified-banner.css?v=6f3f1c77">
+<link rel="stylesheet" href="./components/verified-banner.css?v=34c301e8">
 <link rel="stylesheet" href="./components/profile-card.css?v=5acf6e9a">
 <link rel="stylesheet" href="./components/profile.css?v=378017a3">
 <link rel="stylesheet" href="./components/tabs.css?v=a962487a">
@@ -137,18 +137,6 @@
 
   <div class="profile__body">
     <form class="profile__form" data-profile-form novalidate>
-      <!-- 좁은 화면에서는 완성도 카드가 폼의 첫머리에 섭니다(운영 사이트와 같은 자리).
-           넓은 화면에서는 옆 단의 카드 아래에 있습니다. -->
-      <div class="profile-promo profile__only-narrow" data-profile-promo>
-        <p class="profile-promo__text">
-          <b data-promo-title>나를 더 보여주는 프로필을 작성해 보세요</b>
-          <span data-promo-desc>상세 프로필을 작성하면 서로를 알아가는 데 도움이 돼요</span>
-        </p>
-        <a class="btn btn--filled btn--small" href="./profile-detail.html" data-profile-leave="detail">
-          <span class="btn__label" data-promo-cta>지금 작성하기</span>
-        </a>
-      </div>
-
       <!-- 직장 인증을 권하는 추천 카드. 인증 전에만 섭니다(profile.js). 운영 사이트의 안내를
            세 가지(비공개 · 중복 확인 용도 · 공개는 직접 선택)로 줄였습니다 — "약 20초면 완료"는
            버튼이 말합니다. 바탕은 인증 띠(VerifiedBanner)와 같은 따뜻한 중립색입니다. -->
@@ -452,6 +440,20 @@
           </p>
           <button class="btn btn--outlined btn--medium" type="button" data-verify-open="family"><span class="btn__label">인증하기</span></button>
         </div>
+      </div>
+
+      <!-- 좁은 화면에서는 완성도 카드가 폼의 끝에 섭니다. 기본 프로필은 다 채워야 저장되는
+           화면이라, 상세 프로필은 그다음 걸음으로 끝에서 권합니다 — 첫머리에 두면 직장 인증
+           카드와 겹쳐 칸들이 한참 아래로 밀립니다(운영 사이트는 첫머리). 넓은 화면에서는 옆 단의
+           카드 아래에 있습니다. -->
+      <div class="profile-promo profile__only-narrow" data-profile-promo>
+        <p class="profile-promo__text">
+          <b data-promo-title>나를 더 보여주는 프로필을 작성해 보세요</b>
+          <span data-promo-desc>상세 프로필을 작성하면 서로를 알아가는 데 도움이 돼요</span>
+        </p>
+        <a class="btn btn--filled btn--small" href="./profile-detail.html" data-profile-leave="detail">
+          <span class="btn__label" data-promo-cta>지금 작성하기</span>
+        </a>
       </div>
 
       <!-- 넓은 화면의 저장. 읽어 내려가는 동안 화면 아래에 붙어 따라오다가, 폼의 끝에 닿으면

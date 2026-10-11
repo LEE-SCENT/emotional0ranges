@@ -47,6 +47,8 @@
   flex-direction: column;
   gap: var(--spacing-50);
   margin: 0;
+  /* 어절에서 꺾습니다. 낱자에서 꺾이면 "있어 / 요"처럼 한 글자만 다음 줄로 떨어집니다. */
+  word-break: keep-all;
 }
 .verified-banner__text b {
   color: var(--colors-fg);
