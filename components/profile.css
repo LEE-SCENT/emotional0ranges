@@ -379,8 +379,8 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
   .profile__height { max-inline-size: none; }
 
   /* 선개팅 상자는 좌우 여백을 줄여 선택지가 쓸 폭을 넓힙니다. */
-  .profile-extra__head,
-  .profile-extra__body { padding: var(--spacing-400); }
+  .profile-extra__head { padding: var(--spacing-400); }
+  .profile-extra__body { padding: var(--spacing-200) var(--spacing-400) var(--spacing-400); }
 
   /* 완성도의 한 줄과 [n 채우기]는 위아래로 섭니다. 버튼이 칸의 이름을 적어 길이가 바뀌는데
      ("선호하는 이성 스타일 채우기"), 옆에 두면 그때마다 한 줄이 두 줄로 꺾입니다. */
@@ -678,9 +678,9 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
 }
 .profile-extra__text b {
   color: var(--colors-fg);
-  font-size: var(--typography-heading-xs-semibold-font-size);
-  font-weight: var(--typography-heading-xs-semibold-font-weight);
-  line-height: var(--typography-heading-xs-semibold-line-height);
+  font-size: var(--typography-body-l-semibold-font-size);
+  font-weight: var(--typography-body-l-semibold-font-weight);
+  line-height: var(--typography-body-l-semibold-line-height);
 }
 .profile-extra__text span {
   color: var(--colors-fg-lower);
@@ -688,15 +688,18 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
   line-height: var(--typography-body-s-regular-line-height);
   word-break: keep-all;
 }
+/* 머리 줄과 몸 사이에는 선을 긋지 않습니다. 묶음마다 선이 있어(.profile-extra__group) 머리
+   아래에도 그으면 선이 겹겹이 서고, 상자가 두 칸으로 갈려 보입니다. 머리의 아래 여백이 그
+   자리를 대신합니다. */
 .profile-extra__body {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-800);
-  padding: var(--spacing-500);
-  border-block-start: 1px solid var(--colors-border);
+  padding: var(--spacing-300) var(--spacing-500) var(--spacing-500);
 }
 /* 묶음의 이름(결혼 후 가정 관리 · 경제 정보 · 가족 정보). 물음의 이름표보다 한 단계 크고
-   굵어, 아래 물음들의 머리로 읽힙니다. 두 번째 묶음부터는 위에 선을 그어 묶음이 갈리는
+   굵어, 아래 물음들의 머리로 읽힙니다. 상자 제목과 같은 크기이지만, 제목은 설명 한 줄과
+   화살표를 달고 상자 맨 위에 서서 둘이 섞이지 않습니다. 두 번째 묶음부터는 위에 선을 그어 묶음이 갈리는
    자리를 보입니다. 아래 물음과는 붙여 둡니다. */
 .profile-extra__group {
   margin: 0 0 calc(var(--spacing-400) * -1);
