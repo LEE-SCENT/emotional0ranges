@@ -751,6 +751,3 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
   line-height: var(--typography-body-s-regular-line-height);
   word-break: keep-all;
 }
-/* 고를 수 없는 성별. 고른 모양은 그대로 두고 누르는 손만 막습니다(흐리게 하면 무엇이
-   확정됐는지가 흐려집니다). */
-[data-me-gender] .choice { cursor: default; }

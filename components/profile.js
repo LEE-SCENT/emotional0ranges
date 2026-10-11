@@ -198,12 +198,9 @@ export function initProfile() {
      가려 가며 고치면, 저장된 값을 처음 써넣을 때처럼 사건 없이 바뀐 자리를 놓칩니다. */
   const jobDisplay = form.querySelector('[data-job-display]')
 
-  /* 본인인증으로 들어온 성별 · 출생연도. 성별은 고른 모양으로 보이되 바꿀 수 없습니다. */
+  /* 본인인증으로 들어온 성별 · 출생연도. 둘 다 읽기 전용 칸에 적기만 합니다. */
   const me = load().me
-  for (const input of form.querySelectorAll('[data-me-gender] input')) {
-    input.checked = input.value === me.gender
-    input.addEventListener('click', (e) => e.preventDefault())
-  }
+  form.querySelector('[data-me-gender]').value = me.gender
   form.querySelector('[data-me-birth]').value = String(me.birthYear)
 
   function sync(draft) {

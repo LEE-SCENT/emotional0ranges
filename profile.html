@@ -31,7 +31,7 @@
 <link rel="stylesheet" href="./components/choice.css?v=fd460b98">
 <link rel="stylesheet" href="./components/verified-banner.css?v=6f3f1c77">
 <link rel="stylesheet" href="./components/profile-card.css?v=eaf662c0">
-<link rel="stylesheet" href="./components/profile.css?v=1bdddc1d">
+<link rel="stylesheet" href="./components/profile.css?v=6e021c17">
 <link rel="stylesheet" href="./components/tabs.css?v=a962487a">
 <link rel="stylesheet" href="./components/verify.css?v=9ecc570b">
 <link rel="stylesheet" href="./components/confirm.css?v=598089ab">
@@ -290,13 +290,13 @@
           바꾸시려면 <button class="profile__link" type="button" data-identity-check>본인인증을 다시</button> 해 주세요.
           개명은 고객센터로 문의해 주세요.</p>
 
-        <!-- 성별은 고르는 모양으로 보이되 고를 수 없습니다(profile.js). 이름이 없는 칸이라
-             폼의 값에 들지 않습니다. -->
-        <div class="field" role="group" aria-labelledby="profile-gender-label">
-          <span class="field__label" id="profile-gender-label">성별</span>
-          <div class="choice-group choice-group--cols-2 choice-group--pair" role="radiogroup" aria-label="성별" aria-readonly="true" data-me-gender>
-            <label class="choice"><input type="radio" value="남성" aria-describedby="profile-gender-help"><span>남성</span></label>
-            <label class="choice"><input type="radio" value="여성" aria-describedby="profile-gender-help"><span>여성</span></label>
+        <!-- 성별은 출생연도와 같이 읽기 전용 칸입니다(profile.js 가 값을 넣습니다). 고를 수 없는 값을
+             남성·여성 두 선택지로 보이면 고를 수 있는 것처럼 읽힙니다. 이름이 없는 칸이라 폼의
+             값에 들지 않습니다. -->
+        <div class="field">
+          <label class="field__label" for="profile-gender">성별</label>
+          <div class="text-field text-field--readonly">
+            <input id="profile-gender" type="text" readonly aria-describedby="profile-gender-help" data-me-gender>
           </div>
           <p class="field__help" id="profile-gender-help">본인인증으로 확정되어 바꿀 수 없어요.</p>
         </div>
@@ -586,7 +586,7 @@
   initConfirms()
   // segmented 보다 먼저 돕니다. 저장된 쪽(검색·카테고리)을 고른 칸으로 세워둬야
   // 그쪽이 그 칸의 자리를 잽니다.
-  const { initProfile } = await import('./components/profile.js?v=67254de0')
+  const { initProfile } = await import('./components/profile.js?v=d61bfb17')
   initProfile()
   const { initSegmentedControls } = await import('./components/segmented-control.js?v=bbd7c4b8')
   initSegmentedControls()
