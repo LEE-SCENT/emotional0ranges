@@ -32,7 +32,7 @@
 <link rel="stylesheet" href="./components/tabs.css?v=a962487a">
 <link rel="stylesheet" href="./components/verified-banner.css?v=6f3f1c77">
 <link rel="stylesheet" href="./components/profile-card.css?v=eaf662c0">
-<link rel="stylesheet" href="./components/profile.css?v=6e021c17">
+<link rel="stylesheet" href="./components/profile.css?v=dff49ee1">
 <link rel="stylesheet" href="./components/verify.css?v=9ecc570b">
 <link rel="stylesheet" href="./components/confirm.css?v=598089ab">
 <link rel="stylesheet" href="./components/toast.css?v=c91e6fe0">
@@ -140,7 +140,6 @@
       <section class="profile-progress" aria-labelledby="profile-progress-label" data-progress>
         <div class="profile-progress__head">
           <p class="profile-progress__label" id="profile-progress-label">완성도 <b data-progress-percent>0%</b></p>
-          <p class="profile-progress__goal">80% 이상이면 카드 교환</p>
         </div>
         <div class="profile-progress__bar" role="progressbar" aria-labelledby="profile-progress-label"
              aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
@@ -382,7 +381,7 @@
   initMyMenus()
   const { initConfirms } = await import('./components/confirm.js?v=f516d2db')
   initConfirms()
-  const { initProfileDetail } = await import('./components/profile-detail.js?v=4def115d')
+  const { initProfileDetail } = await import('./components/profile-detail.js?v=42124c4d')
   initProfileDetail()
   const { initTabs } = await import('./components/tabs.js?v=aec7319a')
   initTabs()

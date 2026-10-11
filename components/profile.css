@@ -425,7 +425,6 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
   line-height: var(--typography-body-l-semibold-line-height);
 }
 .profile-progress__label b { color: var(--colors-fg-brand); font-weight: inherit; }
-.profile-progress__goal,
 .profile-progress__note {
   color: var(--colors-fg-lower);
   font-size: var(--typography-body-s-regular-font-size);

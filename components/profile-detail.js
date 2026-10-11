@@ -494,9 +494,10 @@ export function initProfileDetail() {
   }
 
   const progress = document.querySelector('[data-progress]')
-  // 문턱은 EXCHANGE_AT 한 곳에서 옵니다. 눈금과 글자가 숫자를 따로 들면 언젠가 갈립니다.
+  // 문턱은 EXCHANGE_AT 한 곳에서 옵니다. 숫자로 적지 않고 막대 위 눈금으로만 보입니다 —
+  // 위에 "80%"를 적어 두면 지금의 완성도보다 먼저 읽혀 지금 값으로 오해합니다. 얼마나
+  // 남았는지는 아래 한 줄이 "n개 더"로 말합니다.
   progress.querySelector('.profile-progress__mark').style.insetInlineStart = `${EXCHANGE_AT}%`
-  progress.querySelector('.profile-progress__goal').textContent = `${EXCHANGE_AT}% 이상이면 카드 교환`
 
   const count = form.querySelector('[data-words-count]')
   let tab = 'info'
