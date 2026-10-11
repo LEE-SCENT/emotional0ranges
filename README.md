@@ -29,6 +29,8 @@ tokens/                        ← 손으로 고치는 곳 (DTCG 포맷)
 icons/figma-export/            ← Figma에서 내려받은 원본 SVG (그대로 보존)
 logo/figma-export/             ← 로고 원본 SVG
 logo/sns/                      ← SNS 아이콘 PNG
+favicon.svg                    ← 파비콘 원본 (Figma 22:15927)
+favicon/                       ← 그로부터 만든 ico · PNG 아이콘 · manifest
 fonts/pretendard/              ← Pretendard Variable 자체 호스팅 (OFL 1.1)
 components/                    ← 손으로 쓰는 컴포넌트 CSS
   container.css
@@ -507,6 +509,45 @@ Google Fonts 가 나눠 둔 92 개 조각을 그대로 받아 자체 호스팅�
 
 브랜드 심볼(주황)은 세 형태 모두에서 색이 고정됩니다 — 워드마크만 색을 따릅니다.
 `logoSvg(height)` 로 비율을 유지한 문자열을 얻을 수도 있습니다.
+
+---
+
+## Favicon
+
+원본은 `favicon.svg` 하나(Figma `22:15927`, 브랜드색 `#F75D15`)이고, 나머지는 거기서 만든
+파일입니다. 기기와 쓰임마다 읽는 파일이 달라 한 벌을 함께 둡니다.
+
+| 파일 | 크기 | 누가 읽나 |
+| --- | --- | --- |
+| `favicon.svg` | 벡터 | 최신 브라우저의 탭 아이콘 |
+| `favicon/favicon.ico` | 16 · 32 · 48 | SVG 파비콘을 못 읽는 브라우저, 북마크·검색 결과 |
+| `favicon/apple-touch-icon.png` | 180 | iOS "홈 화면에 추가", 일부 메신저 링크 미리보기 |
+| `favicon/icon-192.png` · `icon-512.png` | 192 · 512 | 안드로이드 홈 화면·설치 (manifest 가 가리킵니다) |
+| `favicon/site.webmanifest` | — | 안드로이드가 읽는 이름·아이콘·색 |
+
+PNG 는 흰 바탕에 심볼을 가운데 70% 크기로 둡니다(사방 15% 여백). iOS·안드로이드는 투명한
+곳을 검게 칠하거나 모서리를 둥글게 잘라내서, 바탕과 여백이 없으면 심볼이 잘리거나 검은
+상자 안에 섭니다. 512 는 안드로이드의 maskable(원·물방울 모양으로 잘라내는 것)도 겸합니다 —
+심볼이 가운데 80% 안전 영역 안에 있습니다. `.ico` 는 바탕이 투명합니다.
+
+**모든 페이지의 `<head>` 에 같은 묶음을 둡니다.** 그대로 복사해 쓰면 됩니다(경로는 페이지
+위치에 맞게 — `templete/` 안의 쪽은 `../`).
+
+```html
+<link rel="icon" href="./favicon/favicon.ico" sizes="32x32">
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./favicon/apple-touch-icon.png">
+<link rel="manifest" href="./favicon/site.webmanifest">
+<link rel="mask-icon" href="./favicon.svg" color="#F75D15">
+<meta name="theme-color" content="#FFFFFF">
+```
+
+`.ico` 를 SVG 앞에 둡니다. 둘 다 읽는 브라우저는 SVG 를, SVG 를 못 읽는 브라우저는 `.ico` 를
+고릅니다(`sizes="32x32"` 가 있어야 Chrome 이 `.ico` 대신 SVG 를 고릅니다).
+
+⚠️ PNG · ICO 는 빌드(`npm run build`)가 만들지 않습니다 — 이 저장소에는 SVG 를 그림으로 바꾸는
+도구가 없어 한 번 만들어 넣었습니다. `favicon.svg` 가 바뀌면 같은 크기·여백으로 다시 만들어
+`favicon/` 을 갈아 주세요.
 
 ---
 
