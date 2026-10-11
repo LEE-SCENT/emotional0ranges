@@ -261,7 +261,8 @@
 /* 한 장뿐이면 가운데에 세웁니다. */
 .profile-preview__track:has(.profile-card:only-child) { justify-content: center; }
 
-.profile-preview:focus { outline: none; }
+.profile-preview:focus,
+.profile-preview__track:focus { outline: none; }
 
 /* 미리보기가 열려 있는 동안 화면 아래의 [완료] 띠는 아래로 내려가 숨습니다. 어두워진 바탕
    위에 또렷한 검은 버튼이 남아 있으면 카드를 닫기 전에 눌러야 할 것처럼 보이고, 닫기(×)와

@@ -15,6 +15,7 @@
 import { showToast } from './toast.js?v=ccb77a07'
 import { openConfirm } from './confirm.js?v=f516d2db'
 import { lockScroll, unlockScroll } from './scroll-lock.js?v=40a2cd35'
+import { initDialogFocus } from './dialog-focus.js?v=a4704637'
 
 const KEY = 'eo:profile'
 
@@ -426,6 +427,9 @@ export function initProfileForm({ form, part, saved, render, afterSave, validate
 function initPreview(render) {
   const dialog = document.getElementById('profile-preview')
   if (!dialog) return
+  // 열 때 초점은 카드들이 받습니다. 그러지 않으면 showModal 이 닫기에 초점을 두어, 손가락으로
+  // 연 사람에게 누른 적 없는 닫기가 테를 두른 채 나타납니다(dialog-focus.js).
+  initDialogFocus(dialog, dialog.querySelector('.profile-preview__track'))
 
   document.addEventListener('click', (e) => {
     if (!e.target.closest('[data-profile-preview-open]')) return
