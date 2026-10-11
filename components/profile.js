@@ -11,7 +11,7 @@
 import { openConfirm } from './confirm.js?v=f516d2db'
 import { showToast } from './toast.js?v=ccb77a07'
 import { cardGrid, cardHeader, cardRow, initProfileForm, load, store, swap } from './profile-form.js?v=25fd6e27'
-import { progressOf } from './profile-detail.js?v=13c53301'
+import { progressOf } from './profile-detail.js?v=ec345598'
 
 /**
  * ⚠️ 예시입니다. 행정구역 전체가 아니라 화면을 맞춰 보는 데 필요한 만큼만 있습니다.
