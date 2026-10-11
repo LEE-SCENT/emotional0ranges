@@ -235,6 +235,9 @@ const MBTI = [
   ['mbti-jp', ['J', '판단'], ['P', '인식']],
 ]
 
+/** [n 채우기] 버튼에 적기에 긴 물음의 줄인 이름. */
+const BRIEF = { friends: '남사친·여사친' }
+
 /** 학교 공개 여부에서 "공개"의 값(운영 사이트의 글자 그대로). */
 const SCHOOL_PUBLIC = '공개 (노출함)'
 
@@ -521,14 +524,25 @@ export function initProfileDetail() {
     progress.querySelector('[data-progress-percent]').textContent = `${percent}%`
     progress.querySelector('[data-progress-fill]').style.inlineSize = `${percent}%`
     progress.querySelector('[role="progressbar"]').setAttribute('aria-valuenow', percent)
+    // 해야 할 일("n개 더")을 앞에, 얻는 것(카드 교환)을 뒤에 둡니다. 문턱(80%)은 적지
+    // 않습니다 — "n개 더"에 이미 들어 있고, 숫자가 지금의 완성도로 읽힙니다.
     progress.querySelector('[data-progress-note]').textContent = need
-      // 오른쪽 위에 "카드 교환"이 이미 서 있어 여기서는 줄입니다 — 폰에서 한 줄에 들어갑니다.
-      ? `${need}개 더 채우면 교환할 수 있어요`
+      ? `${need}개 더 채우면 카드를 교환할 수 있어요`
       : '이제 프로필 카드를 교환할 수 있어요'
     progress.classList.toggle('is-ready', !need)
-    // 다 채웠으면 갈 곳이 없습니다.
-    progress.querySelector('[data-progress-jump]').hidden = !missing.length
+    // 다 채웠으면 갈 곳이 없습니다. 버튼은 다음에 갈 칸의 이름을 적습니다 — 누르기 전에
+    // 어디로 가는지 알고, 하나 채울 때마다 이름이 바뀌어 나아가는 것이 보입니다.
+    const jump = progress.querySelector('[data-progress-jump]')
+    jump.hidden = !missing.length
     progress.dataset.next = missing[0] ?? ''
+    if (missing.length) jump.querySelector('.btn__label').textContent = `${unitName(missing[0])} 채우기`
+  }
+
+  /** 칸의 이름(버튼에 적는 것). 이름표에서 읽고 "(최대 n개)"는 뗍니다. 긴 물음은 줄입니다. */
+  function unitName(unit) {
+    if (BRIEF[unit]) return BRIEF[unit]
+    const label = form.querySelector(`[data-unit="${unit}"] .field__label`)
+    return label?.textContent.replace(/\s*\(최대 \d+개\)/, '').trim() || '다음 항목'
   }
 
   const aside = document.querySelector('.profile__aside [data-profile-card]')
@@ -634,13 +648,21 @@ export function initProfileDetail() {
   }
   /* 안 채운 칸으로 곧장 갑니다. 스무 개 넘는 물음 가운데 무엇이 비었는지를 찾으며
      내려가게 하지 않습니다. 채우고 다시 누르면 그 다음 빈 칸입니다. */
+  /* 도착한 칸은 잠깐 빛납니다. 바로 아래 칸(MBTI)이면 거의 굴러가지 않아, 그것만으로는
+     눌렀는데 아무 일도 없는 것처럼 보입니다. 칸의 이름이 붙어 있는 탭 바로 아래에 서도록
+     내려갑니다(profile.css 의 [data-unit] scroll-margin). */
   progress.querySelector('[data-progress-jump]').addEventListener('click', () => {
     const field = form.querySelector(`[data-unit="${progress.dataset.next}"]`)
     if (!field) return
     touched = null
-    field.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })
+    const still = matchMedia('(prefers-reduced-motion: reduce)').matches
+    field.scrollIntoView({ block: 'start', behavior: still ? 'instant' : 'smooth' })
     ;[...field.querySelectorAll('input:not([disabled]), textarea')]
       .find((control) => control.offsetParent !== null)?.focus({ preventScroll: true })
+    field.classList.remove('is-pointed')
+    void field.offsetWidth // 연달아 눌러도 처음부터 다시 빛나게 합니다.
+    field.classList.add('is-pointed')
+    field.addEventListener('animationend', () => field.classList.remove('is-pointed'), { once: true })
   })
 
   tabs.addEventListener('click', (e) => {

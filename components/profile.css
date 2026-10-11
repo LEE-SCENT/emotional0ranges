@@ -300,8 +300,29 @@ body:has(.profile__tabs) .gnb.is-sticky .gnb__tip { display: none; }
 }
 /* 탭을 눌러 내려왔을 때 구획의 첫 줄이 붙어 있는 탭 뒤로 들어가지 않게, 붙는 자리와
    탭의 키(48)만큼, 그리고 숨 쉴 틈(20)만큼 위를 비웁니다. */
-.profile__panel {
+.profile__panel,
+.profile__panel [data-unit] {
   scroll-margin-block-start: calc(var(--profile-sticky-top) + var(--spacing-1200) + var(--spacing-500));
+}
+
+/* [n 채우기]로 내려온 칸. 한 번 은은하게 빛나고 사라집니다 — 어디로 왔는지를 보여줄 뿐
+   상태가 아니라 남지 않습니다. 칸 바깥으로 번지게 그려(box-shadow) 칸의 자리는 그대로입니다. */
+.profile__panel [data-unit].is-pointed {
+  border-radius: var(--_rounded-l);
+  animation: profile-point 1.6s var(--_easing-standard);
+}
+@keyframes profile-point {
+  0%, 30% {
+    background: var(--colors-bg-low);
+    box-shadow: 0 0 0 var(--spacing-300) var(--colors-bg-low);
+  }
+  100% {
+    background: transparent;
+    box-shadow: 0 0 0 var(--spacing-300) transparent;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .profile__panel [data-unit].is-pointed { animation-duration: 0.8s; }
 }
 
 /* ---- 알림 --------------------------------------------------------------
@@ -346,6 +367,10 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
   .profile__form .profile-promo.profile__only-narrow { display: flex; }
 
   .profile__height { max-inline-size: none; }
+
+  /* 완성도의 한 줄과 [n 채우기]는 위아래로 섭니다. 버튼이 칸의 이름을 적어 길이가 바뀌는데
+     ("선호하는 이성 스타일 채우기"), 옆에 두면 그때마다 한 줄이 두 줄로 꺾입니다. */
+  .profile-progress__foot { flex-direction: column; align-items: flex-start; }
 
   /* 좁은 화면에서는 기간 칸이 한 줄씩 다 씁니다. 반 폭에는 "2022년 1월 ~ 2022년 3월"이
      들어가지 않습니다. */
