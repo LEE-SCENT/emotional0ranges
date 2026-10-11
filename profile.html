@@ -292,18 +292,20 @@
 
         <!-- 성별은 출생연도와 같이 읽기 전용 칸입니다(profile.js 가 값을 넣습니다). 고를 수 없는 값을
              남성·여성 두 선택지로 보이면 고를 수 있는 것처럼 읽힙니다. 이름이 없는 칸이라 폼의
-             값에 들지 않습니다. 바꿀 수 없다는 말은 위의 안내 한 줄이 이미 합니다. -->
-        <div class="field">
-          <label class="field__label" for="profile-gender">성별</label>
-          <div class="text-field text-field--readonly">
-            <input id="profile-gender" type="text" readonly data-me-gender>
+             값에 들지 않습니다. 바꿀 수 없다는 말은 위의 안내 한 줄이 이미 합니다.
+             둘 다 짧고 같은 출처(본인인증)의 값이라 폰에서도 한 줄에 반씩 섭니다. -->
+        <div class="field-row">
+          <div class="field">
+            <label class="field__label" for="profile-gender">성별</label>
+            <div class="text-field text-field--readonly">
+              <input id="profile-gender" type="text" readonly data-me-gender>
+            </div>
           </div>
-        </div>
-
-        <div class="field">
-          <label class="field__label" for="profile-birth">출생연도</label>
-          <div class="text-field text-field--readonly">
-            <input id="profile-birth" type="text" readonly data-me-birth>
+          <div class="field">
+            <label class="field__label" for="profile-birth">출생연도</label>
+            <div class="text-field text-field--readonly">
+              <input id="profile-birth" type="text" readonly data-me-birth>
+            </div>
           </div>
         </div>
       </div>
