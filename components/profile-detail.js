@@ -425,7 +425,17 @@ export function initProfileDetail() {
     if (!agreed) api.save(sensitiveNames)
   }
   agree.addEventListener('change', () => {
-    if (agree.checked) return setConsent(true)
+    if (agree.checked) {
+      setConsent(true)
+      // 고지가 펼쳐져 있어 막 열린 물음은 그 아래, 폰에서는 화면 밖에 섭니다. 첫 물음이 붙어 있는
+      // 탭 바로 아래로 오도록 내려가 동의한 결과를 보여줍니다([n 채우기]와 같은 자리).
+      const first = form.querySelector(`[data-unit="${sensitiveNames[0]}"]`)
+      requestAnimationFrame(() => first.scrollIntoView({
+        block: 'start',
+        behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
+      }))
+      return
+    }
     // 지울 답이 없으면 바로 풉니다. 있으면 체크를 되돌려 두고 묻습니다 — 창을 닫고 물러나면
     // 아무것도 바뀌지 않은 채여야 합니다.
     if (![...sensitiveInputs()].some((input) => input.checked)) return setConsent(false)
