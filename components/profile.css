@@ -431,8 +431,10 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
 .profile-progress {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-300);
-  padding: var(--spacing-500);
+  /* 줄 사이 8, 위아래 16 · 좌우 20 입니다. 화면의 첫머리에 서는 덩어리라 탭과 첫 물음을
+     너무 밀어내지 않게 좁게 둡니다. 좌우는 본문 칸들의 글자 들여쓰기(20)와 맞춥니다. */
+  gap: var(--spacing-200);
+  padding: var(--spacing-400) var(--spacing-500);
   border-radius: var(--_rounded-l);
   background: var(--colors-bg-low);
 }
@@ -473,8 +475,16 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
   background: var(--colors-bg-brand);
   transition: inline-size var(--_duration-fast) var(--_easing-standard);
 }
+/* 화면에 들어올 때 한 번, 0 에서 지금 값까지 차오릅니다(profile-detail.js). 고를 때의
+   짧은 움직임(120)과 달리 길게, 끝에서 천천히 멈춥니다 — 여기까지 채웠다는 것을 보여주는
+   움직임이라 눈이 따라갈 시간이 있어야 합니다.
+   ⚠️ Figma 에 이 모션이 없어 시간(800)과 곡선을 코드에서 정했습니다. */
+.profile-progress.is-entering .profile-progress__fill {
+  transition: inline-size calc(var(--_duration-slow) * 2) var(--_easing-decelerate);
+}
 @media (prefers-reduced-motion: reduce) {
-  .profile-progress__fill { transition: none; }
+  .profile-progress__fill,
+  .profile-progress.is-entering .profile-progress__fill { transition: none; }
 }
 
 /* ---- 민감정보 동의 (상세 프로필 · 가치관의 첫머리) -----------------------
@@ -691,7 +701,7 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
   word-break: keep-all;
 }
 /* 넓은 화면에서는 [완료] 바로 아래에 붙는 한 줄입니다. */
-.profile__actions > .profile__autosave { margin-block-start: var(--spacing-200); }
+.profile__actions > .profile__autosave { margin-block-start: var(--spacing-300); }
 
 /* 도움말 줄 안의 링크 모양 버튼("증명서로 인증하기"). 운영 사이트와 같이 브랜드색에 밑줄입니다. */
 .profile__link {

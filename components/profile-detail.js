@@ -519,10 +519,47 @@ export function initProfileDetail() {
 
   /* 완성도. 저장하기 전의 값으로 셉니다 — 고르는 대로 오르는 것이 보여야 채우는 손이
      멈추지 않습니다. */
+  /* 들어올 때 한 번 차오릅니다. 막대는 0 에서 시작해 CSS 가 늘이고(is-entering), 숫자도 같은
+     시간 동안 같은 곡선으로 셉니다 — 막대와 숫자가 따로 놀면 어느 쪽이 맞는지 보게 됩니다.
+     채운 것이 없거나(0%) 움직임을 줄인 환경에서는 바로 그 값에 섭니다. */
+  let entered = false
+  let shownPercent = null
+  const ENTER_MS = 800
+  const decelerate = (t) => 1 - (1 - t) ** 3
+  function enter(percent) {
+    entered = true
+    if (!percent || matchMedia('(prefers-reduced-motion: reduce)').matches) return false
+    const fill = progress.querySelector('[data-progress-fill]')
+    const label = progress.querySelector('[data-progress-percent]')
+    fill.style.inlineSize = '0%'
+    label.textContent = '0%'
+    progress.classList.add('is-entering')
+    shownPercent = 0
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      fill.style.inlineSize = `${target}%`
+      const start = performance.now()
+      const tick = (now) => {
+        const t = Math.min(1, (now - start) / ENTER_MS)
+        label.textContent = `${Math.round(target * decelerate(t))}%`
+        if (t < 1) return requestAnimationFrame(tick)
+        shownPercent = null
+        progress.classList.remove('is-entering')
+        label.textContent = `${target}%`
+      }
+      requestAnimationFrame(tick)
+    }))
+    return true
+  }
+  let target = 0
+
   function drawProgress(draft) {
     const { percent, need, missing } = progressOf(draft)
-    progress.querySelector('[data-progress-percent]').textContent = `${percent}%`
-    progress.querySelector('[data-progress-fill]').style.inlineSize = `${percent}%`
+    target = percent
+    const counting = (!entered && enter(percent)) || shownPercent !== null
+    if (!counting) {
+      progress.querySelector('[data-progress-percent]').textContent = `${percent}%`
+      progress.querySelector('[data-progress-fill]').style.inlineSize = `${percent}%`
+    }
     progress.querySelector('[role="progressbar"]').setAttribute('aria-valuenow', percent)
     // 해야 할 일("n개 더")을 앞에, 얻는 것(카드 교환)을 뒤에 둡니다. 문턱(80%)은 적지
     // 않습니다 — "n개 더"에 이미 들어 있고, 숫자가 지금의 완성도로 읽힙니다.
