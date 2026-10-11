@@ -173,14 +173,16 @@
 /* 근무지: 넓은 화면에서는 [시/도][구][고정 근무지 없음] 한 줄, 그 아래 안내.
    좁은 화면에서는 체크박스가 안내 아래로 내려갑니다(Figma m_기본프로필). */
 .profile__workplace {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--spacing-150);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: 'selects check' 'help .';
+  gap: var(--spacing-150) var(--spacing-300);
 }
-.profile__workplace > .field-row { align-self: stretch; }
-/* [지역 선택 · 고정 근무지 없음]과 고르는 칸 사이는 이름표-칸 사이(8)만큼 더 띄웁니다. */
-.profile__workplace > .segmented { margin-block-end: var(--spacing-100); }
+.profile__workplace > .field-row { grid-area: selects; }
+.profile__workplace > .field__help { grid-area: help; }
+/* 위에 맞춥니다. 구 아래에 빠졌다는 말이 서면 줄이 길어지는데, 그때 체크박스가 가운데로
+   내려오지 않습니다. */
+.profile__workplace > .checkbox-label { grid-area: check; align-self: start; }
 
 /* ---- 키 ---------------------------------------------------------------
    숫자를 치게 하지 않습니다. 한두 칸은 ± 로, 멀리는 막대로 옮깁니다 — 키는 대개
@@ -350,14 +352,14 @@ body:has(.profile) .toast:not(.is-leaving) { animation-name: profile-toast-in; }
   .profile__periods { flex-direction: column; align-items: stretch; }
   .profile__periods > .field { flex: none; }
 
-  /* 근무지의 [지역 선택 · 고정 근무지 없음]은 아래 [시/도][구] 줄과 같은 폭으로 섭니다.
-     항목이 반씩 나눠 가져, 글자 길이와 상관없이 가운데 경계가 아래 두 칸의 경계와
-     맞습니다(찾기 화면의 탭과 같은 방식). */
-  .profile__workplace > .segmented { align-self: stretch; }
-  .profile__workplace > .segmented .segmented__item { flex: 1 1 0; }
+  .profile__workplace {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'selects' 'help' 'check';
+  }
+  .profile__workplace > .checkbox-label { justify-self: start; }
 
-  /* 직업의 [검색 · 카테고리]도 같습니다. 옆에 서던 검색 칸(또는 분류 두 칸)은 그 아래로
-     내려가 한 줄을 다 씁니다. 그 사이는 근무지와 같게 띄웁니다. */
+  /* 직업의 [검색 · 카테고리]는 아래 줄과 같은 폭으로 서고 항목이 반씩 나눠 가집니다. 옆에 서던 검색 칸(또는 분류 두 칸)은 그 아래로
+     내려가 한 줄을 다 씁니다. 그 사이는 이름표-칸 사이(8)만큼 더 띄웁니다. */
   .profile__occupation { flex-direction: column; align-items: stretch; }
   .profile__occupation > .text-field,
   .profile__occupation > .field-row { flex: none; }

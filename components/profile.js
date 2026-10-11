@@ -198,20 +198,6 @@ export function initProfile() {
      가려 가며 고치면, 저장된 값을 처음 써넣을 때처럼 사건 없이 바뀐 자리를 놓칩니다. */
   const jobDisplay = form.querySelector('[data-job-display]')
 
-  /* 근무 지역의 [지역 선택 · 고정 근무지 없음]. 고른 것을 감춰진 칸에 담아 폼의 값으로 둡니다. */
-  const workModes = form.querySelector('[data-work-modes]')
-  const workNone = form.elements['work-none']
-  const workPlace = workModes.parentElement.querySelector('.field-row')
-  const workHelp = form.querySelector('[data-work-help]')
-  workModes.addEventListener('click', (e) => {
-    const item = e.target.closest('[data-work-mode]')
-    if (!item) return
-    const none = item.dataset.workMode === 'none'
-    if (workNone.checked === none) return
-    workNone.checked = none
-    workNone.dispatchEvent(new Event('change', { bubbles: true }))
-  })
-
   /* 본인인증으로 들어온 성별 · 출생연도. 성별은 고른 모양으로 보이되 바꿀 수 없습니다. */
   const me = load().me
   for (const input of form.querySelectorAll('[data-me-gender] input')) {
@@ -232,14 +218,9 @@ export function initProfile() {
     form.querySelector('[data-job-search]').hidden = !search
     form.querySelector('[data-job-category]').hidden = search
 
-    // 고정 근무지 없음이면 고르는 칸과 그 도움말을 걷습니다(운영 사이트와 같습니다).
-    workPlace.hidden = workHelp.hidden = draft['work-none']
-    for (const item of workModes.querySelectorAll('[data-work-mode]')) {
-      const on = (item.dataset.workMode === 'none') === draft['work-none']
-      if (item.classList.contains('is-selected') === on) continue
-      item.classList.toggle('is-selected', on)
-      item.setAttribute('aria-selected', String(on))
-    }
+    // 고정 근무지 없음이면 고르는 칸을 끕니다. 걷지 않고 끄는 것은, 체크박스가 그 옆에
+    // 서 있어 칸이 사라지면 체크박스가 제자리를 잃기 때문입니다.
+    $('work-sido').disabled = $('work-gugun').disabled = draft['work-none']
 
     form.querySelector('[data-period="married"]').hidden = draft.married !== 'yes'
     form.querySelector('[data-period="cohabited"]').hidden = !draft.cohabited
