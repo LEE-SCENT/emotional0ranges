@@ -32,6 +32,8 @@ import { selectTab } from './tabs.js?v=aec7319a'
  *   word     가입한 사람의 성별에 따라 달리 적는 선택지({ 값: { 여성: '…' } }). 값은 그대로이고
  *            보이는 글자만 바뀝니다.
  *   other    이 선택지("기타 의견" 같은)를 고르면 글로 받는 칸이 열립니다.
+ *   when     이 물음을 묻는 조건(draft => boolean). 앞 물음의 답에 따라 열리는 물음입니다.
+ *            묻지 않는 동안에는 칸도, 카드의 줄도, 완성도의 셈도 없고, 답이 있었다면 지웁니다.
  *   sensitive 민감정보(개인정보 보호법 제23조)라 동의한 사람에게만 묻습니다. 동의하지
  *            않으면 칸도, 카드의 줄도, 완성도의 셈도 없습니다.
  *
@@ -178,10 +180,10 @@ const QUESTIONS = [
     options: ['외동', '형/오빠 있음', '누나/언니 있음', '남동생 있음', '여동생 있음', '밝히고 싶지 않음'],
   },
 
-  /* 기존 사이트(dev-app)에서 동의한 뒤 열리는 두 물음. 선택지와 차례도 그대로입니다.
-     동의 아래에 섭니다(profile-detail.html 의 data-sensitive).
-     기존 사이트의 동의 고지는 "종교 참여 정도"도 수집 항목으로 적고 있지만, 동의한 뒤에
-     그 물음은 없습니다. 묻지 않는 것을 수집한다고 적지 않도록 고지에서도 뺐습니다. */
+  /* 기존 사이트(dev-app)에서 동의한 뒤 열리는 물음. 선택지와 차례도 그대로입니다.
+     동의 아래에 섭니다(profile-detail.html 의 data-sensitive). 종교 참여 정도는 종교가 있다고
+     답한 사람에게만 묻습니다(운영 사이트 화면에서 기독교를 골랐을 때 열려 있는 것을 보고,
+     종교가 있는 답 넷에서 열리게 했습니다). */
   {
     tab: 'values', name: 'politics', label: '정치 성향', sensitive: true,
     options: ['보수', '진보', '중도', '관심 없음', '밝히고 싶지 않음'],
@@ -190,10 +192,19 @@ const QUESTIONS = [
     tab: 'values', name: 'religion', label: '종교', sensitive: true,
     options: ['기독교', '불교', '천주교', '무교', '기타 종교', '밝히고 싶지 않음'],
   },
+  {
+    tab: 'values', name: 'religion-practice', label: '종교 참여 정도', card: '종교 참여', sensitive: true,
+    when: (draft) => RELIGIOUS.includes(draft.religion),
+    options: ['거의 매주 가요', '한 달에 한두 번 가요', '믿음은 있지만 잘 안 가요'],
+  },
 ]
 
-/** 이 물음을 지금 묻는지. 민감정보는 동의한 사람에게만 묻습니다. */
-const isAsked = (q, draft) => !q.sensitive || Boolean(draft['sensitive-consent'])
+/** 종교 참여 정도를 묻는 종교의 답(무교 · 밝히고 싶지 않음이 아닌 것). */
+const RELIGIOUS = ['기독교', '불교', '천주교', '기타 종교']
+
+/** 이 물음을 지금 묻는지. 민감정보는 동의한 사람에게만, 조건이 있는 물음은 조건이 맞을 때만. */
+const isAsked = (q, draft) =>
+  (!q.sensitive || Boolean(draft['sensitive-consent'])) && (!q.when || q.when(draft))
 
 /* ---- 완성도 -------------------------------------------------------------
    카드 교환의 문턱입니다. 물음 하나가 한 칸이고, MBTI 는 넷을 다 골라야 한 칸입니다.
@@ -472,6 +483,20 @@ export function initProfileDetail() {
     if (!api || !input.name || !api.dirty([input.name])) return
     api.save([input.name])
   })
+  /* 조건이 풀린 물음(종교를 무교로 바꾼 뒤의 종교 참여 정도)의 답은 지웁니다. 보이지 않는
+     답이 남아 카드에 서거나 다음에 다시 열렸을 때 고른 적 없는 것처럼 켜져 있으면 안 됩니다. */
+  form.addEventListener('change', () => {
+    if (!api) return
+    const draft = Object.fromEntries(QUESTIONS.map((q) => [q.name, form.elements[q.name]?.value]))
+    draft['sensitive-consent'] = form.elements['sensitive-consent'].checked
+    for (const q of QUESTIONS.filter((item) => item.when && !item.when(draft))) {
+      const picked = [...form.querySelectorAll(`input[name="${q.name}"]:checked`)]
+      if (!picked.length) continue
+      for (const input of picked) input.checked = false
+      api.save([q.name])
+      api.refresh()
+    }
+  })
 
   /* 칸을 떠나지 않고 화면을 떠나는 길 — 폰에서 다른 앱으로 넘어가기, 탭 닫기, 화면
      끄기, 새로고침 — 에서도 쓰던 글을 저장합니다. 그 길에서는 change 가 오지 않아, 저장
@@ -524,7 +549,7 @@ export function initProfileDetail() {
     for (const box of form.querySelectorAll('[data-other]')) {
       box.hidden = draft[box.dataset.other] !== box.dataset.otherWhen
     }
-    for (const q of QUESTIONS.filter((item) => item.sensitive)) {
+    for (const q of QUESTIONS.filter((item) => item.sensitive || item.when)) {
       form.querySelector(`[data-unit="${q.name}"]`).hidden = !isAsked(q, draft)
     }
     count.textContent = [...draft.words].length
