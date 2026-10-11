@@ -417,8 +417,9 @@ export function initProfile() {
   }
 
   function drawPromo(profile) {
-    // 문구는 운영 사이트 그대로입니다. 남은 문항이 없으면 권할 것도 없어 거둡니다.
-    const { percent, missing } = progressOf(profile.detail ?? {})
+    // 상세 프로필 화면의 완성도와 같은 말을 씁니다("n개 더 채우면 …"). 두 화면이 같은 셈을
+    // 다른 말로 하면 둘이 다른 숫자처럼 읽힙니다. 남은 문항이 없으면 권할 것도 없어 거둡니다.
+    const { percent, need, missing } = progressOf(profile.detail ?? {})
     for (const promo of promos) {
       promo.hidden = !missing.length
       const title = promo.querySelector('[data-promo-title]')
@@ -426,8 +427,10 @@ export function initProfile() {
       const cta = promo.querySelector('[data-promo-cta]')
       if (!title) continue
       title.textContent = `상세 프로필 완성도 ${percent}%`
-      desc.textContent = '지금 보고 계신 기본 정보는 완성도 계산에 들어가지 않아요(취미·가치관 등 상세 문항만 셉니다).'
-      cta.textContent = `${missing.length}문항 남았어요 — 채우러 가기 →`
+      desc.textContent = need
+        ? `${need}개 더 채우면 상대와 프로필 카드를 교환할 수 있어요`
+        : '이제 상대와 프로필 카드를 교환할 수 있어요'
+      cta.textContent = need ? '상세 프로필 채우기' : '안 채운 항목 채우기'
     }
   }
 
@@ -439,7 +442,9 @@ export function initProfile() {
     prepare,
     render(profile, draft) {
       sync(draft)
-      for (const card of cards) swap(card, [cardHeader(profile), cardGrid(facts(profile, draft))])
+      // 카드의 회사 인증 배지도 화면과 같은 인증 상태를 따릅니다(?company=none 으로 볼 때 포함).
+      const shown = { ...profile, verified: { ...profile.verified, company: companyDone(profile) } }
+      for (const card of cards) swap(card, [cardHeader(shown), cardGrid(facts(profile, draft))])
       drawPromo(profile)
       drawCompany(profile)
     },
