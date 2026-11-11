@@ -66,8 +66,8 @@ export function initCookieConsent({ policyHref = '#', onChange, force = false } 
         자세한 내용은 <a target="_blank" rel="noopener">개인정보처리방침</a>에 있어요.</p>
     </div>
     <div class="cookie-consent__actions">
-      <button class="btn btn--outlined btn--large" type="button" data-cookie-consent="denied"><span class="btn__label">거부</span></button>
-      <button class="btn btn--filled btn--large" type="button" data-cookie-consent="granted"><span class="btn__label">허용</span></button>
+      <button class="btn btn--outlined btn--medium" type="button" data-cookie-consent="denied"><span class="btn__label">거부</span></button>
+      <button class="btn btn--filled btn--medium" type="button" data-cookie-consent="granted"><span class="btn__label">허용</span></button>
     </div>`
   card.querySelector('a').href = policyHref
 
