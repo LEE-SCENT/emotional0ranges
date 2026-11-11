@@ -31,9 +31,11 @@
   letter-spacing: var(--typography-body-m-regular-letter-spacing);
   /* 한국어 문장이 낱자에서 꺾이지 않게 어절에서 꺾습니다. */
   word-break: keep-all;
-  /* 긴 글이라 어디쯤 읽는지 알 수 있게 스크롤바는 남기되, 얇고 옅게 둡니다. */
+  /* 긴 글이라 어디쯤 읽는지 알 수 있게 스크롤바는 얇게 남깁니다. 구분선 색(#E7E5E4)은
+     흰 판 위에서 거의 보이지 않아 한 단계 진한 회색(seriousGray 400)을 씁니다.
+     ⚠️ 스크롤바 전용 토큰이 없어 같은 값을 가진 fg-disabled 를 빌렸습니다. */
   scrollbar-width: thin;
-  scrollbar-color: var(--colors-divider) transparent;
+  scrollbar-color: var(--colors-fg-disabled) transparent;
 }
 
 .privacy-sheet__meta,
