@@ -16,7 +16,7 @@
  * 먼저 돌아야 합니다. 그들이 세어둔 뒤에 목록을 갈아끼우면 서로 다른 것을 보게 됩니다.
  */
 
-import { PRODUCTS, seatsText, startTime } from './products.js?v=a3d5fd4b'
+import { PRODUCTS, seatsText, startTime } from './products.js?v=29238642'
 import { ME } from './my-menu.js?v=fe953b87'
 
 export const currentProduct = () => {

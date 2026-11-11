@@ -547,23 +547,25 @@
   <footer class="footer">
     <div class="footer__info">
       <p class="footer__links">
-        <span>Ⓒ 2026 Emotional 0ranges</span>
-        <a class="is-strong" href="#">개인정보 처리방침</a>
+        <span>© 2026 EMOTIONAL ORANGES</span>
         <a href="#">이용약관</a>
-        <a href="#">의견 보내기</a>
+        <a class="is-strong" href="#">개인정보처리방침</a>
+        <a href="#">환불 규정</a>
       </p>
       <p class="footer__meta">
-        <span>(주)감정적인오렌지들</span>
-        <span>경기도 남양주시 별내중앙로 34, 502호(별내동)</span>
-        <span>emotional0ranges@naver.com</span>
-        <span>개인정보보호책임자: 권준혁</span>
-        <span>사업자 등록번호 480-88-03308</span>
-        <span>법인 등록번호 28411-0437652</span>
+        <span>주식회사 감정적인오렌지들</span>
+        <span>대표이사 권준혁</span>
+        <span>사업자등록번호 480-88-03308</span>
+        <span>법인등록번호 284111-0437652</span>
         <span>결혼정보업체신고번호 경기-남양-국내-24-0001호</span>
-        <span>통신판매신고번호 2024-별내-0651</span>
-        <span>협업 및 비즈니스 제안 partner@emotional0range.com</span>
-        <span>채용문의 recruit@emotional0range.com</span>
-        <span>고객센터 0505-1922-2274 (평일 10시-19시, 주말 및 공휴일 제외)</span>
+        <span>통신판매업신고번호 2024-별내-0651</span>
+        <span>대표번호 0502-1922-2274 (공식문의 채널톡)</span>
+        <span>고객센터 평일 10:00–19:00 (주말 및 공휴일 제외)</span>
+        <span>협업 및 비즈니스 제안 partner@emotional0ranges.com</span>
+        <span>채용 문의 recruit@emotional0ranges.com</span>
+        <span>개인정보보호책임자 권준혁 markkwon@emotional0ranges.com</span>
+        <span>서울특별시 용산구 대사관로31길 7-2(한남동), 4층</span>
+        <span>경기도 남양주시 별내중앙로 34(별내동), 502호</span>
       </p>
     </div>
     <ul class="footer__sns">
@@ -751,7 +753,7 @@
   initMyMenus()
   // 일정·후기를 읽는 스크립트들보다 먼저 돕니다. 그들이 세어둔 뒤에 목록을
   // 갈아끼우면 서로 다른 것을 보게 됩니다.
-  const { initProduct } = await import('./components/product.js?v=ff4d8518')
+  const { initProduct } = await import('./components/product.js?v=b9af7b6a')
   initProduct()
   const { initSchedule } = await import('./components/schedule.js?v=a9e9003f')
   initSchedule()
@@ -763,7 +765,7 @@
   initRecentReview()
   const { initConfirms } = await import('./components/confirm.js?v=f516d2db')
   initConfirms()
-  const { initParticipants } = await import('./components/participants.js?v=74911a84')
+  const { initParticipants } = await import('./components/participants.js?v=83db421f')
   initParticipants()
   const { initSeatAlert } = await import('./components/seat-alert.js?v=1bc45aee')
   initSeatAlert()
@@ -772,7 +774,7 @@
   const { initFavorites } = await import('./components/favorite.js?v=8480b907')
   initFavorites()
   // 비슷한 모임 카드도 목록과 같은 데이터에서 지역·일정 수를 받습니다.
-  const { initProductCards } = await import('./components/product-cards.js?v=186d4984')
+  const { initProductCards } = await import('./components/product-cards.js?v=9fe45dac')
   initProductCards()
   const { initDetailIntro } = await import('./components/detail-intro.js?v=c2d2bd44')
   initDetailIntro()

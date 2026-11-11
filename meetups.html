@@ -382,23 +382,25 @@
   <footer class="footer">
     <div class="footer__info">
       <p class="footer__links">
-        <span>Ⓒ 2026 Emotional 0ranges</span>
-        <a class="is-strong" href="#">개인정보 처리방침</a>
+        <span>© 2026 EMOTIONAL ORANGES</span>
         <a href="#">이용약관</a>
-        <a href="#">의견 보내기</a>
+        <a class="is-strong" href="#">개인정보처리방침</a>
+        <a href="#">환불 규정</a>
       </p>
       <p class="footer__meta">
-        <span>(주)감정적인오렌지들</span>
-        <span>경기도 남양주시 별내중앙로 34, 502호(별내동)</span>
-        <span>emotional0ranges@naver.com</span>
-        <span>개인정보보호책임자: 권준혁</span>
-        <span>사업자 등록번호 480-88-03308</span>
-        <span>법인 등록번호 28411-0437652</span>
+        <span>주식회사 감정적인오렌지들</span>
+        <span>대표이사 권준혁</span>
+        <span>사업자등록번호 480-88-03308</span>
+        <span>법인등록번호 284111-0437652</span>
         <span>결혼정보업체신고번호 경기-남양-국내-24-0001호</span>
-        <span>통신판매신고번호 2024-별내-0651</span>
-        <span>협업 및 비즈니스 제안 partner@emotional0range.com</span>
-        <span>채용문의 recruit@emotional0range.com</span>
-        <span>고객센터 0505-1922-2274 (평일 10시-19시, 주말 및 공휴일 제외)</span>
+        <span>통신판매업신고번호 2024-별내-0651</span>
+        <span>대표번호 0502-1922-2274 (공식문의 채널톡)</span>
+        <span>고객센터 평일 10:00–19:00 (주말 및 공휴일 제외)</span>
+        <span>협업 및 비즈니스 제안 partner@emotional0ranges.com</span>
+        <span>채용 문의 recruit@emotional0ranges.com</span>
+        <span>개인정보보호책임자 권준혁 markkwon@emotional0ranges.com</span>
+        <span>서울특별시 용산구 대사관로31길 7-2(한남동), 4층</span>
+        <span>경기도 남양주시 별내중앙로 34(별내동), 502호</span>
       </p>
     </div>
     <ul class="footer__sns">
@@ -419,7 +421,7 @@
   </a>
   <a class="app-bar__item is-active" href="./meetups.html" aria-current="page">
     <svg class="app-bar__icon" aria-hidden="true"><use href="#icon-explorerFilled"></use></svg>
-    <span class="app-bar__label">모임</span>
+    <span class="app-bar__label">탐색</span>
   </a>
   <a class="app-bar__item" href="./matching.html">
     <svg class="app-bar__icon" aria-hidden="true"><use href="#icon-match"></use></svg>
@@ -452,9 +454,9 @@
   initAppBarPress()
   // 목록이 먼저 귀를 엽니다. 조건 바는 붙자마자 지금 조건을 한 번 알리는데,
   // 그때 듣는 쪽이 없으면 첫 목록이 그려지지 않습니다.
-  const { initFind } = await import('./components/find.js?v=1c4d29d1')
+  const { initFind } = await import('./components/find.js?v=b021c6b8')
   initFind()
-  const { initFindBar } = await import('./components/find-bar.js?v=9480cecd')
+  const { initFindBar } = await import('./components/find-bar.js?v=143e60ca')
   initFindBar()
   // 옆으로 흐르는 줄들(모임 유형·하위 필터·담은 날짜) — 양 끝을 옅게 하고,
   // 고른 알약을 줄 가운데로 데려옵니다.

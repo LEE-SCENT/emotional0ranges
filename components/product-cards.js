@@ -26,7 +26,7 @@
  * 문구, 가격. 이 파일은 그것을 옮긴 것이므로, 규칙이 바뀌면 그 문서가 먼저입니다.
  */
 
-import { PRODUCTS, areaOf, isOpen, seatTags } from './products.js?v=a3d5fd4b'
+import { PRODUCTS, areaOf, isOpen, seatTags } from './products.js?v=29238642'
 import { ME } from './my-menu.js?v=fe953b87'
 import { dateAfter, dayText } from './schedule.js?v=a9e9003f'
 

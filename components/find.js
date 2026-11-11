@@ -16,7 +16,7 @@
  * 목록과 같은 규칙이고, 값이 대표 일정이 아니라 그 회차에서 나오는 것만 다릅니다.
  */
 
-import { openMeetups, areaOf, cityOf, groupOf, regionOf, seatTags, tagsOf } from './products.js?v=a3d5fd4b'
+import { openMeetups, areaOf, cityOf, groupOf, regionOf, seatTags, tagsOf } from './products.js?v=29238642'
 import { ME } from './my-menu.js?v=fe953b87'
 import { dateAfter, dateKey, dayText } from './schedule.js?v=a9e9003f'
 
