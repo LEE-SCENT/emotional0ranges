@@ -1,0 +1,269 @@
+<!doctype html>
+<!-- 온라인 프로필 등록 — 프라이빗 사전 대기등록자가 온라인 프로필에 필요한 자료를 더하는 화면.
+     기존에 쓴 것은 다시 묻지 않고, 새 물음과 비어 있는 필수 물음만 섭니다. 회원마다 보이는
+     구획이 달라 구획은 profile-extra.js 가 그립니다. 시안에서는 주소의 ?member= 로 회원
+     예시를 고릅니다(female-missing · male-answered …). -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<!-- 파비콘 · 앱 아이콘 (README 의 "파비콘"). 모든 페이지가 같은 묶음입니다. -->
+<link rel="icon" href="./favicon/favicon.ico" sizes="32x32">
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./favicon/apple-touch-icon.png">
+<link rel="manifest" href="./favicon/site.webmanifest">
+<link rel="mask-icon" href="./favicon.svg" color="#F75D15">
+<meta name="theme-color" content="#FFFFFF">
+<title>온라인 프로필 등록 — 감정적인 오렌지들</title>
+<link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
+<link rel="stylesheet" href="./build/tokens.css?v=7f8d8c25">
+<link rel="stylesheet" href="./components/container.css?v=2407269a">
+<link rel="stylesheet" href="./components/badge.css?v=daa79c09">
+<link rel="stylesheet" href="./components/button.css?v=323be71f">
+<link rel="stylesheet" href="./components/gnb.css?v=31996315">
+<link rel="stylesheet" href="./components/segmented-control.css?v=027af639">
+<link rel="stylesheet" href="./components/tooltip.css?v=7ec024df">
+<link rel="stylesheet" href="./components/my-menu.css?v=59a441fb">
+<link rel="stylesheet" href="./components/tag.css?v=fef5c195">
+<link rel="stylesheet" href="./components/checkbox.css?v=44baaa09">
+<link rel="stylesheet" href="./components/field.css?v=30705fc7">
+<link rel="stylesheet" href="./components/choice.css?v=14663585">
+<link rel="stylesheet" href="./components/photo-slot.css?v=ddc7f0d6">
+<link rel="stylesheet" href="./components/profile.css?v=4e1f19b6">
+<link rel="stylesheet" href="./components/profile-extra.css?v=b846f05c">
+<link rel="stylesheet" href="./components/verify.css?v=9ecc570b">
+<link rel="stylesheet" href="./components/confirm.css?v=6a6a0bdf">
+<link rel="stylesheet" href="./components/toast.css?v=c91e6fe0">
+<link rel="stylesheet" href="./components/bottom-cta.css?v=4d73a6db">
+<link rel="stylesheet" href="./components/top-bar.css?v=7633d627">
+<style>
+  body {
+    margin: 0;
+    background: var(--colors-bg);
+    color: var(--colors-fg);
+    font-family: var(--_font-family-base);
+  }
+  /* 화면이 갈리는 자리(쓰는 화면 ↔ 마친 화면)를 hidden 으로 감춥니다. 띠(bottom-cta)처럼
+     제 display 를 가진 것도 감춰지도록 이겨야 합니다. */
+  [hidden] { display: none !important; }
+  .sr-only {
+    position: absolute; inline-size: 1px; block-size: 1px;
+    margin: -1px; padding: 0; overflow: hidden; white-space: nowrap;
+    clip-path: inset(50%);
+  }
+  /* 구획으로 내려왔을 때 첫 줄이 GNB · topBar 뒤로 들어가지 않게 합니다. */
+  [data-section] { scroll-margin-block-start: calc(var(--profile-sticky-top) + var(--spacing-600)); }
+</style>
+
+<div id="sprite" hidden></div>
+
+<header class="gnb">
+  <div class="gnb__inner">
+    <div class="gnb__side gnb__side--start">
+      <a class="gnb__logo" href="./index.html" aria-label="감정적인 오렌지들 홈">
+        <svg width="126" height="40" role="img" aria-label="emotional oranges"><use href="#logo-eo"></use></svg>
+      </a>
+    </div>
+    <div class="gnb__center">
+      <div class="gnb__segmented" hidden>
+        <div class="segmented" role="tablist" aria-label="모임 형태">
+          <span class="segmented__thumb" aria-hidden="true"></span>
+          <button class="segmented__item is-selected" role="tab" aria-selected="true">오프라인</button>
+          <button class="segmented__item" role="tab" aria-selected="false" aria-disabled="true">온라인</button>
+        </div>
+        <div class="tooltip tooltip--bottom gnb__tip">
+          <span class="tooltip__label">온라인 매칭 지금 보러 가기</span>
+        </div>
+      </div>
+      <nav class="gnb__menu" aria-label="주요 메뉴">
+        <a class="btn btn--ghost btn--medium" href="./meetups.html"><span class="btn__label">모임</span></a>
+        <a class="btn btn--ghost btn--medium" href="./matching.html"><span class="btn__label">매칭</span></a>
+        <button class="btn btn--ghost btn--medium"><span class="btn__label">모임 후기</span></button>
+        <button class="btn btn--ghost btn--medium"><span class="btn__label">자주 묻는 질문</span></button>
+        <button class="btn btn--ghost btn--medium"><span class="btn__label">저널</span></button>
+      </nav>
+    </div>
+    <div class="gnb__side gnb__side--end">
+      <div class="gnb__actions">
+        <button class="btn btn--blur btn--medium gnb__login" type="button">
+          <span class="btn__label">로그인</span>
+        </button>
+        <button class="btn btn--ghost btn--medium btn--icon-only gnb__notify" aria-label="알림">
+          <svg class="btn__icon" aria-hidden="true"><use href="#icon-notifications"></use></svg>
+        </button>
+        <div class="my-menu" data-my-menu>
+          <button class="btn btn--blur btn--medium btn--icon-only" type="button"
+                  data-my-menu-open aria-label="내 메뉴 열기"
+                  aria-expanded="false" aria-controls="my-menu-panel" aria-haspopup="true">
+            <svg class="btn__icon" aria-hidden="true"><use href="#icon-menu"></use></svg>
+          </button>
+          <div class="my-menu__panel" id="my-menu-panel" role="menu" aria-label="내 메뉴" tabindex="-1" hidden></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<header class="top-bar top-bar--page">
+  <a class="btn btn--ghost btn--medium btn--icon-only" data-back data-profile-leave="back" href="./my.html" aria-label="뒤로">
+    <svg class="btn__icon" aria-hidden="true"><use href="#icon-arrowBack"></use></svg>
+  </a>
+</header>
+
+<main class="container profile has-bottom-cta" data-extra-main>
+  <header class="profile__header">
+    <a class="btn btn--blur btn--medium btn--icon-only" data-back data-profile-leave="back" href="./my.html" aria-label="뒤로">
+      <svg class="btn__icon" aria-hidden="true"><use href="#icon-arrowBack"></use></svg>
+    </a>
+    <div class="profile__title">
+      <h1>온라인 프로필 등록</h1>
+      <!-- 이 화면에서 쓴 것이 바로 공개되는 것으로 읽히지 않게 처음부터 말합니다. -->
+      <p>이미 작성한 정보는 그대로 가져왔어요. 비어 있는 항목만 채워 주세요.<br>
+        등록한 프로필은 프라이빗이 열리기 전까지 다른 회원에게 보이지 않아요.</p>
+      <p class="extra-count" data-extra-count></p>
+    </div>
+  </header>
+
+  <div class="profile__body">
+    <form class="profile__form" data-extra-form novalidate>
+      <section class="extra-imported" data-extra-imported aria-labelledby="extra-imported-title">
+        <h2 id="extra-imported-title">가져온 정보</h2>
+        <!-- 목록은 profile-extra.js 가 회원의 기존 답변으로 채웁니다. -->
+      </section>
+
+      <div class="profile__form" data-extra-sections></div>
+
+      <div class="profile__actions extra__actions-row">
+        <button class="btn btn--outlined btn--large" type="button" data-extra-draft>
+          <span class="btn__label">임시저장</span>
+        </button>
+        <button class="btn btn--filled btn--large" type="submit" data-extra-submit>
+          <span class="btn__label">등록 완료하기</span>
+        </button>
+      </div>
+    </form>
+
+    <aside class="profile__aside" aria-label="작성 현황">
+      <nav class="extra-progress" aria-labelledby="extra-progress-title">
+        <h2 id="extra-progress-title">작성할 것 <span data-extra-done-count></span></h2>
+        <ol data-extra-progress></ol>
+        <!-- 시안에서만 서는 칸입니다. 회원마다 보이는 구획이 달라, 예시를 바꿔 가며 봅니다. -->
+        <div class="extra-demo" data-extra-demo>
+          <span class="field__label">시안 · 회원 예시</span>
+          <div class="field-row">
+            <div class="text-field text-field--select">
+              <select aria-label="성별"><option value="female">여성</option><option value="male">남성</option></select>
+              <svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg>
+            </div>
+          </div>
+          <div class="text-field text-field--select">
+            <select aria-label="기존 작성 상태"></select>
+            <svg aria-hidden="true"><use href="#icon-chevronDown"></use></svg>
+          </div>
+          <button class="btn btn--ghost btn--medium" type="button" data-extra-reset><span class="btn__label">이 예시 처음부터</span></button>
+        </div>
+      </nav>
+    </aside>
+  </div>
+</main>
+
+<div class="bottom-cta extra__actions-row">
+  <button class="btn btn--outlined btn--large" type="button" data-extra-draft>
+    <span class="btn__label">임시저장</span>
+  </button>
+  <button class="btn btn--filled btn--large" type="button" data-extra-submit>
+    <span class="btn__label">등록 완료하기</span>
+  </button>
+</div>
+
+<!-- 마친 화면. 쓴 것이 아직 공개된 것이 아니라는 것과, 다음에 무엇이 오는지를 말합니다. -->
+<section class="container extra-done" data-extra-done hidden aria-labelledby="extra-done-title">
+  <span class="extra-done__mark"><svg aria-hidden="true"><use href="#icon-check"></use></svg></span>
+  <div class="extra-done__text">
+    <h1 id="extra-done-title">프로필 등록이 완료됐어요</h1>
+    <p>프라이빗이 열리면 등록한 정보로 온라인 프로필을 만들어 알려드릴게요. 그 전까지는 다른 회원에게 보이지 않아요.</p>
+  </div>
+  <div class="extra-done__actions">
+    <button class="btn btn--outlined btn--large" type="button" data-extra-edit><span class="btn__label">확인 및 수정</span></button>
+    <button class="btn btn--filled btn--large" type="button" data-confirm-open="extra-proof"><span class="btn__label">추가 인증하기</span></button>
+  </div>
+</section>
+
+<!-- 쓴 것이 남은 채 나가려 할 때(기존 프로필 화면과 같은 창) -->
+<dialog class="confirm confirm--sheet" id="profile-leave" aria-labelledby="profile-leave-title">
+  <div class="confirm__panel">
+    <button class="btn btn--ghost btn--medium btn--icon-only confirm__close" type="button" data-confirm-close aria-label="닫고 계속 작성">
+      <svg class="btn__icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+    </button>
+    <div class="confirm__text">
+      <h2 id="profile-leave-title">저장하지 않은 내용이 있어요<br>임시저장하고 나갈까요?</h2>
+    </div>
+    <div class="confirm__actions">
+      <button class="btn btn--outlined btn--large" type="button" data-profile-discard><span class="btn__label">저장 안 함</span></button>
+      <button class="btn btn--filled btn--large" type="button" data-confirm-accept><span class="btn__label">저장하고 나가기</span></button>
+    </div>
+  </div>
+</dialog>
+
+<!-- 처음 마쳤을 때 한 번 권합니다. 문구는 11/5 개발 요청서 3장 그대로입니다.
+     나중에 하기를 눌러도 등록은 끝난 상태로 남습니다. -->
+<dialog class="confirm" id="extra-proof-ask" aria-labelledby="extra-proof-ask-title">
+  <div class="confirm__panel">
+    <div class="confirm__text">
+      <h2 id="extra-proof-ask-title">인증 배지로 더 믿음 가는 프로필을 만들어보세요</h2>
+      <p>확인된 정보에 인증 배지가 붙으면 상대가 안심하고 호감을 보낼 수 있어요. 호감을 받으면 소개 카드를 더 받아보고 매칭으로 이어질 기회도 생겨요.</p>
+    </div>
+    <div class="confirm__actions">
+      <button class="btn btn--outlined btn--large" type="button" data-confirm-close><span class="btn__label">나중에 하기</span></button>
+      <button class="btn btn--filled btn--large" type="button" data-confirm-accept><span class="btn__label">지금 인증하기</span></button>
+    </div>
+  </div>
+</dialog>
+
+<!-- 선택 인증 여섯. 하나를 고르면 그 서류의 창(verify.js)이 위에 뜹니다. -->
+<dialog class="confirm confirm--sheet" id="extra-proof" aria-labelledby="extra-proof-title">
+  <div class="confirm__panel">
+    <button class="btn btn--ghost btn--medium btn--icon-only confirm__close" type="button" data-confirm-close aria-label="닫기">
+      <svg class="btn__icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+    </button>
+    <div class="confirm__text">
+      <h2 id="extra-proof-title">추가 인증</h2>
+      <p>원하는 것만 골라 인증할 수 있어요. 서류를 확인한 뒤 배지가 붙어요.</p>
+    </div>
+    <ul class="extra-proof__list">
+      <li><p><b>키</b><span>키가 표시된 건강검진 결과서</span></p>
+        <button class="btn btn--outlined btn--medium" type="button" data-verify-open="height"><span class="btn__label">인증하기</span></button></li>
+      <li><p><b>자산</b><span>등기부등본 · 통장 잔고 증명서 등</span></p>
+        <button class="btn btn--outlined btn--medium" type="button" data-verify-open="assets"><span class="btn__label">인증하기</span></button></li>
+      <li><p><b>소득</b><span>근로소득 원천징수영수증</span></p>
+        <button class="btn btn--outlined btn--medium" type="button" data-verify-open="income"><span class="btn__label">인증하기</span></button></li>
+      <li><p><b>학력</b><span>졸업증명서</span></p>
+        <button class="btn btn--outlined btn--medium" type="button" data-verify-open="school"><span class="btn__label">인증하기</span></button></li>
+      <!-- 자녀 없음 · 혼인 이력 없음은 기존 혼인·가족 인증 창 하나로 함께 냅니다. -->
+      <li><p><b>자녀 없음</b><span>가족관계증명서(상세)</span></p>
+        <button class="btn btn--outlined btn--medium" type="button" data-verify-open="family"><span class="btn__label">인증하기</span></button></li>
+      <li><p><b>혼인 이력 없음</b><span>혼인관계증명서(상세)</span></p>
+        <button class="btn btn--outlined btn--medium" type="button" data-verify-open="family"><span class="btn__label">인증하기</span></button></li>
+    </ul>
+  </div>
+</dialog>
+
+<script type="module">
+  document.getElementById('sprite').innerHTML =
+    await (await fetch('./build/icons.svg?v=4a0d8096')).text() + await (await fetch('./build/logo.svg?v=0adc0440')).text()
+  const { initStickyGnb } = await import('./components/gnb.js?v=ca09b963')
+  initStickyGnb()
+  const { initMyMenus } = await import('./components/my-menu.js?v=fe953b87')
+  initMyMenus()
+  const { initConfirms } = await import('./components/confirm.js?v=f516d2db')
+  initConfirms()
+  const { initProfileExtra } = await import('./components/profile-extra.js?v=29ce7184')
+  initProfileExtra()
+  const { initSegmentedControls } = await import('./components/segmented-control.js?v=bbd7c4b8')
+  initSegmentedControls()
+  const { initVerify } = await import('./components/verify.js?v=464fd775')
+  initVerify()
+  const { initFields } = await import('./components/field.js?v=de1ad19d')
+  initFields()
+  const { initBack } = await import('./components/back.js?v=c6d259cc')
+  initBack()
+</script>

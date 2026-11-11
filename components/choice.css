@@ -143,3 +143,26 @@
 @media (prefers-reduced-motion: reduce) {
   .choice span { transition: none; }
 }
+
+/* ---- 몇 개 골랐는지 ------------------------------------------------------
+   "3개 이상"처럼 아래 한도가 있는 묶음의 이름표 오른쪽에 섭니다(온라인 프로필의
+   나의 특징). 위 한도(data-max)는 나머지를 잠가서 말하지만, 아래 한도는 잠글 것이
+   없어 숫자로 말합니다. 채우면 초록 체크가 붙습니다 — 다 됐다는 것이 숫자를 읽지
+   않아도 보입니다.
+
+     <span class="field__label">나의 외모 <span class="choice-tally" data-tally>0/3</span></span>
+*/
+.choice-tally {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-50);
+  margin-inline-start: auto;
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-s-regular-font-size);
+  font-weight: var(--typography-body-s-regular-font-weight);
+  line-height: var(--typography-body-s-regular-line-height);
+  font-feature-settings: 'tnum' 1;
+}
+.choice-tally svg { display: none; inline-size: var(--spacing-400); block-size: var(--spacing-400); }
+.choice-tally.is-met { color: var(--colors-fg-success); }
+.choice-tally.is-met svg { display: block; }

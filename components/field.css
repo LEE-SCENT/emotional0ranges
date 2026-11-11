@@ -366,3 +366,35 @@
 .text-field input[type='date']::-webkit-calendar-picker-indicator { display: none; }
 .text-field:has(input[type='date']) { cursor: pointer; }
 .text-field:has(input[type='date']) .text-field__icon { color: var(--colors-fg); }
+
+/* ---- 금액 --------------------------------------------------------------
+   숫자를 만원 단위로 치고, 옆에 읽기 쉬운 금액이 섭니다(온라인 프로필의 자산 상세).
+
+     <div class="field-amount">
+       <div class="text-field"><input inputmode="numeric"><span class="text-field__unit">만원</span></div>
+       <output class="field-amount__read">1억 2,500만원</output>
+     </div>
+
+   "12500" 을 읽고 1억인지 1천만인지 세는 것은 사람이 할 일이 아닙니다. 친 숫자를
+   바로 옆에서 원화로 다시 말해, 자릿수를 잘못 친 것이 치는 그 자리에서 보입니다. */
+.text-field__unit { flex: none; color: var(--colors-fg-low); }
+.field-amount {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--spacing-300);
+}
+.field-amount .text-field input { text-align: end; font-feature-settings: 'tnum' 1; }
+.field-amount__read {
+  color: var(--colors-fg);
+  font-size: var(--typography-body-m-medium-font-size);
+  font-weight: var(--typography-body-m-medium-font-weight);
+  line-height: var(--typography-body-m-medium-line-height);
+  font-feature-settings: 'tnum' 1;
+}
+/* 아직 치지 않았을 때의 안내("금액을 입력하면 표시돼요")는 옅게 섭니다. */
+.field-amount__read:empty::before { content: attr(data-empty); color: var(--colors-fg-lowest); font-weight: var(--typography-body-m-regular-font-weight); }
+@media (max-width: 960px) {
+  .field-amount { grid-template-columns: minmax(0, 1fr); gap: var(--spacing-150); }
+  .field-amount__read { padding-inline-start: var(--spacing-300); }
+}

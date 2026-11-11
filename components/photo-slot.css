@@ -1,0 +1,98 @@
+/**
+ * PhotoSlot — 정해진 종류의 사진을 한 장씩 받는 칸(온라인 프로필의 얼굴·상반신·전신).
+ *
+ *   <div class="photo-slots">
+ *     <div class="photo-slot">
+ *       <label class="photo-slot__frame">
+ *         <input type="file" accept="image/*" name="photo-face">
+ *         <svg class="photo-slot__plus" aria-hidden="true"><use href="#icon-plus"></use></svg>
+ *         <img alt="" hidden>
+ *         <span class="tag photo-slot__change" hidden>바꾸기</span>
+ *       </label>
+ *       <span class="photo-slot__label">얼굴</span>
+ *     </div>
+ *     …
+ *   </div>
+ *
+ * 칸마다 받는 사진이 정해져 있습니다. 한 상자에 여러 장을 몰아 받으면 무엇이 빠졌는지가
+ * 사진을 하나하나 봐야 보이는데, 칸이 나뉘어 있으면 빈 칸이 곧 빠진 사진입니다.
+ *
+ * 진짜 <input type="file"> 이 칸 전체를 덮고 있어, 칸 어디를 눌러도 고르는 창이 열리고
+ * 초점도 그 input 이 받습니다(choice.css 와 같은 방식).
+ *
+ * ⚠️ Figma 시안이 없습니다. 칸의 비율(3:4)은 기획 시안(11/5)의 칸을 따랐고, 나머지는
+ *    선택지(choice.css)의 바탕·테두리·모서리를 그대로 썼습니다.
+ */
+
+/* 칸은 160 을 넘지 않습니다. 폭을 다 채우면 넓은 화면에서 사진 칸 하나가 화면 반을
+   차지해, 아래 구획이 한참 밀려납니다. 좁은 화면에서는 셋이 폭을 나눠 씁니다.
+   ⚠️ 160 은 선택지 4칸의 최소 폭(choice.css)을 빌린 값입니다. Figma 에 없습니다. */
+.photo-slots {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, calc(var(--_dimension) * 40)));
+  gap: var(--spacing-300);
+}
+
+.photo-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-200);
+  min-inline-size: 0;
+}
+
+.photo-slot__frame {
+  position: relative;
+  display: grid;
+  place-items: center;
+  inline-size: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--_rounded-l);
+  background: var(--colors-bg-low);
+  box-shadow: inset 0 0 0 1px var(--colors-border);
+  color: var(--colors-fg-lower);
+  overflow: hidden;
+  cursor: pointer;
+}
+.photo-slot__frame input {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  margin: 0;
+  opacity: 0;
+  cursor: inherit;
+}
+.photo-slot__frame:has(input:focus-visible) { outline: 2px solid var(--colors-fg); outline-offset: 2px; }
+
+.photo-slot__plus { inline-size: var(--spacing-600); block-size: var(--spacing-600); }
+
+.photo-slot__frame img {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+/* 고른 뒤에는 사진 위 오른쪽 아래에 "바꾸기"가 섭니다. 사진 위에 얹히는 라벨이라 tag 를
+   씁니다(반투명 + 뒤 흐림). */
+.photo-slot__change {
+  position: absolute;
+  inset-block-end: var(--spacing-200);
+  inset-inline-end: var(--spacing-200);
+  z-index: 1;
+}
+
+.photo-slot__label {
+  color: var(--colors-fg-low);
+  font-family: var(--_font-family-base);
+  font-size: var(--typography-body-s-medium-font-size);
+  font-weight: var(--typography-body-s-medium-font-weight);
+  line-height: var(--typography-body-s-medium-line-height);
+}
+
+/* 빠진 칸. 등록을 눌렀는데 비어 있는 칸만 붉어집니다 — 이미 고른 칸까지 붉으면 어느
+   사진이 빠졌는지가 다시 흐려집니다. */
+.field--error .photo-slot__frame:not(:has(img:not([hidden]))) {
+  box-shadow: inset 0 0 0 1px var(--colors-fg-critical);
+}

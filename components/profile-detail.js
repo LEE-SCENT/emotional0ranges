@@ -42,7 +42,7 @@ import { selectTab } from './tabs.js?v=aec7319a'
  *    예시에서 둘이 함께 켜져 있는 것을 보고 정했습니다. 흡연과 데이트 횟수는 하나만
  *    켜져 있어 하나만 고르게 했습니다.
  */
-const QUESTIONS = [
+export const QUESTIONS = [
   {
     tab: 'info', name: 'charms', label: '나의 매력', multi: true, max: 5, cols: 3,
     options: ['착하다', '똑똑하다', '재미있다', '자기관리가 잘 되어 있다', '상대에게 잘 맞춰준다',
@@ -244,7 +244,7 @@ export function progressOf(draft = {}) {
 }
 
 /** MBTI 는 물음 넷이 한 덩어리입니다. 줄마다 둘 가운데 하나를 고릅니다. */
-const MBTI = [
+export const MBTI = [
   ['mbti-ei', ['I', '내향'], ['E', '외향']],
   ['mbti-ns', ['N', '직관'], ['S', '감각']],
   ['mbti-tf', ['T', '사고'], ['F', '감정']],

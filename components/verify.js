@@ -147,6 +147,26 @@ const KINDS = {
     notes: ['졸업증명서 또는 재학증명서를 제출해 주세요.', OWN_RECENT, HIDE_ID, ONE_YEAR,
       '허위·위조 서류 제출 시 서비스 이용이 제한될 수 있어요.'],
   },
+  /* 온라인 프로필의 선택 인증 셋(키·자산·소득). 등록을 마친 뒤 권하는 창에서 엽니다
+     (profile-extra.js). 학력은 학교, 자녀 없음·혼인 이력 없음은 혼인·가족 창을 씁니다.
+     ⚠️ 서류별 발급 기한·유효 기간·가림 기준이 기획에서 정해지지 않았습니다(11/5 개발
+        요청서 "서류별 인정·가림·보관/파기 정책은 별도 확정"). 정해진 것만 적었습니다. */
+  height: {
+    title: '키 인증',
+    fields: [{ type: 'file', label: '건강검진 결과서' }],
+    notes: ['키가 표시된 건강검진 결과서를 제출해 주세요.', HIDE_ID, FAKE],
+  },
+  assets: {
+    title: '자산 인증',
+    fields: [{ type: 'file', label: '증빙 서류' }],
+    notes: ['부동산 등기부등본, 통장 잔고 증명서 등 입력한 자산을 확인할 수 있는 서류를 제출해 주세요.',
+      '본인 명의의 서류만 인정돼요.', HIDE_ID, FAKE],
+  },
+  income: {
+    title: '소득 인증',
+    fields: [{ type: 'file', label: '근로소득 원천징수영수증' }],
+    notes: ['본인 명의의 서류만 인정돼요.', HIDE_ID, FAKE],
+  },
 }
 
 const el = (tag, className, text) => {

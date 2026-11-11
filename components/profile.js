@@ -10,7 +10,7 @@
  */
 import { openConfirm } from './confirm.js?v=f516d2db'
 import { cardGrid, cardHeader, cardRow, initProfileForm, load, store, swap } from './profile-form.js?v=8daf7ac8'
-import { progressOf } from './profile-detail.js?v=5d2495ab'
+import { progressOf } from './profile-detail.js?v=d250034f'
 
 /**
  * ⚠️ 예시입니다. 행정구역 전체가 아니라 화면을 맞춰 보는 데 필요한 만큼만 있습니다.

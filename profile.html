@@ -27,8 +27,8 @@
 <link rel="stylesheet" href="./components/my-menu.css?v=59a441fb">
 <link rel="stylesheet" href="./components/tag.css?v=fef5c195">
 <link rel="stylesheet" href="./components/checkbox.css?v=44baaa09">
-<link rel="stylesheet" href="./components/field.css?v=0f1aa06c">
-<link rel="stylesheet" href="./components/choice.css?v=d3a5098d">
+<link rel="stylesheet" href="./components/field.css?v=30705fc7">
+<link rel="stylesheet" href="./components/choice.css?v=14663585">
 <link rel="stylesheet" href="./components/verified-banner.css?v=34c301e8">
 <link rel="stylesheet" href="./components/profile-card.css?v=351d3a47">
 <link rel="stylesheet" href="./components/profile.css?v=4e1f19b6">
@@ -555,11 +555,11 @@
   initConfirms()
   // segmented 보다 먼저 돕니다. 저장된 쪽(검색·카테고리)을 고른 칸으로 세워둬야
   // 그쪽이 그 칸의 자리를 잽니다.
-  const { initProfile } = await import('./components/profile.js?v=a094b186')
+  const { initProfile } = await import('./components/profile.js?v=ed4a2945')
   initProfile()
   const { initSegmentedControls } = await import('./components/segmented-control.js?v=bbd7c4b8')
   initSegmentedControls()
-  const { initVerify } = await import('./components/verify.js?v=490eb9bc')
+  const { initVerify } = await import('./components/verify.js?v=464fd775')
   initVerify()
   const { initIdentityCheck } = await import('./components/identity-check.js?v=21a9cf52')
   initIdentityCheck()
