@@ -30,6 +30,17 @@
 
 .tooltip--has-close { padding-inline-end: var(--spacing-150); }
 
+/* 먼저 눌러 봤으면 하는 곳을 가리킬 때(GNB 의 사전 등록 안내). 브랜드색 알약입니다.
+   색 변수만 갈아끼우므로 꼬리도 같은 색을 따라옵니다. <a> 로 쓰면 말풍선 전체가
+   눌리는 자리라 밑줄을 끕니다. */
+.tooltip--accent {
+  --_tooltip-bg: var(--_tooltip-accent-bg);
+  --_tooltip-fg: var(--_tooltip-accent-fg);
+  border-radius: var(--_tooltip-accent-rounded);
+  font-weight: var(--typography-body-s-semibold-font-weight);
+  text-decoration: none;
+}
+
 .tooltip__label {
   overflow: hidden;
   text-overflow: ellipsis;

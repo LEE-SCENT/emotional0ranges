@@ -105,6 +105,8 @@
   letter-spacing: var(--typography-body-m-medium-letter-spacing);
   white-space: nowrap;
   cursor: pointer;
+  /* <a> 로도 씁니다(GNB 의 로테이션/프라이빗). 브라우저 기본 밑줄을 끕니다. */
+  text-decoration: none;
   /* 글자색은 thumb 이 도착하는 속도에 맞춰 함께 바뀝니다. */
   transition: color var(--_segmented-control-transition-duration)
               var(--_segmented-control-transition-easing);

@@ -137,6 +137,14 @@
   white-space: nowrap;
 }
 
+/* 사전 등록 안내는 전환보다 길어서, 프라이빗 아래 가운데에 두면 오른쪽 메뉴 쪽으로
+   반쯤 넘어갑니다. 왼쪽 끝을 전환에 맞추고 꼬리만 프라이빗 쪽(75%)으로 옮깁니다. */
+.gnb .gnb__tip.tooltip--accent {
+  inset-inline-start: 0;
+  translate: none;
+}
+.gnb .gnb__tip.tooltip--accent::after { inset-inline-start: 75%; }
+
 /* small 에서는 segmentedControl 과 메뉴가 접힙니다. */
 .gnb__segmented,
 .gnb__menu {
