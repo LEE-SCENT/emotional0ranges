@@ -56,11 +56,13 @@
     <div class="gnb__center">
       <div class="gnb__segmented">
         <!-- 로테이션(오프라인 모임)과 프라이빗(온라인 매칭)은 서로 다른 화면으로 가는 길입니다.
-             고르는 탭이 아니라 링크라서 둘 다 Tab 으로 닿습니다. 메뉴는 어느 쪽에서든 같습니다. -->
+             고르는 탭이 아니라 링크라서 둘 다 Tab 으로 닿습니다. 메뉴는 어느 쪽에서든 같습니다.
+             프라이빗 화면(온라인 프로필 등록)은 아직 배포하지 않아, 누르면 "준비 중" 알림만
+             띄웁니다 — 화면은 online-profile-registration 브랜치에 있습니다. -->
         <nav class="segmented" aria-label="소개 형태">
           <span class="segmented__thumb" aria-hidden="true"></span>
           <a class="segmented__item is-selected" aria-current="page" href="./index.html">로테이션</a>
-          <a class="segmented__item" href="./profile-extra.html">프라이빗</a>
+          <button class="segmented__item" type="button" data-not-ready>프라이빗</button>
         </nav>
       </div>
       <nav class="gnb__menu" aria-label="주요 메뉴">
@@ -134,7 +136,7 @@
   await import('./components/scroll-restore.js?v=f612a7a5')
   const { initStickyGnb } = await import('./components/gnb.js?v=ca09b963')
   initStickyGnb()
-  const { initSegmentedControls } = await import('./components/segmented-control.js?v=72ae2f4d')
+  const { initSegmentedControls } = await import('./components/segmented-control.js?v=f639c67c')
   initSegmentedControls()
   const { initAutoHide } = await import('./components/auto-hide.js?v=ef9c163a')
   initAutoHide()

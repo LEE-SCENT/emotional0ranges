@@ -11,6 +11,8 @@
  * 선택된 항목이 즉시 칠해질 뿐입니다.
  */
 
+import { showToast } from './toast.js?v=ccb77a07'
+
 const SELECTED = 'is-selected'
 
 /** 시간은 CSS 가 정합니다 — 두 곳에 적어두면 언젠가 갈립니다. */
@@ -82,6 +84,12 @@ export function initSegmentedControl(root) {
   root.addEventListener('click', (e) => {
     const item = e.target.closest('.segmented__item')
     if (!item || !root.contains(item) || isDisabled(item)) return
+    // 아직 열지 않은 칸(GNB 의 프라이빗)은 고르지 않고 "준비 중"이라고만 말합니다.
+    // 잠가 두면(disabled) 눌린 줄 모르고, 칠이 넘어가면 열린 줄 압니다.
+    if (item.hasAttribute('data-not-ready')) {
+      showToast('아직 준비 중이에요', { icon: '#icon-infoCircle' })
+      return
+    }
     // 링크 전환(GNB 의 로테이션/프라이빗)은 누르자마자 화면이 바뀌어 thumb 이 미끄러질
     // 틈이 없습니다. thumb 이 다 건너간 뒤에 넘어갑니다. 새 탭으로 열 때(⌘·Ctrl·가운데
     // 버튼)나 이미 고른 칸을 다시 누를 때는 기다리지 않습니다.
