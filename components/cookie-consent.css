@@ -4,9 +4,9 @@
  *   <section class="cookie-consent" aria-labelledby="cookie-consent-title">
  *     <div class="cookie-consent__text">
  *       <h2 id="cookie-consent-title">광고 쿠키를 허용할까요?</h2>
- *       <p>맞춤 광고를 보여주고 광고 효과를 측정하기 위해 광고 쿠키를 사용해요.
- *          허용하지 않아도 서비스를 그대로 이용할 수 있으며, 언제든지 쿠키 설정에서 변경할 수 있어요.
- *          자세한 내용은 <a href="…" target="_blank">개인정보 처리방침</a>에서 확인하세요.</p>
+ *       <p>맞춤 광고와 광고 효과 측정에 쿠키를 사용해요.
+ *          거부해도 서비스는 그대로 이용할 수 있어요.
+ *          <a href="…" target="_blank">자세히 보기</a></p>
  *     </div>
  *     <div class="cookie-consent__actions">
  *       <button class="btn btn--outlined btn--medium" data-cookie-consent="denied">거부</button>
