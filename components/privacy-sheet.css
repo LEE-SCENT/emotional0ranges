@@ -86,8 +86,8 @@
      모서리에 걸려 잘리고, 판 테두리처럼 보입니다. 들인 만큼 안쪽 여백에서 빼서
      글의 좌우 끝은 머리글 제목과 그대로 맞습니다. */
   .privacy-sheet__body {
-    margin: 0 var(--spacing-200) var(--spacing-300) 0;
-    padding: 0 calc(var(--_sheet-modal-padding-inline) - var(--spacing-200))
+    margin: 0 var(--spacing-100) var(--spacing-300) 0;
+    padding: 0 calc(var(--_sheet-modal-padding-inline) - var(--spacing-100))
       calc(var(--_sheet-modal-padding-inline) - var(--spacing-300))
       var(--_sheet-modal-padding-inline);
   }
