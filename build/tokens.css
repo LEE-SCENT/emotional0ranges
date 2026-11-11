@@ -793,3 +793,45 @@
   line-height: var(--typography-template-text-mobile-line-height);
   letter-spacing: var(--typography-template-text-mobile-letter-spacing);
 }
+
+/* ---- theme: private (theme.private.json) ---- */
+:root[data-theme="private"] {
+  --colors-bg: #161514;
+  --colors-bg-low: var(--_colors-serious-gray-900);
+  --colors-bg-disabled: var(--_colors-serious-gray-900);
+  --colors-bg-transparent: #FFFFFF14;
+  --colors-bg-contrast: var(--_colors-white);
+  --colors-bg-critical: #3A1C1F;
+  --colors-fg: var(--_colors-serious-gray-50);
+  --colors-fg-low: var(--_colors-serious-gray-400);
+  --colors-fg-lower: var(--_colors-serious-gray-500);
+  --colors-fg-lowest: var(--_colors-serious-gray-600);
+  --colors-fg-disabled: var(--_colors-serious-gray-700);
+  --colors-fg-brand: var(--_colors-twist-orange-400);
+  --colors-fg-contrast: var(--_colors-black);
+  --colors-border: var(--_colors-white-alpha-15);
+  --colors-border-active: var(--_colors-serious-gray-100);
+  --colors-divider: var(--_colors-white-alpha-15);
+  --colors-divider-low: #FFFFFF14;
+  --_button-filled-fg: var(--_colors-black);
+  --_button-filled-bg: var(--_colors-white);
+  --_button-outlined-fg: var(--_colors-serious-gray-100);
+  --_button-outlined-border: var(--_colors-white-alpha-15);
+  --_button-ghost-fg: var(--_colors-serious-gray-300);
+  --_button-blur-fg: var(--_colors-serious-gray-200);
+  --_button-blur-bg: var(--_colors-white-alpha-15);
+  --_segmented-control-bg: var(--_colors-serious-gray-900);
+  --_segmented-control-bgaccent: var(--_colors-serious-gray-900);
+  --_segmented-control-border: var(--_colors-white-alpha-15);
+  --_segmented-control-item-fg: var(--_colors-serious-gray-400);
+  --_segmented-control-item-fg-active: var(--_colors-white);
+  --_segmented-control-item-bg-active: var(--_colors-serious-gray-800);
+  --_option-card-border-selected: var(--_colors-serious-gray-100);
+  --_option-card-bg-soldout: var(--_colors-serious-gray-900);
+  --_tabs-border: var(--_colors-white-alpha-15);
+  --_app-bar-top-line: #FFFFFF14;
+  --_bottom-cta-border: #FFFFFF14;
+  --_sheet-scroll-line: #FFFFFF14;
+  --_toast-bg: #3A3836D9;
+  --_tooltip-bg: var(--_colors-serious-gray-800);
+}
