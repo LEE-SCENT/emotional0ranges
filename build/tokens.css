@@ -215,7 +215,7 @@
   --_control-bg-checked: var(--colors-fg);
   --_control-fg-checked: var(--colors-bg);
   --_cookie-consent-width: 640px;
-  --_cookie-consent-padding-block: var(--spacing-400);
+  --_cookie-consent-padding-block: var(--spacing-500);
   --_cookie-consent-padding-inline: var(--spacing-600);
   --_cookie-consent-gap: var(--spacing-500);
   --_cookie-consent-text-gap: var(--spacing-150);
