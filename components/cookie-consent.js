@@ -67,7 +67,7 @@ export function initCookieConsent({ policyHref = '#', onChange, force = false } 
     </div>
     <div class="cookie-consent__actions">
       <button class="btn btn--outlined btn--large" type="button" data-cookie-consent="denied"><span class="btn__label">거부</span></button>
-      <button class="btn btn--outlined btn--large" type="button" data-cookie-consent="granted"><span class="btn__label">허용</span></button>
+      <button class="btn btn--filled btn--large" type="button" data-cookie-consent="granted"><span class="btn__label">허용</span></button>
     </div>`
   card.querySelector('a').href = policyHref
 

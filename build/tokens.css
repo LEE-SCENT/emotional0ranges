@@ -214,7 +214,7 @@
   --_control-border: var(--colors-border);
   --_control-bg-checked: var(--colors-fg);
   --_control-fg-checked: var(--colors-bg);
-  --_cookie-consent-width: 800px;
+  --_cookie-consent-width: var(--_confirm-width);
   --_cookie-consent-padding: var(--spacing-500);
   --_cookie-consent-padding-wide: var(--spacing-600);
   --_cookie-consent-gap: var(--spacing-500);

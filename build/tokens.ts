@@ -549,7 +549,7 @@ export const components = {
     "fgChecked": "#FFFFFF"
   },
   "cookieConsent": {
-    "width": "800px",
+    "width": "440px",
     "padding": "4px",
     "paddingWide": "4px",
     "gap": "4px",

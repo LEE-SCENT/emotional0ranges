@@ -10,16 +10,15 @@
  *     </div>
  *     <div class="cookie-consent__actions">
  *       <button class="btn btn--outlined btn--large" data-cookie-consent="denied">거부</button>
- *       <button class="btn btn--outlined btn--large" data-cookie-consent="granted">허용</button>
+ *       <button class="btn btn--filled btn--large" data-cookie-consent="granted">허용</button>
  *     </div>
  *   </section>
  *
  * 카드는 cookie-consent.js 가 만들어 넣습니다. 이미 고른 사람에게는 뜨지 않습니다.
  *
- * 거부와 허용은 같은 모양·같은 폭입니다. 묻는 창(confirm)처럼 하는 쪽을 채워 크게
- * 두면, 동의를 묻는 자리에서는 "허용"으로 손을 끄는 장치가 됩니다 — 고르게 하는
- * 것이 이 카드의 목적이라 어느 쪽도 앞세우지 않습니다. 자리도 같은 이유로 읽는
- * 순서대로 둡니다(거부 → 허용).
+ * 거부는 테두리, 허용은 채운 검정입니다 — 다른 버튼 묶음처럼 하는 쪽을 채웁니다.
+ * 대신 폭은 같게 둡니다. 크기까지 달리하면 거부가 눈에 덜 띄어, 고르는 자리가
+ * 아니라 허용으로 손을 끄는 자리가 됩니다. 순서는 나가는 쪽 → 하는 쪽입니다.
  *
  * 닫기(×)는 없습니다. 닫으면 아무것도 고르지 않은 채 다음에 또 묻게 되고, 그 사이에는
  * 허용하지 않은 것으로 다룹니다 — 거부와 결과가 같은 버튼이 하나 더 있는 셈입니다.
@@ -28,7 +27,7 @@
  * 있어야, 귀찮아서 아무거나 누르지 않습니다.
  *
  * ⚠️ Figma 에 이 컴포넌트가 없어 코드에서 먼저 정했습니다. 값은 모두 기존 토큰을
- *    씁니다 — 폭 800 만 새로 정한 값입니다.
+ *    씁니다 — 폭은 묻는 창(confirm)과 같은 440 입니다.
  */
 
 .cookie-consent {
@@ -108,20 +107,16 @@
   }
 }
 
-/* 넓은 화면: 글은 왼쪽, 버튼은 오른쪽 한 줄입니다. 버튼을 화면 폭만큼 늘이면 누를 곳이
-   아니라 띠처럼 보이고, 카드가 본문을 크게 가립니다. */
+/* 넓은 화면: 오른쪽 아래 구석에 작게 섭니다. 본문 가운데를 가리지 않아, 고르기 전에도
+   읽던 것을 계속 읽을 수 있습니다. 글과 버튼은 좁은 화면처럼 위아래로 쌓습니다. */
 @media (min-width: 961px) {
   .cookie-consent {
-    flex-direction: row;
-    align-items: center;
-    gap: var(--spacing-800);
     inset-block-end: calc(var(--spacing-800) + env(safe-area-inset-bottom));
+    inset-inline: auto var(--spacing-800);
+    inline-size: var(--_cookie-consent-width);
+    margin-inline: 0;
     padding: var(--_cookie-consent-padding-wide);
   }
-  .cookie-consent__text { flex: 1 1 auto; }
-  .cookie-consent__actions { flex: none; }
-  /* 버튼 폭은 두 글자 레이블보다 넉넉하게, 그러나 서로 같게 둡니다. */
-  .cookie-consent__actions .btn { flex: none; inline-size: calc(var(--_dimension) * 24); }
 }
 
 /* ---- 나타나고 사라지기 --------------------------------------------------
