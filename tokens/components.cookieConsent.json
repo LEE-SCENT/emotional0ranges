@@ -8,7 +8,7 @@
         "$description": "넓은 화면에서 오른쪽 아래 구석에 설 때의 폭. 글 옆에 버튼이 섭니다."
       },
       "paddingBlock": { "$type": "dimension", "$value": "{semantic.spacing.400}" },
-      "paddingInline": { "$type": "dimension", "$value": "{semantic.spacing.500}" },
+      "paddingInline": { "$type": "dimension", "$value": "{semantic.spacing.600}" },
       "gap": {
         "$type": "dimension",
         "$value": "{semantic.spacing.500}",
