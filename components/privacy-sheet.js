@@ -58,4 +58,22 @@ export function initPrivacySheet() {
 
   document.body.append(dialog)
   initSheet(dialog)
+  showScrollbarWhileScrolling(dialog.querySelector('.privacy-sheet__body'))
+}
+
+/** 멈추고 나서 스크롤바가 사라지기까지. 손을 떼자마자 지우면 어디까지 왔는지 볼 틈이 없습니다. */
+const SCROLLBAR_LINGER_MS = 800
+
+/** 굴리는 동안에만 스크롤바를 보이게 합니다. 색은 CSS(.is-scrolling)가 정합니다. */
+function showScrollbarWhileScrolling(scroller) {
+  let timer
+  scroller.addEventListener(
+    'scroll',
+    () => {
+      scroller.classList.add('is-scrolling')
+      clearTimeout(timer)
+      timer = setTimeout(() => scroller.classList.remove('is-scrolling'), SCROLLBAR_LINGER_MS)
+    },
+    { passive: true },
+  )
 }

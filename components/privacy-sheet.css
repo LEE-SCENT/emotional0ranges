@@ -31,10 +31,17 @@
   letter-spacing: var(--typography-body-m-regular-letter-spacing);
   /* 한국어 문장이 낱자에서 꺾이지 않게 어절에서 꺾습니다. */
   word-break: keep-all;
-  /* 긴 글이라 어디쯤 읽는지 알 수 있게 스크롤바는 얇게 남깁니다. 색은 검정 계열의
-     반투명(seriousGray 900 의 25%)입니다 — 회색을 고르면 바탕이 바뀔 때마다 다시
-     골라야 하지만, 반투명은 어느 바탕 위에서든 같은 농도로 보입니다. */
+  /* 스크롤바는 얇게 자리만 잡아 두고, 굴리는 동안에만 보입니다(.is-scrolling,
+     privacy-sheet.js). 가만히 읽는 동안 글 옆에 막대가 서 있으면 시선을 끕니다.
+     자리를 늘 잡아 두는 것은 나타날 때 글 폭이 바뀌어 줄이 다시 꺾이지 않게 하려는
+     것입니다. */
   scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+/* 색은 검정 계열의 반투명(seriousGray 900 의 25%)입니다 — 회색을 고르면 바탕이 바뀔
+   때마다 다시 골라야 하지만, 반투명은 어느 바탕 위에서든 같은 농도로 보입니다. */
+.privacy-sheet__body.is-scrolling {
   scrollbar-color: var(--_colors-serious-gray-alpha900-25) transparent;
 }
 
