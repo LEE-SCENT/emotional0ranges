@@ -16,7 +16,7 @@
       },
       "textGap": { "$type": "dimension", "$value": "{semantic.spacing.150}" },
       "actionGap": { "$type": "dimension", "$value": "{semantic.spacing.200}" },
-      "rounded": { "$type": "dimension", "$value": "{primitive.rounded.2xl}" },
+      "rounded": { "$type": "dimension", "$value": "{primitive.rounded.xl}" },
       "bg": { "$type": "color", "$value": "{semantic.colors.bg}" },
       "shadow": {
         "$type": "shadow",

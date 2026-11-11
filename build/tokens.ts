@@ -555,7 +555,7 @@ export const components = {
     "gap": "4px",
     "textGap": "4px",
     "actionGap": "4px",
-    "rounded": "20px",
+    "rounded": "16px",
     "bg": "#FFFFFF",
     "shadow": "0 -4px 24px #0000001a"
   },

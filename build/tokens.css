@@ -220,7 +220,7 @@
   --_cookie-consent-gap: var(--spacing-500);
   --_cookie-consent-text-gap: var(--spacing-150);
   --_cookie-consent-action-gap: var(--spacing-200);
-  --_cookie-consent-rounded: var(--_rounded-2xl);
+  --_cookie-consent-rounded: var(--_rounded-xl);
   --_cookie-consent-bg: var(--colors-bg);
   --_cookie-consent-shadow: var(--_confirm-shadow);
   --_footer-sns-icon-size: calc(var(--_dimension) * 5);
