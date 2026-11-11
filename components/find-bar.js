@@ -37,7 +37,7 @@ import { countMatches } from './find.js?v=b021c6b8'
 import { ME } from './my-menu.js?v=fe953b87'
 import { dateAfter, dateKey, isToday, todayInSeoul } from './schedule.js?v=a9e9003f'
 import { lockScroll, unlockScroll } from './scroll-lock.js?v=40a2cd35'
-import { initSegmentedControl } from './segmented-control.js?v=833f8b37'
+import { initSegmentedControl } from './segmented-control.js?v=72ae2f4d'
 
 const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토']
 const SORTS = ['soon', 'price', 'urgent']

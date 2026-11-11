@@ -449,7 +449,7 @@
 <script type="module">
   document.getElementById('sprite').innerHTML =
     await (await fetch('./build/icons.svg?v=4a0d8096')).text() + await (await fetch('./build/logo.svg?v=0adc0440')).text()
-  const { initSegmentedControls } = await import('./components/segmented-control.js?v=833f8b37')
+  const { initSegmentedControls } = await import('./components/segmented-control.js?v=72ae2f4d')
   initSegmentedControls()
   const { initKvVideo } = await import('./components/kv.js?v=d2d085a7')
   initKvVideo()
