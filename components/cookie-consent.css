@@ -119,6 +119,10 @@
     margin-inline: 0;
     padding: var(--_cookie-consent-padding-wide);
   }
+  /* 버튼은 오른쪽 끝에 모읍니다. 글을 다 읽은 눈이 내려와 닿는 자리이고, 버튼이 카드
+     폭을 다 채우지 않아 카드가 한결 가볍습니다. 폭은 서로 같게 둡니다. */
+  .cookie-consent__actions { justify-content: flex-end; }
+  .cookie-consent__actions .btn { flex: none; inline-size: calc(var(--_dimension) * 24); }
 }
 
 /* ---- 나타나고 사라지기 --------------------------------------------------
