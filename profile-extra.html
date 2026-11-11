@@ -1,4 +1,5 @@
 <!doctype html>
+<html lang="ko" data-theme="private">
 <!-- 온라인 프로필 등록 — 프라이빗 사전 대기등록자가 온라인 프로필에 필요한 자료를 더하는 화면.
      기존에 쓴 것은 다시 묻지 않고, 새 물음과 비어 있는 필수 물음만 섭니다. 회원마다 보이는
      구획이 달라 구획은 profile-extra.js 가 그립니다. 시안에서는 주소의 ?member= 로 회원
@@ -12,11 +13,11 @@
 <link rel="apple-touch-icon" href="./favicon/apple-touch-icon.png">
 <link rel="manifest" href="./favicon/site.webmanifest">
 <link rel="mask-icon" href="./favicon.svg" color="#F75D15">
-<meta name="theme-color" content="#FFFFFF">
+<meta name="theme-color" content="#161514">
 <title>온라인 프로필 등록 — 감정적인 오렌지들</title>
 <link rel="stylesheet" href="./fonts/pretendard/pretendard.css?v=2973bcae">
-<link rel="stylesheet" href="./build/tokens.css?v=8a123396">
-<link rel="stylesheet" href="./components/container.css?v=2407269a">
+<link rel="stylesheet" href="./build/tokens.css?v=4e678c37">
+<link rel="stylesheet" href="./components/container.css?v=e659c911">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=323be71f">
 <link rel="stylesheet" href="./components/cookie-consent.css?v=73630604">
@@ -69,8 +70,7 @@
     <div class="gnb__center">
       <div class="gnb__segmented">
         <!-- 로테이션(오프라인 모임)과 프라이빗(온라인 매칭)은 서로 다른 화면으로 가는 길입니다.
-             고르는 탭이 아니라 링크라서 둘 다 Tab 으로 닿습니다. 메뉴는 어느 쪽에서든 같습니다.
-             프라이빗이 아직 사전 등록 중이라, 로테이션 쪽에서만 말풍선이 그리로 이끕니다. -->
+             고르는 탭이 아니라 링크라서 둘 다 Tab 으로 닿습니다. 메뉴는 어느 쪽에서든 같습니다. -->
         <nav class="segmented" aria-label="소개 형태">
           <span class="segmented__thumb" aria-hidden="true"></span>
           <a class="segmented__item" href="./index.html">로테이션</a>
@@ -261,7 +261,7 @@
   initConfirms()
   const { initProfileExtra } = await import('./components/profile-extra.js?v=29ce7184')
   initProfileExtra()
-  const { initSegmentedControls } = await import('./components/segmented-control.js?v=833f8b37')
+  const { initSegmentedControls } = await import('./components/segmented-control.js?v=72ae2f4d')
   initSegmentedControls()
   const { initVerify } = await import('./components/verify.js?v=464fd775')
   initVerify()

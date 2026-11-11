@@ -13,6 +13,12 @@
 
 const SELECTED = 'is-selected'
 
+/** 시간은 CSS 가 정합니다 — 두 곳에 적어두면 언젠가 갈립니다. */
+const cssMs = (name) => {
+  const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim()
+  return value.endsWith('ms') ? parseFloat(value) : parseFloat(value) * 1000 || 0
+}
+
 /** 비활성 항목은 고를 수 없습니다. disabled 속성과 aria-disabled 둘 다 받습니다. */
 const isDisabled = (el) => el.disabled || el.getAttribute('aria-disabled') === 'true'
 
@@ -75,7 +81,18 @@ export function initSegmentedControl(root) {
 
   root.addEventListener('click', (e) => {
     const item = e.target.closest('.segmented__item')
-    if (item && root.contains(item) && !isDisabled(item)) select(root, item)
+    if (!item || !root.contains(item) || isDisabled(item)) return
+    // 링크 전환(GNB 의 로테이션/프라이빗)은 누르자마자 화면이 바뀌어 thumb 이 미끄러질
+    // 틈이 없습니다. thumb 이 다 건너간 뒤에 넘어갑니다. 새 탭으로 열 때(⌘·Ctrl·가운데
+    // 버튼)나 이미 고른 칸을 다시 누를 때는 기다리지 않습니다.
+    const slideFirst =
+      item.href && !item.classList.contains(SELECTED) &&
+      !(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) &&
+      !matchMedia('(prefers-reduced-motion: reduce)').matches
+    select(root, item)
+    if (!slideFirst) return
+    e.preventDefault()
+    setTimeout(() => location.assign(item.href), cssMs('--_segmented-control-transition-duration'))
   })
   root.addEventListener('keydown', (e) => onKeydown(root, e))
 

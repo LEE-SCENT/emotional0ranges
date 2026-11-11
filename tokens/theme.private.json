@@ -1,0 +1,48 @@
+{
+  "$description": "프라이빗(온라인 매칭) 화면의 어두운 테마. <html data-theme=\"private\"> 에서만 켜집니다 — OS 의 다크 모드와는 별개입니다. 로테이션은 밝고 가볍게, 프라이빗은 조용하고 깊게 두어 두 서비스를 색으로 나눕니다. ⚠️ Figma 에 다크 값이 없어 코드에서 먼저 정했습니다. 원시값(#…)은 기존 primitive 에 맞는 단계가 없어 적은 것입니다.",
+  "overrides": {
+    "semantic.colors.bg":             "#161514",
+    "semantic.colors.bg-low":         "{primitive.colors.seriousGray.900}",
+    "semantic.colors.bg-disabled":    "{primitive.colors.seriousGray.900}",
+    "semantic.colors.bg-transparent": "#FFFFFF14",
+    "semantic.colors.bg-contrast":    "{primitive.colors.white}",
+    "semantic.colors.bg-critical":    "#3A1C1F",
+
+    "semantic.colors.fg":             "{primitive.colors.seriousGray.50}",
+    "semantic.colors.fg-low":         "{primitive.colors.seriousGray.400}",
+    "semantic.colors.fg-lower":       "{primitive.colors.seriousGray.500}",
+    "semantic.colors.fg-lowest":      "{primitive.colors.seriousGray.600}",
+    "semantic.colors.fg-disabled":    "{primitive.colors.seriousGray.700}",
+    "semantic.colors.fg-brand":       "{primitive.colors.twistOrange.400}",
+    "semantic.colors.fg-contrast":    "{primitive.colors.black}",
+
+    "semantic.colors.border":         "{primitive.colors.whiteAlpha.15}",
+    "semantic.colors.border-active":  "{primitive.colors.seriousGray.100}",
+    "semantic.colors.divider":        "{primitive.colors.whiteAlpha.15}",
+    "semantic.colors.divider-low":    "#FFFFFF14",
+
+    "components.button.filled.fg":          "{primitive.colors.black}",
+    "components.button.filled.bg":          "{primitive.colors.white}",
+    "components.button.outlined.fg":        "{primitive.colors.seriousGray.100}",
+    "components.button.outlined.border":    "{primitive.colors.whiteAlpha.15}",
+    "components.button.ghost.fg":           "{primitive.colors.seriousGray.300}",
+    "components.button.blur.fg":            "{primitive.colors.seriousGray.200}",
+    "components.button.blur.bg":            "{primitive.colors.whiteAlpha.15}",
+
+    "components.segmentedControl.bg":             "{primitive.colors.seriousGray.900}",
+    "components.segmentedControl.bgaccent":       "{primitive.colors.seriousGray.900}",
+    "components.segmentedControl.border":         "{primitive.colors.whiteAlpha.15}",
+    "components.segmentedControl.item.fg":        "{primitive.colors.seriousGray.400}",
+    "components.segmentedControl.item.fg-active": "{primitive.colors.white}",
+    "components.segmentedControl.item.bg-active": "{primitive.colors.seriousGray.800}",
+
+    "components.optionCard.borderSelected": "{primitive.colors.seriousGray.100}",
+    "components.optionCard.bgSoldout":      "{primitive.colors.seriousGray.900}",
+    "components.tabs.border":                "{primitive.colors.whiteAlpha.15}",
+    "components.appBar.topLine":            "#FFFFFF14",
+    "components.bottomCta.border":           "#FFFFFF14",
+    "components.sheet.scrollLine":          "#FFFFFF14",
+    "components.toast.bg":                   "#3A3836D9",
+    "components.tooltip.bg":                 "{primitive.colors.seriousGray.800}"
+  }
+}

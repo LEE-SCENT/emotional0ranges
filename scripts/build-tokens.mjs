@@ -25,8 +25,17 @@ function deepMerge(target, source, path = []) {
   return target
 }
 
+/**
+ * theme.<이름>.json 은 토큰을 새로 만들지 않고 이미 있는 토큰의 값만 바꿉니다.
+ * 기본 트리에 섞으면 "중복 정의"로 멈추므로 따로 읽어, 아래 CSS 끝에
+ * `:root[data-theme="<이름>"]` 블록으로 냅니다.
+ */
+const THEME_FILE = /^theme\.([a-z0-9-]+)\.json$/
 const sources = readdirSync(resolvePath(ROOT, 'tokens'))
-  .filter((f) => f.endsWith('.json'))
+  .filter((f) => f.endsWith('.json') && !THEME_FILE.test(f))
+  .sort()
+const themeSources = readdirSync(resolvePath(ROOT, 'tokens'))
+  .filter((f) => THEME_FILE.test(f))
   .sort()
 const tree = sources.reduce((acc, f) => deepMerge(acc, read(`tokens/${f}`)), {})
 
@@ -200,6 +209,29 @@ for (const t of composites) {
   cssLines.push(`${cls} {`)
   for (const key of Object.keys(COMPOSITE_PROPS)) {
     cssLines.push(`  ${COMPOSITE_PROPS[key]}: var(${base}-${kebab(key)});`)
+  }
+  cssLines.push('}')
+}
+
+/* ---------- 테마 ---------- */
+
+/**
+ * 테마 파일의 overrides 는 { "semantic.colors.bg": "{primitive.colors.black}" } 처럼
+ * 바꿀 토큰의 경로와 새 값입니다. 없는 토큰을 적으면 오타라 멈춥니다 — 조용히 넘기면
+ * 그 자리만 테마가 안 먹은 채로 남습니다.
+ *
+ * <html> 자신에 붙는 블록이라, :root 에서 이 변수를 참조하던 다른 변수(컴포넌트
+ * 토큰)도 같은 요소에서 다시 계산되어 함께 바뀝니다.
+ */
+for (const f of themeSources) {
+  const name = THEME_FILE.exec(f)[1]
+  const { overrides = {} } = read(`tokens/${f}`)
+  cssLines.push('', `/* ---- theme: ${name} (${f}) ---- */`, `:root[data-theme="${name}"] {`)
+  for (const [key, raw] of Object.entries(overrides)) {
+    const path = key.split('.')
+    const target = lookup(key)
+    if (!target || !('$value' in target)) throw new Error(`${f}: 없는 토큰입니다: ${key}`)
+    cssLines.push(`  ${cssName(path)}: ${cssRef(raw, deref(raw))};`)
   }
   cssLines.push('}')
 }
