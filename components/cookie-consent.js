@@ -44,7 +44,9 @@ const cssMs = (name) =>
 
 /**
  * @param {{ policyHref?: string, onChange?: (value: Consent) => void, force?: boolean }} [options]
- *   policyHref — "자세히 보기"가 여는 개인정보처리방침 주소. 없으면 서비스의 /privacy 입니다. 새 탭으로 엽니다 — 읽고 돌아와 고를 수 있어야 합니다.
+ *   policyHref — "자세히 보기"의 개인정보처리방침 주소. 없으면 서비스의 /privacy 입니다.
+ *                화면에 처리방침 시트(privacy-sheet.js)가 있으면 그것을 열고, 없으면 이
+ *                주소를 새 탭으로 엽니다 — 어느 쪽이든 읽고 돌아와 고를 수 있습니다.
  *   onChange   — 고른 값(또는 예전에 고른 값)을 받습니다.
  *   force      — 예전에 골랐어도 다시 띄웁니다. 설정 화면의 "쿠키 설정 바꾸기"가 씁니다.
  * @returns {HTMLElement | null} 띄운 카드. 띄우지 않았으면 null.
@@ -67,7 +69,7 @@ export function initCookieConsent({ policyHref = POLICY_HREF, onChange, force = 
       <h2 id="cookie-consent-title">광고 쿠키를 허용할까요?</h2>
       <p>맞춤 광고와 광고 효과 측정에 쿠키를 사용해요.
         거부해도 서비스는 그대로 이용할 수 있어요.
-        <a target="_blank" rel="noopener">자세히 보기</a></p>
+        <a target="_blank" rel="noopener" data-sheet-open="privacy-sheet">자세히 보기</a></p>
     </div>
     <div class="cookie-consent__actions">
       <button class="btn btn--outlined btn--medium" type="button" data-cookie-consent="denied"><span class="btn__label">거부</span></button>

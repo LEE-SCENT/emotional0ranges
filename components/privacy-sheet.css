@@ -1,0 +1,73 @@
+/**
+ * PrivacySheet — 개인정보 처리방침을 읽고 닫는 시트. sheet.css 위에 얹습니다.
+ *
+ * 일정 변경 시트와 다른 점은 둘입니다.
+ *
+ * 1. 좁은 화면에서도 머리글(제목·닫기)이 보입니다. 일정 변경은 무엇을 고르는지가
+ *    목록으로 드러나지만, 긴 글은 몇 줄만 읽어서는 무슨 문서인지 알 수 없습니다.
+ *    끝까지 내려가지 않고 닫는 사람이 대부분이라 닫기도 위에 둡니다.
+ * 2. 아래 버튼 줄이 없습니다. 고를 것이 없는 글이라, 남는 자리는 모두 본문이 씁니다.
+ */
+
+/* 좁은 화면: 판이 이미 좌우·위 여백을 갖고 있어 머리글은 줄만 세웁니다. */
+.privacy-sheet .sheet__head {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--spacing-300);
+  /* 닫기 버튼이 제 좌우 여백을 품고 있어, 그만큼 오른쪽으로 내보내 글 끝과 맞춥니다. */
+  margin-inline-end: calc(var(--spacing-300) * -1);
+}
+
+.privacy-sheet__body {
+  flex: 1 1 auto;
+  min-block-size: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  color: var(--colors-fg-low);
+  font-size: var(--typography-body-m-regular-font-size);
+  font-weight: var(--typography-body-m-regular-font-weight);
+  line-height: var(--typography-body-m-regular-line-height);
+  letter-spacing: var(--typography-body-m-regular-letter-spacing);
+  /* 한국어 문장이 낱자에서 꺾이지 않게 어절에서 꺾습니다. */
+  word-break: keep-all;
+}
+
+.privacy-sheet__meta,
+.privacy-sheet__empty {
+  margin: 0;
+  color: var(--colors-fg-lowest);
+  font-size: var(--typography-body-s-regular-font-size);
+  line-height: var(--typography-body-s-regular-line-height);
+}
+
+.privacy-sheet__empty { margin-block-start: var(--spacing-200); }
+
+.privacy-sheet__article { margin-block-start: var(--spacing-600); }
+
+.privacy-sheet__article h3 {
+  margin: 0;
+  color: var(--colors-fg);
+  font-size: var(--typography-body-m-semibold-font-size);
+  font-weight: var(--typography-body-m-semibold-font-weight);
+  line-height: var(--typography-body-m-semibold-line-height);
+  letter-spacing: var(--typography-body-m-semibold-letter-spacing);
+}
+
+.privacy-sheet__article p { margin: var(--spacing-150) 0 0; }
+
+.privacy-sheet__article ul {
+  margin: var(--spacing-150) 0 0;
+  padding-inline-start: var(--spacing-500);
+}
+
+.privacy-sheet__article li + li { margin-block-start: var(--spacing-100); }
+
+/* 넓은 화면: 판이 여백을 갖지 않는 모달이라 본문이 직접 좌우·아래 여백을 둡니다. */
+@media (min-width: 961px) {
+  .privacy-sheet .sheet__head { margin-inline-end: 0; }
+
+  .privacy-sheet__body {
+    padding: 0 var(--_sheet-modal-padding-inline) var(--_sheet-modal-padding-inline);
+  }
+}
