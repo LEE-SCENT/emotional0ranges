@@ -4,8 +4,8 @@
       "$description": "광고 쿠키를 쓸지 묻는 카드. 화면 아래에 떠 있지만 화면을 막지 않습니다. 거부와 허용을 같은 폭으로 나란히 둡니다.",
       "width": {
         "$type": "dimension",
-        "$value": "{components.confirm.width}",
-        "$description": "넓은 화면에서 오른쪽 아래 구석에 설 때의 폭. 묻는 창(confirm)과 같습니다."
+        "$value": "640px",
+        "$description": "넓은 화면에서 오른쪽 아래 구석에 설 때의 폭. 글 옆에 버튼이 서고, 글은 세 줄 안에서 끝납니다."
       },
       "padding": { "$type": "dimension", "$value": "{semantic.spacing.500}" },
       "paddingWide": { "$type": "dimension", "$value": "{semantic.spacing.600}" },
