@@ -550,7 +550,8 @@ export const components = {
   },
   "cookieConsent": {
     "width": "640px",
-    "padding": "4px",
+    "paddingBlock": "4px",
+    "paddingInline": "4px",
     "gap": "4px",
     "textGap": "4px",
     "actionGap": "4px",
