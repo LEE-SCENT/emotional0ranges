@@ -61,9 +61,9 @@ export function initCookieConsent({ policyHref = '#', onChange, force = false } 
   card.innerHTML = `
     <div class="cookie-consent__text">
       <h2 id="cookie-consent-title">광고 쿠키를 허용할까요?</h2>
-      <p>광고 쿠키는 맞춤 광고를 보여주고 광고 성과를 측정하는 데 써요.
-        허용하지 않아도 서비스는 그대로 이용할 수 있어요.
-        자세한 내용은 <a target="_blank" rel="noopener">개인정보처리방침</a>에 있어요.</p>
+      <p>맞춤 광고를 보여주고 광고 효과를 측정하기 위해 광고 쿠키를 사용해요.
+        허용하지 않아도 서비스를 그대로 이용할 수 있으며, 언제든지 쿠키 설정에서 변경할 수 있어요.
+        자세한 내용은 <a target="_blank" rel="noopener">개인정보 처리방침</a>에서 확인하세요.</p>
     </div>
     <div class="cookie-consent__actions">
       <button class="btn btn--outlined btn--medium" type="button" data-cookie-consent="denied"><span class="btn__label">거부</span></button>

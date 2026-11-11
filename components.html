@@ -49,7 +49,7 @@
 <link rel="stylesheet" href="./components/verified-banner.css?v=34c301e8">
 <link rel="stylesheet" href="./components/profile-card.css?v=351d3a47">
 <link rel="stylesheet" href="./components/verify.css?v=9ecc570b">
-<link rel="stylesheet" href="./components/cookie-consent.css?v=324c93dc">
+<link rel="stylesheet" href="./components/cookie-consent.css?v=5bf9b6c1">
 <style>
   body { margin:0; padding:24px; background:var(--colors-bg); color:var(--colors-fg);
          font-family:var(--_font-family-base); }
@@ -141,9 +141,9 @@
   <section class="cookie-consent" aria-labelledby="cookie-consent-demo-title" style="position:static;animation:none;margin-inline:0">
     <div class="cookie-consent__text">
       <h2 id="cookie-consent-demo-title">광고 쿠키를 허용할까요?</h2>
-      <p>광고 쿠키는 맞춤 광고를 보여주고 광고 성과를 측정하는 데 써요.
-        허용하지 않아도 서비스는 그대로 이용할 수 있어요.
-        자세한 내용은 <a href="#" target="_blank" rel="noopener">개인정보처리방침</a>에 있어요.</p>
+      <p>맞춤 광고를 보여주고 광고 효과를 측정하기 위해 광고 쿠키를 사용해요.
+        허용하지 않아도 서비스를 그대로 이용할 수 있으며, 언제든지 쿠키 설정에서 변경할 수 있어요.
+        자세한 내용은 <a href="#" target="_blank" rel="noopener">개인정보 처리방침</a>에서 확인하세요.</p>
     </div>
     <div class="cookie-consent__actions">
       <button class="btn btn--outlined btn--medium" type="button"><span class="btn__label">거부</span></button>
@@ -956,6 +956,6 @@ initVerify()
 const { initFields } = await import('./components/field.js?v=de1ad19d')
 initFields()
 // 본보기 카드는 저장된 값과 상관없이 다시 띄웁니다.
-const { initCookieConsent } = await import('./components/cookie-consent.js?v=986174a5')
+const { initCookieConsent } = await import('./components/cookie-consent.js?v=7d555d6f')
 document.querySelector('[data-cookie-consent-open]').addEventListener('click', () => initCookieConsent({ force: true }))
 </script>
