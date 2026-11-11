@@ -55,6 +55,14 @@
   }
 }
 
+/* 쿠키 동의 카드가 떠 있으면 그 위로 비켜섭니다. 둘 다 화면 아래에 서서, 그대로 두면
+   띠가 카드를 덮어 고르던 버튼이 가려집니다. 카드 윗변까지의 거리는 화면 폭·글 줄 수에
+   따라 달라 cookie-consent.js 가 재서 적어 둡니다. 위의 비켜서기 규칙보다 뒤에 두어,
+   신청 버튼·탭이 함께 있을 때도 이 값이 이깁니다 — 카드가 이미 그것들 위에 서 있습니다. */
+body:has(> .cookie-consent) .toast-region {
+  inset-block-end: calc(var(--_cookie-consent-clearance, 0px) + var(--spacing-300));
+}
+
 .toast {
   display: flex;
   align-items: center;

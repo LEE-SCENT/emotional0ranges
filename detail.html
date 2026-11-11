@@ -33,6 +33,7 @@
 <link rel="stylesheet" href="./components/container.css?v=2407269a">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=323be71f">
+<link rel="stylesheet" href="./components/cookie-consent.css?v=73630604">
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
 <link rel="stylesheet" href="./components/segmented-control.css?v=027af639">
 <link rel="stylesheet" href="./components/tooltip.css?v=7ec024df">
@@ -49,7 +50,7 @@
 <link rel="stylesheet" href="./components/review.css?v=1516c2bf">
 <link rel="stylesheet" href="./components/detail.css?v=7cae8d5d">
 <link rel="stylesheet" href="./components/favorite.css?v=8148f536">
-<link rel="stylesheet" href="./components/toast.css?v=c91e6fe0">
+<link rel="stylesheet" href="./components/toast.css?v=3cce3a3d">
 <link rel="stylesheet" href="./components/participants.css?v=3d11ed3c">
 <link rel="stylesheet" href="./components/app-bar.css?v=1129f720">
 <link rel="stylesheet" href="./components/top-bar.css?v=7633d627">
@@ -784,4 +785,9 @@
   initImageViewers()
   const { initSheets } = await import('./components/sheet.js?v=30835160')
   initSheets()
+</script>
+<script type="module">
+  // 광고 쿠키를 아직 고르지 않은 사람에게만 화면 아래에 묻는 카드를 띄웁니다.
+  const { initCookieConsent } = await import('./components/cookie-consent.js?v=3c66511a')
+  initCookieConsent()
 </script>

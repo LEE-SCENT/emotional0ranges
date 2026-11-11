@@ -21,12 +21,13 @@
 <link rel="stylesheet" href="./components/container.css?v=2407269a">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=323be71f">
+<link rel="stylesheet" href="./components/cookie-consent.css?v=73630604">
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
 <link rel="stylesheet" href="./components/segmented-control.css?v=027af639">
 <link rel="stylesheet" href="./components/gnb.css?v=31996315">
 <link rel="stylesheet" href="./components/tooltip.css?v=7ec024df">
 <link rel="stylesheet" href="./components/my-menu.css?v=59a441fb">
-<link rel="stylesheet" href="./components/toast.css?v=c91e6fe0">
+<link rel="stylesheet" href="./components/toast.css?v=3cce3a3d">
 <link rel="stylesheet" href="./components/tag.css?v=fef5c195">
 <link rel="stylesheet" href="./components/product-card.css?v=85b7c185">
 <link rel="stylesheet" href="./components/chip.css?v=c4217661">
@@ -462,4 +463,9 @@
   // 고른 알약을 줄 가운데로 데려옵니다.
   const { initScrollRows } = await import('./components/scroll-row.js?v=ea4b5fb8')
   initScrollRows()
+</script>
+<script type="module">
+  // 광고 쿠키를 아직 고르지 않은 사람에게만 화면 아래에 묻는 카드를 띄웁니다.
+  const { initCookieConsent } = await import('./components/cookie-consent.js?v=3c66511a')
+  initCookieConsent()
 </script>

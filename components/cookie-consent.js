@@ -54,6 +54,7 @@ export function initCookieConsent({ policyHref = '#', onChange, force = false } 
   }
 
   current?.remove()
+  stopClearance?.()
 
   const card = document.createElement('section')
   card.className = 'cookie-consent'
@@ -84,10 +85,48 @@ export function initCookieConsent({ policyHref = '#', onChange, force = false } 
     onChange?.(value)
     card.classList.add('is-leaving')
     // animationend 를 기다리지 않습니다 — 모션을 끈 환경에서는 그 사건이 오지 않습니다.
-    setTimeout(() => card.remove(), cssMs('--_duration-base'))
+    setTimeout(() => {
+      card.remove()
+      stopClearance?.()
+    }, cssMs('--_duration-base'))
   })
 
   document.body.append(card)
   current = card
+  stopClearance = trackClearance(card)
   return card
+}
+
+/** 지금 재고 있는 카드의 관찰을 멈춥니다. 카드가 없으면 비어 있습니다. */
+let stopClearance
+
+/**
+ * 카드 윗변이 화면 아래에서 얼마나 떨어져 있는지를 `--_cookie-consent-clearance` 로
+ * 문서에 적습니다. 알림 띠(toast.css)가 이 값만큼 올라서, 카드를 덮지 않고 그 위에
+ * 뜹니다.
+ *
+ * CSS 만으로는 정할 수 없습니다 — 카드 높이는 글이 몇 줄로 접히느냐에 따라, 바닥에서의
+ * 거리는 화면 폭과 아래에 고정된 것(신청 버튼·탭)에 따라 달라집니다. 그래서 실제로
+ * 그려진 자리를 잽니다.
+ */
+function trackClearance(card) {
+  const root = document.documentElement
+  const update = () => {
+    root.style.setProperty(
+      '--_cookie-consent-clearance',
+      // 그려진 자리(getBoundingClientRect)가 아니라 정해진 자리입니다. 카드가 아래에서
+      // 밀려 올라오는 동안 재면 그만큼 낮게 잡힙니다.
+      `${parseFloat(getComputedStyle(card).bottom) + card.offsetHeight}px`,
+    )
+  }
+  const observer = new ResizeObserver(update)
+  observer.observe(card)
+  addEventListener('resize', update)
+  update()
+  return () => {
+    observer.disconnect()
+    removeEventListener('resize', update)
+    root.style.removeProperty('--_cookie-consent-clearance')
+    stopClearance = undefined
+  }
 }
