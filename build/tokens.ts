@@ -786,6 +786,11 @@ export const components = {
     "arrow": {
       "width": "13px",
       "height": "6px"
+    },
+    "accent": {
+      "bg": "#F8733C",
+      "fg": "#FFFFFF",
+      "rounded": "9999px"
     }
   },
   "topBar": {

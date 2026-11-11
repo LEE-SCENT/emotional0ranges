@@ -43,15 +43,21 @@ function select(root, item) {
   for (const el of root.querySelectorAll('.segmented__item')) {
     const on = el === item
     el.classList.toggle(SELECTED, on)
-    if (el.hasAttribute('role')) el.setAttribute('aria-selected', String(on))
     // 탭 목록 안에서는 선택된 항목만 Tab 으로 닿고, 나머지는 화살표로 이동합니다.
-    el.tabIndex = on ? 0 : -1
+    // 링크로 된 전환(GNB 의 로테이션/프라이빗)은 탭 목록이 아니라 둘 다 Tab 으로 닿습니다.
+    if (el.hasAttribute('role')) {
+      el.setAttribute('aria-selected', String(on))
+      el.tabIndex = on ? 0 : -1
+    }
   }
   moveThumb(root)
 }
 
 /** 화살표 키로 좌우 이동. role="tablist" 의 기대 동작입니다. */
 function onKeydown(root, e) {
+  // 링크 전환은 화살표로 고르지 않습니다 — 고르는 순간 다른 화면으로 가야 하는데,
+  // 화살표는 칠만 옮기고 아무 데도 가지 않습니다.
+  if (root.getAttribute('role') !== 'tablist') return
   const items = [...root.querySelectorAll('.segmented__item')].filter((el) => !isDisabled(el))
   const i = items.indexOf(document.activeElement)
   if (i < 0) return

@@ -10,6 +10,12 @@
         "$description": "⚠️ Figma 에 변수로 없습니다. 내보낸 꼬리 SVG 의 viewBox(13×6)에서 읽었습니다.",
         "width":  { "$value": "13px" },
         "height": { "$value": "6px" }
+      },
+      "accent": {
+        "$description": "먼저 눌러 봤으면 하는 곳을 가리키는 말풍선(GNB 의 사전 등록 안내). 라이브 사이트의 값을 옮겼습니다.",
+        "bg":      { "$type": "color", "$value": "{primitive.colors.twistOrange.400}" },
+        "fg":      { "$type": "color", "$value": "{primitive.colors.white}" },
+        "rounded": { "$type": "dimension", "$value": "{primitive.rounded.full}" }
       }
     }
   }
