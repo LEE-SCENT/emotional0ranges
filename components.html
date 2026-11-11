@@ -28,7 +28,7 @@
       href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@600&display=swap">
 <noscript><link rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@600&display=swap"></noscript>
-<link rel="stylesheet" href="./build/tokens.css?v=7f8d8c25">
+<link rel="stylesheet" href="./build/tokens.css?v=3141ded4">
 <link rel="stylesheet" href="./components/badge.css?v=daa79c09">
 <link rel="stylesheet" href="./components/button.css?v=323be71f">
 <link rel="stylesheet" href="./components/button-group.css?v=99900e0c">
@@ -49,6 +49,7 @@
 <link rel="stylesheet" href="./components/verified-banner.css?v=34c301e8">
 <link rel="stylesheet" href="./components/profile-card.css?v=351d3a47">
 <link rel="stylesheet" href="./components/verify.css?v=9ecc570b">
+<link rel="stylesheet" href="./components/cookie-consent.css?v=572a6d1c">
 <style>
   body { margin:0; padding:24px; background:var(--colors-bg); color:var(--colors-fg);
          font-family:var(--_font-family-base); }
@@ -134,6 +135,24 @@
   </div>
 </div>
 <small>화면에서는 toast.js 가 아래에 고정해 띄웁니다 — PC 는 하단 가운데에서 32, 모바일은 신청 버튼 위 12. 여기서는 흐름 안에 그대로 놓고 봅니다.</small>
+
+<h2>CookieConsent — 거부 / 허용 같은 무게</h2>
+<div class="row" style="flex-direction:column;align-items:stretch">
+  <section class="cookie-consent" aria-labelledby="cookie-consent-demo-title" style="position:static;animation:none;margin-inline:0">
+    <div class="cookie-consent__text">
+      <h2 id="cookie-consent-demo-title">광고 쿠키를 허용할까요?</h2>
+      <p>광고 쿠키는 맞춤 광고를 보여주고 광고 성과를 측정하는 데 써요.
+        허용하지 않아도 서비스는 그대로 이용할 수 있어요.
+        자세한 내용은 <a href="#" target="_blank" rel="noopener">개인정보처리방침</a>에 있어요.</p>
+    </div>
+    <div class="cookie-consent__actions">
+      <button class="btn btn--outlined btn--large" type="button"><span class="btn__label">거부</span></button>
+      <button class="btn btn--outlined btn--large" type="button"><span class="btn__label">허용</span></button>
+    </div>
+  </section>
+  <div><button class="btn btn--outlined btn--medium" type="button" data-cookie-consent-open><span class="btn__label">카드 띄우기</span></button></div>
+</div>
+<small>화면에서는 cookie-consent.js 가 아래에 고정해 띄우고, 이미 고른 사람에게는 띄우지 않습니다. 넓은 화면은 글 왼쪽·버튼 오른쪽 한 줄, 960 이하는 세로로 쌓입니다. 고른 값은 localStorage 'cookie-consent' 에 남습니다.</small>
 
 <h2>Participant — 연령대 · 직업군 (남 / 여 / 아직 없음)</h2>
 <div class="row" style="align-items:flex-start">
@@ -844,13 +863,14 @@ for (const [id, dir] of [['r7','vertical'],['r8','horizontal']]) {
     'choice-group': 'choice', 'profile-promo': 'profile-card', 'checkbox-label': 'checkbox' }
   const CSS_FILES = new Set(['alert-banner', 'app-bar', 'badge', 'button', 'button-group', 'checkbox',
     'choice', 'field', 'footer', 'gnb', 'participants', 'product-card', 'profile-card',
-    'segmented-control', 'tag', 'toast', 'tooltip', 'verified-banner'])
+    'segmented-control', 'tag', 'toast', 'cookie-consent', 'tooltip', 'verified-banner'])
   /** 이것이 보이면 스크립트도 필요합니다. */
   const SCRIPTS = [
     ['.segmented', "import { initSegmentedControls } from './components/segmented-control.js'"],
     ['[data-verify-open]', "import { initVerify } from './components/verify.js'  // + verify.css · tabs.css · choice.css · field.css · toast.css"],
     ['.text-field, .file-field', "import { initFields } from './components/field.js'"],
     ['.toast', "import { showToast } from './components/toast.js'"],
+    ['.cookie-consent', "import { initCookieConsent } from './components/cookie-consent.js'"],
   ]
   const INLINE = new Set(['svg', 'span', 'b', 'a', 'button', 'label', 'p', 'small', 'dt', 'dd', 'li', 'option', 'h1', 'h2', 'h3'])
 
@@ -933,4 +953,7 @@ initVerify()
 // 고르는 칸(셀렉트·달·날짜)은 고르고 나면 초점을 내려놓습니다.
 const { initFields } = await import('./components/field.js?v=de1ad19d')
 initFields()
+// 본보기 카드는 저장된 값과 상관없이 다시 띄웁니다.
+const { initCookieConsent } = await import('./components/cookie-consent.js?v=a73295be')
+document.querySelector('[data-cookie-consent-open]').addEventListener('click', () => initCookieConsent({ force: true }))
 </script>

@@ -548,6 +548,17 @@ export const components = {
     "bgChecked": "#000000",
     "fgChecked": "#FFFFFF"
   },
+  "cookieConsent": {
+    "width": "800px",
+    "padding": "4px",
+    "paddingWide": "4px",
+    "gap": "4px",
+    "textGap": "4px",
+    "actionGap": "4px",
+    "rounded": "20px",
+    "bg": "#FFFFFF",
+    "shadow": "0 -4px 24px #0000001a"
+  },
   "footer": {
     "snsIconSize": "20px"
   },

@@ -1,0 +1,28 @@
+{
+  "components": {
+    "cookieConsent": {
+      "$description": "광고 쿠키를 쓸지 묻는 카드. 화면 아래에 떠 있지만 화면을 막지 않습니다. 거부와 허용을 같은 무게로 나란히 둡니다.",
+      "width": {
+        "$type": "dimension",
+        "$value": "800px",
+        "$description": "넓은 화면에서의 최대 폭. 글과 버튼이 한 줄에 서고, 글은 세 줄 안에서 끝납니다."
+      },
+      "padding": { "$type": "dimension", "$value": "{semantic.spacing.500}" },
+      "paddingWide": { "$type": "dimension", "$value": "{semantic.spacing.600}" },
+      "gap": {
+        "$type": "dimension",
+        "$value": "{semantic.spacing.500}",
+        "$description": "글과 버튼 사이."
+      },
+      "textGap": { "$type": "dimension", "$value": "{semantic.spacing.150}" },
+      "actionGap": { "$type": "dimension", "$value": "{semantic.spacing.200}" },
+      "rounded": { "$type": "dimension", "$value": "{primitive.rounded.2xl}" },
+      "bg": { "$type": "color", "$value": "{semantic.colors.bg}" },
+      "shadow": {
+        "$type": "shadow",
+        "$value": "{components.confirm.shadow}",
+        "$description": "묻는 창(confirm)과 같은 그림자입니다 — 위로 퍼져 아래에 뜬 카드에 맞습니다."
+      }
+    }
+  }
+}

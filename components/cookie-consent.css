@@ -1,0 +1,149 @@
+/**
+ * CookieConsent — 광고 쿠키를 쓸지 묻는 카드.
+ *
+ *   <section class="cookie-consent" aria-labelledby="cookie-consent-title">
+ *     <div class="cookie-consent__text">
+ *       <h2 id="cookie-consent-title">광고 쿠키를 허용할까요?</h2>
+ *       <p>광고 쿠키는 맞춤 광고를 보여주고 광고 성과를 측정하는 데 써요.
+ *          허용하지 않아도 서비스는 그대로 이용할 수 있어요.
+ *          자세한 내용은 <a href="…" target="_blank">개인정보처리방침</a>에 있어요.</p>
+ *     </div>
+ *     <div class="cookie-consent__actions">
+ *       <button class="btn btn--outlined btn--large" data-cookie-consent="denied">거부</button>
+ *       <button class="btn btn--outlined btn--large" data-cookie-consent="granted">허용</button>
+ *     </div>
+ *   </section>
+ *
+ * 카드는 cookie-consent.js 가 만들어 넣습니다. 이미 고른 사람에게는 뜨지 않습니다.
+ *
+ * 거부와 허용은 같은 모양·같은 폭입니다. 묻는 창(confirm)처럼 하는 쪽을 채워 크게
+ * 두면, 동의를 묻는 자리에서는 "허용"으로 손을 끄는 장치가 됩니다 — 고르게 하는
+ * 것이 이 카드의 목적이라 어느 쪽도 앞세우지 않습니다. 자리도 같은 이유로 읽는
+ * 순서대로 둡니다(거부 → 허용).
+ *
+ * 닫기(×)는 없습니다. 닫으면 아무것도 고르지 않은 채 다음에 또 묻게 되고, 그 사이에는
+ * 허용하지 않은 것으로 다룹니다 — 거부와 결과가 같은 버튼이 하나 더 있는 셈입니다.
+ *
+ * 화면을 막지 않습니다(뒤를 가리는 막이 없음). 고르기 전에도 보던 것을 계속 볼 수
+ * 있어야, 귀찮아서 아무거나 누르지 않습니다.
+ *
+ * ⚠️ Figma 에 이 컴포넌트가 없어 코드에서 먼저 정했습니다. 값은 모두 기존 토큰을
+ *    씁니다 — 폭 800 만 새로 정한 값입니다.
+ */
+
+.cookie-consent {
+  position: fixed;
+  inset-block-end: calc(var(--spacing-500) + env(safe-area-inset-bottom));
+  inset-inline: 0;
+  /* GNB·상단바(20)와 내 메뉴 판(30)보다 위, 알림 띠(35)보다 아래입니다. 고르는 동안
+     뜬 알림이 카드 밑에 깔리면 무슨 일이 있었는지 알 수 없습니다. */
+  z-index: 34;
+  display: flex;
+  flex-direction: column;
+  gap: var(--_cookie-consent-gap);
+  box-sizing: border-box;
+  /* 화면 가장자리와의 거리는 margin 으로 둡니다 — 카드 밖은 눌러도 뒤에 닿아야 합니다. */
+  inline-size: calc(100% - var(--container-gutter-base) * 2);
+  max-inline-size: var(--_cookie-consent-width);
+  margin-inline: auto;
+  padding: var(--_cookie-consent-padding);
+  border-radius: var(--_cookie-consent-rounded);
+  background: var(--_cookie-consent-bg);
+  box-shadow: var(--_cookie-consent-shadow);
+  font-family: var(--_font-family-base);
+}
+
+.cookie-consent__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--_cookie-consent-text-gap);
+  /* 어절에서 꺾습니다. "있어 / 요."처럼 한 글자만 떨어지지 않게 합니다. */
+  word-break: keep-all;
+}
+
+.cookie-consent h2 {
+  margin: 0;
+  color: var(--colors-fg);
+  font-size: var(--typography-heading-xs-semibold-font-size);
+  font-weight: var(--typography-heading-xs-semibold-font-weight);
+  line-height: var(--typography-heading-xs-semibold-line-height);
+}
+
+.cookie-consent p {
+  margin: 0;
+  color: var(--colors-fg-lower);
+  font-size: var(--typography-body-m-regular-font-size);
+  line-height: var(--typography-body-m-regular-line-height);
+}
+
+/* 문장 안의 링크입니다. 색이 아니라 밑줄로 구분합니다 — 회색 글 사이의 다른 회색은
+   잘 보이지 않습니다. */
+.cookie-consent a {
+  color: var(--colors-fg-low);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.cookie-consent__actions {
+  display: flex;
+  gap: var(--_cookie-consent-action-gap);
+}
+
+/* 두 버튼은 늘 같은 폭입니다. 글자 길이를 따라가면 "허용"과 "거부"의 폭이 어긋날 때
+   한쪽이 더 무거워 보입니다. */
+.cookie-consent__actions .btn { flex: 1 1 0; min-inline-size: 0; }
+
+/* 좁은 화면에서 아래에 고정된 것이 있으면 그 위로 비켜섭니다. 신청 버튼·탭을 가리면
+   고르기 전에는 아무것도 못 하는 화면이 됩니다. */
+@media (max-width: 960px) {
+  body:has(.bottom-cta) .cookie-consent {
+    inset-block-end: calc(
+      var(--_bottom-cta-height) + var(--spacing-300) + env(safe-area-inset-bottom)
+    );
+  }
+  body:has(.app-bar--fixed) .cookie-consent {
+    inset-block-end: calc(
+      var(--_app-bar-height) + var(--spacing-300) + env(safe-area-inset-bottom)
+    );
+  }
+}
+
+/* 넓은 화면: 글은 왼쪽, 버튼은 오른쪽 한 줄입니다. 버튼을 화면 폭만큼 늘이면 누를 곳이
+   아니라 띠처럼 보이고, 카드가 본문을 크게 가립니다. */
+@media (min-width: 961px) {
+  .cookie-consent {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--spacing-800);
+    inset-block-end: calc(var(--spacing-800) + env(safe-area-inset-bottom));
+    padding: var(--_cookie-consent-padding-wide);
+  }
+  .cookie-consent__text { flex: 1 1 auto; }
+  .cookie-consent__actions { flex: none; }
+  /* 버튼 폭은 두 글자 레이블보다 넉넉하게, 그러나 서로 같게 둡니다. */
+  .cookie-consent__actions .btn { flex: none; inline-size: calc(var(--_dimension) * 24); }
+}
+
+/* ---- 나타나고 사라지기 --------------------------------------------------
+   토스트와 같은 움직임입니다 — 아래에서 조금 올라오고, 고르면 제자리에서 흐려집니다. */
+
+.cookie-consent {
+  animation: cookie-consent-in var(--_duration-base) var(--_easing-decelerate);
+}
+
+.cookie-consent.is-leaving {
+  animation: cookie-consent-out var(--_duration-base) var(--_easing-accelerate) forwards;
+}
+
+@keyframes cookie-consent-in {
+  from { opacity: 0; translate: 0 var(--spacing-200); }
+}
+
+@keyframes cookie-consent-out {
+  to { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cookie-consent,
+  .cookie-consent.is-leaving { animation: none; }
+}
