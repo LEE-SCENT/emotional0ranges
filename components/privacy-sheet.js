@@ -18,7 +18,7 @@
  */
 
 import { initSheet } from './sheet.js?v=30835160'
-import { PRIVACY_POLICY } from './privacy-policy.js?v=2ee193d8'
+import { PRIVACY_POLICY } from './privacy-policy.js?v=871a602f'
 
 const ID = 'privacy-sheet'
 
@@ -35,7 +35,7 @@ export function initPrivacySheet() {
   dialog.innerHTML = `
     <div class="sheet__panel">
       <div class="sheet__head">
-        <h2 id="${ID}-title">개인정보 처리방침</h2>
+        <h2 id="${ID}-title">개인정보처리방침</h2>
         <button class="btn btn--ghost btn--medium btn--icon-only" type="button"
                 data-sheet-close="${ID}" aria-label="닫기">
           <svg class="btn__icon" aria-hidden="true"><use href="#icon-close"></use></svg>

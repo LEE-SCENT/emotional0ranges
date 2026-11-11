@@ -56,12 +56,24 @@
 
 .privacy-sheet__article p { margin: var(--spacing-150) 0 0; }
 
-.privacy-sheet__article ul {
+.privacy-sheet__article :is(ul, ol) {
   margin: var(--spacing-150) 0 0;
   padding-inline-start: var(--spacing-500);
 }
 
+/* 항목 안의 항목(수탁업체 아래 위탁업무 같은)은 위 항목에 붙어 읽혀야 해서 덜 띄웁니다. */
+.privacy-sheet__article li :is(ul, ol) { margin-block-start: var(--spacing-100); }
+
 .privacy-sheet__article li + li { margin-block-start: var(--spacing-100); }
+
+/* 연락처·기관 주소. 회색 글 사이의 다른 회색은 잘 보이지 않아 밑줄로 구분합니다. */
+.privacy-sheet__article a {
+  color: var(--colors-fg);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  /* 긴 주소가 좁은 화면에서 줄 밖으로 삐져나가지 않게 아무 데서나 꺾습니다. */
+  overflow-wrap: anywhere;
+}
 
 /* 넓은 화면: 판이 여백을 갖지 않는 모달이라 본문이 직접 좌우·아래 여백을 둡니다. */
 @media (min-width: 961px) {
