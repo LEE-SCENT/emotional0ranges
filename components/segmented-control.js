@@ -15,6 +15,9 @@ import { showToast } from './toast.js?v=ccb77a07'
 
 const SELECTED = 'is-selected'
 
+/** 로컬 미리보기인지. 아직 배포하지 않은 화면(data-local-only)은 여기서만 엽니다. */
+const isLocal = /^(localhost|127\.0\.0\.1|\[::1\])$|\.localhost$/.test(location.hostname)
+
 /** 시간은 CSS 가 정합니다 — 두 곳에 적어두면 언젠가 갈립니다. */
 const cssMs = (name) => {
   const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim()
@@ -84,9 +87,11 @@ export function initSegmentedControl(root) {
   root.addEventListener('click', (e) => {
     const item = e.target.closest('.segmented__item')
     if (!item || !root.contains(item) || isDisabled(item)) return
-    // 아직 열지 않은 칸(GNB 의 프라이빗)은 고르지 않고 "준비 중"이라고만 말합니다.
-    // 잠가 두면(disabled) 눌린 줄 모르고, 칠이 넘어가면 열린 줄 압니다.
-    if (item.hasAttribute('data-not-ready')) {
+    // 아직 배포하지 않은 칸(GNB 의 프라이빗)은 배포된 사이트에서 고르지 않고 "준비 중"이라고만
+    // 말합니다. 잠가 두면(disabled) 눌린 줄 모르고, 칠이 넘어가면 열린 줄 압니다.
+    // 로컬 미리보기에서는 보통 링크처럼 엽니다.
+    if (item.hasAttribute('data-local-only') && !isLocal) {
+      e.preventDefault()
       showToast('아직 준비 중이에요', { icon: '#icon-infoCircle' })
       return
     }
