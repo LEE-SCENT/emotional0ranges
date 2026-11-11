@@ -551,7 +551,6 @@ export const components = {
   "cookieConsent": {
     "width": "640px",
     "padding": "4px",
-    "paddingWide": "4px",
     "gap": "4px",
     "textGap": "4px",
     "actionGap": "4px",
